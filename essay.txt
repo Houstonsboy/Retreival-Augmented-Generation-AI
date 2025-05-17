@@ -1,0 +1,24 @@
+KRISTEIN GICHUHI MWAURA
+ Telephone Number: +254113136019: Email Address: giftgichuhi4138@gmail.com: GitHub profile: https://github.com/Houstonsboy : linkedIn: https://www.linkedin.com/in/gift-gichuhi-466ab9253 
+SOFTWARE DEVELOPER
+ Dedicated in bringing creative and innovative software to life through dedication, focus and ingenuity. I am a problem solver who uses collaboration and self-drive to learn and accomplish my goals. I am focused on improving my skills by being more efficient in both output and effort to be able to transition to a senior software engineer. 
+Education
+Currently starting my 3rd year Bachelor of Informatics and Computer Science (ICS) at Strathmore University 
+Experience and Skills :Mobile Development
+ Experienced in mobile application development using Flutter utilising aspects such as flutter platform channels to communicate with native android code to be able to have mobile apps interact with the mobile device system.
+ integrating Apis from different platforms such as spotify and pinterest into my mobile systems allowing intercompany data communication which was used in a Music sharing mobile application 
+Currently developing a coffee ordering mobile system for Strathmore SBS Coffee bar.
+ Web Development 
+Worked as a junior developer at FABTECH solutions, I was instrumental in the development of a project management system for National Drought Management Authority(NDMA) using Microsoft Blazor and ASPNET.core and guided the users of the system during the User Acceptance Test.
+Developed a Laravel and PHP based web system for digitization of the Beacon Children Hospital Centre that can handle the increased influx of government tender. Architecture how the entire hospital system will operate from reception to checkout. Deployment experience using vercel and railway.
+Fluency in Web Development using frameworks such as NextJs and VueJs with mastery over HTML,CSS and Javascript. I currently use my skillset to  Develop a spotify music sharing web application using VueJs and flask backend. Fluency in architecture of backend api systems using Flask for python and NodeJs for Javascript. 
+Game Development
+ Experienced in Java and c++ for both mobile development and game development. Developed a starship battle and cpu queueing games using Unity and C#
+ Certification
+Certificate of Ethical Hacking Program(2024) from ILABS at Strathmore University
+Full Stack Development certificate at ILABS Africa (2022) 
+IT essentials Certification (2022). 
+REFERENCE.
+ Mr Jirma Hussein Deputy Director-Drought Resilience and National Project National Drought Management Authority. jirmaarero@yahoo.edu. +254727868095.
+Mr Samson Kayembe- Lead Senior developer at Fabtech Solutions. skayembe@fabtechkenya.com. +254 724 631516
+
