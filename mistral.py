@@ -7,10 +7,12 @@ import time
 import re
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
+from huggingface_hub import InferenceClient
 
-# ===== CONFIGURATION =====
-OLLAMA_API_URL = "http://localhost:11434/api"
-MODEL_NAME = "mistral"  # Change to your specific Mistral model
+
+# ===== CONFIGURATION ===== 
+HF_API_TOKEN = os.getenv("HF_API_TOKEN")  # Set your token as environment variable
+MODEL_NAME = "mistralai/Mistral-7B-Instruct-v0.2" 
 CHUNK_SIZE = 1000       # Size of text chunks (approximate)
 CHUNK_OVERLAP = 200     # Overlap between chunks (approximate)
 TOP_K = 3               # Number of chunks to retrieve
@@ -115,38 +117,46 @@ def prepare_context(relevant_chunks: List[str], scores: List[float]) -> str:
 
 # ===== 6. LLM RESPONSE GENERATION =====
 def generate_response(query: str, context: str) -> str:
-    """Generate response using Mistral through Ollama API"""
-    print("Generating response with Mistral...")
+    """Generate response using Mistral through Hugging Face Inference API"""
+    print("Generating response with Mistral from Hugging Face...")
     
-    # Prepare the prompt
+    # Check if token is set
+    if not HF_API_TOKEN:
+        return "Error: HF_API_TOKEN environment variable not set"
+    
+    # Prepare the system prompt and messages
     system_prompt = ("You are a helpful assistant. Answer the question based ONLY on the context provided. "
-                    "If the context doesn't contain relevant information to answer the question, "
-                    "use your own trained knowledge'")
+                    "If the context doesn't contain relevant information to answer the question say that you dont know, "
+                    "dont use your own trained knowledge.")
     
-    full_prompt = f"""System: {system_prompt}
-
-Context:
+    user_message = f"""Context:
 {context}
 
-User: {query}"""
+Question: {query}"""
 
     try:
-        # Call Ollama API
-        response = requests.post(
-            f"{OLLAMA_API_URL}/generate",
-            json={"model": MODEL_NAME, "prompt": full_prompt}
+        # Initialize Hugging Face Inference Client
+        client = InferenceClient(token=HF_API_TOKEN)
+        
+        # Use chat_completion for Mistral Instruct models
+        messages = [
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": user_message}
+        ]
+        
+        response = client.chat_completion(
+            messages=messages,
+            model=MODEL_NAME,
+            max_tokens=500,
+            temperature=0.7,
         )
         
-        full_response = ""
-        for line in response.iter_lines():
-            if line:
-                data = json.loads(line.decode('utf-8'))
-                full_response += data.get("response", "")
-                if data.get("done", False):
-                    break
+        # Extract the assistant's response
+        answer = response.choices[0].message.content
         
         print("Response generated successfully")
-        return full_response
+        return answer
+        
     except Exception as e:
         print(f"Error generating response: {e}")
         return f"Error: {str(e)}"

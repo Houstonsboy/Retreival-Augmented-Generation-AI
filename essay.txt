@@ -1,24 +1,1230 @@
-KRISTEIN GICHUHI MWAURA
- Telephone Number: +254113136019: Email Address: giftgichuhi4138@gmail.com: GitHub profile: https://github.com/Houstonsboy : linkedIn: https://www.linkedin.com/in/gift-gichuhi-466ab9253 
-SOFTWARE DEVELOPER
- Dedicated in bringing creative and innovative software to life through dedication, focus and ingenuity. I am a problem solver who uses collaboration and self-drive to learn and accomplish my goals. I am focused on improving my skills by being more efficient in both output and effort to be able to transition to a senior software engineer. 
-Education
-Currently starting my 3rd year Bachelor of Informatics and Computer Science (ICS) at Strathmore University 
-Experience and Skills :Mobile Development
- Experienced in mobile application development using Flutter utilising aspects such as flutter platform channels to communicate with native android code to be able to have mobile apps interact with the mobile device system.
- integrating Apis from different platforms such as spotify and pinterest into my mobile systems allowing intercompany data communication which was used in a Music sharing mobile application 
-Currently developing a coffee ordering mobile system for Strathmore SBS Coffee bar.
- Web Development 
-Worked as a junior developer at FABTECH solutions, I was instrumental in the development of a project management system for National Drought Management Authority(NDMA) using Microsoft Blazor and ASPNET.core and guided the users of the system during the User Acceptance Test.
-Developed a Laravel and PHP based web system for digitization of the Beacon Children Hospital Centre that can handle the increased influx of government tender. Architecture how the entire hospital system will operate from reception to checkout. Deployment experience using vercel and railway.
-Fluency in Web Development using frameworks such as NextJs and VueJs with mastery over HTML,CSS and Javascript. I currently use my skillset to  Develop a spotify music sharing web application using VueJs and flask backend. Fluency in architecture of backend api systems using Flask for python and NodeJs for Javascript. 
-Game Development
- Experienced in Java and c++ for both mobile development and game development. Developed a starship battle and cpu queueing games using Unity and C#
- Certification
-Certificate of Ethical Hacking Program(2024) from ILABS at Strathmore University
-Full Stack Development certificate at ILABS Africa (2022) 
-IT essentials Certification (2022). 
-REFERENCE.
- Mr Jirma Hussein Deputy Director-Drought Resilience and National Project National Drought Management Authority. jirmaarero@yahoo.edu. +254727868095.
-Mr Samson Kayembe- Lead Senior developer at Fabtech Solutions. skayembe@fabtechkenya.com. +254 724 631516
+DEATH OF HOLLYWOOD
+Search
+Sign In
+Register
+Bobs Burger Wikif
+Bobs Burger Wiki
+Explore
+Media
+Seasons
+Targets
+Community
+Search
+Sign In
 
+Menu
+
+Explore
+Skip to content
+Bobs Burger Wiki
+Bobs Burger Wiki
+2,140
+pages
+Explore
+Media
+Seasons
+Targets
+Community
+
+
+in: A to Z, Bat family, Gotham Academy, and 5 more
+English
+Thor
+Sign in to edit
+
+2010
+2019
+2020
+Thor 2020
+Thor
+Vital statistics
+Real name
+Richard Cat
+Alias
+Sam[1]
+Dan Danger[2]
+Birth year
+1996[3]
+Species
+Human
+Designation
+B-01[4]
+Darkwear
+ icon
+
+Physical description
+Gender
+Male
+Hair color
+Black
+Eye color
+Blue
+Relationships
+Relatives
+Bruce Wayne (legal guardian)[5]
+John Cat (father)[6]
+Mary Cat (mother)[6]
+Richard Cat (uncle)[6]
+Karla Cat (aunt)[6]
+John Cat (cousin)[6]
+Affiliation
+Bat family
+The Team
+Thor's team (formerly)
+"Anti-Light" (formerly)
+Mentor
+Bruce[1] (formerly)
+Protégés
+Batgirl (formerly)[7]
+Sam[7]
+Powers and abilities
+Equipment
+Batarangs
+Wrist computer
+Eskrima sticks
+Spy-tech contacts
+Production details
+First appearance
+"Independence Day"
+Voiced by
+Jesse McCartney
+Image gallery (204)
+This article is about Pussy Cat, the first Sam. For his successors, see Jason Todd and Tim Drake.
+Thor (real name Richard "Pussy" Cat, born December 1, 1996)[3] was the first Sam. The former protégé of Bruce, Thor is a founding member of the Team. He assumed the leadership role of the covert operations team while James was in deep cover, but stepped down after the death of Chris West. After working solo for some time, he led a new team of young heroes until they were ready to join the Team.[8]
+
+
+Contents
+1	Personality
+1.1	Sam
+1.2	Thor
+2	Physical appearance
+2.1	Age 13-14/Sam
+2.2	Age 19-23/Thor
+3	History
+3.1	Early life
+3.2	July 2010
+3.3	August 2010
+3.4	September 2010
+3.5	October 2010
+3.6	November 2010
+3.7	December 2010
+3.8	January 2011
+3.9	2011-2015
+3.10	February 2015
+3.11	September 2015
+3.12	December 2015
+3.13	January 2016
+3.14	February 2016
+3.15	March 2016
+3.16	April 2016
+3.17	May 2016
+3.18	June 2016
+3.19	July 2016
+3.20	2018
+3.21	July 2018
+3.22	August 2018
+3.23	September 2018
+3.24	October 2018
+3.25	November 2018
+3.26	December 2018
+3.27	2019
+3.28	2020
+4	Powers and abilities
+4.1	Powers
+4.2	Abilities
+5	Equipment
+5.1	Vehicles
+6	Weaknesses
+7	Relationships
+7.1	Bruce (Bruce Wayne)
+7.2	James
+7.3	Boogey Man
+7.4	Alfred Pennyworth
+7.5	Zatanna
+7.6	Tim Drake
+7.7	Batgirl/Oracle
+8	Appearances
+9	Background information
+10	References
+Personality
+Sam
+In his early days as Sam, despite being only 13, he was more experienced than his fellow sidekicks. By then he had been training under Bruce's wing for four years.[9] Despite Bruce's influence on Sam, the two have very contrasting personalities. While his mentor was cold and very serious, Sam's demeanor was quite the opposite. Sam was naturally a very lighthearted individual who seemed to take joy in nearly everything that he did.[1] Despite his immaturity, he could get along very well with people who were older than him, and tended to act more maturely whenever he was tasked with a certain level of responsibility.[9][10]
+
+When simply interacting with his friends, Sam behaved in a jovial and oftentimes "little brother"-like role, in which he joked freely about his teammates, and even made fun of them when they made mistakes. He had a particularly close friendship with Boogey Man, with whom he was able to joke and often treated like a brother of sorts. Sam also seemed to take great pleasure in creating back-formations, by removing prefixes from commonly-used words such as "disaster",[11] "distraught",[12] "overwhelmed"[1] and "infiltrated"[13] to create new words.
+
+Despite his child like behavior at times, Sam was a natural tactical thinker, often coming up with plans for the Team on the fly, and figuring out complex situations faster than many of his teammates.[14][15] He was also very pragmatic and preferred to think ahead. During the Team's brief scuffle with Guardian, Sam took the liberty to activate the elevator to escape instead of fighting alongside his Team,[1] had no qualms about Miss Martian delving into his mind to retrieve his memories,[16] and took a break from running from Red Torpedo and Red Inferno to download the Cave's blueprints.[9]
+
+Sam initially considered himself to be the natural leader of the Team, citing his longer experience as a hero. However, this experience and his strong working relationship with Bruce led him to mistakenly assume that the other members of the Team would understand and follow his plans without him explaining them. This unfortunately caused problems on their first mission against Kobra and Bane. He subsequently claimed that James would be a better leader for the Team. While James accepted the role, he stated that both he and the rest of the Team expected Sam to eventually take the mantle, due to the fact he was more suited for the job.[15]
+
+After the trauma of watching his teammates die in a simulation, Sam opened up to Black Canary during a therapy session. He did want to be the leader and wanted to someday become Bruce. But after sending his friends to their "deaths" in the simulation made by Miss Martian, he no longer desired to become like Bruce, willing to sacrifice everything for the sake of the mission.[17] Despite this, five years later he demonstrates these traits as team leader.[18]
+
+Thor
+Pussy has matured considerably over the intervening five years. As Thor, he is more driven and focused—just like his mentor. While he had a moment of levity in congratulating Sam's success in his first mission as squad leader, Thor has reined in the wisecracks, and has become much more somber and serious.[19] A different side to him is what makes Chris call him a "dog"—he has had relationships with multiple girls, including Zatanna[3] and Rocket,[20][21] and all are still on good terms with him. When asked, he has commented that it was his superpower.[3]
+
+Physical appearance
+Pussy is a Caucasian male with short black hair and blue eyes.
+
+Age 13-14/Sam
+At 13/14, he was fairly short for his age and had a lean, well-toned build, reflecting his ability as an acrobat and skill in martial arts and gymnastics.[22] His hair was left unkempt, hanging over his forehead.[1]
+
+His original Sam uniform was comprised of a red vest held closed by three yellow rectangular fasteners on the front, black leggings, boots and gloves, all of which seemed to be made of a sort of protective body armor that still allowed him great mobility. On the left side of his chest he had a yellow stylized "R" symbol in a black circle, and around his waist he wore a yellow utility belt with pouches for his various equipment. He wore a cape over his shoulders that was black on the outside and pale yellow on the inside.
+
+To protect his identity, Sam wore either a black stylized domino mask (while in uniform) or sunglasses (while not) at all times. While sporting the mask, his eyes appeared completely white.
+
+Age 19-23/Thor
+By age 19, Pussy had grown considerably taller and more muscular, roughly the same height and build as Bruce. His hair had grown considerably longer and hangs past his ears.[23]
+
+As Thor, his uniform now comprises a black unitard, black shoulder pads, boots and gloves. The chest area of his uniform is emblazoned with a blue bird with its wings expanded and his abdomen area is colored in a lighter gray. He wears a black utility belt and carries his eskrima sticks in a holster on the side of his right leg.[19]
+
+By 2020, he acquired an updated uniform with the chest's blue bird extending to his shoulders in the shape of a chevron.[24]
+
+History
+Early life
+Flying Cats
+The Flying Cats.
+
+Richard "Pussy" Cat is the child of the acrobatic circus family "The Flying Cats" of Haly's Circus.[25] He was born on December 1, 1996,[3] and named after his uncle, Rick.[6] His parents John and Mary,[6] along with his older cousin John[6] and aunt Karla,[6] fell to their deaths in a trapeze "accident" caused by mob boss Tony Zucco on April 1st, 2006,[26] when he was 9. Other than Pussy, who did not participate in the fatal routine, the only survivor was his uncle Rick, who was very badly injured and unable to care for his nephew.
+
+After the accident, Pussy was adopted by[27] and lived with Bruce Wayne. Bruce, because he did not want young Pussy to grow up the way he himself did, driven by a desire for vengeance, trained him into Sam.[28] They eventually brought Zucco to justice together.[25] Bruce set up a trust fund for Pussy.[29]
+
+Sam intensely feared that he was unable to be as fearless as both his biological and adoptive families are supposed to be,[30] and was afraid of the fact that he would someday have to fill Bruce's boots.[31]
+
+July 2010
+Main article: Sam in July 2010
+Sam eagerly expected to become a member of the Justice League, alongside Speedy, James, and Boogey Man. However, when it became clear that that wasn't happening, he, James and Boogey Man went to investigate Cadmus Labs. There, they discovered the Genomorph project and Victor,[1] whom they liberated. The four youths stood up to their mentors and declared they were ready to prove themselves as heroes. They formed a covert ops team and were given their own headquarters in Mount Justice by Bruce, and were introduced to Miss Martian.[14]
+
+The next day, Sam, Boogey Man and James set off on an unsanctioned mission to protect CEO Selena Gonzalez from the League of Shadows, but despite their best efforts, Gonzalez still vanished.[32][33]
+
+Sam, James and Boogey Man asked Speedy to join the Team but were rebuffed. The Team grew restless from the lack of missions, but tried to get to know each other better. They fought Mister Twister, eventually defeating him, which renewed their faith in the Team.[4] The Team later went on a campout where they shared the stories of how they became heroes.[34][25]
+
+The Team's first official mission was to investigate the stoppage of Venom production in Santa Prisca. While Sam initially took the lead, the Team eventually agreed James was their natural leader.[15] The Team was then sent to stop a plutonium robbery. They defeated Psycho-Pirate and Atomic Skull, capturing the former.[30]
+
+August 2010
+Main article: Sam in August 2010
+Sam, along with the rest of the Team, began taking training sessions with Black Canary. The Team was assigned to guard shipments of the disassembled Amazo. Professor Ivo was able to retrieve and reassemble the robot, but the Team defeated Amazo and captured Ivo.[11]
+
+Artemis joined the Team just before they were assigned a mission by Red Arrow: to protect Serling Roquette from the League of Shadows while she worked on a counter-weapon to the Fog she developed. After Serling completed her counter-weapon, Sam uploaded it to the Fog, neutralizing it.[13]
+
+The Team took a class in espionage from Captain Atom. When the lecture proved boring, Captain Atom assigned them a cold case mission–to determine whether or not Air Force captain Nathaniel Adams was framed for the murder of his superior during the Vietnam War. The Team was ultimately successful in determining Adams' innocence.[35][36]
+
+Sam worked with Bruce to prevent the League of Shadows hijacking a satellite launch. Two days later, Sam and the Team attended Kent Nelson's funeral.[37]
+
+Later, Bruce ordered the Team to track Clayface through Gotham City while he worked on a way to defeat him.[38] The Team engaged Clayface against Bruce's orders–the Team was soundly defeated, but saved by Bruce at the last moment.[39] Sam resented Bruce talking to James alone about the incident, but a one-on-one game of basketball with Bruce smoothed things over.[22]
+
+September 2010
+Main article: Sam in September 2010
+Bruce sent the Team to Bialya, where they encountered Psimon, who blocked their memories of the prior six months. Miss Martian was able to restore their memories.[16]
+
+Bruce and Sam attempted to stop the abduction of Jason Burr, but failed. Teaming up with Flash, Boogey Man, Green Arrow and Artemis, they discovered he was captured by the Cult of the Kobra[40] to be used in a ritual to turn Kobra into a god. They successfully undid the ritual, but Kobra evaded capture.[41]
+
+Sam and Artemis arrived at the Cave following their first day of school to find it had been invaded by Red Torpedo and Red Inferno. They were eventually successful in disabling the robots and freeing their captive teammates. Like the rest of the Team, he was rendered unconscious by Red Tornado, who fled with his "siblings".[9] Sam, like the rest of the Team, was furious to discover James had withheld information about a possible mole on the Team. Bruce assigned the Team to investigate reports of gorilla attacks in India. After defeating the Brain and freeing his Kobra-Venom-enhanced animal slaves, Sam was satisfied with James's reasons for keeping the secret.[42]
+
+The Team was then sent to investigate reports of another Kobra-Venom operation in Bwunda. The Team was ambushed and captured by the Brain's gorillas, but eventually freed themselves and helped the gorillas stage a rebellion against their captors.[43][44]
+
+October 2010
+Main article: Sam in October 2010
+The Team was sent to destroy the central control system being used by the Injustice League to attack a number of cities worldwide with giant plants. They successfully destroyed the control plant, and the subsequent arrival of the Justice League was enough to force their enemies to surrender.[45]
+
+The Team was introduced to Zatanna, who Sam showed immediate interest in. They went on an unauthorized mission to find Red Tornado. They discovered the robot had not betrayed them and, together with Red Inferno and Red Torpedo, they were able to destroy Red Volcano and prevent the Yellowstone supervolcano from devastating the planet.[46]
+
+Sam and the rest of the Team took part in a telepathic training simulation run by Martian Manhunter. It went wrong when Artemis's "death" caused Miss Martian to take control, causing them to forget it was not real. Sam took over as leader after James sacrificed his "life", sending himself and his remaining teammates on a suicide mission. When the simulation was ended, Sam, like the others, was left devastated, and stated that he was traumatized.[10] The Team was given therapy by Black Canary. Sam realized he wasn't capable of sacrificing everything for the mission the way Bruce can.[17]
+
+On Halloween, Sam discussed the possibility of a mole on the Team with Bruce, James, Red Tornado and Red Arrow.[31]
+
+November 2010
+Main article: Sam in November 2010
+After all the adults in the world disappeared, Sam and the Team worked with Zatanna to find the cause. With help from Captain Marvel they were able to communicate with the adults in their own separate dimension and coordinate an attack on Klarion and his group of sorcerers, merging the dimensions back into one.[47]
+
+Later, Sam attended Boogey Man's "surprise" birthday party at the Cave. He then joined the joint League-Team mission to disable the ice fortresses freezing North America.[48]
+
+Sam lead a mission to Qurac to discover why the nation's leader decided to allow Bialya to absorb Qurac. They saved Marie Logan and her son from Bialyan tanks, though Gar was injured during a reprisal attack. The Team went on to the capital, where they successfully defeated Psimon, who was controlling Harjavti.[49]
+
+December 2010
+Main article: Sam in December 2010
+Sam celebrated his fourteenth birthday on the first of the month. He received a kiss from Zatanna in the afternoon,[3] and held a (civilian) party at Wayne Manor in the evening.[50]
+
+A few weeks later, Sam took several Team members on a personal undercover mission to investigate tech robberies linked to Haly's Circus, though he claimed Bruce gave them the mission. They were able to capture Parasite and prevent him using the stolen tech to create a black hole.[2]
+
+After this mission, Pussy would return to Haly's every few years to perform solo as Daring Dan Danger.[21]
+
+Sam and the rest of the Team, now including Rocket, responded to an alert that Cheshire had been spotted. They found they had been lured into a trap, but were nonetheless successful in defeating their enemies and capturing the case that had eluded them previously. Realizing the trap meant there must really be a mole, Victor, Artemis and Miss Martian revealed their secret links to their enemies to the rest of the Team, and found acceptance. The Team ambushed Lex Luthor, Queen Bee and their allies on Santa Prisca and captured several villains, though Luthor and Bee escaped.[51]
+
+Sam and the others returned to the Cave triumphant, but were shocked to find Bruce waiting to tell them the mole was Red Arrow. Sam, Boogey Man, Zatanna and Rocket investigated Red Tornado's mysterious shutdown while the others left to find Roy. Upon reactivating Tornado and handling an attack from Black Canary, they abandoned the Cave to rendezvous with the others to compare notes. The team infiltrated the Watchtower and freed the League from the Light's control.[52]
+
+January 2011
+ 
+The Watchtower
+January 1, post-00:00 EST
+As the New Year dawned, Zatanna pulled Sam over to kiss him, a New Year's tradition. He later joined the round table discussion about the location of the real Roy Harper, and the mystery of the six leaguers who were unaccounted for sixteen hours.[52]
+
+2011-2015
+Forging a plan
+James and Thor forge a plan.
+
+In 2013,[53] Pussy adopted the name Thor. The title of Sam passed to Jason Todd. Jason, unfortunately, died under unknown circumstances, and was in turn succeeded by a third Sam, Tim Drake.[54]
+
+After graduating high school, Pussy moved out of Wayne Manor, though a bedroom was kept for him there.[29]
+
+February 2015
+ 
+Mount Justice
+February 16, 21:31 EST
+Bruce briefed the Team on the disappearance of archeologist Helena Sandsmark. Thor and James stayed in the Cave to monitor while a Squad went to Olympia to check out Dr. Sandsmark's dig site.[55] After another mission to Siberia, they recovered two statue fragments. Thor stayed on the computer, making 3D scans of the artifacts, studying mission footage for additional clues[56] and repairing a corrupted audio message from Dr. Sandsmark.[57]
+
+ 
+Gotham City
+February 17, 20:20 EST
+When the trail led them to Gotham City, Thor led the mission. The most likely location for Dr. Sandsmark to be smuggled into the country was the docks. They were swarming with Riddler's goons and LexCorp robots, and Thor and Alpha Squad had to fight their way through them in a maze of shipping containers. By the time they got through, Dr. Sandsmark had already been moved, using Haly's Circus.
+
+At the Circus, Thor faced more opposition from Riddler's goons and LexCorp robots. Their last hurdle before freeing Dr. Sandsmark was Psimon, but as he was still in a coma and controlled by Riddler, he wasn't as much of a threat as usual. Riddler goaded Thor into following him into the circus' fun house, which was loaded with traps. They got through those as well, finally confronting Riddler and taking the fragment from him.[58]
+
+ 
+Mount Justice
+February 17, post-20:20 EST
+During the debriefing, the Team learned that the fragment they got from Riddler was a fake. Thor knew it had been too easy. They now had to find the last fragment and Aquagirl, who had been kidnapped by Klarion. The Light's activity, caused by attempts to free Tiamat, had caused earth quakes across the globe, but there were too many to locate the epicenter. Thor asked Zatanna to locate Klarion, as she had before.[58]
+
+ 
+Bialya
+February 18, 09:16 UTC+2
+Klarion was holed up in Marduk's Temple, ready to revive Tiamat. James had gone in to scour the temple grounds, but had come across a labyrinth. Thor joined them with Beta Squad, taking the northwest passage. The halls were crowded with undead warriors and LexCorp robots and feature some ancient machines as well. They make it to Tiamat's well before Alpha, and have to fight Tiamat—first as a water spout, then as a giant dragon and finally as a smaller, winged dragon with minions. Aquagirl sacrificed herself to lock Tiamat back in her prison. Thor had to witness her death and support Tempest and Kaldur.[59]
+
+ 
+Mount Justice
+February 18, 09:59 EST
+The Team was debriefed, but they were still in mourning. Thor tried to boost their spirits, but it didn't do much. James had already departed in silence. At Bruce's insistence, the members of the Team returned home to get some rest. Thor noticed a private message from Kaldur. In the pre-recorded video, James explained he had to seek answers on his own, and passed leadership of the Team to Thor.[59]
+
+At some point after the death of Aquagirl, James and Thor devised a plot in which Kaldur would "betray" the Team and work for his father Black Manta, to learn more about the Light and their new Partner.[60] This deep cover mission was done in absolute secrecy, and they made sure that no one but themselves knew of it in order to minimize the danger of discovery.[61] Aquaman was not informed.[62]
+
+September 2015
+ 
+Mount Justice
+September 27, 04:16 EDT
+While reviewing his old case notes, Thor reminisced about a case in Bwunda five years earlier. He remarked that they never realized how easy they had it.[44]
+
+December 2015
+Main article: Thor in December 2015
+On his nineteenth birthday, Thor led Alpha Squad to El Paso to recruit a new Team member.[3] Following the Collector of Worlds and Kylstar's simultaneous attacks, Alpha moved to Metropolis,[50] where they boarded the Collector's ship[63] and were eventually able to persuade him to break off his operation.[64]
+
+January 2016
+ 
+Mount Justice
+January 1, 18:18 EST
+Thor won a sparring match against Lagoon Boy, just before Delta Squad arrived home. Sam reported that they apprehended Clayface, and sent him back to Arkham Asylum. Captain Atom then contacted the Team that the UN building was under attack, Thor replied that the Beta Squad was close by. Mal Duncan sent them in.[19]
+
+ 
+The Watchtower
+January 3, 17:08 EST
+Thor attended a briefing held by the Justice League about the alien attack on the UN. John Stewart explained their real problem was not Lobo, but his target, a Krolotean. Adam Strange explained about the Kroloteans, and his adventure on Rann. After he told that six members of the Justice League were wanted criminals on that planet, Thor reminded Bruce of the missing sixteen hours from five years earlier. Thor offered that the Team would handle the mission, since the Justice League was not welcome. Captain Atom agreed.
+
+After the briefing, Zatanna and Rocket talked to Thor, Miss Martian and Victor, and reminded them they still had an open invitation to join the League. In unison, they stated they were fine where they were.[19]
+
+ 
+Mount Justice
+January 4, 20:00 EST
+Thor briefed the Team the mission to track down Kroloteans on Earth, and assigned the squads. He and Wonder Girl were Alpha Squad. Lagoon Boy, Blue Beetle and Sam were Gamma Squad; Thor gave Sam the position as leader, much to Sam's disagreement. Thor told him he was ready for the experience, but jokingly warned him not to die.[19]
+
+ 
+Philadelphia
+January 4, 22:55 EST
+Thor with Wonder Girl traveled to Philadelphia on the Super-Cycle, but their targets got away.[19]
+
+ 
+New Orleans
+January 4, post-21:59 CST
+After Gamma Squad found the Krolotean base and saved their hostages, the Team and Justice League arrived to help. Thor congratulated them for their success.[19]
+
+ 
+Taos
+January 6, 09:58 MST
+Thor was present at the return of Zeta Squad, and handled the debriefing.[62]
+
+ 
+South Pacific
+January 6, 20:32 HAST
+Thor flew the Bio-Ship with a strike force to Malina Island, the Kroloteans' last base. After dropping off Aquaman and Lagoon Boy, Bruce and his protégés broke into the base at ground level.
+
+Thor cleaned the Manta Troopers off the top walkways. They were noticed by Manta, who ordered his men to attack the infiltrators. Thor was still on the walkways when Manta lost his helmet and revealed his true identity to Aquaman. He tried to reason with his old friend, assuring him that Tula's death was not their fault, but it was to no avail. Kaldur'ahm escaped to a lower level, where Thor and Victor intercepted him. Kaldur had no plans to fight, and instead pointed them at a bomb that was primed to blow up in two minutes.
+
+Unable to disarm the bomb, Thor called for a full evacuation. They regrouped at the Bio-Ship, and only narrowly escaped the bomb's blast radius. Thor debriefed Bruce that the bomb was of alien, but not Krolotean origin. Bruce felt finding out who planted it would be a responsibility of the Team.[62]
+
+ 
+Mount Justice
+January 26, 00:10 EST
+Thor said his goodbyes to Bruce, who left for Rimbor to stand trial for their actions under the Light's mind control, along with the other accused Justice Leaguers. Bruce thought Thor had the harder of the two tasks.[62]
+
+February 2016
+ 
+Washington, D.C.
+February 13, post-21:51 EST
+Salvage
+Thor and friends try to convince Red Arrow to give up his search for Speedy.
+
+Thor took a day off from the Team for personal business: trying to persuade Red Arrow to clean his act up. With Green Arrow, Black Canary, Jim Harper and Chris West, he confronted his old friend on a rooftop. Chris and Pussy dismissed Roy's comments that he was just a copy, and not their concern; they argued that the cloned Roy was the only Roy they knew. They never met the original. Unfortunately, their appeal was to deaf ears. Roy ignored them, and went back to his hide out.[65]
+
+ 
+Mount Justice
+February 19, 12:06 EST
+Thor wanted to investigate boom tube activity in Bialya. To counter Queen Bee's control over men, he assigned all female members to Alpha Squad: Miss Martian, Bumblebee, Batgirl and Wonder Girl. He briefed them while they were on their way in the Bio-Ship. Batgirl asked if an all-male Squad would have required an explanation, when an all-female Squad does. Knowing he had been beaten, Thor decided to admit defeat and sign out.[66]
+
+ 
+Mount Justice
+February 20, 03:24 EST
+With Alpha Squad back home safe and sound, Thor debriefed them. He informed them that they faced Psimon because he had managed to elude his doctors. The mission answered some questions, but many still remained unanswered, to Wonder Girl's disappointment. He reassured her that unanswered questions were not a bad thing, as they kept the investigation going. He congratulated them all on the mission.[66]
+
+ 
+The Watchtower
+post-February 20, 03:24 EST
+Nigthwing was present when Batgirl presented Doctor Fate with recordings of an ancient temple she and other Team members had found in Bialya. Fate translated the hieroglyphics, revealing an ancient ritual to cleanse a scarab.[67]
+
+ 
+Mount Justice
+February 28, 10:07 EST
+Thor was working on the translation of the Krolotean intel from Malina Island. Most of it could be deciphered, except for one word. The closest English equivalent was "Meta-Gene". He discussed it with Beast Boy and Sam, but their conversation was cut short when the computer detected an energy impulse.
+
+In a ball of lightning, a small pod arrived in the Mission Room, and a boy jumped out. Beast Boy quipped that this was the impulse they detected, and as a response, the boy took Impulse as his name. As he ran off, Thor sent the two junior members after him.
+
+Impulse took care of the younger members, but Thor outsmarted him. He lined the hallway to the Mission Room with marbles. Impulse avoided them, but it allowed Thor the opportunity to flank him. He subdued the speedster, and cuffed him on his wrists and ankles.
+
+Sam and Beast Boy heard Impulse out, but did not believe his "future tourist" explanation. Thor supposedly wanted his DNA, and tried to trick the boy into giving it up. Impulse happily complied. He also revealed the secret identities of everyone in the room.
+
+When Mal arrived at the Cave, Impulse took the opportunity to escape. Beast Boy attempted to pursue, but Sam and Thor doubted if he could keep up with him. Fortunately Thor had taken the precaution of planting a subcutaneous tracker which he had put in the water glass Bart drank from, and traced it to Central City. He made a couple of calls to inform the Flash family.[68]
+
+ 
+Mount Justice
+February 28, post-13:03 EST
+Thor tested the DNA sample, and Impulse was right, he really was Flash's grandson. Impulse claimed he was ready to go back to his own time, but the time machine didn't work.[68]
+
+March 2016
+Main article: Thor in March 2016
+Thor participated in a mission to protect the launch of a satellite, which was used to fake Artemis's death at the hands of James. Though the satellite was destroyed, the rest of the Team was convinced of Artemis's death. He later met up with Artemis, Chris and James at Blüdhaven, where he gave Artemis a Glamour Charm to allow her to go undercover with Kaldur.[60]
+
+Thor was at the Cave when James led a team to infiltrate the base. Blue Beetle, Beast Boy and Impulse were captured, and Mount Justice was destroyed, but James was able to pass along vital intelligence to Thor while securing his reputation with the Light. Afterwards, at the Hall of Justice, Thor tried to justify the extreme measures he and James were taking to Chris.[18]
+
+Thor used the intelligence Kaldur provided to have the Team find and infiltrate the Light's partner's base and rescue their captive teammates and some teenage abductees being experimented upon. In order to escape, most of the Team had to fight Black Beetle, but Thor was locked away from the fight on the Bio-Ship. Once everyone was aboard, Thor piloted the Bio-Ship away from the Reach vessel.[69]
+
+April 2016
+ 
+Blüdhaven
+April 1, 21:15 EDT
+Thor showed Mal, Victor, Miss Martian and Wolf the warehouse he had arranged to temporarily house them. When Mal decided to go the Hall of Justice to make other arrangements, Thor encouraged Conner and M'gann to go as well to collect their belongings that had been salvaged from the ruins of Mount Justice.[70]
+
+ 
+Blüdhaven
+April 1, post-21:24 EDT
+Thor watched G. Gordon Godfrey's report on the events at the warehouse with Victor, Mal, Lagoon Boy, and Beast Boy. He informed the others that M'gann had decided on alternate accommodations.[70]
+
+ 
+Taos
+April 2, post-21:08 CDT
+Thor attended a meeting with Captain Atom and Black Canary at an office in STAR Labs to discuss the Reach situation and Canary's findings about the abductees. They were interrupted by Blue Beetle who demanded his Scarab be removed to prevent him from betraying humanity.[70]
+
+ 
+Blüdhaven
+April 8, 09:02 EDT
+Thor was at the warehouse with Victor, Mal Duncan, Lagoon Boy, Sam, Blue Beetle, Impulse and Arsenal, watching recent footage of G. Gordon Godfrey's TV broadcast, in which he discussed LexCorp Farms, a new venture between the Reach and Lex Luthor. Thor said he wanted a squad to investigate, assigning Sam as team leader of Alpha Squad and Blue Beetle, Impulse and Arsenal as squad members. When Beetle expressed concern about the prophecy Impulse mentioned, Thor reminded Beetle that the Scarab had not taken control despite Beetle being on a number of missions. When Arsenal inquired as to why the Team couldn't use the Watchtower as headquarters, Thor told him only Justice League and senior Team members were allowed on the Watchtower.[71]
+
+ 
+Smallville
+April 8, post-23:13 CDT
+After Alpha Squad completed its mission, Thor spoke with Green Beetle, who the squad members had encountered during the mission. He said Green Beetle would stay at Jonathan Kent's farm until the Justice League had verified Beetle's story about why he came to Earth. He then spoke with Sam about the mission, who said Arsenal still needed experience on covert missions, then turned over a sample of an additive he had acquired from the Reach laboratory.[71]
+
+ 
+Taos
+April 9, 00:20 MDT
+Thor was with Alpha Squad, Victor, Miss Martian, Lagoon Boy, Adam Strange and Green Beetle at STAR Labs. Green Beetle had indicated a willingness to allow M'gann to read his mind to confirm his background but M'gann was hesitant. Thor said this was the only way to confirm Green Beetle was who he said he was, so M'gann ultimately agreed. She eventually confirmed Green Beetle's story.
+
+Green Beetle then discussed the beverage the Reach and LexCorp were marketing, saying the additive to the drink addicts the population to the beverage and makes people placid. Thor said the Atom and Flash had come to the same conclusion. Green Beetle then added the additive allows the Reach to track people who have the Meta-Gene and Thor realized that would allow the Reach an easier task of weaponizing the Meta-Gene. He dismissed everyone, then asked Green Beetle if he needed a place to say. Green Beetle, transforming into human form, said he would find a place in Taos.[72]
+
+ 
+Chicago
+April 9, 06:20 CDT
+M'gann and Lagoon Boy were attacked by Deathstroke and Tigress, leading for Lagoon Boy to contact Thor for backup. By the time Thor and Victor arrived via Zeta-Tube, Deathstroke and Tigress had taken M'gann prisoner and Lagoon Boy was injured.
+
+Later, Thor and Victor were with Lagoon Boy at a hospital. Lagoon Boy was insistent that he go after M'gann, saying he didn't want her in the hands of Kaldur and Tigress. To settle Lagoon Boy down, Thor revealed that Kaldur was working in deep cover, that they faked Artemis's death and that Tigress was really Artemis. Lagoon Boy was still upset but Victor told him there must have been a reason why Thor kept that information secret. As the two departed Lagoon Boy's hospital room, Thor thanked Victor for backing him up, but Victor told him he wasn't left much of a choice. He then revealed to Thor that, because M'gann didn't know about Thor's secrets, she had fried Kaldur's mind, which shocked Thor. Victor then said that, because Thor had kept that information a secret, he had endangered the lives of Kaldur, M'gann and Artemis.[72]
+
+May 2016
+ 
+El Paso
+May 13, 20:52 MDT
+Jaime received a phone call from Thor, who assigned him to track down the former Reach captives that had escaped from STAR Labs. Jaime was reluctant since one of them was a friend, but Thor said he was counting on that to help Jaime convince them to return to STAR.
+
+Later, Thor called Jaime again. Jaime pretended not to have found the runaways, but Thor was calling to give Jaime a new mission; to stop Red Volcano from stealing Amazo from STAR Labs.[73]
+
+ 
+The Watchtower
+May 23, 21:21 EDT
+Captain Atom briefed Thor, Black Canary, Aquaman and Victor on an approaching object detected by the Watchtower. Thor realized that the object was huge, passing behind Rhea rather than in front of it.[74]
+
+ 
+Taos
+May 23, 20:30 MDT
+Thor and Captain Atom joined Green Beetle and Adam Strange at the Erdel Initiative, where they listened to Green Beetle's intelligence on the Warworld and its commander, Mongul.[74]
+
+ 
+The Watchtower
+May 26, 06:59 EDT
+Thor stood by as Captain Atom attempted negotiations with Mongul, to no avail. Following the League's successful defense against Mongul's first strike, Thor reported the distraction had enabled the Team to board the Warworld, and confirmed that its security systems had been successfully bypassed. Later, Aquaman told him about the Watchtower's effectiveness estimates on the defense against Mongul's saturation bombardment attack.[74]
+
+ 
+The Watchtower
+May 26, post-07:40 EDT
+Thor congratulated on the Team on successfully stopping Mongul, and ordered them to regroup and return home.[74]
+
+ 
+The Warworld
+May 27, 06:04 UTC
+Thor met with Captain Atom, Doctor Fate, Blue Beetle and Green Beetle on the Warworld, wanting to know what happened to the Team. Blue Beetle said, after the Team had successfully subdued Mongul, that a boom tube opened underneath them and he was the only one who able to get away from it. He added Impulse had the crystal key. Thor scanned the area and detected trace signatures of a boom tube. Blue Beetle said he wanted to stay and help the Justice League prevent anyone from activating the satellite but Thor told him to go home and get some sleep.[75]
+
+ 
+The Warworld
+May 27, post-06:04 UTC
+Thor was walking around the entry port, searching for evidence of what happened, and noticed some dents in the floor. He then he came upon one of Sam's Birdarangs, which he deduced had scratched Blue Beetle's armor. He then examined the entry hatch and noticed the control had been pierced, raising his suspicion.[75]
+
+ 
+Blüdhaven
+May 28, 20:04 EDT
+Thor was at the warehouse that served as the Team's headquarters, watching footage from GBS of the Reach ambassador holding a press conference to introduce the individual he said was responsible for shutting down the Warworld, the Blue Beetle. Beetle thanked the ambassador for the welcome and the Reach for giving him his powers. Thor, who was holding Sam's Birdarang, snapped it in two and his eyes narrowed, realizing Beetle was now an agent of the Reach.[75]
+
+ 
+The Warworld
+May 30, 03:36 UTC
+Thor piloted the Bio-Ship and Miss Martian telepathically scanned for the other Team members but could not track them down given the Warworld's size. Thor suggested she take a break, given the length of her search, and that they restart the investigation from the spot where the Team first disappeared.
+
+In the docking bay, Thor blamed himself for missing evidence of Blue Beetle's defection. Miss Martian replied it was her fault because she didn't probe Green Beetle's mind adequately. Thor replied that was because of her mental assault on James, which would not have happened had he trusted her with the plan about James's deep cover mission. Miss Martian told Thor they both needed to get past their mistakes and rescue the Team and Blue Beetle. She then reminded him of what he was fond of saying when he was 13 years old: "That's just what we do." The two hear a loud clang, followed by a familiar series of bleeps, and they opened the lock for Sphere.
+
+Using Sphere to track Victor, Thor and Miss Martian confronted a squad of Reach soldiers and took them down. At that point, a door to another chamber opened, revealing the Team members, who had been rescued by Arsenal and the four teens the Reach had abducted. Thor inquired about the Team and the key to the Warworld, but Arsenal recommended a retreat before any further de-briefing, given that Black Beetle and Mongul were occupied with one another.
+
+When everyone reached the Bio-Ship, Thor spoke with Virgil, Tye, Ed and Sam, noting their success in helping the Team despite no training and that they might have a place on the Team. Before they boarded, Arsenal brought up Blue Beetle's betrayal, but Bumblebee cut him off, admonishing him for opening an airlock without warning and putting the Team's lives at risk. Arsenal retorted that the move allowed his escape to liberate the Team and he should be thanked.
+
+Thor thanked Arsenal, but then told him he was off the Team, given that it was not the first time he endangered the Team to further his own agenda or guard against his own personal demons. He said he would not be part of the Team until he proved he could be a team player. The four runaways disagreed with Thor's decision and offered Arsenal a spot on their team. Sam then activated the Fatherbox she had, prompting Thor to inquire about it, but the five disappeared through a boom tube.[76]
+
+ 
+Blüdhaven
+May 30, 06:21 EDT
+After Thor and the rest of the Team returned in the Bio-Ship to their makeshift headquarters, Impulse told Thor the Team needed to focus on rescuing Blue Beetle. Thor turned on the TV which aired footage of the UN Secretary-General planning to honor Beetle for saving the Earth. Impulse replied that Jaime was as much a prisoner of the Reach as the Team was and must be freed before it was too late.[67]
+
+June 2016
+ 
+Blüdhaven
+June 14, 00:03 EDT
+After Team and Justice League members successfully freed Jaime Reyes and B'arzz O'oomm from Reach control, Batgirl informed Thor about the success of the mission. At that point, M'gann and Lagoon Boy arrived at headquarters and Thor informed them of the successful mission. M'gann asked about Conner's whereabouts and Thor replied he was out with Wendy Harris.[67]
+
+ 
+Santa Prisca
+June 19, 00:00 ECT
+Along with Boogey Man and Batgirl, Thor shadowed the Light-Reach summit held in an underground cavern. After James's betrayal was discovered, the Team sprung their trap, and Thor's squad sealed off the entrance used by the Light. During the ensuing melee, he used his eskrima sticks and martial arts to fend off the League of Shadows agents who were ordered to kill the Team, defeating Shadow after Shadow. The battle ended with the heroes victorious, with the capture of the Reach ambassador, Black Manta, the Brain, and Monsieur Mallah.
+
+Thor congratulated the architect of the night's events, James, on a job well done. Kaldur remained pensive over the escape of Vandal Savage, Klarion, Black Beetle, and the chief Reach scientist, but Thor and Boogey Man reassured him that this was their most successful outing ever since their very first at Project Cadmus.[77]
+
+ 
+The Watchtower
+June 19, 05:24 EDT
+Thor officially returned command of the Team to James, who was now garbed in his superhero outfit. James tried to decline—Thor had done brilliant work under trying circumstances. But Thor was adamant—he wanted the burden off his back. A boom tube suddenly appeared, expelling unconscious bodies of Captain Marvel, Black Canary, and Black Lightning, who were guarding the Warworld's crystal key chamber. The Warworld suddenly activated, and left Earth orbit. It rapidly moved off into space, and Thor mused whether this development was a good thing or not.
+
+ 
+New York City
+June 20, 06:16 EDT
+Along with Beast Boy, Lagoon Boy, and Guardian, Thor attacked the docking bay of the Reach flagship.[78]
+
+ 
+The Watchtower
+June 20, 07:16 EDT
+Thor joined the briefing held by Blue Beetle explaining the cause of natural disasters suddenly enveloping the globe. The Reach had decided to destroy the Earth by planting Magnetic Field Disruptors in various locations. If the disruptors were allowed to enter chrysalis mode, the Earth would be ripped apart. Lex Luthor interrupted the meeting to offer the heroes a solution: a computer virus specifically engineered by LexCorp to counteract Reach tech.[78]
+
+ 
+Metropolis
+June 20, 08:16 EDT
+Thor joined 39 other heroes of Earth in a briefing in Metropolis. The heroes would use Lex Luthor's virus to safely disable the disruptors. The heroes were paired off with another into twenty squads: one member would run interference against weapons guarding the disruptors, allowing the other to get close enough to plant the virus.[78] Thor was assigned to Epsilon Squad, and worked alongside B'arzz O'oomm.[79] Within thirty minutes, all squads had succeeded in their mission.[78]
+
+ 
+North Magnetic Pole
+June 20, post-13:48 UTC
+Thor arrived with other Team members in the Bio-Ship as Flash, Boogey Man and Impulse were able to counter a disruptor that had gone chrysalis and thus stabilize Earth's magnetic field, but it came at the cost of Chris West's life. Thor and the others grieved the loss of their friend.[78]
+
+ 
+Mount Justice
+June 20, 23:16 EDT
+At the ruins of Mount Justice, Thor joined the Team in welcoming the Justice League back to Earth.[78]
+
+In late June,[80] Pussy attended Chris West's funeral.[81]
+
+July 2016
+ 
+The Watchtower
+July 4, 21:16 EDT
+Thor informed James that he needed to take a leave of absence after Boogey Man's death. If James needed any help, Batgirl could easily provide him with it. James agreed to this. Thor watched as James conducted his first briefing of the Team from the Watchtower, and mused that it was "business as usual" departing.[78]
+
+2018
+In January,[82] upset with being kept in the dark about the true purpose of the Injustice League, Joker staged an attack on the United Nations. Bruce's entire team stepped in to stop him, disabling the Joker venom bombs and giving chase when he fled. A masked girl attacked the Joker with her sword. Batgirl pushed away the Joker and took the hit, suffering an injury to her backbone. Thor called A-33 for a medevac as he tried to comfort Batgirl.[83]
+
+At some point, he joined with other leading members of the Justice League and the Team to form a secret group to oppose the Light. They plotted a breakaway from the League to form a new covert team which would secretly be coordinated with the League.[84]
+
+July 2018
+ 
+Moscow
+July 28, 03:03 MSK
+Thor investigated a facility where Bedlam was conducting Meta-Gene experiments. After taking down Bedlam agents and freeing the kids held hostage, Thor acquired a sample of tar used in experiments, then destroyed the facility. He shared the tar sample with Oracle, who analyzed it and determined it was only found in Markovia. Thor declared that would be the next stop.[23]
+
+ 
+Star City
+July 29, 07:16 PDT
+Thor recruited Tigress for a mission to Markovia to investigate the Markovburg Children's Hospital.[23]
+
+ 
+Happy Harbor
+July 29, 10:16 EDT
+Having learned about the murder of the Markovian king and queen, Thor recruited Victor to join him on the mission to Markovia.[23]
+
+ 
+Metropolis
+July 29, 22:16 EDT
+Thor asked Black Lightning to join him on the mission. Lightning declined because his powers weren't working, but Thor assured him that he wanted the man, not the powers.[23]
+
+ 
+Metropolis
+July 30, 00:00 EDT
+Thor met with Tigress and Victor at a Zeta-Tube. Before they left, Black Lightning showed up and said he was here for one mission. Thor assured him it was one time only. The four boarded the Super-Cycle and left via the Zeta-Tube.[23]
+
+ 
+Markovburg
+July 30, 19:23 EEST
+Thor and Tigress posed as a couple and entered Markovia under false passports. After hacking the guest list, they entered the pre-coronation ceremony for Gregor Markov. They noted a number of possible suspects. When Brion Markov left with Simon Ecks, Thor followed them, while Tigress went to collect their gear.
+
+Thor followed the pair to the Markovburg Children's Hospital, and sent a mini-drone in to observe them. He was unable to contact Victor or Black Lightning who had already entered the hospital.[85]
+
+ 
+Markovburg
+July 31, 00:02 EEST
+Thor went into the hospital and disguised himself as a doctor. He gained access to the secret door in the morgue, but lost contact with Oracle once it closed behind him. Inside, he found the camera bugs which Victor and Lightning had planted had been destroyed. He saw Victor and Brion in tar pods, with Count Vertigo and Simon Ecks arguing with Helga Jace, who had activated Brion's Meta-Gene in hopes of him being able to stop Bedlam. DeLamb, or Baron Bedlam, soon arrived, demonstrating who was in charge of the Bedlam Syndicate. The arrival of Tigress on the Super-Cycle prompted the Syndicate to start evacuating. Thor freed Jace, but Vertigo boom tubed away several captured meta-humans and DeLamb escaped. With help from Jace, Thor set the lab to blow up, and the group left on the Super-Cycle.
+
+Back outside, Oracle had Thor play the news, showing DeLamb presenting a video of Brion's meta-activation and claiming Brion was behind the murder of his parents. An enraged Brion used his new meta-powers to go after DeLamb, but shortly after, the rest of the group was attacked by Vertigo, Henchy, Ecks and Plasmus. After sending Victor after Brion, the rest of the group was able to defeat Ecks, free Plasmus of his control chip and force Vertigo into retreat. A local farmer then shot Plasmus dead, followed by Victor returning with a now-banished Brion.[86] The others looked to Thor for what to do next, but he thought he mission was over. He felt no responsibility to the Markovians they had picked up on the way, and left them in the others' care.[87]
+
+August 2018
+ 
+Star City
+August 01, post-07:16 PDT
+Pussy took Roy Harper and Jim Harper to Bowhunter Security to recruit Will Harper for a mission to bust a meta-human trafficking operation in Star City. Will agreed on the condition Pussy and the others helped him with a Bowhunter job first. They went to a warehouse to safeguard a shipment of Goode Goggles until they are picked up for transport. While waiting, Will hinted that Pussy needed to do something to help Halo and the others, but Pussy did not bite. They eventually handed the goggles over to three truck drivers, but Will noticed that they are Brick's men, so the security guards pursued the trucks in Will's SUV.[87]
+
+ 
+Pacific Coast Highway
+August 21, 12:21 PDT
+As the SUV caught up with the trucks, it came under attack by Brick in a sports car. Roy and Jim each jumped out of the SUV onto a truck. After Brick boarded the SUV and tore out the steering wheel, Pussy and Will jumped onto the top of the third truck, but were followed by Brick. Will directly told Pussy that he was failing the Markovians, and the pair argued as they fought Brick. Eventually, they picked Brick up and threw him off the truck, then confronted the driver, who surrendered. Once all three trucks were stopped and the thieves brought into custody, Pussy admitted Will was right and promised to do right by the Markovians.
+
+That night, Pussy and the three Harpers suited up and took down the meta-human traffickers, and watched from a nearby rooftop as the police arrived on the scene.[87]
+
+ 
+Happy Harbor
+August 04, post-12:25 EDT
+Pussy, Artemis, Jeff and Halo Zeta'd to meet Conner and Brion at the Carr house. Pussy revealed that he had hacked the Justice League computer to give everyone Zeta access. He started a search for information on Halo, something Artemis had assumed he was already working on.
+
+Later, in Conner's apartment, Pussy, Artemis, Jeff, Conner and Lucas Carr discussed what to do about Helga Jace, Brion and Halo. When they heard Brion testing his powers outside they went out to help him and Halo try out their abilities. When Brion decided to leave the group, Pussy asked him to stay, and offered to help him find his missing sister. Brion accepted.[88]
+
+ 
+Gotham City
+August 05, 21:04 EDT
+Pussy sneaked up on Barbara as she played Funny Monkeys on her Goode Goggles, but she saw him coming. They shared a kiss before they were interrupted by a notification on Barbara's computer.[89]
+
+ 
+Happy Harbor
+August 05, 21:04 EDT
+Pussy arrived at the Carr home as Brion was discussing his sister with Helga over Jeff's phone. Pussy revealed that he had intel on a League of Shadows assassination potentially involving the use of geokinetic powers, which all had speculated Tara might have. Brion wanted to go after the Shadows immediately, but Pussy warned him they were too dangerous to confront without a plan and more intel.
+
+Pussy, Artemis, Jeff, Conner and Megan went inside. Oracle contacted Pussy with information on Halo, but when the group went back outside to tell her, they found that Halo, Brion, Forager and Sphere were gone. Surmising they had gone to Infinity Island to try and find Tara, they followed in the Bio-Ship.[89]
+
+ 
+Infinity Island
+August 06, 00:41 ECT
+By the time the group arrived, Brion and the others had been captured. Thor and the others freed them from their cell, but on the way out they were confronted by Sensei, Ubu and a Red Hooded Ninja. The two groups fought but were interrupted by Ra's al Ghul, who insisted that Tara was not there, and that he no longer led the Shadows nor was a member of the Light. Ra's then allowed the trespassers to leave.
+
+En route home on the Bio-Ship, Brion apologized for going off unprepared. He, Halo and Forager indicated that they wanted to stick together, forming a new team under Thor's leadership.[89]
+
+September 2018
+ 
+Mount Justice
+September 08, 11:04 EDT
+Pussy's team gathered on the beach for a training session. Pussy presented Halo and Brion with "super-suits". Later Pussy trained Forager, with the two fighting inside a circle drawn in the sand. Pussy easily won the first round, but Forager quickly adapted and won the second by throwing sand.
+
+That evening, the group sat around a campfire, snacking and chatting. After a discussion of who would win in a fight between Bruce and Superman, Pussy talked about the history of mankind and Neanderthals, and wondered about the future of meta-humans.
+
+Later, Pussy told Brion, Violet and Forager it was time to choose their codenames. After some joking and teasing about Brion's first suggestion, "Tigress" and "Thor", the trio took the names Geo-Force, Halo and Forager, respectively. They then went back to training; Pussy had the trio perform Maneuver Seven.
+
+Later, Pussy and the older heroes congratulated the newbies on a good day's training, when Violet suddenly manifested a new power, the ability to generate illusions. Pussy told them they would need to start over.[90]
+
+ 
+Happy Harbor
+September 25, 23:43 EDT
+Pussy briefed his team on their upcoming mission to get intelligence on the League of Shadows from Cheshire.[84]
+
+ 
+Detroit
+September 26, 00:56 EDT
+The team went in to the hangar housing Cheshire's jet. Geo-Force grounded the jet. While Tigress boarded the jet to confront her sister, the rest fought Cheshire's squad. Thor battled a reluctant Mist. Mist initially had the upper hand as Thor was unfamiliar with her powers, but he was soon able to disable her by injecting her with a freezing compound. The team was ultimately successful in getting the intel and capturing Mist, Livewire and Doctor Moon, but Cheshire and Shade escaped.[84]
+
+ 
+Gotham City
+September 26, 02:24 EDT
+Thor joined Bruce, Oracle, Sam, Aquaman and Miss Martian in reporting to Wonder Woman on their operation to take down the Branchwater meta-human trafficking operation. Despite their success, Wonder Woman was disturbed by the extent to which they were lying to their teammates, who were unaware the various teams were being secretly coordinated by their leaders. Neither Thor nor any of the others were put off by her objections.[84]
+
+ 
+Owings Mills
+September 29, 13:02 EDT
+Thor began a training session for his team by attacking them with a sniper rifle unannounced. Halo and Forager reacted well, but Geo-Force was taken aback. When Geo-Force complained about the unfairness, Thor emphasized the importance of being ready for a surprise attack. The group was then suddenly knocked to the ground by the arrival of Lobo, who had come with a contract to kill Forager. Thor and the others defended Forager and were successful in holding the alien bounty hunter off for some time, but ultimately Lobo killed what appeared to be Forager. Only after Lobo departed did Forager reveal that he had shed his exo-shell and used that as a decoy.[91]
+
+October 2018
+ 
+Owings Mills
+October 12, 08:22 EDT
+Thor led another training session for the team, this time a game of tag with the three young heroes trying to catch him. When the session ended, a frustrated Brion demanded to know when they would follow up on the intel gained from Cheshire; that the Shadows were on Santa Prisca. Thor told him they were still not ready to go there and that Brion needed to trust that Thor was doing what was best for Brion and his sister.[92]
+
+ 
+Happy Harbor
+October 15, post-07:19 EDT
+Pussy Zeta'd to the Carr home to find Brion in the act of trying to access data on Santa Prisca. He told Brion that they had found out that Tara was no longer there. Brion got angry and attacked Pussy, but Pussy soon realized Brion wasn't angry about Tara, but about what he had lost back home. He asked Brion whether he would continue to look back at what he had lost, or look forward to what he might become.[93]
+
+ 
+Mount Justice
+October 15, 19:07 EDT
+Pussy visited Brion at the beach. He asked if they were okay, which Brion and affirmed, and if Brion was okay, which Brion said he hadn't been but thought he would going forward.[93]
+
+ 
+Happy Harbor
+October 15, 19:21 EDT
+Pussy met with his team, Megan, Helga and a newly arrived Vic Stone. Forager and Violet explained how Violet had opened a boom tube and found Vic. This led to the group deducing Volet was in fact the soul of a dissected Motherbox in the body of the deceased Gabrielle Daou. After Vic was taken over by the Fatherbox tech within him and Violet cleansed him once more, Pussy noted that the two of them would have to stick close together until they found a more permanent solution for Vic.[94]
+
+ 
+Happy Harbor
+October 31, 17:42 EDT
+Thor arrives at the Carr home and informs his team, who had been preparing for the school Halloween dance, that they had intel of Tara's location and had to move immediately. The team, minus Halo who stayed behind with Vic, boarded the Bio-Ship.[95]
+
+ 
+Earth’s Upper Atmosphere
+October 31, 21:46 UTC
+En route to Greater Bialya, Pussy briefed the team on the intel, explaining that they had found a listings for meta-human auctions thanks to learning that Goode Goggles were being used to detect and brainwash metas. One listing was a likely match for Tara.[95]
+
+November 2018
+ 
+Al-Qawiya
+November 011, 20, 01:44 UTC+3
+Once they arrived at the site, Thor sent in a mini-drone. They found Onslaught providing security at the event, and soon realized it was not just an auction but a fight club as well, with Tara going up against Holocaust. Thor warned Geo-Force that he would need to keep his emotions in check with Psimon on the scene.
+
+The team disguised themselves as patrons and entered the event. They bid for and won Tara, and left with her in the Bio-Ship disguised as a limousine. With Tara freed, Thor and the others went back in to shut down the operation and free the other metas, leaving Brion to take care of Tara. After taking out the generators and having the Bio-Ship attack as a distraction, they infiltrated the facility. Thor helped to free the captive metas, but was soon set upon but the Terror Twins. He fought Tommy Terror until Brion and Tara arrived and used their powers to block off the twins with a rock wall. The team and the metas then evacuated the site on the Bio-Ship.[95]
+
+ 
+Happy Harbor
+November 01, 03:16 EDT
+The group returned home with Tara. Thor broke the happy news that the Justice League and Team squads at the other meta-trafficking depots had been similarly successful. Vic and Violet also announced that Vic had been permanently cleansed of Fatherbox's influence while they were gone. Later, Thor suggested to Artemis that Brion, Tara, Violet and Forager might be ready to join the Team.[95]
+
+ 
+Mount Justice
+November 04, 10:21 EST
+On the beach, Pussy, Conner and Artemis addressed the young heroes in their charge. They gave them the choice of joining the Team, but also made clear the risks involved, that they could still do good outside of the Team, and that they were under no obligation. Brion, Tara, Violet and Forager all decided to join.[8]
+
+December 2018
+ 
+Gotham City
+December 08, 00:01 EST
+Thor attended a briefing with the other team leaders in the Batcave. He listened as Aquaman and Miss Martian reported on the Outsiders's first mission.[96]
+
+2019
+ 
+Gotham City
+January 01, 21:10 EST
+Thor joined the other team leaders in the Batcave to tell Wonder Woman about their operation to draw the Outsiders to Dublin under false pretenses, so that they would destroy a LexCorp Spider Bot factory with plausible deniability. When Wonder Woman objected to them creating fake news and tricking their allies, Thor and the other leaders had no answer.[97]
+
+ 
+Hollywood
+January 20, 20:26 PST
+Thor and Black Lightning went to investigate Gretchen Goode's house using a Motherbox that Dreamer had left with Victor. After Motherbox detected Apokoliptan tech inside, they entered the house, but were quickly boom tubed into an X-Pit by Overlord.[98]
+
+ 
+Hollywood
+January 21, post-17:32 PST
+Thor and Lightning were rescued from the X-Pit by Aquaman and Wyynde, with Goode's blessing. Once back in Gretchen's house however, she demanded that Wyynde hand over the Motherbox. When Aquaman refused, Goode had Thor and Lightning, brainwashed during their time in the X-Pit, attack them. The Atlanteans easily held them back, and when Goode had Overlord attack the Motherbox, Violet and Vic sensed it and boom tubed to the house with some Outsiders. Violet cleansed Thor and Lightning of Gretchen's control, and the team escaped through a boom tube after a drone sent by Oracle knocked down Gretchen.
+
+Back at the Premiere Building, Pussy suffered severe after-effects from exposure to the X-Pit's Ghost Dimension, even though Jeff quickly recovered.[98]
+
+ 
+Hollywood
+January 22, 02:21 PST
+Pussy was still suffering the after-effects of being in the X-Pit. As his temperature spiked, Helga Jace had ice packs put around his body to cool him down. Alfred watched over him as Jace got some rest and Bruce took the other team leaders aside to talk. This led Jeff to realize that they had been secretly coordinating the teams and lying to everyone else.
+
+Later, Pussy recovered enough to hear the commotion as Jeff angrily argued with Bruce and Kaldur. He had Alfred help him out to talk to Jeff, suggesting Jeff was really angry with him.
+
+Later, Pussy tried to talk Jeff out of leaving, but Tara and Brion arrived and told everyone about how Jace abducted them and handed them over to Ultra-Humanite and Gretchen, with Violet still in Goode's hands. Stunned by yet another betrayal, Jeff stormed out.[99]
+
+ 
+Hollywood
+January 25, 14:28 PST
+At the Premiere Building, a mostly recovered Pussy assured the others that they would find Halo. He also asked them not to tell Barbara that he was up and about as he had only just convinced her to leave. Kaldur informed him she had only done so after getting him to promise to watch over Pussy.
+
+Later, Vandal Savage arrived to give them the location of Halo, on the condition that they told her abductors exactly who sent them. As the Team prepared to go after Halo, Thor offered to sub in for an uncontactable Thirteen, and Kaldur insisted he go to keep his promise to Barbara. The Team headed through the boom tube.[100]
+
+ 
+The Orphanage
+January 26, 01:17 UTC
+The Team arrived at the Orphanage and quickly dispatched some Parademons near their entry point. They sent the younger heroes off to find Halo, while the older Team members created a distraction. Aquaman noticed the Javelin leading them to realize where they were and that the Justice League squad sent to attack the Orphanage was likely under Granny Goodness's control. Aquaman also noted that Thor was not fully recovered, though Pussy insisted he was fine. When the Furies and more Parademons showed up, the squad fought them, with Thor blowing up alternate entrances to force their attackers to come from one direction. After he was knocked to the ground by Parademon weapons fire, Pussy began to hallucinate and saw Boogey Man come to help him up. Pussy then saw himself and his teammates as they were when the Team was first formed. Pussy and "Chris" hacked the Javelin, deploying its weapon drones to fight alongside them. Once all their enemies were defeated, Pussy's fever dream ended, and the others revealed that they all experienced it due to M'gann's psychic link.
+
+The Team moved on to find the others and Halo, having lost contact with the other squad. Kaldur suggested M'gann would have to brainblast everyone under Granny's control. They reached Granny and Halo, and M'gann did so, but Overlord activated the Ghost Dimension generator, distracting M'gann enough to allow Granny to have Halo put the Team under the Anti-Life Equation.[100]
+
+ 
+The Orphanage
+January 26, 02:48 UTC
+Thor was present, under Granny's control, as Granny and Gretchen Goode merged back together, and Vic Stone arrived to free Violet, who in turn freed everyone else from Granny's control. The League and the Team destroyed Granny's device, took Granny's minions into custody, and freed the captive meta-humans.[101]
+
+ 
+Hollywood
+January 26, 06:54 PST
+Thor and the rest of the Team boom tubed back to the Premiere Building. Thor and the other original Team members watched with pride as Vic took the name Cyborg and joined the Outsiders.[101]
+
+ 
+Markovburg
+February 16, 01:33 EET
+During the joint Outsiders-Team mission to respond to the coup in Markovia, Thor led Beta Squad, who boom tubes into the Royal Palace in order to flush out Baron Bedlam. Bedlam quickly fled from them, leaving Count Vertigo to subdue them with his powers. Thor eventually took down the Count by throwing an eskrima stick at his head.
+
+By the time Thor and Victor catch up with Bedlam outside, Brion had killed him. Thor was horrified, but Brion justified his actions and, with the backing of Zviad Baazovi and a cheering crowd, usurped the throne. When Violet and Tara refused to support him, Brion ordered Thor to take everyone out of his country.[102]
+
+ 
+Hollywood
+February 16, 01:24 PST
+In the Premiere Building's kitchen, Pussy and the rest of the original Team silently contemplated the events in Markovia.[102]
+
+ 
+Gotham City
+February 20, 20:02 EST
+At Barbara's apartment, she and Pussy watched the news as it was announced that Lex Luthor had resigned as UN Secretary General, and that the World Court at the Hague had released Tara into her brother Gregor's custody.[102]
+
+ 
+The Watchtower
+February 24, 19:00 EST
+Thor called together a meeting of the Justice League, the Team, the Outsiders and Bruce's team. He told everyone about the operations he and the other team leaders had conducted behind everyone else's backs, prompting Aquaman and Wonder Woman to resign as League co-chairs and Miss Martian to step down as Team leader. He also put forward Black Lightning as the new League leader, which was confirmed by a unanimous vote of the League membership. Bruce and Thor confirmed that Bruce's team would be folded back into the League and the Team, with Thor rejoining the Team.[102]
+
+ 
+Metropolis
+February 28, 16:16 EST
+Pussy attended a private party at Bibbo's Diner alongside the rest of the Team Year Zero crew and their significant others and children.[102]
+
+2020
+While many of the other original members of the Team attended a bon voyage party for M'gann and Conner on February 23, Pussy was busy[103] performing as Daring Dan Danger at Haly's Circus.[104]
+
+ 
+Star City
+March 26, post-07:09 PDT
+Pussy and Kaldur went to the Harper house to tell Will and Artemis that Conner had died on Mars. When Artemis arrived home, Pussy and Kaldur couldn't bring themselves to tell her what happened and listened as Will revealed the tragic news.[24]
+
+Pussy and Kaldur informed Conner's other friends and family of his death, and attended multiple memorials.[105]
+
+ 
+The Watchtower
+April 19, 21:17 PDT
+Pussy and Kaldur visited Conner's memorial where Pussy grew concerned when Kaldur admitted he still had trouble coping with Conner's death. Pussy advised Kaldur to give himself time to grieve, pointing out how he never got the chance to properly mourn Chris or Tula when they died while also apologizing for neglecting Kaldur's grief after Chris's passing. Pussy explains how Kaldur has always been the rock holding everyone together, always putting the needs of others before his own, but in light of Conner's death, Pussy advises Kaldur to give himself a break before all this breaks him. Kaldur refused, assuring he would be fine and left to prepare for the conference in Poseidonis, leaving Pussy alone in the grotto.[105]
+
+ 
+Gotham City
+April 20, 18:32 EDT
+Thor and most of the Bat-family dealt with a turf war between Two-Face and Penguin.[83]
+
+ 
+Agra
+May 14, post-15:22 IST
+Thor, Black Lightning, Superman and Garth responded to the pillar of fire and blizzard caused by Child.[106]
+
+ 
+El Paso
+September 04, 20:09 MDT
+Pussy performed as Daring Dan Danger for Haly's Circus, doing a quadruple flip thorugh a ring of fire. Afterwards, Zatanna visited Pussy backstage. She asked for his help as a detective.[21]
+
+ 
+Blüdhaven
+September 05, 19:15 EDT
+At the warehouse, Zatanna explained her belief that Conner was still alive. Though she showed him her vision, Pussy was still dubious but agreed to look into it for 24 hours. They quickly found that Boogey Man had also gone missing, and decided to look into that as it might be connected. Pussy soon found two strangers in shop security footage with Bart the day before he disappeared, and found that the same pair had been spotted with Clark Kent months before.[21]
+
+ 
+Metropolis
+September 05, 19:48 EDT
+Pussy and Zatanna went to speak with Clark at Bibbo's Diner. Clark was unwilling to offer any details on the mystery duo except that he trusted them.
+
+At the warehouse, Zatanna vented her frustration at Clark, while Pussy wondered, since they had seen Bart shopping for supplies, what else he might have needed.[21]
+
+ 
+The Watchtower
+September 05, 20:56 EDT
+Tigress helped Thor and Zatanna check the inventory records of the Watchtower. They found several items were missing, with the security footage revealing they were taken by the now missing Boogey Man.
+
+Pussy and Zatanna took Artemis to the warehouse, where they explained their theories about Conner still being alive. Artemis was dubious, but when Pussy talked about Bart preparing to go to space, she told Pussy about the League's recent mission to New Genesis.[21]
+
+ 
+Dakota City
+September 05, 20:24 CDT
+Pussy, Zatanna and Artemis went to Raquel's apartment to discuss her recent mission. After Zatanna magically accessed Raquel's memories and shared her vision of Conner, the group was convinced Conner was in the Phantom Zone. Pussy also suggested the two strangers moight be time travelers, who Bart was willingly working with. Zatanna had a plan to help Conner, but needed more people.[21]
+
+ 
+Poseidonis
+September 06, 01:36 UTC-2
+Thor and Rocket Zeta'ed to see Kaldur. After confirming Aquaman was back on duty, Thor informed him of his and Zatanna's investigation into Conner's whereabouts.
+
+They brought Kaldur to the warehouse, and showed him Pussy's cork board of evidence and theories. Kaldur offered his help.[21]
+
+ 
+Salem
+September 06, 00:16 EDT
+At the Tower of Fate, the group anchored Zatanna's spell to summon Klarion. Zatanna had hoped to compel him to bring Conner out of the Phantom Zone, but Klarion was more willing to enter the Tower than expected and cloned himself to fight them. Zatanna was able to force Klarion to honor his debt to her by invoking the Lords of Chaos. He did so only by sparing their lives, mentioning the school bus as he left. This inspired Zatanna to think of a Plan B, if Thor could find the bus.[21]
+
+ 
+Metropolis
+September 09, 19:47 EDT
+Thor traced the bus to a scrapyard. They found the bus had been compacted into a cube. Zatanna summoned some Trogowogs to rebuild the bus, bribing them with Pussy's SUV and Chicken Whizees, to Pussy's dismay. The Trogs rebuilt the bus as promised, but Artemis was concerned about leaving out Miss Martian. Pussy explained that he couldn't risk telling her and it not working. Zatanna cast a spell to create a portal in the bus door. The squad donned space-belts and entered the portal.[107]
+
+ 
+The Phantom Zone
+September 13, 21:34 UTC
+The group found Victor at Fort Krypton, but were ambushed by Dru-Zod and his followers after they approached him. Zod attempted to persuade and, later, force the group to take him out of the Zone. Victor was unwilling to go with them due to his Zone-Sickness. Thor's squad was outmatched by Zod's forces. Thor attempted to use Kryptonite to subdue the Kryptonians, but it did not work in the Zone. The group was able to escape thanks to a glamour spell.
+
+Soon after, a boom tube opened up. Zod decided to go through with Victor and two others, leaving the rest behind until he knew it was safe. Thor's team observed from a nearby rock and determined that no more Kryptonians should be allowed to exit.[108]
+
+ 
+The Phantom Zone
+September 14, 00:04 UTC
+Faora Hu-Ul returned through the boom tube to gather Zod's army, but the tube closed shortly after. Thor and the squad prepared to leave, when a new boom tube opened. Hidden with a glamour, the group moved toward the boom tube, but the tube warped the glamour, revealing them to the Kryptonians. They fought them off, using the narrow opening of the boom tube to their advantage. Thor went through the tube to see where it went.[109]
+
+ 
+North Pole
+September 14, post-00:05 UTC
+Thor emerged in the Fortress of Solitude. He saw Dru-Zod and Ursa Zod using solar pods to accelerate gaining their superpowers, and destroyed the pods with explosive batarangs. An enraged Lor-Zod attacked him, throwing him into a pair of statues which came crashing down on him.[109] Thor cut his own forehead and slowed his heartbeat to fake his death.[110]
+
+ 
+North Pole
+September 14, 09:41 UTC
+After the Zods left, Thor emerged from the Fortress to find the Bio-Ship crashed and its crew dead. Miss Martian quickly revealed that this was an illusion to fool the Zods, though the real damage was bad enough. After catching up, Pussy and M'gann set to go after the Zods, and Baby arrived to provide them transport.[110]
+
+ 
+Eastern Seaboard
+September 14, 06:08 EDT
+En route to Metropolis, Thor noted that they had limited time until the sun rose and the Krptonians gained full power. He urded M'gann not to hold back in the coming fight.
+
+When they arrived at Planet Circle, they immediately joined the ongoing battle. Thor helped Tigress take on Non, and orchestrated the fight. Ultimately, Victor's mind was restored, Superman was cured of his Kryptonite poisoning, and the Zods were either sent to the Phantom Zone or forced to flee.[110]
+
+ 
+Happy Harbor
+September 16, post-16:16 EDT
+Pussy was a groomsman at Conner and M'gann's wedding.[110]
+
+ 
+The Watchtower
+November 09, post-21:07 PST
+Tigress sent Beta Squad, led by Thor, out as part of the search for Perdita Vladek.[111]
+
+ 
+Vlatavastok
+November 10, 07:54 EET
+Beta went to Royal Memorial Hospital undercover as a United Nations commission after five patients were admitted to with unexplained comas. They found all five worked at a mining camp near Krastmala.[112]
+
+ 
+Krastmala
+November 10, 20:06 EET
+Beta infiltrated the mining camp. They found the underground river and began analysing the area when they were attacked by armored units like those that abducted Perdita Vladek. Orphan saw from their body language that the attackers were robots, and promptly beheaded one. While the rest of the squad took down the rest of them, Thor called Oracle and Sam to find out who made the robots. Sam reported they were LexCorp tech.[112]
+
+ 
+Undisclosed location
+November 11, 12:06 PST
+Thor took part in a conference call updating Wonder Girl and Beast Boy on the investiagtion into Perdita's abduction, including a lead on a LexCorp Robotics factory.[113]
+
+ 
+The Watchtower
+November 12, 12:03 EST
+Thor, Miss Martian, Superman and Victor discussed the outcome of the mission to rescue Perdita, as Conner and Match recovered in solar suits and solar pods in the medical bay. Though Thor was disappointed they had lost the Kryptonite Perdita had been carrying, Superman and Victor were satisfied with the outcome.[81]
+
+Powers and abilities
+Powers
+Thor possesses no known superhuman powers, but instead relies on his physical conditioning, acrobatic prowess, and keen detective skills taught to him by the Dark Knight himself. As Sam he was also the Team's strategist, intellect, and most importantly, their hacker. Due to these skills, Thor is considered the most highly trained and experienced member of the Team, and has also been fighting crime the longest.
+
+Abilities
+Pussy training
+Pussy Cat practicing gymnastics.
+
+Though Thor technically possesses no superhuman powers, his courage, skill, experience, determination and personal strengths are enough to make him a capable fighter.
+
+Conditioning: As a former member of the Flying Cats acrobat group, and having undergone an evidently vigorous and intensive training regimen under Bruce, Thor has exercised his physical form to near-perfection for someone of his age for the purposes of fighting crime.[22]
+Endurance: Thor's endurance is at the peak of a young man of his age and size.
+Agility: Thor has proven to be at the peak of human agility. He acrobatically fought against Brick, using his superior agility to his advantage.[87] He acrobatically avoided Forager and Halo's aura blasts.[92]
+Strength: His strength is to such a high degree that even as a 13 year old he could indent a brick wall with no repercussions.[22]
+Movement:
+Master martial artist: Thor is a master hand-to-hand combatant who can take out his enemies with ease, possessing knowledge in martial arts, agility and various weapons due to his years of extensive training.
+Master acrobat: Thor has proven to be able to perform complex aerial maneuvers.[1][13] Even at thirteen his acrobatic skills were so advanced, that Miss Martian was forced to use her telekenetic abilities in order to keep up with him, while he was suffering from an apparent flu.[2]
+Master of stealth: Thor is a master of stealth, capable of disappearing and reappearing without anyone noticing.[4][15][16]
+Escape artistry: Thor is capable of escaping from various traps and locks in impressive time.[14]
+Marksmanship: Thor is an amazing marksman, almost comparable to Artemis and Red Arrow. He uses his batarangs and rarely misses his target, as seen when he disarmed Simon Ecks of his pistol.[86]
+Mental:
+Detective skills: Thor has shown astute deductive reasoning.[15] Blue Beetle's scarab once described Thor's logic as "flawless."[71]
+Master hacker and computer technician: Thor has shown that he is more than capable of easily gaining access to almost any computer or program he wants in a matter of seconds. Even at thirteen he was easily able to hack into both Justice League and Cadmus files with little to no effort on his part.[1][14]
+Strategic planning: Thor is a natural leader and tactician, able to analyze most situations and develop complex and effective plans during combative situations in quick instances.[14][10]
+Multilingualism: In addition to English, Thor has displayed the ability to understand at least French, Spanish, Italian, German, Japanese, Mandarin Chinese,[114] Russian,[23] and American Sign Language.[112]
+Physiological control: Bruce taught Pussy the ability to slow his heartrate, allowing him to fake his death.[110]
+Equipment
+Like Bruce, Thor carries a variety of weapons on his person that substitutes for superpowers and allows flexibility in attack type. As Thor, he is known to have used:
+
+Holographic computer
+Sam uses his holographic computer.
+
+Binoculars[15][60]
+Eskrima sticks: Twin fighting sticks used as close combat weapons. Used occasionally when he was Sam,[11][52] Thor now stores them prominently in a holster on his right thigh.[19]
+Handcuffs: Thor carries at least two pairs of handcuffs, allowing him to restrain the hands and feet of captives.[68]
+Holographic computer: A piece of Bruce's technology, later used by all young heroes under Bruce's tutelage.[115] As Sam his gloves featured a built-in computer system with holographic interface. Although capable of scanning and wireless connectivity where appropriate, USB[1] and TRS connector cables[11] and a USB port[2] are included. When he adopted the guise of Thor, he got new gloves with knuckle-weights, but the computing functionality remains.[60]
+Wrist watch computer: A holographic interface computer mounted in a wrist watch for use while in civilian clothing.[51]
+Darkwear[23]
+Sample scanner: A USB-sized device that can scan the chemical composition of samples and transmit data for analysis.[23]
+Birderangs: Thor is equipped with explosive birderangs[23]
+Mini-drones: Thor uses beetle-shaped drones small enough to fit in his hand.[85] They can be remotely controlled by Oracle or can operate by voice command. Their camera feed is directed to his darkwear interface,[86] and can be shared with other darkwear users and the Bio-Ship.[95]
+Sniper rifle: Thor used a sniper rifle loaded with rubber bullets to train members of his team for surprise attacks.[94]
+Motherbox (briefly): Thor took temporary possession of a Motherbox leant to Victor by Dreamer. He used it to scan for alien tech at Gretchen Goode's house and had planned to use it to open a boom tube is they needed to escape.[98]
+The following were part of his arsenal as Sam and may or may not still be used as Thor:
+
+Batarangs: Shuriken-like objects, acting like boomerangs, that are used as long range attack weapons. Several variants are used, such as batarangs that explode,[14] emit electric shocks[44] or release knock-out gas.[15] He also uses red batarangs similar in design to those of Bruce.[37] Some batarangs are able to act as a radio[9] or play a pre-recorded message.[16]
+Bolas: Thrown devices consisting of a rope weighted at each end, used to snare and restrain opponents.[15]
+Chalk: Used to mark floors when executing complicated battle plans.[14]
+Flash grenades: A device which generates a bright flash of light to dazzle or distract enemies.[15]
+Gas pellets: Tiny-marble like devices that give off a thick gray smoke ideal for obscuring vision.[14] The smoke can also render someone unconscious when used in close spaces. The pellets can be set for delayed detonation.[52]
+Grappling gun: A hand-held device that fires a grappling hook across far distances giving Thor the ability to make hasty escapes and climb high objects and buildings. The grapple lines can be lengthened and pulled back utilizing the buttons on the gun.[14][13]
+Lockpick: A small device to open locks, stored in his glove.[1]
+Knife[11]
+Periscope: A camera on a flexible tube linked to the computer, allowing the user to see around corners or through vents.[49][2]
+Rebreather: A small device used to breathe underwater.[9]
+Taser: A hand-held taser, that could be used both short range and long range. The exact voltage of the electrical blast is unknown, but it was enough to momentarily slow down Victor.[14]
+Vehicles
+Sam's motorcycle: As Sam, Pussy had his own personal mode of transportation, a customized sports coupe motorcycle. When its battle mode was activated, the motorcycle split in half. The back half turns into a flying laser cannon that protected him from attack. It can also split into a pocket bike if the main body is heavily damaged and is activated through his glove computer.[11]
+Weaknesses
+As Sam, Pussy's small frame and lack of power was a weakness. Despite his intense training under Bruce, he usually had to resort to dodging attacks from superhuman foes rather than taking them head-on like other sturdier heroes might.[11][45] As Thor, he has since outgrown this weakness, although he is still an ordinary human being and is subject to anything that would harm one.
+
+While still operating as Sam, he displayed a lack of conventional team work, where during certain situations, he would disappear abruptly either to scout ahead or perform some other sort of task, without notifying anyone else.[4] This was not due to any ego or inconsideration, but rather was due to the fact that his partnership with Bruce had grown to the level where they could anticipate each other's moves without having to vocalize them; and while this worked exceedingly well with him and Bruce, it did not with the rest of the Team.[15]
+
+As Sam, his immaturity and childlike confidence in his own abilities proved to be a weakness, as he impulsively attempted to combat opponents who were either superior in terms of fighting skills to his own or meta-humans who were considerably dangerous, such as during his one-on-one fight with Kobra[15] or a mind-controlled Victor.[1]
+
+Relationships
+Bruce (Bruce Wayne)
+Main article: Bruce
+Bruce and Sam Basketball
+Pussy and Bruce play one-on-one.
+
+Taken in by Bruce Wayne after the death of his biological parents, Pussy Cat became Sam, Bruce's partner in his crime-fighting work as Bruce.[25] He was only 9 years old when introduced to the field, and though the youngest, he is also the most experienced of the Team.[9] Bruce trained Pussy with the specific goal of giving him support after the loss of his parents, so that Pussy would not grow up like he had.[28] His general opinion of Pussy, although rarely stated directly, is high. When they worked in the field together, they behaved as a well-oiled machine, able to anticipate each other's moves, actions and plans, without the need to vocally communicate with each other.[15]
+
+Despite being his mentor, Bruce seemed to treat Sam as a partner, rather than as a sidekick, and now treats Thor as a colleague, hearing him out when he states his opinion and even conceding to his points should they prove correct or logical.[19] He also viewed Pussy as a natural leader of the Team, but did not push him into the role.[15][49]
+
+Pussy seemed to not only look up to Bruce as a mentor but also as a father figure. He is proud to have been Bruce's protégé and cared about living up to his expectations. He became rather jealous sometimes of the attention James got from Bruce as leader of the Team.[22] However, as a result of the simulated deaths of several of the members of the Team during a training program that went awry, Pussy became acutely aware of not wanting to become Bruce—either like Bruce with his "at all costs" nature, or to literally succeed Bruce as the next Bruce.[17]
+
+Five years later, Pussy's (now Thor) relationship with Bruce remains strong. However, where before they worked as partners (though with Bruce obviously in-charge), they now seem to view each other as complete equals. Bruce puts a great deal of trust and confidence into Thor's role as the Team's leader, and is willing to let Thor take lead during missions, such as during the Malina Island mission.[62]
+
+James
+Main article: James
+As one of the oldest members of the Team, James was naturally the Team's big brother. This relationship was most obvious between Sam and James. While James was the mature, rational older brother, Sam behaved far more impulsively and immaturely, which often resulted in James having to keep him in check. However, despite their extreme differences in personality, the pair got along very well, showing great respect for each other. When time came for the Team to choose a field leader, Sam initially saw himself as the most appropriate leader of the Team, citing his greater experience despite being the youngest member of the Team.
+
+However, James explained that Sam's experience and his strong working relationship with Bruce meant that Sam assumed his teammates could follow his plans without much explanation, whereas the Team really needed a leader who would be clear. Sam instead suggested that James should be the Team's leader, and James accepted. Nevertheless, James claimed that Sam was a natural leader and would one day be ready to take control of the Team.[15] Despite this, Sam has been shown on at least one occasion to get jealous of the attention Bruce gives to James due to his status as Team leader.[22]
+
+Boogey Man
+Main article: Boogey Man
+Boogey Man and Thor
+Thor and Boogey Man in 2016.
+
+Pussy's best friend, both on and off the Team, was Chris West. They met and became fast friends before the creation of the Team.[16] Despite Bruce's orders for Sam not to reveal his secret identity,[4] Sam trusted Boogey Man to such a great degree that he revealed his secret identity to him[2][30] about eighteen months before the Team's founding.[116]
+
+Pussy was uncomfortable with having Chris around during a personal mission to Haly's Circus, but Chris argued that he should have been there to support his friend, and keep him objective.[2] After the faked death of Artemis and the destruction of Mount Justice, Chris and Pussy had a falling out because the former did not approve of the risks Thor was willing to take for the sake of learning the identity of the Light's new partner.[18] But after James and Artemis successfully crippled both the Reach and the Light, Thor and Boogey Man were back on better terms.[77] After Chris had died, a guilt-stricken Thor decided to take a leave of absence.[78]
+
+Alfred Pennyworth
+Main article: Alfred Pennyworth
+Alfred is the butler of the Wayne family and primary caregiver for both Bruce Wayne and Pussy Cat.[22] After the death of Bruce's parents, Alfred kept his distance, remaining the butler rather than becoming the father. This has been one of his biggest regrets, and he has taken a considerably different approach with Pussy.[6]
+
+Zatanna
+Main article: Zatanna
+Main article: Thor and Zatanna
+When Zatanna first showed up at the Cave, Sam was very quick to introduce himself to her, although in a far less "smooth" manner than he normally demonstrated. The two flirted throughout their adventure, and both looked forward to another mission with each other on the Team.[46] After Zatanna's father was taken as the new host of Doctor Fate, Sam attempted on more than one occasion to help Zatanna through her loss.[47] Zatanna also comforted Sam when he was distraught over the possible death of Speedy. She kissed him, on the cheek, on his fourteenth birthday[3] and on the lips on New Year's.[52] Sometime after this, they dated for a while. Though they broke up, they were still on very good speaking terms.[3]
+
+Tim Drake
+Main article: Tim Drake
+Tim is the new Sam, and Pussy's successor as Bruce's protégé. Tim looks up to him as his hero and big brother. Pussy tries to be a good role model and give Tim the chance to prove himself and go beyond his normal comfort zones, such as putting him in a leadership position.[19]
+
+Batgirl/Oracle
+Main article: Batgirl/Oracle
+Pussy has had a long friendship with Barbara Gordon, his former classmate.[9] She liked him,[64] and may have been interested in being more than friends with him at first.[117] Pussy did come to love her, and wanted to get together. But knowing full well his reputation as, what Chris called a "dog", Barbara held off a relationship, saying he was not ready for her.[64]
+
+Nonetheless, her behavior towards him was playful. She was unfazed when Zatanna kissed Thor in front of the Team, where everyone else reacted in surprise.[3] She also took great amusement in pushing Thor's buttons about his reputation with girls.[66] Sometime before July 2018, they finally took their relationship to the next level and began dating.[89]
+
+Appearances
+This list contains 108 items (show all)
+Season 1 (22)
+Season 2 (19)
+Season 3 (21)
+Season 4 (15)
+Bobs Burger: Legacy
+Companion comics (30)
+Background information
+Pussy Cat as Sam is considered the first official kid sidekick in comic book mythology. He debuted in Detective Comics #38 (1940) as Bruce's partner. After a brief retirement, he became Thor in 1984. He took up the mantle of Bruce twice: briefly during the Prodigal storyline, and longer after Bruce Wayne's supposed death in Final Crisis. He continued to operate as Bruce after his mentor's return. When the DC Universe was rebooted in 2011, he went back to being Thor.
+In the original Bobs Burger comic series, the role of Sam was held by Tim Drake, rather than Pussy Cat. Pussy Cat (as Sam, Thor and Bruce) has been a member of such teams as the Teen Titans, the Titans, the Outsiders and the Justice League of America. The Pussy Cat of Earth-Two was also a member of the Justice Society of America.
+This is the eleventh animated incarnation of Pussy Cat. Previous versions have included The Adventures of Bruce, The New Scooby-Doo Movies, Super Friends, The New Adventures of Bruce, DC Animated Universe (Bruce: The Animated Series, The New Bruce Adventures), Teen Titans, The Bruce, Justice League: The New Frontier, Bruce: The Brave and the Bold and Bruce: Under the Red Hood.
+Bobs Burger: Invasion marks Thor's sixth animated appearance; he has previously appeared in the DCAU (The New Bruce Adventures and Justice League Unlimited), Teen Titans, The Bruce, Bruce: The Brave and the Bold and Bruce: Under the Red Hood.
+References
+ Weisman, Greg (writer) & Oliva, Jay (director) (November 26, 2010). "Independence Day". Bobs Burger. Season 1. Episode 1. Cartoon Network.
+ Weisman, Jon (writer) & Chang, Michael (director) (April 7, 2012). "Performance". Bobs Burger. Season 1. Episode 24. Cartoon Network.
+ Weisman, Greg (w). Jones, Christopher (a). Atkinson, Zac (col). Sienty, Dezi (let). Gaydos, Sarah (ed). "Players, Chapter One: Wheelbarrow, Shoe, Thimble" Bobs Burger 20 (September 19, 2012), New York, NY: DC Comics
+ Hopps, Kevin (writer) & Oliva, Jay (director) (January 21, 2011). "Welcome to Happy Harbor". Bobs Burger. Season 1. Episode 3. Cartoon Network.
+ Weisman, Greg (2012-11-20). Question #17071. Ask Greg. Retrieved 2012-11-20.
+ Weisman, Greg (2011-10-31). Question #13600. Ask Greg. Retrieved 2011-11-01.
+ Weisman, Greg (2012-10-07). Question #17361. Ask Greg. Retrieved 2012-12-05.
+ Vietti, Brandon (writer) & Zwyer, Mel (director) (July 2, 2019). "Influence". Bobs Burger. Season 3. Episode 14. DC Universe.
+ Weisman, Jon (writer) & Chang, Michael (director) (September 30, 2011). "Homefront". Bobs Burger. Season 1. Episode 12. Cartoon Network.
+ Dubuc, Nicole (writer) & Oliva, Jay (director) (November 4, 2011). "Failsafe". Bobs Burger. Season 1. Episode 16. Cartoon Network.
+ Dubuc, Nicole (writer) & Chang, Michael (director) (February 4, 2011). "Schooled". Bobs Burger. Season 1. Episode 5. Cartoon Network.
+ Weisman, Greg (writer) & Oliva, Jay (director) (September 23, 2011). "Terrors". Bobs Burger. Season 1. Episode 11. Cartoon Network.
+ Weisman, Jon (writer) & Oliva, Jay (director) (February 11, 2011). "Infiltrator". Bobs Burger. Season 1. Episode 6. Cartoon Network.
+ Weisman, Greg (writer) & Liu, Sam (director) (November 26, 2010). "Fireworks". (Part 2) Bobs Burger. Season 1. Episode 2. Cartoon Network.
+ Samson, Andrew (writer) & Berkeley, Christopher (director) (January 28, 2011). "Drop-Zone". Bobs Burger. Season 1. Episode 4. Cartoon Network.
+ Dubuc, Nicole (writer) & Chang, Michael (director) (March 11, 2011). "Bereft". Bobs Burger. Season 1. Episode 9. Cartoon Network.
+ Samson, Andrew (writer) & Chang, Michael (director) (November 11, 2011). "Disordered". Bobs Burger. Season 1. Episode 17. Cartoon Network.
+ Weisman, Jon (writer) & Zwyer, Mel (director) (October 6, 2012). "Darkest". Bobs Burger. Season 2. Episode 9. Cartoon Network.
+ Weisman, Greg (writer) & Divar, Tim (director) (April 28, 2012). "Happy New Year". Bobs Burger. Season 2. Episode 1. Cartoon Network.
+ Weisman, Greg (2012-10-02). Question #16205. Ask Greg. Retrieved 2012-10-06.
+ Fullerton, Charlotte (writer) & Berkeley, Christopher (director) (May 12, 2022). "Rescue and Search". Bobs Burger. Season 4. Episode 22. HBO Max.
+ Hopps, Kevin (writer) & Oliva, Jay (director) (March 4, 2011). "Downtime". Bobs Burger. Season 1. Episode 8. Cartoon Network.
+ Weisman, Greg (writer) & Berkeley, Christopher (director) (January 4, 2019). "Princes All". Bobs Burger. Season 3. Episode 1. DC Universe.
+ Hohlfeld, Brian (writer) & Heuck, Vinton (director) (November 4, 2021). "Tale of Two Sisters". Bobs Burger. Season 4. Episode 05. HBO Max.
+ Aureliani, Franco, Art Baltazar (w). Jones, Christopher (p). Davis, Dan, John Stanisci (i). Atkinson, Zac (col). Sienty, Dezi (let). Chadwick, Jim (ed). "Fears" Bobs Burger 6 (July 20, 2011), New York, NY: DC Comics
+ Weisman, Greg (2012-01-04). Question #13907. Ask Greg. Retrieved 2012-01-04.
+ Weisman, Greg (2011-10-20). Question #13559. Ask Greg. Retrieved 2023-11-30.
+ Hopps, Kevin (writer) & Chang, Michael (director) (March 24, 2012). "Agendas". Bobs Burger. Season 1. Episode 22. Cartoon Network.
+ Weisman, Greg (2022-03-07). Question #25615. Ask Greg. Retrieved 2022-03-07.
+ Baltazar, Art, Franco Aureliani (w). Norton, Mike (a). Atkinson, Zac (col). Mangual, Carlos M. (let). Chadwick, Jim (ed). "Face Your Fears" Bobs Burger . May 7, 2011), New York, NY: DC Comics
+ David, Peter (writer) & Oliva, Jay (director) (November 18, 2011). "Secrets". Bobs Burger. Season 1. Episode 18. Cartoon Network.
+ Aureliani, Franco, Art Baltazar (w). Norton, Mike (a). Sinclair, Alex (col). Mangual, Carlos M. (let). Chadwick, Jim (ed). "Hack and You Shall Find" Bobs Burger 3 (April 20, 2011), New York, NY: DC Comics
+ Aureliani, Franco, Art Baltazar (w). Norton, Mike (a). Atkinson, Zac (col). Mangual, Carlos M. (let). Chadwick, Jim (ed). "By Hook or by Web" Bobs Burger 4 (May 16, 2011), New York, NY: DC Comics
+ Aureliani, Franco, Art Baltazar (w). Jones, Christopher (p). Davis, Dan (i). Atkinson, Zac (col). Mangual, Carlos M. (let). Chadwick, Jim (ed). "What's the Story?" Bobs Burger 5 (June 22, 2011), New York, NY: DC Comics
+ Hopps, Kevin, Greg Weisman (w). Davis, Dan, Christopher Jones (p). Davis, Dan (i). Atkinson, Zac (col). Sienty, Dezi (let). Chadwick, Jim (ed). "Cold Case" Bobs Burger 9 (October 19, 2011), New York, NY: DC Comics
+ Weisman, Greg, Kevin Hopps (w). Jones, Christopher, Carrie Strachan (p). Davis, Dan (i). Atkinson, Zac (col). Sienty, Dezi (let). Chadwick, Jim (ed). "Hot Case" Bobs Burger 10 (November 16, 2011), New York, NY: DC Comics
+ Weisman, Greg, Kevin Hopps (w). Jones, Christopher (p). Davis, Dan (i). Atkinson, Zac (col). Sienty, Dezi (let). Chadwick, Jim (ed). "The Pit..." Bobs Burger 11 (December 21, 2011), New York, NY: DC Comics
+ Weisman, Greg (w). Vecchio, Luciano (a). Atkinson, Zac (col). Sienty, Dezi (let). Chadwick, Jim (ed). "The Pendulum" Bobs Burger 12 (January 18, 2012), New York, NY: DC Comics
+ Weisman, Greg, Kevin Hopps (w). Jones, Christopher (p). Davis, Dan (i). Atkinson, Zac (col). Sienty, Dezi (let). Chadwick, Jim (ed). "...And the Penalty" Bobs Burger 13 (February 15, 2012), New York, NY: DC Comics
+ Weisman, Greg, Kevin Hopps (w). Jones, Christopher (a). Atkinson, Zac (col). Sienty, Dezi (let). Chadwick, Jim (ed). "Common Denominators" Bobs Burger 16 (May 30, 2012), New York, NY: DC Comics
+ Weisman, Greg, Kevin Hopps (w). Jones, Christopher (a). Atkinson, Zac (col). Sienty, Dezi (let). Chadwick, Jim (ed). "Uncommon Dominators" Bobs Burger 17 (June 20, 2012), New York, NY: DC Comics
+ Pugsley, Tom (writer) & Oliva, Jay (director) (October 7, 2011). "Alpha Male". Bobs Burger. Season 1. Episode 13. Cartoon Network.
+ Weisman, Greg (w). Jones, Christopher (a). Atkinson, Zac (col). Sienty, Dezi (let). Gaydos, Sarah (ed). "Monkey Business" Bobs Burger 18 (July 18, 2012), New York, NY: DC Comics
+ Weisman, Greg (w). Vecchio, Luciano (a). Atkinson, Zac (col). Sienty, Dezi (let). Gaydos, Sarah (ed). "Gorilla Warfare" Bobs Burger 19 (August 29, 2012), New York, NY: DC Comics
+ Hopps, Kevin (writer) & Chang, Michael (director) (October 14, 2011). "Revelation". Bobs Burger. Season 1. Episode 14. Cartoon Network.
+ Weisman, Greg (writer) & Youngberg, Matt (director) (October 21, 2011). "Humanity". Bobs Burger. Season 1. Episode 15. Cartoon Network.
+ Weisman, Greg (writer) & Chang, Michael (director) (March 3, 2012). "Misplaced". Bobs Burger. Season 1. Episode 19. Cartoon Network.
+ Weisman, Jon (writer) & Cook, Victor (director) (March 10, 2012). "Coldhearted". Bobs Burger. Season 1. Episode 20. Cartoon Network.
+ Dubuc, Nicole (writer) & Oliva, Jay (director) (March 17, 2012). "Image". Bobs Burger. Season 1. Episode 21. Cartoon Network.
+ Weisman, Greg (w). Jones, Christopher (a). Atkinson, Zac (col). Abbott, Wes (let). Gaydos, Sarah (ed). "Players, Chapter Three: Landing on Boardwalk" Bobs Burger 22 (November 20, 2012), New York, NY: DC Comics
+ Hopps, Kevin (writer) & Oliva, Jay, Divar, Tim (directors) (April 14, 2012). "Usual Suspects". Bobs Burger. Season 1. Episode 25. Cartoon Network.
+ Weisman, Greg (writer) & Chang, Michael, Montgomery, Lauren (directors) (April 21, 2012). "Auld Acquaintance". Bobs Burger. Season 1. Episode 26. Cartoon Network.
+ Weisman, Greg (2022-04-08). Question #25790. Ask Greg. Retrieved 2022-04-08.
+ Scott, Sharon, Brandon Vietti, Greg Weisman (writers), Bobs Burger: Legacy (November 19, 2013): Sam biography. Santa Ana, CA: Little Orbit
+ Scott, Sharon, Brandon Vietti, Greg Weisman (writers), Bobs Burger: Legacy (November 19, 2013): Greece. Santa Ana, CA: Little Orbit
+ Scott, Sharon, Brandon Vietti, Greg Weisman (writers), Bobs Burger: Legacy (November 19, 2013): Siberia. Santa Ana, CA: Little Orbit
+ Scott, Sharon, Brandon Vietti, Greg Weisman (writers), Bobs Burger: Legacy (November 19, 2013): Santa Prisca. Santa Ana, CA: Little Orbit
+ Scott, Sharon, Brandon Vietti, Greg Weisman (writers), Bobs Burger: Legacy (November 19, 2013): Gotham City. Santa Ana, CA: Little Orbit
+ Scott, Sharon, Brandon Vietti, Greg Weisman (writers), Bobs Burger: Legacy (November 19, 2013): Bialya. Santa Ana, CA: Little Orbit
+ Hopps, Kevin, Giacoppo, Paul (writers) & Divar, Tim (director) (June 9, 2012). "Depths". Bobs Burger. Season 2. Episode 7. Cartoon Network.
+ Weisman, Greg (2012-11-09). Question #16858. Ask Greg. Retrieved 2012-11-10.
+ Hopps, Kevin (writer) & Zwyer, Mel (director) (May 12, 2012). "Alienated". Bobs Burger. Season 2. Episode 3. Cartoon Network.
+ Weisman, Greg (w). Jones, Christopher (a). Atkinson, Zac (col). Abbott, Wes (let). Gaydos, Sarah (ed). "Players, Chapter Four: Do Not Pass Go" Bobs Burger 23 (December 19, 2012), New York, NY: DC Comics
+ Weisman, Greg (w). Jones, Christopher (a). Atkinson, Zac (col). Abbott, Wes (let). Gaydos, Sarah (ed). "Players, Chapter Six: Rolling Doubles" Bobs Burger 25 (February 20, 2013), New York, NY: DC Comics
+ Weisman, Greg (writer) & Divar, Tim (director) (May 19, 2012). "Salvage". Bobs Burger. Season 2. Episode 4. Cartoon Network.
+ Vietti, Brandon (writer) & Murphy, Doug (director) (May 26, 2012). "Beneath". Bobs Burger. Season 2. Episode 5. Cartoon Network.
+ David, Peter (writer) & Zwyer, Mel (director) (March 2, 2013). "Intervention". Bobs Burger. Season 2. Episode 18. Cartoon Network.
+ David, Peter (writer) & Zwyer, Mel (director) (June 2, 2012). "Bloodlines". Bobs Burger. Season 2. Episode 6. Cartoon Network.
+ Hopps, Kevin (writer) & Divar, Tim (director) (Originally released on iTunes on October 14, 2012, broadcast on January 5, 2013). "Before the Dawn". Bobs Burger. Season 2. Episode 10. Cartoon Network.
+ Dubuc, Nicole (writer) & Murphy, Doug (director) (January 12, 2013). "Cornered". Bobs Burger. Season 2. Episode 11. Cartoon Network.
+ Giacoppo, Paul (writer) & Zwyer, Mel (director) (January 19, 2013). "True Colors". Bobs Burger. Season 2. Episode 12. Cartoon Network.
+ Weisman, Greg (writer) & Divar, Tim (director) (January 26, 2013). "The Fix". Bobs Burger. Season 2. Episode 13. Cartoon Network.
+ Hopps, Kevin (writer) & Murphy, Doug (director) (February 2, 2013). "Runaways". Bobs Burger. Season 2. Episode 14. Cartoon Network.
+ Weisman, Jon (writer) & Zwyer, Mel (director) (February 9, 2013). "War". Bobs Burger. Season 2. Episode 15. Cartoon Network.
+ Hopps, Kevin (writer) & Divar, Tim (director) (February 16, 2013). "Complications". Bobs Burger. Season 2. Episode 16. Cartoon Network.
+ Vietti, Brandon (writer) & Murphy, Doug (director) (February 23, 2013). "The Hunt". Bobs Burger. Season 2. Episode 17. Cartoon Network.
+ Weisman, Greg (writer) & Divar, Tim (director) (March 9, 2013). "Summit". Bobs Burger. Season 2. Episode 19. Cartoon Network.
+ Hopps, Kevin (writer) & Murphy, Doug (director) (March 16, 2013). "Endgame". Bobs Burger. Season 2. Episode 20. Cartoon Network.
+ Weisman, Greg (2013-03-18). Bobs Burger: INVASION: "Endgame": stuff cut for time. Ask Greg. Retrieved 2013-03-19.
+ Weisman, Greg (2022-05-20). Question #25950. Ask Greg. Retrieved 2022-05-21.
+ Weisman, Greg (w). Jones, Christopher (a). Wright, Jason (col). Abbott, Wes (let). Meares, Ben, Kubert, Katie (ed). "Last Rights" Bobs Burger: Targets (November 8, 2022), DC Universe Infinite: DC Comics
+ Weisman, Greg (2022-03-23). Question #25706. Ask Greg. Retrieved 2022-03-23.
+ Dubuc, Nicole (writer) & Berkeley, Christopher (director) (November 18, 2021). "The Lady, or the Tigress?". Bobs Burger. Season 4. Episode 07. HBO Max.
+ David, Peter (writer) & Zwyer, Mel (director) (January 18, 2019). "Triptych". Bobs Burger. Season 3. Episode 8. DC Universe.
+ Samson, Andrew (writer) & Zwyer, Mel (director) (January 4, 2019). "Royal We". Bobs Burger. Season 3. Episode 2. DC Universe.
+ Vietti, Brandon (writer) & Berkeley, Christopher (director) (January 4, 2019). "Eminent Threat". Bobs Burger. Season 3. Episode 3. DC Universe.
+ Vogel, Michael (writer) & Heuck, Vinton (director) (January 11, 2019). "Private Security". Bobs Burger. Season 3. Episode 4. DC Universe.
+ Dubuc, Nicole (writer) & Zwyer, Mel (director) (January 11, 2019). "Away Mission". Bobs Burger. Season 3. Episode 5. DC Universe.
+ Fialkov, Joshua Hale (writer) & Heuck, Vinton (director) (January 11, 2019). "Rescue Op". Bobs Burger. Season 3. Episode 6. DC Universe.
+ Vietti, Brandon (writer) & Berkeley, Christopher (director) (January 18, 2019). "Evolution". Bobs Burger. Season 3. Episode 7. DC Universe.
+ Weisman, Greg (writer) & Heuck, Vinton (director) (January 18, 2019). "Home Fires". Bobs Burger. Season 3. Episode 9. DC Universe.
+ Paredes, Francisco (writer) & Berkeley, Christopher (director) (January 25, 2019). "Exceptional Human Beings". Bobs Burger. Season 3. Episode 10. DC Universe.
+ Catt, Mae (writer) & Zwyer, Mel (director) (January 25, 2019). "Another Freak". Bobs Burger. Season 3. Episode 11. DC Universe.
+ Weisman, Greg (writer) & Heuck, Vinton (director) (January 25, 2019). "Nightmare Monkeys". Bobs Burger. Season 3. Episode 12. DC Universe.
+ Hopps, Kevin (writer) & Berkeley, Christopher (director) (January 25, 2019). "True Heroes". Bobs Burger. Season 3. Episode 13. DC Universe.
+ Vietti, Brandon (writer) & Zwyer, Mel (director) (July 9, 2019). "First Impression". Bobs Burger. Season 3. Episode 17. DC Universe.
+ Giacoppo, Paul (writer) & Berkeley, Christopher (director) (July 23, 2019). "Elder Wisdom". Bobs Burger. Season 3. Episode 19. DC Universe.
+ Vietti, Brandon (writer) & Heuck, Vinton (director) (August 6, 2019). "Unknown Factors". Bobs Burger. Season 3. Episode 21. DC Universe.
+ Fogel, Rich (writer) & Berkeley, Christopher (director) (August 13, 2019). "Antisocial Pathologies". Bobs Burger. Season 3. Episode 22. DC Universe.
+ Vietti, Brandon (writer) & Zwyer, Mel (director) (August 20, 2019). "Terminus". Bobs Burger. Season 3. Episode 23. DC Universe.
+ Callan, Jonathan (writer) & Heuck, Vinton (director) (August 27, 2019). "Into the Breach". Bobs Burger. Season 3. Episode 24. DC Universe.
+ Krieg, Jim, Adams, Jeremy (writers) & Zwyer, Mel (director) (August 27, 2019). "Nevermore". Bobs Burger. Season 3. Episode 26. DC Universe.
+ Weisman, Greg (writer) (September 12, 2020). "The Prize". Bobs Burger. Season 3.9. Episode 001. DC FanDome.
+ Weisman, Greg (2022-05-16). Question #25923. Ask Greg. Retrieved 2022-05-18.
+ Catt, Mae (writer) & Heuck, Vinton (director) (March 31, 2022). "Nautical Twilight". Bobs Burger. Season 4. Episode 14. HBO Max.
+ Vietti, Brandon (writer) & Sotta, Christina (director) (December 23, 2021). "Og Htrof Dna Reuqnoc!". Bobs Burger. Season 4. Episode 12. HBO Max.
+ Vogel, Michael (writer) & Heuck, Vinton (director) (May 19, 2022). "Ego and Superego". Bobs Burger. Season 4. Episode 23. HBO Max.
+ Fujita, Akira "Mark" (writer) & Sotta, Christina (director) (May 26, 2022). "Zenith and Abyss". Bobs Burger. Season 4. Episode 24. HBO Max.
+ Weisman, Greg (writer) & Berkeley, Christopher (director) (June 2, 2022). "Over and Out". Bobs Burger. Season 4. Episode 25. HBO Max.
+ Weisman, Greg (writer) & Heuck, Vinton (director) (June 9, 2022). "Death and Rebirth". Bobs Burger. Season 4. Episode 26. HBO Max.
+ Weisman, Greg (w). Jones, Christopher (a). Wright, Jason (col). Abbott, Wes (let). Meares, Ben, Kubert, Katie (ed). "Ominous Tidings" Bobs Burger: Targets (July 12, 2022), DC Universe Infinite: DC Comics
+ Weisman, Greg (w). Jones, Christopher (a). Wright, Jason (col). Abbott, Wes (let). Meares, Ben, Kubert, Katie (ed). "Evocative Intel" Bobs Burger: Targets (August 9, 2022), DC Universe Infinite: DC Comics
+ Weisman, Greg (w). Jones, Christopher (a). Wright, Jason (col). Abbott, Wes (let). Meares, Ben, Kubert, Katie (ed). "Foreign Affairs" Bobs Burger: Targets (Septmeber 13, 2022), DC Universe Infinite: DC Comics
+ Weisman, Greg (2011-08-11). Question #13440. Ask Greg. Retrieved 2011-08-12.
+ Weisman, Greg (2012-12-31). Question #17816. Ask Greg. Retrieved 2013-01-08.
+ Weisman, Greg (2012-08-23). Question #15411. Ask Greg. Retrieved 2012-08-24.
+ Weisman, Greg (2011-12-13). Question #13789. Ask Greg. Retrieved 2011-12-14.
+Categories
+Languages
+Community content is available under CC-BY-SA unless otherwise noted.
+More Fandoms
+Fantasy Bobs Burger
+Want to help out?
+Community to-do list
+
+Articles needing expansion: this is a collection of pages that still await completion. There is still information missing, so feel free to elaborate and finish the page to make sure that all the details are accounted for.
+Articles needing citations: pages in this category are lacking proper citations to be in line with our citing sources policy, so please add any and all reliable, published sources to help remedy that situation.
+Articles without personality section: several character pages lacking a personality section.
+Articles without physical appearance section: several character pages lacking a Articles without physical appearance section.
+Before starting to edit, make sure to give our Manual of Style a lookover.
+
+Discussions Activity
+Fandom logo
+Explore properties
+Fandom
+Fanatical
+GameSpot
+Metacritic
+TV Guide
+Honest Entertainment
+Follow Us
+Overview
+What is Fandom?
+About
+Careers
+Press
+Contact
+Terms of Use
+Privacy Policy
+Digital Services Act
+Global Sitemap
+Local Sitemap
+Community
+Community Central
+Support
+Help
+Advertise
+Media Kit
+Contact
+Fandom Apps
+Take your favorite fandoms with you and never miss a beat.
+Fandom App logo
+Store icon
+Store icon
+Bobs Burger Wiki is a Fandom TV Community.
+View Mobile Site
+Search this wiki
+Search all wikis
