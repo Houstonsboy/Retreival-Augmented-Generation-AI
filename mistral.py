@@ -5,13 +5,18 @@ import numpy as np
 from typing import List, Dict, Any
 import time
 import re
+from dotenv import load_dotenv  # Load environment variables from .env file
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from huggingface_hub import InferenceClient
 
+# Load environment variables from .env file
+load_dotenv()
 
 # ===== CONFIGURATION ===== 
-HF_API_TOKEN = os.getenv("HF_API_TOKEN", "")  # Set your token as environment variable
+HF_API_TOKEN = os.getenv("HF_API_TOKEN")
+if not HF_API_TOKEN:
+    raise ValueError("HF_API_TOKEN not found in environment variables. Please set it in your .env file.")
 MODEL_NAME = "mistralai/Mistral-7B-Instruct-v0.2" 
 CHUNK_SIZE = 1000       # Size of text chunks (approximate)
 CHUNK_OVERLAP = 200     # Overlap between chunks (approximate)

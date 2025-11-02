@@ -5,6 +5,7 @@ import numpy as np
 from typing import List, Dict, Any, Tuple
 import time
 import re
+from dotenv import load_dotenv  # Load environment variables from .env file
 from sentence_transformers import SentenceTransformer, CrossEncoder  # IMPROVEMENT: Added CrossEncoder for reranking
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.feature_extraction.text import TfidfVectorizer  # IMPROVEMENT: Added for hybrid search
@@ -12,9 +13,13 @@ from huggingface_hub import InferenceClient
 from langchain_core.documents import Document
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
+# Load environment variables from .env file
+load_dotenv()
 
 # ===== CONFIGURATION ===== 
-HF_API_TOKEN = os.getenv("HF_API_TOKEN", "")
+HF_API_TOKEN = os.getenv("HF_API_TOKEN")
+if not HF_API_TOKEN:
+    raise ValueError("HF_API_TOKEN not found in environment variables. Please set it in your .env file.")
 MODEL_NAME = "mistralai/Mistral-7B-Instruct-v0.2" 
 
 # IMPROVEMENT: Upgraded from all-MiniLM-L6-v2 (384d) to intfloat/e5-base-v2 (768d)
@@ -348,7 +353,7 @@ def hybrid_search(query: str, model, embeddings, chunks: List[str], semantic_wei
         if len(chunks) < 2:
             print(f"Warning: Only {len(chunks)} chunk(s) found. Using semantic search only (hybrid search requires 2+ chunks).")
         query_embedding = model.encode([f"query: {query}"], convert_to_tensor=False, normalize_embeddings=True)
-    similarities = cosine_similarity(query_embedding, embeddings)[0]
+        similarities = cosine_similarity(query_embedding, embeddings)[0]
         return similarities
 
     print("Performing hybrid search (semantic + keyword)...")
@@ -843,7 +848,7 @@ def interactive_mode(file_path: str):
             print("\n" + "="*60)
             print("ANSWER")
             print("="*60)
-        print(response)
+            print(response)
             print("="*60)
             
         except Exception as e:
