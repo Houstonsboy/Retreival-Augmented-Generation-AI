@@ -11,7 +11,7 @@ from huggingface_hub import InferenceClient
 
 
 # ===== CONFIGURATION ===== 
-HF_API_TOKEN = os.getenv("HF_API_TOKEN")  # Set your token as environment variable
+HF_API_TOKEN = os.getenv("HF_API_TOKEN", "")  # Set your token as environment variable
 MODEL_NAME = "mistralai/Mistral-7B-Instruct-v0.2" 
 CHUNK_SIZE = 1000       # Size of text chunks (approximate)
 CHUNK_OVERLAP = 200     # Overlap between chunks (approximate)
