@@ -4,13 +4,15 @@ A comprehensive RAG system that uses local embeddings and remote LLMs via Huggin
 
 ## Features
 
-- **Enhanced Semantic Search**: Uses `intfloat/e5-base-v2` for better understanding (768 dimensions vs 384)
-- **Hybrid Search**: Combines semantic similarity (70%) + keyword matching (30%)
-- **Query Expansion**: Automatically expands queries with synonyms and related terms
-- **Two-Stage Retrieval**: Broad retrieval followed by precise reranking using cross-encoder
-- **Smart Chunking**: Improved text chunking with better overlap and metadata preservation
-- **Citation Tracking**: Tracks sources for all retrieved information
-- **Interactive Mode**: Run Q&A sessions on your documents
+- **📄 Multi-Format Support**: Load and process both `.txt` and `.pdf` files seamlessly
+- **🔍 Enhanced Semantic Search**: Uses `intfloat/e5-base-v2` for better understanding (768 dimensions vs 384)
+- **🔀 Hybrid Search**: Combines semantic similarity (70%) + keyword matching (30%)
+- **🔎 Query Expansion**: Automatically expands queries with synonyms and related terms
+- **🎯 Two-Stage Retrieval**: Broad retrieval followed by precise reranking using cross-encoder
+- **✂️ Smart Chunking**: Improved text chunking with better overlap and metadata preservation
+- **🧹 Text Cleaning**: Removes noise, navigation elements, and formatting artifacts
+- **📚 Citation Tracking**: Tracks sources for all retrieved information with page/position data
+- **💬 Interactive Mode**: Run Q&A sessions on your documents
 
 ## Setup
 
@@ -41,6 +43,7 @@ pip install -r requirements.txt
 - `langchain` - Document processing
 - `scikit-learn` - Similarity metrics
 - `numpy` - Numerical operations
+- `pypdf` - PDF text extraction
 
 ### 4. Configure Hugging Face Token
 
@@ -83,9 +86,27 @@ The system will:
 ```python
 from pixe import run_rag_pipeline
 
-# Single query
+# Query a text file
 answer = run_rag_pipeline('tmnt.txt', 'Who are the Teenage Mutant Ninja Turtles?')
 print(answer)
+
+# Query a PDF file
+answer = run_rag_pipeline('Bobs_superheroes.pdf', 'What is the main plot?')
+print(answer)
+```
+
+### Loading Documents Directly
+
+```python
+from pixe import load_document, chunk_text
+
+# Load a PDF and inspect its content
+documents = load_document("Bobs_superheroes.pdf")
+chunks, chunk_docs = chunk_text(documents)
+
+print(f"Loaded {len(chunks)} chunks")
+print(f"First chunk: {chunks[0][:200]}...")
+print(f"Metadata: {chunk_docs[0].metadata}")
 ```
 
 ### Custom Configuration
@@ -115,9 +136,24 @@ USE_HYBRID_SEARCH = True
 
 ## Supported Document Formats
 
-Currently supports:
-- Plain text files (`.txt`)
-- Can be extended for PDFs, markdown, etc.
+✅ **Currently Supported**:
+- **Plain text files** (`.txt`) - Full UTF-8 support
+- **PDF files** (`.pdf`) - Automatic text extraction from all pages
+
+🔮 **Future Formats** (easily extensible):
+- Microsoft Word (`.docx`)
+- Markdown (`.md`)
+- HTML files
+- Excel/CSV for tabular data
+
+### PDF Support Features
+- 📄 Page-by-page text extraction
+- 🧹 Automatic noise removal (headers, footers, page numbers)
+- 📊 Extraction progress tracking
+- ⚠️ Handles image-based PDFs gracefully (reports if no text found)
+- 📍 Maintains page and position metadata for citations
+
+For detailed information on document loading, see [DOCUMENT_LOADING_GUIDE.md](DOCUMENT_LOADING_GUIDE.md)
 
 ## Models Used
 

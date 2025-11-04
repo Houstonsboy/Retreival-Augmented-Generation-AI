@@ -5,6 +5,7 @@ import numpy as np
 from typing import List, Dict, Any, Tuple
 import time
 import re
+from pathlib import Path
 from dotenv import load_dotenv  # Load environment variables from .env file
 from sentence_transformers import SentenceTransformer, CrossEncoder  # IMPROVEMENT: Added CrossEncoder for reranking
 from sklearn.metrics.pairwise import cosine_similarity
@@ -12,6 +13,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer  # IMPROVEMENT: Adde
 from huggingface_hub import InferenceClient
 from langchain_core.documents import Document
 from langchain_text_splitters import RecursiveCharacterTextSplitter
+from pypdf import PdfReader  # IMPROVEMENT: Added for PDF support
 
 # Load environment variables from .env file
 load_dotenv()
@@ -42,6 +44,41 @@ USE_QUERY_EXPANSION = True
 USE_HYBRID_SEARCH = True  # Combine semantic + keyword search
 
 # ===== 1. TEXT LOADING =====
+def extract_text_from_pdf(file_path: str) -> str:
+    """
+    IMPROVEMENT: Added PDF text extraction support
+    
+    Extracts text from PDF files page by page, handling various PDF formats.
+    Returns the combined text from all pages.
+    """
+    print(f"Extracting text from PDF: {file_path}...")
+    try:
+        reader = PdfReader(file_path)
+        total_pages = len(reader.pages)
+        print(f"PDF has {total_pages} pages")
+        
+        extracted_text = []
+        for page_num, page in enumerate(reader.pages, start=1):
+            text = page.extract_text()
+            if text.strip():  # Only add non-empty pages
+                extracted_text.append(text)
+                print(f"  Page {page_num}/{total_pages}: {len(text)} characters extracted")
+            else:
+                print(f"  Page {page_num}/{total_pages}: No text found (might be image-based)")
+        
+        combined_text = "\n\n".join(extracted_text)
+        print(f"Total extracted: {len(combined_text)} characters from {len(extracted_text)} pages with text")
+        
+        if not combined_text.strip():
+            print("Warning: No text could be extracted from the PDF. It might be image-based or encrypted.")
+            return ""
+        
+        return combined_text
+        
+    except Exception as e:
+        print(f"Error extracting text from PDF: {e}")
+        return ""
+
 def clean_text(text: str) -> str:
     """
     IMPROVEMENT: Added text cleaning function to remove noise and improve semantic understanding
@@ -81,26 +118,80 @@ def clean_text(text: str) -> str:
 
 def load_document(file_path: str) -> List[Document]:
     """
-    IMPROVEMENT: Enhanced document loading with text cleaning
+    IMPROVEMENT: Enhanced document loading with multi-format support
     
-    Previous: Loaded raw text with all navigation/UI elements
-    Now: Cleans text before creating document, improving semantic search quality
+    Previous: Only supported .txt files with basic text loading
+    Now: 
+    - Supports both .txt and .pdf files
+    - Extracts text from PDFs page by page
+    - Cleans text to remove noise
+    - Preserves metadata for citations
+    - Handles errors gracefully
     """
+    print(f"\n{'='*60}")
     print(f"Loading document from {file_path}...")
+    print(f"{'='*60}")
+    
     try:
-        with open(file_path, 'r', encoding='utf-8') as file:
-            raw_content = file.read()
+        # Check if file exists
+        if not os.path.exists(file_path):
+            print(f"Error: File not found: {file_path}")
+            return []
+        
+        # Determine file type
+        file_extension = Path(file_path).suffix.lower()
+        print(f"File type detected: {file_extension}")
+        
+        # Extract raw content based on file type
+        raw_content = ""
+        
+        if file_extension == '.pdf':
+            # IMPROVEMENT: Extract text from PDF
+            raw_content = extract_text_from_pdf(file_path)
+            if not raw_content:
+                print("Error: Could not extract text from PDF")
+                return []
+                
+        elif file_extension == '.txt':
+            # Load text file
+            print("Loading text file...")
+            with open(file_path, 'r', encoding='utf-8') as file:
+                raw_content = file.read()
+                
+        else:
+            print(f"Warning: Unsupported file format '{file_extension}'. Supported formats: .txt, .pdf")
+            print("Attempting to read as text file...")
+            try:
+                with open(file_path, 'r', encoding='utf-8') as file:
+                    raw_content = file.read()
+            except Exception as e:
+                print(f"Error: Could not read file as text: {e}")
+                return []
+        
+        # Check if content was extracted
+        if not raw_content or not raw_content.strip():
+            print("Error: No content extracted from file")
+            return []
+        
+        original_size = len(raw_content)
+        print(f"Raw content extracted: {original_size} characters")
         
         # IMPROVEMENT: Clean the text before processing
+        print("\nCleaning text...")
         cleaned_content = clean_text(raw_content)
-        original_size = len(raw_content)
         cleaned_size = len(cleaned_content)
         
-        # Avoid division by zero for empty files
+        # Check if cleaning removed everything
+        if not cleaned_content or not cleaned_content.strip():
+            print("Warning: Text cleaning removed all content. Using raw content instead.")
+            cleaned_content = raw_content
+            cleaned_size = original_size
+        
+        # Calculate cleaning statistics
         if original_size > 0:
             percent_removed = ((original_size - cleaned_size) / original_size * 100)
-            print(f"Original size: {original_size} chars, After cleaning: {cleaned_size} chars "
-                  f"({percent_removed:.1f}% removed)")
+            print(f"Original size: {original_size} chars")
+            print(f"After cleaning: {cleaned_size} chars ({percent_removed:.1f}% removed)")
         else:
             print(f"Warning: Empty file loaded")
         
@@ -109,18 +200,23 @@ def load_document(file_path: str) -> List[Document]:
             page_content=cleaned_content,
             metadata={
                 "source": file_path,
+                "file_type": file_extension,
                 "file_size": cleaned_size,
                 "original_size": original_size,
                 "loaded_at": time.strftime("%Y-%m-%d %H:%M:%S"),
-                # IMPROVEMENT: Added metadata for tracking
-                "cleaned": True
+                "cleaned": True,
+                # IMPROVEMENT: Add file name for better citations
+                "file_name": Path(file_path).name
             }
         )
         
-        print(f"Successfully loaded document: {cleaned_size} characters")
+        print(f"\n✓ Successfully loaded document: {cleaned_size} characters")
+        print(f"{'='*60}\n")
         return [document]
+        
     except Exception as e:
-        print(f"Error loading document: {e}")
+        print(f"\n✗ Error loading document: {e}")
+        print(f"{'='*60}\n")
         return []
 
 # ===== 2. TEXT CHUNKING =====
@@ -856,5 +952,5 @@ def interactive_mode(file_path: str):
             print("Please try again or type 'exit' to quit.")
 
 if __name__ == "__main__": 
-    file_path = 'tmnt.txt'
+    file_path = 'loan-agreement-template.pdf'
     interactive_mode(file_path)
