@@ -4,35 +4,31 @@ import requests
 import numpy as np
 from typing import List, Dict, Any, Tuple
 import time
-import re
 from pathlib import Path
+import chromadb
 from dotenv import load_dotenv  # Load environment variables from .env file
 from sentence_transformers import SentenceTransformer, CrossEncoder  # IMPROVEMENT: Added CrossEncoder for reranking
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.feature_extraction.text import TfidfVectorizer  # IMPROVEMENT: Added for hybrid search
-from huggingface_hub import InferenceClient
+from groq import Groq  # UPDATED: Using Groq instead of HuggingFace
 from langchain_core.documents import Document
-from langchain_text_splitters import RecursiveCharacterTextSplitter
-from pypdf import PdfReader  # IMPROVEMENT: Added for PDF support
 
 # Load environment variables from .env file
 load_dotenv()
 
 # ===== CONFIGURATION ===== 
-HF_API_TOKEN = os.getenv("HF_API_TOKEN")
-if not HF_API_TOKEN:
-    raise ValueError("HF_API_TOKEN not found in environment variables. Please set it in your .env file.")
-MODEL_NAME = "mistralai/Mistral-7B-Instruct-v0.2" 
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+if not GROQ_API_KEY:
+    raise ValueError("GROQ_API_KEY not found in environment variables. Please set it in your .env file.")
+
+# UPDATED: Using Groq's models instead of HuggingFace
+# Available Groq models: llama-3.3-70b-versatile, llama-3.1-70b-versatile, mixtral-8x7b-32768, gemma2-9b-it
+MODEL_NAME = "llama-3.3-70b-versatile"  # Fast and capable model
 
 # IMPROVEMENT: Upgraded from all-MiniLM-L6-v2 (384d) to intfloat/e5-base-v2 (768d)
 # e5-base-v2 provides better semantic understanding and is free from Hugging Face
 # Alternative free options: "all-mpnet-base-v2" (768d, slower but better) or "BAAI/bge-base-en-v1.5"
 EMBEDDING_MODEL_NAME = "intfloat/e5-base-v2"  # Better semantic embeddings (768 dimensions vs 384)
-
-# IMPROVEMENT: Increased chunk overlap for better context continuity
-# Previous: CHUNK_SIZE = 1000, CHUNK_OVERLAP = 200
-CHUNK_SIZE = 1000
-CHUNK_OVERLAP = 300  # Increased from 200 to 300 for better context preservation
 
 # IMPROVEMENT: Two-stage retrieval - retrieve more initially, then rerank to top K
 INITIAL_RETRIEVAL_K = 10  # Retrieve top 10 initially for reranking
@@ -43,314 +39,83 @@ USE_RERANKING = True
 USE_QUERY_EXPANSION = True
 USE_HYBRID_SEARCH = True  # Combine semantic + keyword search
 
-# ===== 1. TEXT LOADING =====
-def extract_text_from_pdf(file_path: str) -> str:
-    """
-    IMPROVEMENT: Added PDF text extraction support
-    
-    Extracts text from PDF files page by page, handling various PDF formats.
-    Returns the combined text from all pages.
-    """
-    print(f"Extracting text from PDF: {file_path}...")
-    try:
-        reader = PdfReader(file_path)
-        total_pages = len(reader.pages)
-        print(f"PDF has {total_pages} pages")
-        
-        extracted_text = []
-        for page_num, page in enumerate(reader.pages, start=1):
-            text = page.extract_text()
-            if text.strip():  # Only add non-empty pages
-                extracted_text.append(text)
-                print(f"  Page {page_num}/{total_pages}: {len(text)} characters extracted")
-            else:
-                print(f"  Page {page_num}/{total_pages}: No text found (might be image-based)")
-        
-        combined_text = "\n\n".join(extracted_text)
-        print(f"Total extracted: {len(combined_text)} characters from {len(extracted_text)} pages with text")
-        
-        if not combined_text.strip():
-            print("Warning: No text could be extracted from the PDF. It might be image-based or encrypted.")
-            return ""
-        
-        return combined_text
-        
-    except Exception as e:
-        print(f"Error extracting text from PDF: {e}")
-        return ""
+# ===== VECTOR STORE ACCESS =====
+CHROMA_DB_DIR = Path(__file__).resolve().parent / "ChunkDB"
+CHROMA_COLLECTION_NAME = "ChunkDB"
 
-def clean_text(text: str) -> str:
-    """
-    IMPROVEMENT: Added text cleaning function to remove noise and improve semantic understanding
-    
-    Previous version: Loaded raw text without cleaning
-    Now: Removes navigation elements, normalizes whitespace, preserves semantic content
-    """
-    # Remove common navigation/UI elements (like "Search", "Sign In", "Menu", etc.)
-    # These appear frequently in scraped wiki content and don't add semantic value
-    navigation_words = ['Search', 'Sign In', 'Register', 'Menu', 'Explore', 'Media', 
-                       'Seasons', 'Targets', 'Community', 'Skip to content']
-    
-    lines = text.split('\n')
-    cleaned_lines = []
-    
-    for line in lines:
-        line = line.strip()
-        # Skip empty lines and common navigation patterns
-        if not line:
-            continue
-        # Skip lines that are just navigation words
-        if line in navigation_words or line.replace(' ', '').lower() in [w.lower() for w in navigation_words]:
-            continue
-        # Skip lines that are just page numbers or single characters
-        if len(line) <= 2 and (line.isdigit() or line in ['|', '-', '_']):
-            continue
-        cleaned_lines.append(line)
-    
-    # Join back and normalize whitespace
-    cleaned_text = '\n'.join(cleaned_lines)
-    
-    # Normalize multiple spaces/newlines to single spaces/newlines
-    cleaned_text = re.sub(r' +', ' ', cleaned_text)
-    cleaned_text = re.sub(r'\n{3,}', '\n\n', cleaned_text)
-    
-    return cleaned_text.strip()
 
-def load_document(file_path: str) -> List[Document]:
+def get_chroma_collection():
     """
-    IMPROVEMENT: Enhanced document loading with multi-format support
-    
-    Previous: Only supported .txt files with basic text loading
-    Now: 
-    - Supports both .txt and .pdf files
-    - Extracts text from PDFs page by page
-    - Cleans text to remove noise
-    - Preserves metadata for citations
-    - Handles errors gracefully
+    Initialize and return the persistent ChromaDB collection with stored chunk embeddings.
     """
-    print(f"\n{'='*60}")
-    print(f"Loading document from {file_path}...")
-    print(f"{'='*60}")
-    
     try:
-        # Check if file exists
-        if not os.path.exists(file_path):
-            print(f"Error: File not found: {file_path}")
-            return []
-        
-        # Determine file type
-        file_extension = Path(file_path).suffix.lower()
-        print(f"File type detected: {file_extension}")
-        
-        # Extract raw content based on file type
-        raw_content = ""
-        
-        if file_extension == '.pdf':
-            # IMPROVEMENT: Extract text from PDF
-            raw_content = extract_text_from_pdf(file_path)
-            if not raw_content:
-                print("Error: Could not extract text from PDF")
-                return []
-                
-        elif file_extension == '.txt':
-            # Load text file
-            print("Loading text file...")
-            with open(file_path, 'r', encoding='utf-8') as file:
-                raw_content = file.read()
-                
-        else:
-            print(f"Warning: Unsupported file format '{file_extension}'. Supported formats: .txt, .pdf")
-            print("Attempting to read as text file...")
-            try:
-                with open(file_path, 'r', encoding='utf-8') as file:
-                    raw_content = file.read()
-            except Exception as e:
-                print(f"Error: Could not read file as text: {e}")
-                return []
-        
-        # Check if content was extracted
-        if not raw_content or not raw_content.strip():
-            print("Error: No content extracted from file")
-            return []
-        
-        original_size = len(raw_content)
-        print(f"Raw content extracted: {original_size} characters")
-        
-        # IMPROVEMENT: Clean the text before processing
-        print("\nCleaning text...")
-        cleaned_content = clean_text(raw_content)
-        cleaned_size = len(cleaned_content)
-        
-        # Check if cleaning removed everything
-        if not cleaned_content or not cleaned_content.strip():
-            print("Warning: Text cleaning removed all content. Using raw content instead.")
-            cleaned_content = raw_content
-            cleaned_size = original_size
-        
-        # Calculate cleaning statistics
-        if original_size > 0:
-            percent_removed = ((original_size - cleaned_size) / original_size * 100)
-            print(f"Original size: {original_size} chars")
-            print(f"After cleaning: {cleaned_size} chars ({percent_removed:.1f}% removed)")
-        else:
-            print(f"Warning: Empty file loaded")
-        
-        # Create LangChain Document with enhanced metadata
-        document = Document(
-            page_content=cleaned_content,
-            metadata={
-                "source": file_path,
-                "file_type": file_extension,
-                "file_size": cleaned_size,
-                "original_size": original_size,
-                "loaded_at": time.strftime("%Y-%m-%d %H:%M:%S"),
-                "cleaned": True,
-                # IMPROVEMENT: Add file name for better citations
-                "file_name": Path(file_path).name
-            }
+        client = chromadb.PersistentClient(path=str(CHROMA_DB_DIR))
+        return client.get_collection(name=CHROMA_COLLECTION_NAME)
+    except Exception as exc:
+        raise RuntimeError(
+            f"Failed to initialize ChromaDB collection '{CHROMA_COLLECTION_NAME}' at {CHROMA_DB_DIR}. "
+            "Ensure digester.py has been run to create and populate the database."
+        ) from exc
+
+
+def load_collection_data(collection) -> Tuple[List[str], np.ndarray, List[Document]]:
+    """
+    Load documents, embeddings, and metadata from the ChromaDB collection.
+    """
+    results = collection.get(include=["embeddings", "documents", "metadatas"])
+
+    documents = results.get("documents") or []
+    embeddings = results.get("embeddings")
+    metadatas = results.get("metadatas") or []
+
+    if embeddings is None:
+        embeddings = []
+
+    if len(documents) == 0 or len(embeddings) == 0:
+        raise RuntimeError(
+            f"ChromaDB collection '{CHROMA_COLLECTION_NAME}' is empty. "
+            "Run digester.py to ingest documents before querying."
         )
-        
-        print(f"\n✓ Successfully loaded document: {cleaned_size} characters")
-        print(f"{'='*60}\n")
-        return [document]
-        
-    except Exception as e:
-        print(f"\n✗ Error loading document: {e}")
-        print(f"{'='*60}\n")
-        return []
 
-# ===== 2. TEXT CHUNKING =====
-def chunk_text(documents: List[Document]) -> Tuple[List[str], List[Document]]:
-    """
-    IMPROVEMENT: Enhanced chunking with metadata preservation
-    
-    Previous: Returned only chunk strings, lost metadata
-    Now: Returns both chunk strings AND Document objects with metadata
-         This enables better tracking, citations, and context preservation
-    """
-    print(f"Chunking text with size={CHUNK_SIZE}, overlap={CHUNK_OVERLAP}...")
-    
-    if not documents:
-        print("No documents to chunk")
-        return [], []
-    
-    # IMPROVEMENT: Check if document is very small
-    total_length = sum(len(doc.page_content) for doc in documents)
-    if total_length == 0:
-        print("Error: Document is empty after cleaning")
-        return [], []
-    
-    # IMPROVEMENT: For very small documents, adjust chunk size
-    effective_chunk_size = CHUNK_SIZE
-    effective_overlap = CHUNK_OVERLAP
-    
-    if total_length < CHUNK_SIZE:
-        print(f"Warning: Document is small ({total_length} chars). Adjusting chunk size to fit.")
-        effective_chunk_size = max(500, total_length // 2)  # At least 500 chars or half the doc
-        effective_overlap = min(CHUNK_OVERLAP, effective_chunk_size // 3)  # Reduce overlap proportionally
-    
-    # IMPROVEMENT: Enhanced text splitter with better separators
-    # Previous: Basic RecursiveCharacterTextSplitter
-    # Now: Added separators that respect semantic boundaries (paragraphs, sentences, etc.)
-    text_splitter = RecursiveCharacterTextSplitter(
-        chunk_size=effective_chunk_size,
-        chunk_overlap=effective_overlap,  # IMPROVEMENT: Increased overlap from 200 to 300
-        length_function=len,
-        add_start_index=True,
-        # IMPROVEMENT: Preserve separators for better semantic boundaries
-        separators=["\n\n", "\n", ". ", " ", ""],  # Split by paragraphs first, then sentences
-        is_separator_regex=False,
-    )
-    
-    # Split the documents
-    chunk_documents = text_splitter.split_documents(documents)
-    
-    # IMPROVEMENT: Ensure at least one chunk was created
-    if len(chunk_documents) == 0:
-        print("Warning: No chunks created. Creating single chunk from document.")
-        # Create a single chunk from the document
-        chunk_documents = documents
-    
-    # IMPROVEMENT: Add chunk metadata for better tracking
-    for i, chunk_doc in enumerate(chunk_documents):
-        chunk_doc.metadata.update({
-            "chunk_id": i,
-            "chunk_index": i,
-            "total_chunks": len(chunk_documents),
-            "chunk_size": len(chunk_doc.page_content),
-        })
-    
-    print(f"Created {len(chunk_documents)} chunks")
-    
-    # Print chunk details for verification
-    print("\n=== CHUNK DETAILS ===")
-    for i, chunk in enumerate(chunk_documents):
-        print(f"Chunk {i+1}: {len(chunk.page_content)} chars, "
-              f"Start index: {chunk.metadata.get('start_index', 'N/A')}, "
-              f"Source: {chunk.metadata.get('source', 'Unknown')}")
-    
-    # Extract chunk contents for embeddings
-    chunk_contents = [chunk.page_content for chunk in chunk_documents]
-    
-    # IMPROVEMENT: Return both contents AND document objects
-    # This allows us to track which chunk came from where, enabling citations
-    return chunk_contents, chunk_documents
+    embeddings_array = np.asarray(embeddings, dtype=np.float32)
 
-# ===== 3. EMBEDDING CREATION =====
-def create_embeddings(chunks: List[str]):
+    chunk_documents = [
+        Document(page_content=document, metadata=metadata or {})
+        for document, metadata in zip(documents, metadatas)
+    ]
+
+    return documents, embeddings_array, chunk_documents
+
+
+def prepare_retrieval_resources() -> Tuple[List[str], List[Document], np.ndarray, SentenceTransformer, Any]:
     """
-    IMPROVEMENT: Enhanced embedding creation with better model
-    
-    Previous: Used all-MiniLM-L6-v2 (384 dimensions, fast but limited)
-    Now: Uses intfloat/e5-base-v2 (768 dimensions, better semantic understanding)
-         Better captures nuanced meanings and relationships between concepts
+    Load all retrieval resources required for answering queries from the persistent vector store.
     """
-    print(f"Creating semantic embeddings with {EMBEDDING_MODEL_NAME}...")
-    start_time = time.time()
-    
-    # IMPROVEMENT: Better embedding model with more dimensions
-    # Previous: all-MiniLM-L6-v2 (384d, ~22M parameters)
-    # Now: intfloat/e5-base-v2 (768d, better quality)
+    collection = get_chroma_collection()
+    chunks, embeddings, chunk_documents = load_collection_data(collection)
+
     model = SentenceTransformer(EMBEDDING_MODEL_NAME)
-    
-    # IMPROVEMENT: Better encoding options for e5-base-v2
-    # e5-base-v2 uses a specific format: "query: {text}" or "passage: {text}"
-    # For document chunks, we use "passage:" prefix
-    formatted_chunks = [f"passage: {chunk}" for chunk in chunks]
-    
-    # Create embeddings for each chunk
-    # IMPROVEMENT: Added normalize_embeddings=True for better similarity computation
-    embeddings = model.encode(
-        formatted_chunks, 
-        convert_to_tensor=False,
-        normalize_embeddings=True,  # Normalize for cosine similarity
-        show_progress_bar=True  # Show progress for large documents
-    )
-    
-    duration = time.time() - start_time
-    print(f"Created embeddings with {embeddings.shape[1]} dimensions in {duration:.2f} seconds")
-    print(f"Average embedding norm: {np.mean(np.linalg.norm(embeddings, axis=1)):.4f}")
-    
-    return embeddings, model
+    reranker = initialize_reranker() if USE_RERANKING else None
+
+    return chunks, chunk_documents, embeddings, model, reranker
 
 # ===== 3.5. QUERY EXPANSION =====
-def expand_query(query: str) -> str:
+def expand_query(query: str, groq_client: Groq) -> str:
     """
     IMPROVEMENT: Added query expansion to improve retrieval
+    UPDATED: Now uses Groq instead of HuggingFace
     
     Previous: Used original query only (exact match limitations)
-    Now: Expands query with synonyms, variations, and related terms using free LLM
+    Now: Expands query with synonyms, variations, and related terms using Groq LLM
          This helps find relevant chunks even when wording differs
-    """
+    """ 
     if not USE_QUERY_EXPANSION:
         return query
     
     print(f"Expanding query: '{query}'")
     
     try:
-        client = InferenceClient(token=HF_API_TOKEN)
-        
-        # IMPROVEMENT: Use LLM to expand query with related terms and synonyms
+        # UPDATED: Use Groq to expand query with related terms and synonyms
         # This helps retrieve chunks that use different wording but same meaning
         expansion_prompt = f"""Given this query: "{query}"
 
@@ -362,13 +127,11 @@ Generate an expanded version that includes:
 
 Return ONLY the expanded query text, no explanation."""
 
-        messages = [
-            {"role": "system", "content": "You are a helpful assistant that expands search queries with synonyms and related terms."},
-            {"role": "user", "content": expansion_prompt}
-        ]
-        
-        response = client.chat_completion(
-            messages=messages,
+        response = groq_client.chat.completions.create(
+            messages=[
+                {"role": "system", "content": "You are a helpful assistant that expands search queries with synonyms and related terms."},
+                {"role": "user", "content": expansion_prompt}
+            ],
             model=MODEL_NAME,
             max_tokens=150,
             temperature=0.3,  # Low temperature for consistent expansion
@@ -492,9 +255,10 @@ def hybrid_search(query: str, model, embeddings, chunks: List[str], semantic_wei
 
 def process_query(query: str, model, embeddings, chunks: List[str], 
                   reranker=None, chunk_documents: List[Document] = None,
-                  top_k: int = TOP_K) -> Tuple[List[str], List[float], List[int]]:
+                  top_k: int = TOP_K, groq_client: Groq = None) -> Tuple[List[str], List[float], List[int]]:
     """
     IMPROVEMENT: Enhanced query processing with expansion, hybrid search, and reranking
+    UPDATED: Added groq_client parameter for query expansion
     
     Previous: Simple cosine similarity with top-k
     Now: 
@@ -504,7 +268,7 @@ def process_query(query: str, model, embeddings, chunks: List[str],
     4. Returns both chunks and metadata for citations
     """
     # IMPROVEMENT: Expand query first
-    expanded_query = expand_query(query) if USE_QUERY_EXPANSION else query
+    expanded_query = expand_query(query, groq_client) if USE_QUERY_EXPANSION and groq_client else query
     
     # IMPROVEMENT: Use hybrid search instead of just semantic
     similarities = hybrid_search(expanded_query, model, embeddings, chunks)
@@ -680,9 +444,10 @@ def prepare_context(relevant_chunks: List[str], scores: List[float],
     return context, citation_info
 
 # ===== 6. LLM RESPONSE GENERATION =====
-def generate_response(query: str, context: str, citation_info: Dict = None) -> str:
+def generate_response(query: str, context: str, groq_client: Groq, citation_info: Dict = None) -> str:
     """
     IMPROVEMENT: Enhanced response generation with better prompting and citations
+    UPDATED: Now uses Groq instead of HuggingFace
     
     Previous: Basic prompt with context and question
     Now: 
@@ -692,11 +457,7 @@ def generate_response(query: str, context: str, citation_info: Dict = None) -> s
     4. Increased token limit for detailed answers
     5. Better answer verification
     """
-    print("Generating response with Mistral from Hugging Face...")
-    
-    # Check if token is set
-    if not HF_API_TOKEN:
-        return "Error: HF_API_TOKEN environment variable not set"
+    print("Generating response with Groq...")
     
     # IMPROVEMENT: Enhanced system prompt with structured instructions
     # Previous: Simple instruction to use only context
@@ -736,20 +497,12 @@ INSTRUCTIONS:
 Please provide your answer now:"""
 
     try:
-        # Initialize Hugging Face Inference Client
-        client = InferenceClient(token=HF_API_TOKEN)
-        
-        # Use chat_completion for Mistral Instruct models
-        messages = [
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": user_message}
-        ]
-        
-        # IMPROVEMENT: Increased max_tokens for more detailed answers
-        # Previous: max_tokens=500 (often too short)
-        # Now: max_tokens=800 (allows for detailed, well-reasoned answers)
-        response = client.chat_completion(
-            messages=messages,
+        # UPDATED: Use Groq client for chat completion
+        response = groq_client.chat.completions.create(
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_message}
+            ],
             model=MODEL_NAME,
             max_tokens=800,  # Increased from 500 for better answers
             temperature=0.3,  # IMPROVEMENT: Lower temperature (0.3 vs 0.7) for more focused, factual answers
@@ -773,9 +526,10 @@ Please provide your answer now:"""
         return f"Error: {str(e)}"
 
 # ===== 7. MAIN RAG PIPELINE =====
-def run_rag_pipeline(file_path: str, query: str):
+def run_rag_pipeline(query: str):
     """
     IMPROVEMENT: Enhanced main RAG pipeline with all improvements
+    UPDATED: Now uses Groq client
     
     Previous: Basic pipeline with simple retrieval
     Now: Full pipeline with:
@@ -791,34 +545,14 @@ def run_rag_pipeline(file_path: str, query: str):
     """
     print("\n===== STARTING ENHANCED RAG PIPELINE =====")
     
-    # IMPROVEMENT: Step 1 - Load and clean document
-    # Previous: Basic loading
-    # Now: Text cleaning removes noise, improves semantic search
-    documents = load_document(file_path)
-    if not documents:
-        return "Failed to load document"
+    # Initialize Groq client
+    groq_client = Groq(api_key=GROQ_API_KEY)
     
-    # IMPROVEMENT: Step 2 - Enhanced chunking with metadata preservation
-    # Previous: Returned only chunk strings
-    # Now: Returns both chunks and Document objects for citation tracking
-    chunks, chunk_documents = chunk_text(documents)
-    
-    if not chunks:
-        return "Failed to chunk document"
-    
-    # IMPROVEMENT: Step 3 - Better embeddings with e5-base-v2
-    # Previous: all-MiniLM-L6-v2 (384d)
-    # Now: intfloat/e5-base-v2 (768d, better semantic understanding)
-    embeddings, model = create_embeddings(chunks)
-    
-    # IMPROVEMENT: Step 4 - Initialize reranker for two-stage retrieval
-    # Previous: No reranking
-    # Now: Two-stage retrieval improves precision
-    reranker = initialize_reranker() if USE_RERANKING else None
-    
-    # IMPROVEMENT: Step 5 - Enhanced query processing
-    # Previous: Simple cosine similarity
-    # Now: Query expansion + hybrid search + reranking
+    try:
+        chunks, chunk_documents, embeddings, model, reranker = prepare_retrieval_resources()
+    except RuntimeError as exc:
+        return str(exc)
+
     relevant_chunks, scores, chunk_indices = process_query(
         query, 
         model, 
@@ -826,31 +560,27 @@ def run_rag_pipeline(file_path: str, query: str):
         chunks, 
         reranker=reranker,
         chunk_documents=chunk_documents,
-        top_k=TOP_K
+        top_k=TOP_K,
+        groq_client=groq_client,
     )
     
-    # IMPROVEMENT: Step 6 - Enhanced context preparation with deduplication
-    # Previous: Simple concatenation
-    # Now: Deduplication + citation tracking
     context, citation_info = prepare_context(
         relevant_chunks, 
         scores, 
         chunk_documents=chunk_documents,
-        chunk_indices=chunk_indices
+        chunk_indices=chunk_indices,
     )
     
-    # IMPROVEMENT: Step 7 - Enhanced response generation
-    # Previous: Basic prompt
-    # Now: Better prompting + citations + increased token limit
-    response = generate_response(query, context, citation_info)
+    response = generate_response(query, context, groq_client, citation_info)
     
     print("\n===== ENHANCED RAG PIPELINE COMPLETED =====")
     return response
 
 # ===== 8. INTERACTIVE MODE =====
-def interactive_mode(file_path: str):
+def interactive_mode():
     """
     IMPROVEMENT: Enhanced interactive mode with all improvements
+    UPDATED: Now uses Groq client
     
     Previous: Basic interactive mode with simple retrieval
     Now: Full interactive mode with all improvements:
@@ -865,42 +595,27 @@ def interactive_mode(file_path: str):
     """
     print("\n===== STARTING ENHANCED INTERACTIVE MODE =====")
     
-    # IMPROVEMENT: Load and prepare document once with all improvements
-    # Previous: Basic loading and chunking
-    # Now: Cleaned text, enhanced chunking with metadata preservation
-    documents = load_document(file_path)
-    if not documents:
-        print("Failed to load document. Exiting...")
+    # Initialize Groq client
+    groq_client = Groq(api_key=GROQ_API_KEY)
+    
+    try:
+        chunks, chunk_documents, embeddings, model, reranker = prepare_retrieval_resources()
+    except RuntimeError as exc:
+        print(f"Failed to initialize retrieval resources: {exc}")
         return
     
-    # IMPROVEMENT: Enhanced chunking returns both chunks and document objects
-    # Previous: Only chunks
-    # Now: Chunks + metadata for citation tracking
-    chunks, chunk_documents = chunk_text(documents)
-    
-    if not chunks:
-        print("Failed to chunk document. Exiting...")
-        return
-    
-    # IMPROVEMENT: Better embeddings with e5-base-v2
-    # Previous: all-MiniLM-L6-v2 (384d)
-    # Now: intfloat/e5-base-v2 (768d)
-    embeddings, model = create_embeddings(chunks)
-    
-    # IMPROVEMENT: Initialize reranker once for reuse across queries
-    # Previous: No reranking
-    # Now: Two-stage retrieval for better precision
-    reranker = initialize_reranker() if USE_RERANKING else None
-    
-    print("\n" + "="*60)
+    print("\n" + "=" * 60)
     print("ENHANCED RAG SYSTEM READY")
-    print("="*60)
+    print("=" * 60)
+    print(f"Loaded {len(chunks)} chunk(s) from persistent ChromaDB collection '{CHROMA_COLLECTION_NAME}'.")
+    print(f"ChromaDB path: {CHROMA_DB_DIR}")
     print("Features enabled:")
     print(f"  - Query Expansion: {USE_QUERY_EXPANSION}")
     print(f"  - Hybrid Search: {USE_HYBRID_SEARCH}")
     print(f"  - Reranking: {USE_RERANKING}")
     print(f"  - Embedding Model: {EMBEDDING_MODEL_NAME}")
-    print("="*60)
+    print(f"  - LLM Model: {MODEL_NAME} (Groq)")
+    print("=" * 60)
     print("\nInteractive RAG session ready. Type 'exit' to quit.")
     
     while True:
@@ -923,7 +638,8 @@ def interactive_mode(file_path: str):
                 chunks,
                 reranker=reranker,
                 chunk_documents=chunk_documents,
-                top_k=TOP_K
+                top_k=TOP_K,
+                groq_client=groq_client
             )
             
             # IMPROVEMENT: Enhanced context preparation
@@ -939,7 +655,7 @@ def interactive_mode(file_path: str):
             # IMPROVEMENT: Enhanced response generation
             # Previous: Basic prompt
             # Now: Better prompting + citations
-            response = generate_response(query, context, citation_info)
+            response = generate_response(query, context, groq_client, citation_info)
             
             print("\n" + "="*60)
             print("ANSWER")
@@ -952,5 +668,4 @@ def interactive_mode(file_path: str):
             print("Please try again or type 'exit' to quit.")
 
 if __name__ == "__main__": 
-    file_path = 'loan-agreement-template.pdf'
-    interactive_mode(file_path)
+    interactive_mode()
