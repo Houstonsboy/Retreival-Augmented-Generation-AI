@@ -22,6 +22,387 @@ if not GROQ_API_KEY:
 
 MODEL_NAME = "llama-3.3-70b-versatile"
 
+# ===== FACTS EXTRACTION PROMPT =====
+FACTS_EXTRACTION_PROMPT = """You are a precision legal fact extractor for court judgments.
+
+═══════════════════════════════════════════════════════════════
+FUNDAMENTAL PRINCIPLE
+═══════════════════════════════════════════════════════════════
+
+FACTS = What happened in the real world (events, evidence, testimony)
+NOT FACTS = What people say ABOUT what happened (arguments, analysis, reasoning)
+
+═══════════════════════════════════════════════════════════════
+CRITICAL DISTINCTION: TRIAL FACTS vs APPEAL ARGUMENTS
+═══════════════════════════════════════════════════════════════
+
+Many documents are APPEALS or APPLICATIONS that reference trial facts.
+You must distinguish:
+
+✓ TRIAL FACTS (Extract these):
+  - What witnesses testified AT THE TRIAL
+  - What evidence was presented AT THE TRIAL
+  - What the accused said AT THE TRIAL
+  - What happened during the incident/crime
+
+✗ APPEAL ARGUMENTS (Do NOT extract these):
+  - What lawyers argue IN THE APPEAL about the trial
+  - Grounds of appeal
+  - Submissions by counsel in the current proceeding
+  - Challenges to evidence or procedure
+
+DETECTION RULE:
+- Phrases like "the trial court found..." or "evidence at trial showed..." 
+  → Extract the underlying fact
+- Phrases like "counsel submitted..." or "the appellant argues..." 
+  → Skip entirely (this is an argument)
+
+═══════════════════════════════════════════════════════════════
+SECTION 1: CASE BACKGROUND
+═══════════════════════════════════════════════════════════════
+
+ALWAYS include:
+✓ Case name, number, citation
+✓ Court and judge(s)
+✓ Parties (accused/appellant, complainant/respondent, etc.)
+✓ Type of proceeding (trial, appeal, bail application, review)
+✓ Charges or claims
+✓ Counsel names (if mentioned)
+
+═══════════════════════════════════════════════════════════════
+SECTION 2: CHRONOLOGICAL EVENTS
+═══════════════════════════════════════════════════════════════
+
+Extract events that happened in the real world:
+✓ What occurred on specific dates
+✓ Actions by individuals (accused, victim, police, witnesses)
+✓ Sequence of events leading to charges
+✓ Physical actions and movements
+
+Format: "On [date], [person] [action]"
+
+═══════════════════════════════════════════════════════════════
+SECTION 3: WITNESS TESTIMONY
+═══════════════════════════════════════════════════════════════
+
+⚠️ CRITICAL RULES - READ CAREFULLY:
+
+ONLY include in this section:
+✓ Direct testimony from trial witnesses (PW1, PW2, DW1, DW2, etc.)
+✓ Must use phrases: "PW1 testified that...", "DW2 stated that..."
+✓ What investigating officers reported observing
+✓ Statements by the accused to police or in court
+
+NEVER include in this section:
+✗ Lawyer statements in appeal/application ("Counsel stated...")
+✗ Submissions or arguments ("Mr./Ms. [Name] submitted...")
+✗ References to testimony without the testimony itself
+
+⚠️ MANDATORY SELF-CHECK:
+Before adding anything to TESTIMONY section, ask:
+- Is this a witness speaking at trial? YES → Include
+- Is this a lawyer arguing in appeal? YES → EXCLUDE
+- Does it start with "Counsel/Mr./Ms. [Name] submitted"? YES → EXCLUDE
+
+⚠️ IF NO TESTIMONY AVAILABLE:
+If the document is an appeal/application that doesn't contain actual 
+trial testimony, you MUST write:
+"Not available - this document does not contain detailed witness testimony 
+from the trial. It only references that testimony occurred."
+
+═══════════════════════════════════════════════════════════════
+SECTION 4: PHYSICAL/FORENSIC EVIDENCE
+═══════════════════════════════════════════════════════════════
+
+✓ Items recovered (weapons, money, documents, etc.)
+✓ Medical/autopsy findings
+✓ Forensic reports (DNA, fingerprints, ballistics)
+✓ Digital evidence (CCTV, phone records, messages)
+✓ Scientific test results
+
+Format: State what was found, not arguments about its validity
+Example: "Police recovered 100 US dollars from the house"
+NOT: "Counsel argued the money was illegally seized"
+
+═══════════════════════════════════════════════════════════════
+SECTION 5: PROSECUTION CASE
+═══════════════════════════════════════════════════════════════
+
+Include the prosecution's VERSION of events:
+✓ "The prosecution alleged that..."
+✓ "The prosecution's theory was that..."
+✓ What they claimed happened
+
+This is their story/narrative, stated neutrally.
+
+═══════════════════════════════════════════════════════════════
+SECTION 6: DEFENCE/ACCUSED'S VERSION
+═══════════════════════════════════════════════════════════════
+
+⚠️ CRITICAL RULES - READ CAREFULLY:
+
+ONLY include what the ACCUSED PERSON said happened:
+✓ "The accused testified that..."
+✓ "The accused told police that..."
+✓ "The defence case was that..." (when describing their factual narrative)
+
+NEVER include lawyer arguments:
+✗ "Counsel submitted the conviction was wrong" (lawyer argument)
+✗ "The appellant argues there was no evidence" (lawyer argument)
+✗ "Mr. [Name] contended the search was illegal" (lawyer argument)
+
+⚠️ DETECTION TEST:
+- Does this describe what the accused CLAIMS HAPPENED? → Include
+- Does this describe what the lawyer ARGUES ABOUT what happened? → Exclude
+
+⚠️ COMMON TRAP IN APPEAL DOCUMENTS:
+Appeals often state: "The appellant claims he was convicted on suspicion"
+This is a GROUND OF APPEAL (lawyer argument), NOT the accused's version.
+
+The accused's version would be: "The accused testified he was at home 
+during the incident" or "The accused stated he found the money on the street"
+
+⚠️ IF NO DEFENCE VERSION AVAILABLE:
+If the document doesn't contain what the accused actually said, write:
+"Not available - this document does not contain the accused's testimony 
+or statement about what happened."
+
+═══════════════════════════════════════════════════════════════
+SECTION 7: PROCEDURAL HISTORY
+═══════════════════════════════════════════════════════════════
+
+✓ Arrest and investigation steps
+✓ Charges filed (when, what charges, where)
+✓ Trial proceedings (dates, pleas, proceedings)
+✓ Conviction and sentence details
+✓ Appeals filed
+✓ Applications made (bail, stay, review)
+✓ Key procedural dates
+
+═══════════════════════════════════════════════════════════════
+SECTION 8: TRIAL COURT'S FACTUAL FINDINGS (Appeals/Reviews Only)
+═══════════════════════════════════════════════════════════════
+
+In appeal documents, include what the TRIAL COURT found as fact:
+✓ "The trial court found that [factual finding]"
+✓ "The magistrate noted [factual observation]"
+✓ "The trial court relied on [type of evidence]"
+
+Examples of what to INCLUDE:
+✓ "The trial court convicted based on circumstantial evidence"
+✓ "The magistrate noted contradictions in PW1's testimony"
+✓ "The trial court found the accused had no explanation for the money"
+✓ "The judge observed the charge sheet was defective"
+
+Examples of what to EXCLUDE:
+✗ "The trial court correctly applied the law" (legal analysis)
+✗ "The magistrate held that the burden was discharged" (legal reasoning)
+✗ "The court found the accused guilty because..." (reasoning)
+
+DISTINCTION: Include WHAT they found, not WHY they found it.
+
+═══════════════════════════════════════════════════════════════
+SECTION 9: COURT ORDERS (Outcome Only)
+═══════════════════════════════════════════════════════════════
+
+Include ONLY the final orders as pure facts:
+✓ Sentence imposed: "Sentenced to X years imprisonment"
+✓ Bail granted: "Released on bail of Kshs X"
+✓ Appeal outcome: "Appeal allowed/dismissed"
+✓ Acquittal/conviction: "Accused acquitted/convicted"
+
+DO NOT include:
+✗ Reasoning behind the orders
+✗ Analysis of why the decision was made
+✗ Legal basis for the decision
+
+═══════════════════════════════════════════════════════════════
+ABSOLUTE EXCLUSIONS - NEVER EXTRACT THESE
+═══════════════════════════════════════════════════════════════
+
+✗ Phrases starting with:
+  - "Counsel submitted..."
+  - "Mr./Ms. [Name] argued..."
+  - "The appellant/applicant contends..."
+  - "It is submitted that..."
+  - "The defence/prosecution urges..."
+
+✗ Legal analysis:
+  - "The court finds that..."
+  - "The court holds that..."
+  - "In my view..."
+  - "I am satisfied that..."
+  - "The law requires..."
+
+✗ Legal principles and citations:
+  - "It is trite law that..."
+  - "In the case of [Case Name]..."
+  - "Section X provides..."
+  - "The principle established in..."
+
+✗ Credibility assessments:
+  - "The witness was credible"
+  - "I believe PW1"
+  - "The testimony was reliable"
+
+✗ Grounds of appeal:
+  - List of errors alleged by appellant
+  - Challenges to conviction
+  - Legal arguments about procedure
+
+═══════════════════════════════════════════════════════════════
+SELF-CHECK BEFORE OUTPUTTING
+═══════════════════════════════════════════════════════════════
+
+Before finalizing your extraction, verify:
+
+1. TESTIMONY section:
+   □ Does it contain "PW1 testified..." or "DW1 stated..."? 
+   □ Does it contain "Counsel submitted..." or "Mr./Ms. X argued..."?
+   → If YES to second question, REMOVE those entries
+
+2. DEFENCE VERSION section:
+   □ Does it describe what accused SAID HAPPENED?
+   □ Does it describe what lawyer ARGUED about the case?
+   → If YES to second question, REMOVE and write "Not available"
+
+3. TRIAL COURT FINDINGS (if appeals):
+   □ Does it state WHAT the court found (facts)?
+   □ Does it state WHY the court decided (reasoning)?
+   → If YES to second question, REMOVE the reasoning parts
+
+4. Overall check:
+   □ Would someone reading this understand what actually happened?
+   □ Have I included any arguments or analysis by mistake?
+   □ Have I acknowledged when information is not available?
+
+═══════════════════════════════════════════════════════════════
+EXAMPLES - CORRECT vs INCORRECT EXTRACTION
+═══════════════════════════════════════════════════════════════
+
+SCENARIO 1: Lawyer Argument vs Trial Fact
+─────────────────────────────────────────
+SOURCE: "Mr. Makumi submitted that none of the prosecution witnesses 
+gave direct evidence connecting the applicant to the offence."
+
+❌ WRONG: "None of the prosecution witnesses gave direct evidence"
+✓ CORRECT: [Do not extract - this is a lawyer's argument]
+
+If you want to extract the underlying fact, look for: "The prosecution 
+case was based on circumstantial evidence" (if stated as fact elsewhere)
+
+─────────────────────────────────────────
+SCENARIO 2: Appeal Ground vs Accused's Version
+─────────────────────────────────────────
+SOURCE: "The appellant claims he was convicted purely on suspicion when 
+there was no direct evidence connecting him to the crime."
+
+❌ WRONG: "The accused claimed he was convicted on suspicion"
+✓ CORRECT: [Do not extract - this is a ground of appeal, not the 
+accused's version of events]
+
+The accused's version would be what he said happened during the incident,
+not what he argues about his conviction.
+
+─────────────────────────────────────────
+SCENARIO 3: Actual Testimony vs Reference to Testimony
+─────────────────────────────────────────
+SOURCE: "Counsel for the applicant argued that the prosecution witnesses 
+were not credible."
+
+❌ WRONG: "The prosecution witnesses were not credible"
+✓ CORRECT: [Do not extract - this is a lawyer's argument about credibility]
+
+─────────────────────────────────────────
+SOURCE: "PW1 John Kamau, a police officer, testified that he arrived at 
+the scene at 2pm and found the accused standing near the body."
+
+✓ CORRECT: "PW1 John Kamau (police officer) testified that he arrived 
+at the scene at 2pm and found the accused standing near the body."
+
+─────────────────────────────────────────
+SCENARIO 4: Trial Court Finding vs Appeal Court Analysis
+─────────────────────────────────────────
+SOURCE: "From the record, the trial magistrate convicted the appellant 
+on the basis of circumstantial evidence. There is a strong indication 
+that suspicion underlined the conviction."
+
+✓ CORRECT for "Trial Court Findings": 
+"The trial magistrate convicted based on circumstantial evidence. 
+The conviction was underlined by suspicion."
+
+❌ WRONG: Do not add the appeal judge's opinion: "I find the conviction 
+was unsafe" (that's analysis, not a fact)
+
+─────────────────────────────────────────
+SCENARIO 5: Document Without Trial Details
+─────────────────────────────────────────
+DOCUMENT TYPE: Bail application ruling
+
+SITUATION: Document mentions the trial happened but doesn't detail testimony
+
+✓ CORRECT OUTPUT:
+**WITNESS TESTIMONY**
+Not available - this is a bail application ruling that does not contain 
+detailed witness testimony from the trial. The document references that 
+prosecution witnesses testified, but their testimony is not detailed here.
+
+**DEFENCE VERSION**
+Not available - this document does not contain the accused's testimony 
+from the trial.
+
+═══════════════════════════════════════════════════════════════
+OUTPUT FORMAT
+═══════════════════════════════════════════════════════════════
+
+Structure your extraction as:
+
+**CASE BACKGROUND**
+[Include all case details, parties, charges]
+
+**CHRONOLOGICAL EVENTS**  
+[Events in order with dates]
+
+**WITNESS TESTIMONY**
+[Actual testimony from trial, or "Not available" with explanation]
+
+**PHYSICAL/FORENSIC EVIDENCE**
+[Items, reports, findings]
+
+**PROSECUTION CASE**
+[Their version of events]
+
+**DEFENCE/ACCUSED'S VERSION**
+[What accused said happened, or "Not available" with explanation]
+
+**PROCEDURAL HISTORY**
+[Arrest, charges, trial, appeals]
+
+**TRIAL COURT'S FACTUAL FINDINGS** (For appeals/reviews only)
+[What lower court found as fact]
+
+**FINAL ORDERS**
+[Outcome only - no reasoning]
+
+═══════════════════════════════════════════════════════════════
+DOCUMENT TO ANALYZE
+═══════════════════════════════════════════════════════════════
+
+{document_text}
+
+═══════════════════════════════════════════════════════════════
+BEGIN EXTRACTION
+═══════════════════════════════════════════════════════════════
+
+Remember:
+- Facts = What happened (events, evidence, testimony)
+- Not facts = What people argue about what happened
+- When in doubt: Is this describing reality, or arguing about reality?
+- Acknowledge when information is not available in the document
+"""
+
+SYSTEM_PROMPT = "You are a legal document analyst specializing in extracting factual content from Kenyan court judgments. Extract only facts, not legal analysis or court opinions."
+
 
 def extract_text_from_pdf(file_path: Path) -> str:
     """
@@ -153,150 +534,33 @@ def load_wilson_document() -> str:
         return error_msg
 
 
-FACTS_EXTRACTION_PROMPT = """You are a legal document analyst specializing in Kenyan court judgments.
-Think carefully before classifying each piece of content.
-Ask yourself: Is this describing WHAT HAPPENED, or is this 
-the COURT'S OPINION about what happened?
 
-Only include content that describes events, testimony, or 
-evidence - not the court's evaluation of that evidence
-TASK: Extract ALL factual content from this court judgment.
-
-═══════════════════════════════════════════════════════════════
-STEP 1: UNDERSTAND THE DOCUMENT
-═══════════════════════════════════════════════════════════════
-
-First, identify:
-- Type of case (criminal/civil, trial/appeal)
-- Main charge or issue
-- Key parties involved
-
-═══════════════════════════════════════════════════════════════
-STEP 2: WHAT TO EXTRACT
-═══════════════════════════════════════════════════════════════
-
-INCLUDE these as facts:
-
-✓ BACKGROUND: Parties, relationships, occupations, context
-✓ EVENTS: What happened, when, where (chronological narrative)
-✓ WITNESSES: What each PW/DW testified (attribute clearly)
-✓ EVIDENCE: Physical items, forensic findings, medical evidence
-✓ PROSECUTION VERSION: "The prosecution case was that..."
-✓ DEFENCE VERSION: "The defence/appellant stated that..."
-✓ PROCEDURAL: Arrest, investigation, body discovery, lower court proceedings
-
-EXCLUDE these (NOT facts):
-
-✗ Court's analysis: "We find that...", "The court holds..."
-✗ Credibility assessment: "The witness was believable..."
-✗ Legal citations: "In Rex v. Kipkering..."
-✗ Legal principles: "The burden of proof requires..."
-✗ Court's reasoning about the law
-✗ Final orders, sentence, or judgment
-✗ Grounds of appeal (unless extracting procedural facts)
-
-═══════════════════════════════════════════════════════════════
-STEP 3: OUTPUT FORMAT
-═══════════════════════════════════════════════════════════════
-
-Structure your extraction as:
-
-**CASE INFORMATION**
-- Case: [Name and citation]
-- Court: [Which court]
-- Type: [Trial/Appeal, Criminal/Civil]
-- Charge: [Main offence charged]
-
-**PARTIES**
-- Accused/Appellant: [Name]
-- Victim/Deceased/Complainant: [Name]
-- Relationship: [How they knew each other]
-
-**BACKGROUND FACTS**
-[Context about the parties, their lives, occupations, etc.]
-
-**CHRONOLOGICAL EVENTS**
-[The incident narrative - what happened, in order]
-- Include specific dates and times
-- Include specific locations
-- Include who did what
-
-**WITNESS TESTIMONIES**
-For each witness:
-- [Designation] ([Name if given]) - [Role/Relationship]:
-  [What they testified]
-
-**PHYSICAL/FORENSIC EVIDENCE**
-[Items recovered, medical findings, post-mortem results]
-
-**PROSECUTION CASE**
-[The prosecution's theory of what happened]
-
-**DEFENCE CASE**  
-[The accused's version of events]
-
-**PROCEDURAL FACTS**
-[Arrest, investigation steps, court proceedings]
-
-═══════════════════════════════════════════════════════════════
-IMPORTANT RULES
-═══════════════════════════════════════════════════════════════
-
-1. Be COMPREHENSIVE - facts may be scattered throughout; find them all
-2. Be SPECIFIC - exact dates, times, locations, names
-3. Be NEUTRAL - report all versions without evaluating truth
-4. ATTRIBUTE clearly - "PW3 testified that..." not just stating as fact
-5. PRESERVE details - do not summarize away important specifics
-6. When in doubt, include it - better to over-extract than miss facts
-
-═══════════════════════════════════════════════════════════════
-JUDGMENT TO ANALYZE
-═══════════════════════════════════════════════════════════════
-
-{document_text}
-
-═══════════════════════════════════════════════════════════════
-EXTRACTED FACTS
-═══════════════════════════════════════════════════════════════
-"""
 
 
 def extract_facts_with_llm(document_text: str) -> str:
     """
     Use Groq LLM to extract facts from the court judgment.
+    Returns extracted facts or error message.
     """
     print("\n===== EXTRACTING FACTS USING LLM =====")
-    print("Initializing Groq client...")
+    print(f"Document length: {len(document_text)} characters")
     
     try:
         groq_client = Groq(api_key=GROQ_API_KEY)
-        
-        # Format the prompt with the document text
         prompt = FACTS_EXTRACTION_PROMPT.format(document_text=document_text)
-        
-        print("Sending request to Groq LLM (Llama 3.3 70B)...")
-        print(f"Document length: {len(document_text)} characters")
         
         response = groq_client.chat.completions.create(
             messages=[
-                {
-                    "role": "system",
-                    "content": "You are a legal document analyst specializing in extracting factual content from Kenyan court judgments. Extract only facts, not legal analysis or court opinions."
-                },
-                {
-                    "role": "user",
-                    "content": prompt
-                }
+                {"role": "system", "content": SYSTEM_PROMPT},
+                {"role": "user", "content": prompt}
             ],
             model=MODEL_NAME,
-            temperature=0.1,  # More deterministic output
-            max_tokens=4000,  # Large token limit for comprehensive extraction
+            temperature=0.1,
+            max_tokens=4000,
         )
         
         extracted_facts = response.choices[0].message.content.strip()
-        print("✓ Facts extraction completed")
-        print(f"Extracted facts length: {len(extracted_facts)} characters")
-        
+        print(f"✓ Facts extracted: {len(extracted_facts)} characters")
         return extracted_facts
         
     except Exception as e:
