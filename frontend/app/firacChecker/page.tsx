@@ -7,6 +7,8 @@ export default function FiracChecker() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [document, setDocument] = useState<string | null>(null);
   const [facts, setFacts] = useState<string | null>(null);
+  const [rules, setRules] = useState<string | null>(null);
+
   const [issues, setIssues] = useState<string | null>(null);
   const [application, setApplication] = useState<string | null>(null);
   const [conclusion, setConclusion] = useState<string | null>(null);
@@ -19,6 +21,8 @@ export default function FiracChecker() {
     setDocument(null);
     setFacts(null);
     setIssues(null);
+    setRules(null);
+
     setApplication(null);
     setConclusion(null);
     setOutput(null);
@@ -40,6 +44,8 @@ export default function FiracChecker() {
       setDocument(data.document || "");
       setFacts(data.facts || "");
       setIssues(data.issues || "");
+      setRules(data.rules || "");
+
       setApplication(data.application || "");
       setConclusion(data.conclusion || "");
       setOutput(data.output || "");
@@ -237,6 +243,27 @@ export default function FiracChecker() {
             </div>
           )}
 
+           {/* Extracted rules Section */}
+           {rules && (
+            <div className="mb-8">
+              <div className="mb-4 flex items-center justify-between">
+                <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                  Rule applied
+                </h2>
+                <span className="text-sm text-gray-500 dark:text-gray-400">
+                  {rules.length.toLocaleString()} characters
+                </span>
+              </div>
+              <div className="rounded-lg border-2 border-yellow-200 dark:border-yellow-700 bg-yellow-50 dark:bg-yellow-900/20 p-6">
+                <div className="prose prose-sm dark:prose-invert max-w-none">
+                  <pre className="whitespace-pre-wrap break-words text-sm text-gray-900 dark:text-gray-100 font-sans overflow-x-auto max-h-[600px] overflow-y-auto">
+                    {rules}
+                  </pre>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Extracted Conclusion Section */}
           {conclusion && (
             <div className="mb-8">
@@ -262,6 +289,7 @@ export default function FiracChecker() {
           {!document &&
             !facts &&
             !issues &&
+            !rules &&
             !application &&
             !conclusion &&
             !error &&
