@@ -7,6 +7,9 @@ export default function FiracChecker() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [document, setDocument] = useState<string | null>(null);
   const [facts, setFacts] = useState<string | null>(null);
+  const [issues, setIssues] = useState<string | null>(null);
+  const [application, setApplication] = useState<string | null>(null);
+  const [conclusion, setConclusion] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [output, setOutput] = useState<string | null>(null);
 
@@ -15,6 +18,9 @@ export default function FiracChecker() {
     setError(null);
     setDocument(null);
     setFacts(null);
+    setIssues(null);
+    setApplication(null);
+    setConclusion(null);
     setOutput(null);
 
     try {
@@ -33,8 +39,11 @@ export default function FiracChecker() {
 
       setDocument(data.document || "");
       setFacts(data.facts || "");
+      setIssues(data.issues || "");
+      setApplication(data.application || "");
+      setConclusion(data.conclusion || "");
       setOutput(data.output || "");
-      
+
       if (data.error) {
         setError(data.error);
       }
@@ -59,7 +68,8 @@ export default function FiracChecker() {
             FIRAC Checker
           </h1>
           <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-            Extract and analyze facts from the Wilson Wanjala Mkendeshwo v Republic document using LLM
+            Extract and analyze Facts, Issues, Application, and Conclusion from
+            the Wilson Wanjala Mkendeshwo v Republic judgment using LLM.
           </p>
         </div>
       </header>
@@ -117,7 +127,8 @@ export default function FiracChecker() {
               )}
             </button>
             <p className="mt-2 text-center text-xs text-gray-500 dark:text-gray-400">
-              Click to extract facts from the Wilson Wanjala PDF using Groq LLM (Llama 3.3 70B)
+              Click to extract FIRAC components from the Wilson Wanjala PDF
+              using Groq LLM (Llama 3.3 70B)
             </p>
           </div>
 
@@ -184,30 +195,99 @@ export default function FiracChecker() {
             </div>
           )}
 
-          {/* Empty State */}
-          {!document && !facts && !error && !isProcessing && (
-            <div className="rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 px-6 py-12 text-center">
-              <svg
-                className="mx-auto mb-4 h-12 w-12 text-gray-400 dark:text-gray-500"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                />
-              </svg>
-              <p className="text-gray-500 dark:text-gray-400">
-                Click the button above to process the Wilson Wanjala document
-              </p>
+          {/* Extracted Issues Section */}
+          {issues && (
+            <div className="mb-8">
+              <div className="mb-4 flex items-center justify-between">
+                <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                  Extracted Issues (LLM Analysis)
+                </h2>
+                <span className="text-sm text-gray-500 dark:text-gray-400">
+                  {issues.length.toLocaleString()} characters
+                </span>
+              </div>
+              <div className="rounded-lg border-2 border-green-200 dark:border-green-800 bg-green-50 dark:bg-green-900/20 p-6">
+                <div className="prose prose-sm dark:prose-invert max-w-none">
+                  <pre className="whitespace-pre-wrap break-words text-sm text-gray-900 dark:text-gray-100 font-sans overflow-x-auto max-h-[600px] overflow-y-auto">
+                    {issues}
+                  </pre>
+                </div>
+              </div>
             </div>
           )}
+
+          {/* Extracted Application Section */}
+          {application && (
+            <div className="mb-8">
+              <div className="mb-4 flex items-center justify-between">
+                <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                  Application / Analysis (LLM)
+                </h2>
+                <span className="text-sm text-gray-500 dark:text-gray-400">
+                  {application.length.toLocaleString()} characters
+                </span>
+              </div>
+              <div className="rounded-lg border-2 border-purple-200 dark:border-purple-800 bg-purple-50 dark:bg-purple-900/20 p-6">
+                <div className="prose prose-sm dark:prose-invert max-w-none">
+                  <pre className="whitespace-pre-wrap break-words text-sm text-gray-900 dark:text-gray-100 font-sans overflow-x-auto max-h-[600px] overflow-y-auto">
+                    {application}
+                  </pre>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Extracted Conclusion Section */}
+          {conclusion && (
+            <div className="mb-8">
+              <div className="mb-4 flex items-center justify-between">
+                <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                  Conclusion / Holding (LLM)
+                </h2>
+                <span className="text-sm text-gray-500 dark:text-gray-400">
+                  {conclusion.length.toLocaleString()} characters
+                </span>
+              </div>
+              <div className="rounded-lg border-2 border-yellow-200 dark:border-yellow-700 bg-yellow-50 dark:bg-yellow-900/20 p-6">
+                <div className="prose prose-sm dark:prose-invert max-w-none">
+                  <pre className="whitespace-pre-wrap break-words text-sm text-gray-900 dark:text-gray-100 font-sans overflow-x-auto max-h-[600px] overflow-y-auto">
+                    {conclusion}
+                  </pre>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Empty State */}
+          {!document &&
+            !facts &&
+            !issues &&
+            !application &&
+            !conclusion &&
+            !error &&
+            !isProcessing && (
+              <div className="rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 px-6 py-12 text-center">
+                <svg
+                  className="mx-auto mb-4 h-12 w-12 text-gray-400 dark:text-gray-500"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                  />
+                </svg>
+                <p className="text-gray-500 dark:text-gray-400">
+                  Click the button above to process the Wilson Wanjala document
+                  and view the full FIRAC breakdown.
+                </p>
+              </div>
+            )}
         </div>
       </div>
     </div>
   );
 }
-

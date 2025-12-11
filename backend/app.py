@@ -195,12 +195,12 @@ def firac():
     Returns the extracted and cleaned text content.
     """
     try:
-        # Capture stdout to get processing output
+        # Capture stdout to get processing output (logs/print statements)
         old_stdout = sys.stdout
         sys.stdout = captured_output = io.StringIO()
         
         try:
-            # Run the firac processor
+            # Run the FIRAC processor (combined call)
             result = run_firac()
             output = captured_output.getvalue()
             
@@ -208,6 +208,10 @@ def firac():
                 return jsonify({
                     'document': result.get('document', ''),
                     'facts': result.get('facts', ''),
+                    'issues': result.get('issues', ''),
+                    'application': result.get('application', ''),
+                    'conclusion': result.get('conclusion', ''),
+                    'full_response': result.get('full_response', ''),
                     'output': output,
                     'error': result.get('error'),
                     'status': 'error'
@@ -216,14 +220,20 @@ def firac():
             return jsonify({
                 'document': result.get('document', ''),
                 'facts': result.get('facts', ''),
+                'issues': result.get('issues', ''),
+                'application': result.get('application', ''),
+                'conclusion': result.get('conclusion', ''),
+                'full_response': result.get('full_response', ''),
                 'output': output,
                 'status': 'success'
             }), 200
             
         except FileNotFoundError as e:
+            output = captured_output.getvalue()
             return jsonify({
                 'error': f'Wilson Wanjala PDF not found: {str(e)}',
-                'content': f'Error: Wilson Wanjala PDF file not found in the repository.',
+                'content': 'Error: Wilson Wanjala PDF file not found in the repository.',
+                'output': output,
                 'status': 'error'
             }), 404
         except Exception as e:
@@ -243,6 +253,7 @@ def firac():
             'content': f'Unexpected error: {str(e)}',
             'status': 'error'
         }), 500
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000, host='0.0.0.0')
