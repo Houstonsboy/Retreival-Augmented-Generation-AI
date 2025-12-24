@@ -3,15 +3,22 @@
 import { useState } from "react";
 import Navigation from "../components/Navigation";
 
+
+
+interface FiracSection {
+  content: string;
+  metadata: string;
+}
+
 export default function FiracChecker() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [document, setDocument] = useState<string | null>(null);
-  const [facts, setFacts] = useState<string | null>(null);
-  const [rules, setRules] = useState<string | null>(null);
-
-  const [issues, setIssues] = useState<string | null>(null);
-  const [application, setApplication] = useState<string | null>(null);
-  const [conclusion, setConclusion] = useState<string | null>(null);
+  const [facts, setFacts] = useState<FiracSection | null>(null);
+  const [rules, setRules] = useState<FiracSection | null>(null);
+  const [issues, setIssues] = useState<FiracSection | null>(null);
+  const [metadata, setMetadata] = useState<string | null>(null);
+  const [application, setApplication] = useState<FiracSection | null>(null);
+  const [conclusion, setConclusion] = useState<FiracSection | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [output, setOutput] = useState<string | null>(null);
 
@@ -22,7 +29,7 @@ export default function FiracChecker() {
     setFacts(null);
     setIssues(null);
     setRules(null);
-
+    setMetadata(null);          // ✅ just reset to null
     setApplication(null);
     setConclusion(null);
     setOutput(null);
@@ -42,12 +49,40 @@ export default function FiracChecker() {
       }
 
       setDocument(data.document || "");
-      setFacts(data.facts || "");
-      setIssues(data.issues || "");
-      setRules(data.rules || "");
+      setMetadata(data.metadata ?? null);
 
-      setApplication(data.application || "");
-      setConclusion(data.conclusion || "");
+      // Handle new structure where each section has content and metadata
+      if (data.facts && typeof data.facts === 'object' && 'content' in data.facts) {
+        setFacts(data.facts);
+      } else {
+        // Fallback for old structure
+        setFacts({ content: data.facts || "", metadata: data.metadata || "" });
+      }
+
+      if (data.issues && typeof data.issues === 'object' && 'content' in data.issues) {
+        setIssues(data.issues);
+      } else {
+        setIssues({ content: data.issues || "", metadata: data.metadata || "" });
+      }
+
+      if (data.rules && typeof data.rules === 'object' && 'content' in data.rules) {
+        setRules(data.rules);
+      } else {
+        setRules({ content: data.rules || "", metadata: data.metadata || "" });
+      }
+
+      if (data.application && typeof data.application === 'object' && 'content' in data.application) {
+        setApplication(data.application);
+      } else {
+        setApplication({ content: data.application || "", metadata: data.metadata || "" });
+      }
+
+      if (data.conclusion && typeof data.conclusion === 'object' && 'content' in data.conclusion) {
+        setConclusion(data.conclusion);
+      } else {
+        setConclusion({ content: data.conclusion || "", metadata: data.metadata || "" });
+      }
+
       setOutput(data.output || "");
 
       if (data.error) {
@@ -179,6 +214,29 @@ export default function FiracChecker() {
               </div>
             </div>
           )}
+              {/* Extracted Facts Section */}
+          {metadata && (
+            <div className="mb-8">
+              <div className="mb-4 flex items-center justify-between">
+                <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                  Extracted Metadata (LLM Analysis)
+                </h2>
+                <span className="text-sm text-gray-500 dark:text-gray-400">
+                  {metadata.length.toLocaleString()} characters
+                </span>
+              </div>
+              <div className="rounded-lg border-2 border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-900/20 p-6">
+                <div className="prose prose-sm dark:prose-invert max-w-none">
+                  <pre className="whitespace-pre-wrap break-words text-sm text-gray-900 dark:text-gray-100 font-sans overflow-x-auto max-h-[600px] overflow-y-auto">
+                    {metadata}
+                  </pre>
+                </div>
+              </div>
+            </div>
+          )}
+
+
+
 
           {/* Extracted Facts Section */}
           {facts && (
@@ -188,13 +246,24 @@ export default function FiracChecker() {
                   Extracted Facts (LLM Analysis)
                 </h2>
                 <span className="text-sm text-gray-500 dark:text-gray-400">
-                  {facts.length.toLocaleString()} characters
+                  {facts.content.length.toLocaleString()} characters
                 </span>
               </div>
+              {/* Metadata for Facts */}
+              {facts.metadata && (
+                <div className="mb-4 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-800 p-4">
+                  <h3 className="mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">
+                    Metadata
+                  </h3>
+                  <pre className="whitespace-pre-wrap break-words text-xs text-gray-600 dark:text-gray-400 font-mono">
+                    {facts.metadata}
+                  </pre>
+                </div>
+              )}
               <div className="rounded-lg border-2 border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-900/20 p-6">
                 <div className="prose prose-sm dark:prose-invert max-w-none">
                   <pre className="whitespace-pre-wrap break-words text-sm text-gray-900 dark:text-gray-100 font-sans overflow-x-auto max-h-[600px] overflow-y-auto">
-                    {facts}
+                    {facts.content}
                   </pre>
                 </div>
               </div>
@@ -209,13 +278,24 @@ export default function FiracChecker() {
                   Extracted Issues (LLM Analysis)
                 </h2>
                 <span className="text-sm text-gray-500 dark:text-gray-400">
-                  {issues.length.toLocaleString()} characters
+                  {issues.content.length.toLocaleString()} characters
                 </span>
               </div>
+              {/* Metadata for Issues */}
+              {issues.metadata && (
+                <div className="mb-4 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-800 p-4">
+                  <h3 className="mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">
+                    Metadata
+                  </h3>
+                  <pre className="whitespace-pre-wrap break-words text-xs text-gray-600 dark:text-gray-400 font-mono">
+                    {issues.metadata}
+                  </pre>
+                </div>
+              )}
               <div className="rounded-lg border-2 border-green-200 dark:border-green-800 bg-green-50 dark:bg-green-900/20 p-6">
                 <div className="prose prose-sm dark:prose-invert max-w-none">
                   <pre className="whitespace-pre-wrap break-words text-sm text-gray-900 dark:text-gray-100 font-sans overflow-x-auto max-h-[600px] overflow-y-auto">
-                    {issues}
+                    {issues.content}
                   </pre>
                 </div>
               </div>
@@ -230,13 +310,24 @@ export default function FiracChecker() {
                   Application / Analysis (LLM)
                 </h2>
                 <span className="text-sm text-gray-500 dark:text-gray-400">
-                  {application.length.toLocaleString()} characters
+                  {application.content.length.toLocaleString()} characters
                 </span>
               </div>
+              {/* Metadata for Application */}
+              {application.metadata && (
+                <div className="mb-4 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-800 p-4">
+                  <h3 className="mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">
+                    Metadata
+                  </h3>
+                  <pre className="whitespace-pre-wrap break-words text-xs text-gray-600 dark:text-gray-400 font-mono">
+                    {application.metadata}
+                  </pre>
+                </div>
+              )}
               <div className="rounded-lg border-2 border-purple-200 dark:border-purple-800 bg-purple-50 dark:bg-purple-900/20 p-6">
                 <div className="prose prose-sm dark:prose-invert max-w-none">
                   <pre className="whitespace-pre-wrap break-words text-sm text-gray-900 dark:text-gray-100 font-sans overflow-x-auto max-h-[600px] overflow-y-auto">
-                    {application}
+                    {application.content}
                   </pre>
                 </div>
               </div>
@@ -251,13 +342,24 @@ export default function FiracChecker() {
                   Rule applied
                 </h2>
                 <span className="text-sm text-gray-500 dark:text-gray-400">
-                  {rules.length.toLocaleString()} characters
+                  {rules.content.length.toLocaleString()} characters
                 </span>
               </div>
+              {/* Metadata for Rules */}
+              {rules.metadata && (
+                <div className="mb-4 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-800 p-4">
+                  <h3 className="mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">
+                    Metadata
+                  </h3>
+                  <pre className="whitespace-pre-wrap break-words text-xs text-gray-600 dark:text-gray-400 font-mono">
+                    {rules.metadata}
+                  </pre>
+                </div>
+              )}
               <div className="rounded-lg border-2 border-yellow-200 dark:border-yellow-700 bg-yellow-50 dark:bg-yellow-900/20 p-6">
                 <div className="prose prose-sm dark:prose-invert max-w-none">
                   <pre className="whitespace-pre-wrap break-words text-sm text-gray-900 dark:text-gray-100 font-sans overflow-x-auto max-h-[600px] overflow-y-auto">
-                    {rules}
+                    {rules.content}
                   </pre>
                 </div>
               </div>
@@ -272,13 +374,24 @@ export default function FiracChecker() {
                   Conclusion / Holding (LLM)
                 </h2>
                 <span className="text-sm text-gray-500 dark:text-gray-400">
-                  {conclusion.length.toLocaleString()} characters
+                  {conclusion.content.length.toLocaleString()} characters
                 </span>
               </div>
+              {/* Metadata for Conclusion */}
+              {conclusion.metadata && (
+                <div className="mb-4 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-800 p-4">
+                  <h3 className="mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">
+                    Metadata
+                  </h3>
+                  <pre className="whitespace-pre-wrap break-words text-xs text-gray-600 dark:text-gray-400 font-mono">
+                    {conclusion.metadata}
+                  </pre>
+                </div>
+              )}
               <div className="rounded-lg border-2 border-yellow-200 dark:border-yellow-700 bg-yellow-50 dark:bg-yellow-900/20 p-6">
                 <div className="prose prose-sm dark:prose-invert max-w-none">
                   <pre className="whitespace-pre-wrap break-words text-sm text-gray-900 dark:text-gray-100 font-sans overflow-x-auto max-h-[600px] overflow-y-auto">
-                    {conclusion}
+                    {conclusion.content}
                   </pre>
                 </div>
               </div>

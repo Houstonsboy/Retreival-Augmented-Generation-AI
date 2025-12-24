@@ -205,13 +205,30 @@ def firac():
             output = captured_output.getvalue()
             
             if result.get('error'):
+                # Return error response with same structure for consistency
                 return jsonify({
                     'document': result.get('document', ''),
-                    'facts': result.get('facts', ''),
-                    'issues': result.get('issues', ''),
-                    'rules': result.get('rules', ''),
-                    'application': result.get('application', ''),
-                    'conclusion': result.get('conclusion', ''),
+                    'metadata': result.get('metadata', ''),
+                    'facts': {
+                        'content': result.get('facts', ''),
+                        'metadata': result.get('facts_metadata', '')
+                    },
+                    'issues': {
+                        'content': result.get('issues', ''),
+                        'metadata': result.get('issues_metadata', '')
+                    },
+                    'rules': {
+                        'content': result.get('rules', ''),
+                        'metadata': result.get('rules_metadata', '')
+                    },
+                    'application': {
+                        'content': result.get('application', ''),
+                        'metadata': result.get('application_metadata', '')
+                    },
+                    'conclusion': {
+                        'content': result.get('conclusion', ''),
+                        'metadata': result.get('conclusion_metadata', '')
+                    },
                     'full_response': result.get('full_response', ''),
                     'output': output,
                     'error': result.get('error'),
@@ -220,11 +237,27 @@ def firac():
             
             return jsonify({
                 'document': result.get('document', ''),
-                'facts': result.get('facts', ''),
-                'issues': result.get('issues', ''),
-                'rules': result.get('rules', ''),
-                'application': result.get('application', ''),
-                'conclusion': result.get('conclusion', ''),
+                'metadata': result.get('metadata', ''),
+                'facts': {
+                    'content': result.get('facts', ''),
+                    'metadata': result.get('facts_metadata', '')
+                },
+                'issues': {
+                    'content': result.get('issues', ''),
+                    'metadata': result.get('issues_metadata', '')
+                },
+                'rules': {
+                    'content': result.get('rules', ''),
+                    'metadata': result.get('rules_metadata', '')
+                },
+                'application': {
+                    'content': result.get('application', ''),
+                    'metadata': result.get('application_metadata', '')
+                },
+                'conclusion': {
+                    'content': result.get('conclusion', ''),
+                    'metadata': result.get('conclusion_metadata', '')
+                },
                 'full_response': result.get('full_response', ''),
                 'output': output,
                 'status': 'success'

@@ -11,6 +11,7 @@ from dotenv import load_dotenv
 from openai import OpenAI
 from dotenv import load_dotenv
 import  requests
+import json
 
 # Load environment variables
 load_dotenv()
@@ -18,7 +19,7 @@ load_dotenv()
 # ===== CONFIGURATION =====
 BASE_DIR = Path(__file__).resolve().parent
 REPO_DIR = BASE_DIR / "Repo"
-PDF_PATH = "Muruatetu  another v Republic Katiba Institute  5 others (Amicus Curiae) (Petition 15  16of2015) 2021KESC31(KLR) (6July2021) (Directions).pdf"
+PDF_PATH = "Wilson Wanjala Mkendeshwo v Republic (Criminal Appeal 97of2002) 2002KECA166(KLR) (18October2002) (Judgment).pdf"
 
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 if not GROQ_API_KEY:
@@ -209,11 +210,83 @@ def load_wilson_document() -> str:
 
 
 
-    """
-    Legal Document Extraction System - Facts and Issues Extraction for Kenyan Court Judgments
-    """
+   
+METADATA_EXTRACTION_PROMPT = """You are a legal document analyst specializing in Kenyan court judgments.
 
-    FACTS_EXTRACTION_PROMPT = """You are a legal document analyst specializing in Kenyan court judgments.
+Your task is to extract the CORE METADATA of this case. Think of this as the "case header" information.
+
+You must identify, from the judgment text itself, the following items:
+
+1. File name or case title as it appears in the judgment
+2. Parties (Appellant/Respondent or Plaintiff/Defendant, etc.)
+3. Court level (e.g., Supreme Court of Kenya, Court of Appeal, High Court, Magistrates Court, Environment and Land Court, Employment and Labour Relations Court, etc.)
+4. Judge(s) who wrote or delivered the judgment
+5. Year of the judgment (from the judgment date, not necessarily the year of filing)
+6. Legal domain (the area of law this case falls under, e.g., Criminal Law, Civil Law, Constitutional Law, Family Law, Commercial Law, Employment Law, Land Law, Tort Law, Contract Law, Property Law, Administrative Law, etc.)
+7. Winning party (who won the case: either "plaintiff" or "defendant". For criminal cases, if the accused is convicted, the prosecution wins; if acquitted, the accused wins. For appeals, determine who prevailed: if appeal is dismissed, the respondent wins; if allowed, the appellant wins.)
+
+When reading the document, pay special attention to:
+- The cover page / first lines
+- The heading block (often in ALL CAPS, e.g. "IN THE HIGH COURT OF KENYA AT NAIROBI")
+- The line with the judge's name (often ending with "J.", "JA", "JJ.A", "SCJ", etc.)
+- The date line (e.g., "Dated and delivered at Nairobi this 18th day of October 2002")
+- The nature of the case, charges, claims, or issues to determine the legal domain
+- The final orders, judgment outcome, and conclusion to determine who won (plaintiff or defendant)
+
+═══════════════════════════════════════════════════════════════
+OUTPUT FORMAT (PLAIN TEXT)
+═══════════════════════════════════════════════════════════════
+
+Return the result as a plain text block with EXACTLY these seven lines
+(using these labels in ALL CAPS, followed by a colon):
+
+FILE NAME: ...
+PARTIES: ...
+COURT LEVEL: ...
+JUDGE: ...
+YEAR: ...
+LEGAL DOMAIN: ...
+WINNING PARTY: ...
+
+Examples:
+FILE NAME: Julius Muriithi & 11 others v Stephen Musyoka Ivai [2020] eKLR
+PARTIES: Julius Muriithi & 11 others v Stephen Musyoka Ivai
+COURT LEVEL: High Court of Kenya (at Nairobi)
+JUDGE: Lesiit J.
+YEAR: 2020
+LEGAL DOMAIN: Civil Law
+WINNING PARTY: plaintiff
+
+FILE NAME: Wilson Wanjala Mkendeshwo v Republic [2002] KECA 166
+PARTIES: Wilson Wanjala Mkendeshwo v Republic
+COURT LEVEL: Court of Appeal of Kenya
+JUDGE: [Judge names]
+YEAR: 2002
+LEGAL DOMAIN: Criminal Law
+WINNING PARTY: defendant
+
+If you are unsure about any field, make your best reasonable inference from the text
+and optionally note the inference in parentheses, e.g.
+COURT LEVEL: High Court of Kenya (inferred from heading "IN THE HIGH COURT OF KENYA AT NAIROBI").
+LEGAL DOMAIN: Criminal Law (inferred from charge of murder under Penal Code).
+WINNING PARTY: plaintiff (inferred from judgment entered for the plaintiff and appeal dismissed).
+
+Do NOT include any other commentary before or after these seven lines.
+
+═══════════════════════════════════════════════════════════════
+JUDGMENT TO ANALYZE
+═══════════════════════════════════════════════════════════════
+
+{document_text}
+
+═══════════════════════════════════════════════════════════════
+BEGIN METADATA LINES ONLY
+═══════════════════════════════════════════════════════════════
+"""
+
+
+
+FACTS_EXTRACTION_PROMPT = """You are a legal document analyst specializing in Kenyan court judgments.
     Think carefully before classifying each piece of content.
     Ask yourself: Is this describing WHAT HAPPENED, or is this 
     the COURT'S OPINION about what happened?
@@ -321,7 +394,7 @@ def load_wilson_document() -> str:
     ═══════════════════════════════════════════════════════════════
     """
 
-    ISSUES_EXTRACTION_PROMPT = """You are a legal document analyst specializing in Kenyan court judgments.
+ISSUES_EXTRACTION_PROMPT = """You are a legal document analyst specializing in Kenyan court judgments.
     Think carefully about what the court is being asked to decide.
     Ask yourself: What LEGAL QUESTIONS does the court need to answer 
     to reach its decision?
@@ -1273,13 +1346,61 @@ def call_groq_api(prompt: str, system_message: str, max_tokens: int = 4000) -> s
     except Exception as e:
         raise Exception(f"Error calling Groq API: {str(e)}")
 
+def extract_metadata_only(document_text: str) -> str:
+    """
+    Use Groq LLM to extract ONLY the core metadata of the case:
+    - file name / case title
+    - parties
+    - court level
+    - judge
+    - year
+    - legal domain of the case
+    - winning party (plaintiff or defendant)
+
+    Returns:
+        str: A plain-text block with 7 lines:
+             FILE NAME: ...
+             PARTIES: ...
+             COURT LEVEL: ...
+             JUDGE: ...
+             YEAR: ...
+             LEGAL DOMAIN: ...
+             WINNING PARTY: ...
+             If extraction fails, returns an error message string.
+    """
+    print("\n===== EXTRACTING METADATA ONLY =====")
+    
+    try:
+        prompt = METADATA_EXTRACTION_PROMPT.format(document_text=document_text)
+        system_message = (
+            "You are a legal document analyst specializing in Kenyan court judgments. "
+            "Extract ONLY the core case metadata and return it as SEVEN plain-text lines: "
+            "FILE NAME, PARTIES, COURT LEVEL, JUDGE, YEAR, LEGAL DOMAIN, WINNING PARTY."
+        )
+        
+        raw_metadata = call_groq_api(prompt, system_message, max_tokens=800)
+        
+        print("✓ Metadata extraction completed")
+        print(f"Extracted content length: {len(raw_metadata)} characters")
+        print("Metadata preview:")
+        print(raw_metadata[:500])
+        
+        # Just return the string as-is (frontend will render it)
+        return raw_metadata.strip()
+        
+    except Exception as e:
+        error_msg = f"Error extracting metadata: {str(e)}"
+        print(error_msg)
+        # Still return a string, not a dict
+        return error_msg
+
 
 def extract_all_firac_combined(document_text: str) -> dict:
     """
-    Use Groq LLM to extract ALL FIRAC components (including RULES) in a single call.
-    This is more efficient than making separate API calls.
-    
-    Returns a dictionary with all FIRAC components.
+    Use Groq LLM to extract ALL FIRAC components (including RULES)
+    AND METADATA in a single call.
+
+    Returns a dictionary with all components as plain strings.
     """
     print("\n===== EXTRACTING ALL FIRAC COMPONENTS (COMBINED) =====")
     print("Connecting to Groq API...")
@@ -1287,7 +1408,17 @@ def extract_all_firac_combined(document_text: str) -> dict:
     try:
         prompt = f"""You are a legal document analyst specializing in Kenyan court judgments.
 
-Extract ALL FIRAC components from this judgment and present them in clearly separated sections:
+Extract ALL key components from this judgment and present them in clearly separated sections:
+
+SECTION 0: METADATA
+[Extract the core case metadata as seven lines:
+ FILE NAME: ...
+ PARTIES: ...
+ COURT LEVEL: ...
+ JUDGE: ...
+ YEAR: ...
+ LEGAL DOMAIN: ...
+ WINNING PARTY: ... (either "plaintiff" or "defendant" - analyze the final judgment outcome to determine who won)]
 
 SECTION 1: FACTS
 [Extract the factual background, events, and circumstances of the case]
@@ -1310,6 +1441,7 @@ Here is the court judgment:
 {document_text}
 
 Remember to clearly label each section exactly as:
+- SECTION 0: METADATA
 - SECTION 1: FACTS
 - SECTION 2: ISSUES
 - SECTION 3: RULES
@@ -1324,8 +1456,8 @@ Be comprehensive and keep each section clearly separated.
         
         system_message = (
             "You are a legal document analyst specializing in extracting structured FIRAC information "
-            "from Kenyan court judgments. You must provide clearly separated sections for FACTS, ISSUES, "
-            "RULES, APPLICATION, and CONCLUSION using the exact section headings."
+            "and core metadata from Kenyan court judgments. You must provide clearly separated sections "
+            "for METADATA, FACTS, ISSUES, RULES, APPLICATION, and CONCLUSION using the exact section headings."
         )
         
         extracted_content = call_groq_api(prompt, system_message, max_tokens=10000)
@@ -1336,6 +1468,7 @@ Be comprehensive and keep each section clearly separated.
         # Parse the response to separate all sections
         result = {
             'full_response': extracted_content,
+            'metadata': '',
             'facts': '',
             'issues': '',
             'rules': '',
@@ -1344,6 +1477,13 @@ Be comprehensive and keep each section clearly separated.
         }
         
         sections_found = 0
+
+        # METADATA
+        if "SECTION 0: METADATA" in extracted_content and "SECTION 1: FACTS" in extracted_content:
+            metadata_section = extracted_content.split("SECTION 1: FACTS")[0]
+            metadata_section = metadata_section.replace("SECTION 0: METADATA", "").strip()
+            result['metadata'] = metadata_section
+            sections_found += 1
 
         # FACTS
         if "SECTION 1: FACTS" in extracted_content and "SECTION 2: ISSUES" in extracted_content:
@@ -1376,15 +1516,16 @@ Be comprehensive and keep each section clearly separated.
             result['conclusion'] = conclusion_section.strip()
             sections_found += 1
         
-        if sections_found == 5:
+        if sections_found == 6:
             print(f"✓ Successfully separated all sections:")
+            print(f"   • Metadata: {len(result['metadata'])} chars")
             print(f"   • Facts: {len(result['facts'])} chars")
             print(f"   • Issues: {len(result['issues'])} chars")
             print(f"   • Rules: {len(result['rules'])} chars")
             print(f"   • Application: {len(result['application'])} chars")
             print(f"   • Conclusion: {len(result['conclusion'])} chars")
         else:
-            print(f"⚠ Only found {sections_found}/5 sections. Partial extraction.")
+            print(f"⚠ Only found {sections_found}/6 sections. Partial extraction.")
         
         return result
         
@@ -1393,6 +1534,7 @@ Be comprehensive and keep each section clearly separated.
         print(error_msg)
         return {
             'full_response': error_msg,
+            'metadata': error_msg,
             'facts': error_msg,
             'issues': error_msg,
             'rules': error_msg,
@@ -1502,7 +1644,7 @@ def extract_application_only(document_text: str) -> str:
     print("\n===== EXTRACTING APPLICATION/ANALYSIS ONLY =====")
     
     try:
-        prompt = APPLICATION_EXTRACTION_PROMPT.format(document_text=document_text)
+        prompt = APPLICATION_ANALYSIS_EXTRACTION_PROMPT.format(document_text=document_text)
         system_message = "You are a legal document analyst specializing in extracting legal application and analysis from Kenyan court judgments. Extract how the court applied legal principles, precedents, and reasoning to resolve the issues."
         
         extracted_application = call_groq_api(prompt, system_message, max_tokens=6000)
@@ -1627,27 +1769,35 @@ def extract_conclusion_only(document_text: str) -> str:
 
 def run_firac() -> dict:
     """
-    Run FIRAC extraction with a SINGLE combined API call.
+    Run FIRAC extraction with a SINGLE combined API call (for FIRAC components),
+    plus a separate metadata extraction.
 
     Returns:
         dict: {
-            'document': str,           # Original cleaned document text
-            'facts': str,              # Extracted facts
-            'issues': str,             # Extracted issues
-            'rules': str,              # Extracted binding legal rules / tests
-            'application': str,        # Extracted application/analysis
-            'conclusion': str,         # Extracted conclusion
-            'full_response': str,      # Complete LLM response
-            'error': str or None       # Error message if any
+            'document': str,
+            'metadata': str,          # Extracted metadata (file_name, parties, court_level, judge, year, legal_domain, winning_party)
+            'facts': str,
+            'issues': str,
+            'rules': str,
+            'application': str,
+            'conclusion': str,
+            'facts_metadata': str,    # Metadata attached to facts section
+            'issues_metadata': str,   # Metadata attached to issues section
+            'rules_metadata': str,    # Metadata attached to rules section
+            'application_metadata': str,  # Metadata attached to application section
+            'conclusion_metadata': str,    # Metadata attached to conclusion section
+            'full_response': str,
+            'error': str or None
         }
     """
     print("\n" + "=" * 80)
-    print("🏛️  STARTING FIRAC EXTRACTION (COMBINED API CALL)")
+    print("🏛️  STARTING FIRAC + METADATA EXTRACTION")
     print(f"🤖 Using Groq API with model: {MODEL_NAME}")
     print("=" * 80)
 
     result = {
         'document': '',
+        'metadata': {},
         'facts': '',
         'issues': '',
         'rules': '',
@@ -1659,12 +1809,12 @@ def run_firac() -> dict:
 
     try:
         # Step 1: Read PDF
-        print("\n[STEP 1/2] Reading PDF document...")
+        print("\n[STEP 1/3] Reading PDF document...")
         document_text = load_wilson_document()
         result['document'] = document_text
 
-        # Step 2: Extract all components in one call
-        print("\n[STEP 2/2] Extracting all FIRAC components in single API call...")
+        # Step 2: Extract all FIRAC components in one call
+        print("\n[STEP 2/3] Extracting all FIRAC components in single API call...")
         extraction_result = extract_all_firac_combined(document_text)
 
         result['facts'] = extraction_result.get('facts', '')
@@ -1674,10 +1824,24 @@ def run_firac() -> dict:
         result['conclusion'] = extraction_result.get('conclusion', '')
         result['full_response'] = extraction_result.get('full_response', '')
 
+        # Step 3: Extract metadata
+        print("\n[STEP 3/3] Extracting metadata...")
+        metadata_text = extract_metadata_only(document_text)
+        result['metadata'] = metadata_text
+        
+        # Step 4: Attach metadata to each FIRAC section
+        print("\n[STEP 4/4] Attaching metadata to each FIRAC section...")
+        result['facts_metadata'] = metadata_text
+        result['issues_metadata'] = metadata_text
+        result['rules_metadata'] = metadata_text
+        result['application_metadata'] = metadata_text
+        result['conclusion_metadata'] = metadata_text
+        
         print("\n" + "=" * 80)
-        print("✅ FIRAC EXTRACTION FINISHED SUCCESSFULLY (COMBINED CALL)")
+        print("✅ FIRAC + METADATA EXTRACTION FINISHED SUCCESSFULLY")
         print("=" * 80)
         print(f"\n📊 Extraction Summary:")
+        print(f"   • Metadata: {len(metadata_text)} characters")
         print(f"   • Facts: {len(result['facts'])} characters")
         print(f"   • Issues: {len(result['issues'])} characters")
         print(f"   • Rules: {len(result['rules'])} characters")
@@ -1706,7 +1870,7 @@ if __name__ == "__main__":
     print("\n" + "=" * 80)
     print("FINAL EXTRACTION RESULT")
     print("=" * 80)
-    
+    print (result)
     if result.get("error"):
         print(f"ERROR: {result['error']}")
     else:
