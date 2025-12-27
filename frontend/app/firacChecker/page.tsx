@@ -12,6 +12,7 @@ interface FiracSection {
 
 export default function FiracChecker() {
   const [isProcessing, setIsProcessing] = useState(false);
+  const [isEmbedding, setIsEmbedding] = useState(false);
   const [document, setDocument] = useState<string | null>(null);
   const [facts, setFacts] = useState<FiracSection | null>(null);
   const [rules, setRules] = useState<FiracSection | null>(null);
@@ -21,6 +22,7 @@ export default function FiracChecker() {
   const [conclusion, setConclusion] = useState<FiracSection | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [output, setOutput] = useState<string | null>(null);
+  const [embeddingMessage, setEmbeddingMessage] = useState<{ type: 'success' | 'error' | null; text: string }>({ type: null, text: '' });
 
   const handleProcess = async () => {
     setIsProcessing(true);
@@ -33,6 +35,7 @@ export default function FiracChecker() {
     setApplication(null);
     setConclusion(null);
     setOutput(null);
+    setEmbeddingMessage({ type: null, text: '' }); // Clear embedding message when processing new document
 
     try {
       const response = await fetch("http://localhost:5000/api/firac", {
@@ -97,6 +100,62 @@ export default function FiracChecker() {
     }
   };
 
+  const handleEmbed = async () => {
+    // Check if we have FIRAC data to embed
+    if (!facts && !issues && !rules && !application && !conclusion) {
+      setEmbeddingMessage({
+        type: 'error',
+        text: 'No FIRAC data available. Please process the document first.'
+      });
+      return;
+    }
+
+    setIsEmbedding(true);
+    setEmbeddingMessage({ type: null, text: '' });
+
+    try {
+      // Prepare FIRAC data in the format expected by the backend
+      const firacData = {
+        document: document || '',
+        metadata: metadata || '',
+        facts: facts || { content: '', metadata: '' },
+        issues: issues || { content: '', metadata: '' },
+        rules: rules || { content: '', metadata: '' },
+        application: application || { content: '', metadata: '' },
+        conclusion: conclusion || { content: '', metadata: '' },
+      };
+
+      const response = await fetch("http://localhost:5000/api/ingest-firac", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(firacData),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Embedding failed");
+      }
+
+      setEmbeddingMessage({
+        type: 'success',
+        text: data.message || 'FIRAC elements successfully embedded into vector database!'
+      });
+    } catch (error) {
+      setEmbeddingMessage({
+        type: 'error',
+        text: error instanceof Error ? error.message : "Failed to embed FIRAC data"
+      });
+    } finally {
+      setIsEmbedding(false);
+    }
+  };
+
+  // Check if FIRAC data is available for embedding
+  const hasFiracData = facts || issues || rules || application || conclusion;
+
   return (
     <div className="flex min-h-screen flex-col bg-white dark:bg-gray-900">
       {/* Top Navigation */}
@@ -118,58 +177,109 @@ export default function FiracChecker() {
       {/* Main Content */}
       <div className="flex-1 overflow-y-auto">
         <div className="mx-auto max-w-4xl px-4 py-8">
-          {/* Process Button */}
+          {/* Process and Embed Buttons */}
           <div className="mb-6">
-            <button
-              onClick={handleProcess}
-              disabled={isProcessing}
-              className="flex w-full items-center justify-center gap-2 rounded-lg bg-blue-600 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-blue-700 disabled:bg-gray-300 dark:disabled:bg-gray-700 disabled:cursor-not-allowed"
-            >
-              {isProcessing ? (
-                <>
-                  <svg
-                    className="h-5 w-5 animate-spin"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* Process Button */}
+              <button
+                onClick={handleProcess}
+                disabled={isProcessing}
+                className="flex w-full items-center justify-center gap-2 rounded-lg bg-blue-600 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-blue-700 disabled:bg-gray-300 dark:disabled:bg-gray-700 disabled:cursor-not-allowed"
+              >
+                {isProcessing ? (
+                  <>
+                    <svg
+                      className="h-5 w-5 animate-spin"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      ></path>
+                    </svg>
+                    <span>Processing document...</span>
+                  </>
+                ) : (
+                  <>
+                    <svg
+                      className="h-5 w-5"
+                      fill="none"
                       stroke="currentColor"
-                      strokeWidth="4"
-                    ></circle>
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                    ></path>
-                  </svg>
-                  <span>Processing document...</span>
-                </>
-              ) : (
-                <>
-                  <svg
-                    className="h-5 w-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                    />
-                  </svg>
-                  <span>Process Wilson Wanjala Document</span>
-                </>
-              )}
-            </button>
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                      />
+                    </svg>
+                    <span>Process Wilson Wanjala Document</span>
+                  </>
+                )}
+              </button>
+
+              {/* Embed Button */}
+              <button
+                onClick={handleEmbed}
+                disabled={!hasFiracData || isEmbedding || isProcessing}
+                className="flex w-full items-center justify-center gap-2 rounded-lg bg-green-600 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-green-700 disabled:bg-gray-300 dark:disabled:bg-gray-700 disabled:cursor-not-allowed"
+              >
+                {isEmbedding ? (
+                  <>
+                    <svg
+                      className="h-5 w-5 animate-spin"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      ></path>
+                    </svg>
+                    <span>Embedding into vector DB...</span>
+                  </>
+                ) : (
+                  <>
+                    <svg
+                      className="h-5 w-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
+                      />
+                    </svg>
+                    <span>Embed FIRAC Elements</span>
+                  </>
+                )}
+              </button>
+            </div>
             <p className="mt-2 text-center text-xs text-gray-500 dark:text-gray-400">
-              Click to extract FIRAC components from the Wilson Wanjala PDF
-              using Groq LLM (Llama 3.3 70B)
+              First extract FIRAC components, then embed them into the vector database
             </p>
           </div>
 
@@ -177,6 +287,23 @@ export default function FiracChecker() {
           {error && (
             <div className="mb-6 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 px-4 py-3">
               <p className="text-sm text-red-800 dark:text-red-200">{error}</p>
+            </div>
+          )}
+
+          {/* Embedding Success/Error Message */}
+          {embeddingMessage.type && (
+            <div className={`mb-6 rounded-lg border px-4 py-3 ${
+              embeddingMessage.type === 'success'
+                ? 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800'
+                : 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800'
+            }`}>
+              <p className={`text-sm ${
+                embeddingMessage.type === 'success'
+                  ? 'text-green-800 dark:text-green-200'
+                  : 'text-red-800 dark:text-red-200'
+              }`}>
+                {embeddingMessage.text}
+              </p>
             </div>
           )}
 

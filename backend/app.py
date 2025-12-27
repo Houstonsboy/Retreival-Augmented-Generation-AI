@@ -9,6 +9,7 @@ from werkzeug.utils import secure_filename
 from digester import digest_repo
 from pixe import run_rag_pipeline
 from firac import run_firac
+from ingester import ingest_firac_data
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for frontend
@@ -261,7 +262,7 @@ def firac():
                 'full_response': result.get('full_response', ''),
                 'output': output,
                 'status': 'success'
-            }), 200
+            }), 200 
             
         except FileNotFoundError as e:
             output = captured_output.getvalue()
@@ -283,9 +284,88 @@ def firac():
             sys.stdout = old_stdout
             
     except Exception as e:
+            return jsonify({
+                'error': f'Unexpected error: {str(e)}',
+                'content': f'Unexpected error: {str(e)}',
+                'status': 'error'
+            }), 500
+
+@app.route('/api/ingest-firac', methods=['POST'])
+def ingest_firac():
+    """
+    Ingest FIRAC data into ChromaDB vector database.
+    Accepts FIRAC data from the frontend and stores each component as a separate chunk.
+    """
+    try:
+        data = request.get_json()
+        
+        if not data:
+            return jsonify({
+                'error': 'No FIRAC data provided',
+                'status': 'error'
+            }), 400
+        
+        # Capture stdout to get ingestion output
+        old_stdout = sys.stdout
+        sys.stdout = captured_output = io.StringIO()
+        
+        try:
+            # Reconstruct FIRAC data structure from frontend format
+            firac_data = {
+                'document': data.get('document', ''),
+                'metadata': data.get('metadata', ''),
+                'facts': data.get('facts', {}).get('content', '') if isinstance(data.get('facts'), dict) else data.get('facts', ''),
+                'issues': data.get('issues', {}).get('content', '') if isinstance(data.get('issues'), dict) else data.get('issues', ''),
+                'rules': data.get('rules', {}).get('content', '') if isinstance(data.get('rules'), dict) else data.get('rules', ''),
+                'application': data.get('application', {}).get('content', '') if isinstance(data.get('application'), dict) else data.get('application', ''),
+                'conclusion': data.get('conclusion', {}).get('content', '') if isinstance(data.get('conclusion'), dict) else data.get('conclusion', ''),
+                'facts_metadata': data.get('facts', {}).get('metadata', '') if isinstance(data.get('facts'), dict) else data.get('metadata', ''),
+                'issues_metadata': data.get('issues', {}).get('metadata', '') if isinstance(data.get('issues'), dict) else data.get('metadata', ''),
+                'rules_metadata': data.get('rules', {}).get('metadata', '') if isinstance(data.get('rules'), dict) else data.get('metadata', ''),
+                'application_metadata': data.get('application', {}).get('metadata', '') if isinstance(data.get('application'), dict) else data.get('metadata', ''),
+                'conclusion_metadata': data.get('conclusion', {}).get('metadata', '') if isinstance(data.get('conclusion'), dict) else data.get('metadata', ''),
+                'error': None
+            }
+            
+            # Get optional source file path if provided
+            source_file_path = data.get('source_file_path')
+            case_identifier = data.get('case_identifier')
+            
+            # Ingest the FIRAC data
+            ingest_firac_data(
+                firac_data=firac_data,
+                case_identifier=case_identifier,
+                source_file_path=source_file_path
+            )
+            
+            output = captured_output.getvalue()
+            
+            return jsonify({
+                'message': 'FIRAC data ingested successfully into vector database',
+                'output': output,
+                'status': 'success'
+            }), 200
+            
+        except ValueError as e:
+            output = captured_output.getvalue()
+            return jsonify({
+                'error': f'Invalid FIRAC data: {str(e)}',
+                'output': output,
+                'status': 'error'
+            }), 400
+        except Exception as e:
+            output = captured_output.getvalue()
+            return jsonify({
+                'error': f'Ingestion failed: {str(e)}',
+                'output': output,
+                'status': 'error'
+            }), 500
+        finally:
+            sys.stdout = old_stdout
+            
+    except Exception as e:
         return jsonify({
             'error': f'Unexpected error: {str(e)}',
-            'content': f'Unexpected error: {str(e)}',
             'status': 'error'
         }), 500
 

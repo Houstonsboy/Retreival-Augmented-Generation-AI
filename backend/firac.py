@@ -1421,7 +1421,8 @@ SECTION 0: METADATA
  WINNING PARTY: ... (either "plaintiff" or "defendant" - analyze the final judgment outcome to determine who won)]
 
 SECTION 1: FACTS
-[Extract the factual background, events, and circumstances of the case]
+[Extract ONLY the factual background, events, and circumstances of the case.clearly state all of them and make sure to include all facts only that were considered  
+DO NOT include metadata or section headers. Start directly with the factual content.]
 
 SECTION 2: ISSUES
 [Extract the key legal questions the court had to decide]
@@ -1448,7 +1449,7 @@ Remember to clearly label each section exactly as:
 - SECTION 4: APPLICATION
 - SECTION 5: CONCLUSION
 
-Be comprehensive and keep each section clearly separated.
+CRITICAL: Each section must contain ONLY its own content. Do NOT include metadata (FILE NAME, PARTIES, etc.) in SECTION 1 (FACTS) or any other section. Metadata belongs ONLY in SECTION 0. Be comprehensive and keep each section clearly separated.
 """
         
         print("Sending combined extraction request to Groq LLM...")
@@ -1489,6 +1490,37 @@ Be comprehensive and keep each section clearly separated.
         if "SECTION 1: FACTS" in extracted_content and "SECTION 2: ISSUES" in extracted_content:
             facts_section = extracted_content.split("SECTION 2: ISSUES")[0]
             facts_section = facts_section.replace("SECTION 1: FACTS", "").strip()
+            
+            # Remove any metadata section that might be incorrectly included in facts
+            # Pattern 1: Remove "# SECTION 0: METADATA" header and everything until "##" or actual content
+            # This handles cases where LLM includes metadata block within facts
+            if re.search(r'(?:#+\s*)?SECTION\s*0:\s*METADATA', facts_section, re.IGNORECASE):
+                # Find where metadata ends (usually marked by "##" or start of actual facts)
+                # Remove everything from "SECTION 0: METADATA" up to and including the "##" marker
+                facts_section = re.sub(
+                    r'(?:#+\s*)?SECTION\s*0:\s*METADATA.*?(?=\n\s*##\s*$|\n\s*##\s+\n|\n\s*[A-Z][a-z]+\s+[A-Z]|$)',
+                    '',
+                    facts_section,
+                    flags=re.IGNORECASE | re.DOTALL
+                )
+            
+            # Pattern 2: Remove standalone metadata key-value block (FILE NAME through WINNING PARTY)
+            # This catches metadata that appears without the SECTION 0 header
+            if re.search(r'FILE\s+NAME:', facts_section, re.IGNORECASE):
+                facts_section = re.sub(
+                    r'FILE\s+NAME:.*?WINNING\s+PARTY:.*?(?=\n\s*##\s*$|\n\s*##\s+\n|\n\s*[A-Z][a-z]+\s+[A-Z]|$)',
+                    '',
+                    facts_section,
+                    flags=re.IGNORECASE | re.DOTALL
+                )
+            
+            # Clean up: Remove standalone "##" markers that were used to separate metadata
+            facts_section = re.sub(r'^\s*##\s*$', '', facts_section, flags=re.MULTILINE)
+            # Normalize multiple newlines
+            facts_section = re.sub(r'\n{3,}', '\n\n', facts_section)
+            # Remove leading/trailing whitespace
+            facts_section = facts_section.strip()
+            
             result['facts'] = facts_section
             sections_found += 1
 
