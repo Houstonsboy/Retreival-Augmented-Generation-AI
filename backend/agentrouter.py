@@ -1,33 +1,36 @@
-from fastapi import FastAPI
-from pydantic import BaseModel
-from openai import OpenAI
+import requests
 import os
+from dotenv import load_dotenv
 
-app = FastAPI()
+load_dotenv(override=True)
+HF_API_KEY = os.getenv("HUGGINGFACE_API_KEY")
 
-client = OpenAI(
-    api_key=os.getenv("CLAUDE_AGENT"),
-    base_url="https://agentrouter.org/v1"
-)
+# 1. CRITICAL: The URL should NOT contain the model name
+url = "https://router.huggingface.co/hf-inference/v1/chat/completions"
 
-class ChatMessage(BaseModel):
-    role: str
-    content: str
+# 2. CRITICAL: Exact Case-Sensitive Model ID
+# Note: "Llama" is capitalized, "meta-llama" is lowercase
+MODEL_NAME = "meta-llama/Llama-3.1-8B-Instruct"
 
-class ChatRequest(BaseModel):
-    messages: list[ChatMessage]
-    model: str
-    max_tokens: int = 2000
-    temperature: float = 0.1
+payload = {
+    "model": MODEL_NAME,
+    "messages": [
+        {"role": "user", "content": "Hello! Testing the router."}
+    ],
+    "max_tokens": 100
+}
 
-@app.post("/chat")
-def chat(req: ChatRequest):
-    response = client.chat.completions.create(
-        model=req.model,
-        messages=[m.dict() for m in req.messages],
-        max_tokens=req.max_tokens,
-        temperature=req.temperature
-    )
-    return {
-        "response": response.choices[0].message["content"]
-    }
+headers = {
+    "Authorization": f"Bearer {HF_API_KEY}",
+    "Content-Type": "application/json"
+}
+
+resp = requests.post(url, json=payload, headers=headers)
+
+if resp.status_code == 200:
+    print("Success!")
+    print(resp.json()['choices'][0]['message']['content'])
+else:
+    # This will help us see the exact error message from HF
+    print(f"Status Code: {resp.status_code}")
+    print(f"Response: {resp.text}")

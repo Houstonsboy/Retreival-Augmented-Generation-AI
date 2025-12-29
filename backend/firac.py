@@ -19,14 +19,27 @@ load_dotenv()
 # ===== CONFIGURATION =====
 BASE_DIR = Path(__file__).resolve().parent
 REPO_DIR = BASE_DIR / "Repo"
+RES_IPSA_LOQUITUR_DIR = REPO_DIR / "Res_ipsa_loquitur"
 PDF_PATH = "Wilson Wanjala Mkendeshwo v Republic (Criminal Appeal 97of2002) 2002KECA166(KLR) (18October2002) (Judgment).pdf"
 
+# Groq endpoint
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 if not GROQ_API_KEY:
     raise ValueError("GROQ_API_KEY not found in environment variables. Please set it in your .env file.")
 
 MODEL_NAME = "llama-3.3-70b-versatile"
 GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
+
+
+# #Huggingface endpoint
+# GROQ_API_KEY = os.getenv("HUGGINGFACE_API_KEY")
+# if not GROQ_API_KEY:
+#     raise ValueError(
+#         "GROQ_API_KEY not found in environment variables. Please set it in your .env file."
+#     )
+
+# MODEL_NAME = "meta-llama/Llama-3.1-8B-Instruct"
+# GROQ_API_URL = f"https://api-inference.huggingface.co/models/{MODEL_NAME}"
 
 
 def extract_text_from_pdf(file_path: Path, use_ocr_threshold: int = 50) -> str:
@@ -152,16 +165,20 @@ def clean_text(text: str) -> str:
     return cleaned_text.strip()
 
 
-def load_wilson_document() -> str:
+def load_document_from_path(file_path: Path) -> str:
     """
-    Load and process the Wilson Wanjala PDF document with OCR support.
+    Load and process any PDF document with OCR support.
     Returns the cleaned text content.
+    
+    Args:
+        file_path: Path to the PDF file to load
+        
+    Returns:
+        str: Cleaned text content, or error message string if loading fails
     """
     print(f"\n{'=' * 60}")
-    print(f"Loading Wilson Wanjala document...")
+    print(f"Loading document: {file_path.name}")
     print(f"{'=' * 60}")
-
-    file_path = REPO_DIR / PDF_PATH
 
     if not file_path.exists():
         error_msg = f"Error: File not found: {file_path}"
@@ -206,6 +223,16 @@ def load_wilson_document() -> str:
         error_msg = f"Error: Could not read file: {exc}"
         print(error_msg)
         return error_msg
+
+
+def load_wilson_document() -> str:
+    """
+    Load and process the Wilson Wanjala PDF document with OCR support.
+    Returns the cleaned text content.
+    """
+    # Wilson PDF is in Res_ipsa_loquitur folder
+    file_path = RES_IPSA_LOQUITUR_DIR / PDF_PATH
+    return load_document_from_path(file_path)
 
 
 
@@ -1346,6 +1373,76 @@ def call_groq_api(prompt: str, system_message: str, max_tokens: int = 4000) -> s
     except Exception as e:
         raise Exception(f"Error calling Groq API: {str(e)}")
 
+# def call_groq_api(prompt: str, system_message: str, max_tokens: int = 4000) -> str:
+#     """
+#     Hugging Face inference call using Groq-style interface.
+
+#     Args:
+#         prompt: The user prompt to send
+#         system_message: The system instruction
+#         max_tokens: Maximum tokens in response
+
+#     Returns:
+#         str: The model's response
+#     """
+#     try:
+#         # Hugging Face does NOT support chat messages natively,
+#         # so we must flatten them into a single prompt.
+#         full_prompt = (
+#             f"<|system|>\n{system_message}\n"
+#             f"<|user|>\n{prompt}\n"
+#             f"<|assistant|>\n"
+#         )
+
+#         payload = {
+#             "inputs": full_prompt,
+#             "parameters": {
+#                 "max_new_tokens": min(max_tokens, 2048),
+#                 "temperature": 0.1,
+#                 "return_full_text": False
+#             }
+#         }
+
+#         headers = {
+#             "Content-Type": "application/json",
+#             "Authorization": f"Bearer {GROQ_API_KEY}"
+#         }
+
+#         print(f"📡 Sending request to Hugging Face (model: {MODEL_NAME})...")
+
+#         response = requests.post(
+#             GROQ_API_URL,
+#             json=payload,
+#             headers=headers,
+#             timeout=120
+#         )
+
+#         # Handle cold-start / model loading
+#         if response.status_code == 503:
+#             print("⏳ Model loading on Hugging Face, retrying in 10 seconds...")
+#             time.sleep(10)
+#             response = requests.post(
+#                 GROQ_API_URL,
+#                 json=payload,
+#                 headers=headers,
+#                 timeout=120
+#             )
+
+#         response.raise_for_status()
+
+#         result = response.json()
+
+#         # Hugging Face standard text-generation response
+#         if isinstance(result, list) and "generated_text" in result[0]:
+#             return result[0]["generated_text"].strip()
+
+#         raise Exception(f"Unexpected Hugging Face response format: {result}")
+
+#     except requests.exceptions.RequestException as e:
+#         raise Exception(f"Hugging Face API request failed: {str(e)}")
+#     except Exception as e:
+#         raise Exception(f"Error calling Hugging Face API: {str(e)}")
+
 def extract_metadata_only(document_text: str) -> str:
     """
     Use Groq LLM to extract ONLY the core metadata of the case:
@@ -1398,9 +1495,22 @@ def extract_metadata_only(document_text: str) -> str:
 def extract_all_firac_combined(document_text: str) -> dict:
     """
     Use Groq LLM to extract ALL FIRAC components (including RULES)
-    AND METADATA in a single call.
+    AND METADATA in a single API call to reduce rate limiting.
+    
+    This function combines what was previously two separate API calls:
+    - FIRAC component extraction (facts, issues, rules, application, conclusion)
+    - Metadata extraction (file_name, parties, court_level, judge, year, legal_domain, winning_party)
 
-    Returns a dictionary with all components as plain strings.
+    Returns a dictionary with all components as plain strings:
+    {
+        'full_response': str,  # Raw API response
+        'metadata': str,       # Metadata in format: FILE NAME: ...\nPARTIES: ...\netc.
+        'facts': str,
+        'issues': str,
+        'rules': str,
+        'application': str,
+        'conclusion': str
+    }
     """
     print("\n===== EXTRACTING ALL FIRAC COMPONENTS (COMBINED) =====")
     print("Connecting to Groq API...")
@@ -1461,12 +1571,24 @@ CRITICAL: Each section must contain ONLY its own content. Do NOT include metadat
             "for METADATA, FACTS, ISSUES, RULES, APPLICATION, and CONCLUSION using the exact section headings."
         )
         
-        extracted_content = call_groq_api(prompt, system_message, max_tokens=10000)
+        # Increase max_tokens to handle longer documents (up to 16K tokens)
+        # Each FIRAC section can be substantial, so we need more tokens
+        extracted_content = call_groq_api(prompt, system_message, max_tokens=16000)
         
         print("✓ Combined extraction completed")
         print(f"Total extracted content length: {len(extracted_content)} characters")
         
-        # Parse the response to separate all sections
+        # Check if response might be truncated
+        if len(extracted_content) < 500:
+            print("⚠ Warning: Response is very short - might indicate API error or empty response")
+        elif len(extracted_content) > 15000:
+            print("⚠ Warning: Response is very long - might be truncated by max_tokens limit")
+        
+        # Check if response contains error indicators
+        if any(keyword in extracted_content.lower() for keyword in ['error', 'failed', 'unable', 'cannot']):
+            print("⚠ Warning: Response may contain error indicators")
+        
+        # Parse the response to separate all sections using flexible pattern matching
         result = {
             'full_response': extracted_content,
             'metadata': '',
@@ -1477,77 +1599,149 @@ CRITICAL: Each section must contain ONLY its own content. Do NOT include metadat
             'conclusion': ''
         }
         
+        # Define section patterns (case-insensitive, handles markdown headers)
+        section_patterns = {
+            'metadata': [
+                r'(?:#+\s*)?SECTION\s*0\s*[:\-]\s*METADATA',
+                r'(?:#+\s*)?SECTION\s*0\s*[:\-]\s*Metadata',
+                r'(?:#+\s*)?Section\s*0\s*[:\-]\s*Metadata',
+            ],
+            'facts': [
+                r'(?:#+\s*)?SECTION\s*1\s*[:\-]\s*FACTS',
+                r'(?:#+\s*)?SECTION\s*1\s*[:\-]\s*Facts',
+                r'(?:#+\s*)?Section\s*1\s*[:\-]\s*Facts',
+            ],
+            'issues': [
+                r'(?:#+\s*)?SECTION\s*2\s*[:\-]\s*ISSUES',
+                r'(?:#+\s*)?SECTION\s*2\s*[:\-]\s*Issues',
+                r'(?:#+\s*)?Section\s*2\s*[:\-]\s*Issues',
+            ],
+            'rules': [
+                r'(?:#+\s*)?SECTION\s*3\s*[:\-]\s*RULES',
+                r'(?:#+\s*)?SECTION\s*3\s*[:\-]\s*Rules',
+                r'(?:#+\s*)?Section\s*3\s*[:\-]\s*Rules',
+            ],
+            'application': [
+                r'(?:#+\s*)?SECTION\s*4\s*[:\-]\s*APPLICATION',
+                r'(?:#+\s*)?SECTION\s*4\s*[:\-]\s*Application',
+                r'(?:#+\s*)?Section\s*4\s*[:\-]\s*Application',
+            ],
+            'conclusion': [
+                r'(?:#+\s*)?SECTION\s*5\s*[:\-]\s*CONCLUSION',
+                r'(?:#+\s*)?SECTION\s*5\s*[:\-]\s*Conclusion',
+                r'(?:#+\s*)?Section\s*5\s*[:\-]\s*Conclusion',
+            ],
+        }
+        
+        def find_section_start(content: str, patterns: list) -> int:
+            """Find the start position of a section using multiple patterns."""
+            for pattern in patterns:
+                match = re.search(pattern, content, re.IGNORECASE | re.MULTILINE)
+                if match:
+                    return match.end()
+            return -1
+        
+        def extract_section(content: str, start_patterns: list, end_patterns: list = None) -> str:
+            """Extract a section between start and end patterns."""
+            start_pos = find_section_start(content, start_patterns)
+            if start_pos == -1:
+                return ''
+            
+            # Find end position
+            if end_patterns:
+                end_pos = len(content)
+                for pattern in end_patterns:
+                    match = re.search(pattern, content[start_pos:], re.IGNORECASE | re.MULTILINE)
+                    if match:
+                        end_pos = min(end_pos, start_pos + match.start())
+            else:
+                # Last section - take everything after start
+                end_pos = len(content)
+            
+            section = content[start_pos:end_pos].strip()
+            
+            # Clean up: Remove section header if still present
+            for pattern in start_patterns:
+                section = re.sub(pattern, '', section, flags=re.IGNORECASE).strip()
+            
+            # Remove metadata contamination in facts section
+            if 'facts' in str(start_patterns):
+                # Remove metadata key-value blocks
+                section = re.sub(
+                    r'FILE\s+NAME:.*?WINNING\s+PARTY:.*?(?=\n\n|\n[A-Z]|$)',
+                    '',
+                    section,
+                    flags=re.IGNORECASE | re.DOTALL
+                )
+            
+            # Normalize whitespace
+            section = re.sub(r'\n{3,}', '\n\n', section)
+            return section.strip()
+        
+        # Extract each section
         sections_found = 0
-
-        # METADATA
-        if "SECTION 0: METADATA" in extracted_content and "SECTION 1: FACTS" in extracted_content:
-            metadata_section = extracted_content.split("SECTION 1: FACTS")[0]
-            metadata_section = metadata_section.replace("SECTION 0: METADATA", "").strip()
-            result['metadata'] = metadata_section
-            sections_found += 1
-
-        # FACTS
-        if "SECTION 1: FACTS" in extracted_content and "SECTION 2: ISSUES" in extracted_content:
-            facts_section = extracted_content.split("SECTION 2: ISSUES")[0]
-            facts_section = facts_section.replace("SECTION 1: FACTS", "").strip()
-            
-            # Remove any metadata section that might be incorrectly included in facts
-            # Pattern 1: Remove "# SECTION 0: METADATA" header and everything until "##" or actual content
-            # This handles cases where LLM includes metadata block within facts
-            if re.search(r'(?:#+\s*)?SECTION\s*0:\s*METADATA', facts_section, re.IGNORECASE):
-                # Find where metadata ends (usually marked by "##" or start of actual facts)
-                # Remove everything from "SECTION 0: METADATA" up to and including the "##" marker
-                facts_section = re.sub(
-                    r'(?:#+\s*)?SECTION\s*0:\s*METADATA.*?(?=\n\s*##\s*$|\n\s*##\s+\n|\n\s*[A-Z][a-z]+\s+[A-Z]|$)',
-                    '',
-                    facts_section,
-                    flags=re.IGNORECASE | re.DOTALL
-                )
-            
-            # Pattern 2: Remove standalone metadata key-value block (FILE NAME through WINNING PARTY)
-            # This catches metadata that appears without the SECTION 0 header
-            if re.search(r'FILE\s+NAME:', facts_section, re.IGNORECASE):
-                facts_section = re.sub(
-                    r'FILE\s+NAME:.*?WINNING\s+PARTY:.*?(?=\n\s*##\s*$|\n\s*##\s+\n|\n\s*[A-Z][a-z]+\s+[A-Z]|$)',
-                    '',
-                    facts_section,
-                    flags=re.IGNORECASE | re.DOTALL
-                )
-            
-            # Clean up: Remove standalone "##" markers that were used to separate metadata
-            facts_section = re.sub(r'^\s*##\s*$', '', facts_section, flags=re.MULTILINE)
-            # Normalize multiple newlines
-            facts_section = re.sub(r'\n{3,}', '\n\n', facts_section)
-            # Remove leading/trailing whitespace
-            facts_section = facts_section.strip()
-            
-            result['facts'] = facts_section
-            sections_found += 1
-
-        # ISSUES
-        if "SECTION 2: ISSUES" in extracted_content and "SECTION 3: RULES" in extracted_content:
-            issues_section = extracted_content.split("SECTION 3: RULES")[0].split("SECTION 2: ISSUES", 1)[1]
-            result['issues'] = issues_section.strip()
-            sections_found += 1
-
-        # RULES
-        if "SECTION 3: RULES" in extracted_content and "SECTION 4: APPLICATION" in extracted_content:
-            rules_section = extracted_content.split("SECTION 4: APPLICATION")[0].split("SECTION 3: RULES", 1)[1]
-            result['rules'] = rules_section.strip()
-            sections_found += 1
-
-        # APPLICATION
-        if "SECTION 4: APPLICATION" in extracted_content and "SECTION 5: CONCLUSION" in extracted_content:
-            application_section = extracted_content.split("SECTION 5: CONCLUSION")[0].split("SECTION 4: APPLICATION", 1)[1]
-            result['application'] = application_section.strip()
-            sections_found += 1
-
-        # CONCLUSION
-        if "SECTION 5: CONCLUSION" in extracted_content:
-            conclusion_section = extracted_content.split("SECTION 5: CONCLUSION", 1)[1]
-            result['conclusion'] = conclusion_section.strip()
+        
+        # METADATA (before FACTS)
+        metadata = extract_section(
+            extracted_content,
+            section_patterns['metadata'],
+            section_patterns['facts']
+        )
+        if metadata:
+            result['metadata'] = metadata
             sections_found += 1
         
+        # FACTS (between METADATA and ISSUES)
+        facts = extract_section(
+            extracted_content,
+            section_patterns['facts'],
+            section_patterns['issues']
+        )
+        if facts:
+            result['facts'] = facts
+            sections_found += 1
+        
+        # ISSUES (between FACTS and RULES)
+        issues = extract_section(
+            extracted_content,
+            section_patterns['issues'],
+            section_patterns['rules']
+        )
+        if issues:
+            result['issues'] = issues
+            sections_found += 1
+        
+        # RULES (between ISSUES and APPLICATION)
+        rules = extract_section(
+            extracted_content,
+            section_patterns['rules'],
+            section_patterns['application']
+        )
+        if rules:
+            result['rules'] = rules
+            sections_found += 1
+        
+        # APPLICATION (between RULES and CONCLUSION)
+        application = extract_section(
+            extracted_content,
+            section_patterns['application'],
+            section_patterns['conclusion']
+        )
+        if application:
+            result['application'] = application
+            sections_found += 1
+        
+        # CONCLUSION (last section)
+        conclusion = extract_section(
+            extracted_content,
+            section_patterns['conclusion'],
+            None  # No end pattern - take everything after
+        )
+        if conclusion:
+            result['conclusion'] = conclusion
+            sections_found += 1
+        
+        # Log results
         if sections_found == 6:
             print(f"✓ Successfully separated all sections:")
             print(f"   • Metadata: {len(result['metadata'])} chars")
@@ -1558,6 +1752,17 @@ CRITICAL: Each section must contain ONLY its own content. Do NOT include metadat
             print(f"   • Conclusion: {len(result['conclusion'])} chars")
         else:
             print(f"⚠ Only found {sections_found}/6 sections. Partial extraction.")
+            # Debug: Show what sections were found
+            found_sections = []
+            for section_name in ['metadata', 'facts', 'issues', 'rules', 'application', 'conclusion']:
+                if result.get(section_name, '').strip():
+                    found_sections.append(section_name)
+            print(f"   Found sections: {', '.join(found_sections) if found_sections else 'none'}")
+            print(f"   Missing sections: {', '.join([s for s in ['metadata', 'facts', 'issues', 'rules', 'application', 'conclusion'] if s not in found_sections])}")
+            
+            # Show first 500 chars of response to help debug
+            print(f"\n   Response preview (first 500 chars):")
+            print(f"   {extracted_content[:500]}...")
         
         return result
         
@@ -1799,10 +2004,129 @@ def extract_conclusion_only(document_text: str) -> str:
 #         result['error'] = error_msg
 #         return result
 
+def run_firac_from_file(file_path: Path) -> dict:
+    """
+    Run FIRAC extraction on a specific PDF file.
+    
+    Args:
+        file_path: Path to the PDF file to process
+        
+    Returns:
+        dict: Same structure as run_firac() with FIRAC components and metadata
+    """
+    print("\n" + "=" * 80)
+    print(f"🏛️  STARTING FIRAC + METADATA EXTRACTION FOR: {file_path.name}")
+    print(f"🤖 Using Groq API with model: {MODEL_NAME}")
+    print("=" * 80)
+
+    result = {
+        'document': '',
+        'metadata': '',
+        'facts': '',
+        'issues': '',
+        'rules': '',
+        'application': '',
+        'conclusion': '',
+        'facts_metadata': '',
+        'issues_metadata': '',
+        'rules_metadata': '',
+        'application_metadata': '',
+        'conclusion_metadata': '',
+        'full_response': '',
+        'error': None,
+        'source_file_path': str(file_path)
+    }
+
+    try:
+        # Step 1: Read PDF
+        print("\n[STEP 1/3] Reading PDF document...")
+        document_text = load_document_from_path(file_path)
+        
+        # Check if loading failed (returns error string)
+        if document_text.startswith("Error:"):
+            result['error'] = document_text
+            return result
+            
+        result['document'] = document_text
+
+        # Step 2: Extract all FIRAC components AND metadata in single API call
+        print("\n[STEP 2/3] Extracting all FIRAC components and metadata in single API call...")
+        extraction_result = extract_all_firac_combined(document_text)
+
+        # Extract FIRAC components
+        result['facts'] = extraction_result.get('facts', '')
+        result['issues'] = extraction_result.get('issues', '')
+        result['rules'] = extraction_result.get('rules', '')
+        result['application'] = extraction_result.get('application', '')
+        result['conclusion'] = extraction_result.get('conclusion', '')
+        result['full_response'] = extraction_result.get('full_response', '')
+        
+        # Extract metadata from the combined extraction (already included in SECTION 0)
+        metadata_text = extraction_result.get('metadata', '')
+        result['metadata'] = metadata_text
+        
+        # Validate extraction results
+        empty_components = []
+        for component in ['facts', 'issues', 'rules', 'application', 'conclusion']:
+            if not extraction_result.get(component, '').strip():
+                empty_components.append(component)
+        
+        # Check if metadata is empty
+        if not metadata_text.strip():
+            print(f"\n⚠ WARNING: Metadata extraction is empty")
+            empty_components.append('metadata')
+        
+        if empty_components:
+            print(f"\n⚠ WARNING: Empty components detected: {', '.join(empty_components)}")
+            print(f"   This may indicate parsing issues or API response problems.")
+            print(f"   Full response length: {len(result.get('full_response', ''))} chars")
+            
+            # Check if full_response contains section markers
+            full_resp = result.get('full_response', '')
+            if 'SECTION' in full_resp or 'Section' in full_resp:
+                print(f"   Response contains section markers - parsing may have failed")
+            else:
+                print(f"   Response does not contain expected section markers")
+        
+        # Step 3: Attach metadata to each FIRAC section
+        print("\n[STEP 3/3] Attaching metadata to each FIRAC section...")
+        result['facts_metadata'] = metadata_text
+        result['issues_metadata'] = metadata_text
+        result['rules_metadata'] = metadata_text
+        result['application_metadata'] = metadata_text
+        result['conclusion_metadata'] = metadata_text
+        
+        print("\n" + "=" * 80)
+        print(f"✅ FIRAC + METADATA EXTRACTION FINISHED SUCCESSFULLY FOR: {file_path.name}")
+        print("=" * 80)
+        print(f"\n📊 Extraction Summary:")
+        print(f"   • Metadata: {len(metadata_text)} characters")
+        print(f"   • Facts: {len(result['facts'])} characters")
+        print(f"   • Issues: {len(result['issues'])} characters")
+        print(f"   • Rules: {len(result['rules'])} characters")
+        print(f"   • Application: {len(result['application'])} characters")
+        print(f"   • Conclusion: {len(result['conclusion'])} characters")
+        print(f"\n💡 Note: All components extracted in a single API call to reduce rate limiting.")
+
+        return result
+
+    except FileNotFoundError as e:
+        error_msg = f"PDF file not found: {str(e)}"
+        print(f"\n❌ ERROR: {error_msg}")
+        result['error'] = error_msg
+        return result
+
+    except Exception as e:
+        error_msg = f"Extraction failed: {str(e)}"
+        print(f"\n❌ ERROR: {error_msg}")
+        result['error'] = error_msg
+        return result
+
+
 def run_firac() -> dict:
     """
-    Run FIRAC extraction with a SINGLE combined API call (for FIRAC components),
-    plus a separate metadata extraction.
+    Run FIRAC extraction on the Wilson Wanjala PDF using a SINGLE combined API call
+    that extracts both FIRAC components AND metadata together.
 
     Returns:
         dict: {
@@ -1823,46 +2147,73 @@ def run_firac() -> dict:
         }
     """
     print("\n" + "=" * 80)
-    print("🏛️  STARTING FIRAC + METADATA EXTRACTION")
+    print("🏛️  STARTING FIRAC + METADATA EXTRACTION (Wilson Wanjala PDF)")
     print(f"🤖 Using Groq API with model: {MODEL_NAME}")
     print("=" * 80)
 
     result = {
         'document': '',
-        'metadata': {},
+        'metadata': '',
         'facts': '',
         'issues': '',
         'rules': '',
         'application': '',
         'conclusion': '',
+        'facts_metadata': '',
+        'issues_metadata': '',
+        'rules_metadata': '',
+        'application_metadata': '',
+        'conclusion_metadata': '',
         'full_response': '',
         'error': None
     }
 
     try:
         # Step 1: Read PDF
-        print("\n[STEP 1/3] Reading PDF document...")
+        print("\n[STEP 1/2] Reading PDF document...")
         document_text = load_wilson_document()
+        
+        # Check if loading failed (returns error string)
+        if document_text.startswith("Error:"):
+            result['error'] = document_text
+            return result
+            
         result['document'] = document_text
 
-        # Step 2: Extract all FIRAC components in one call
-        print("\n[STEP 2/3] Extracting all FIRAC components in single API call...")
+        # Step 2: Extract all FIRAC components AND metadata in single API call
+        print("\n[STEP 2/2] Extracting all FIRAC components and metadata in single API call...")
         extraction_result = extract_all_firac_combined(document_text)
 
+        # Extract FIRAC components
         result['facts'] = extraction_result.get('facts', '')
         result['issues'] = extraction_result.get('issues', '')
         result['rules'] = extraction_result.get('rules', '')
         result['application'] = extraction_result.get('application', '')
         result['conclusion'] = extraction_result.get('conclusion', '')
         result['full_response'] = extraction_result.get('full_response', '')
-
-        # Step 3: Extract metadata
-        print("\n[STEP 3/3] Extracting metadata...")
-        metadata_text = extract_metadata_only(document_text)
+        
+        # Extract metadata from the combined extraction (already included in SECTION 0)
+        metadata_text = extraction_result.get('metadata', '')
         result['metadata'] = metadata_text
         
-        # Step 4: Attach metadata to each FIRAC section
-        print("\n[STEP 4/4] Attaching metadata to each FIRAC section...")
+        # Validate extraction results
+        empty_components = []
+        for component in ['facts', 'issues', 'rules', 'application', 'conclusion']:
+            if not extraction_result.get(component, '').strip():
+                empty_components.append(component)
+        
+        # Check if metadata is empty
+        if not metadata_text.strip():
+            print(f"\n⚠ WARNING: Metadata extraction is empty")
+            empty_components.append('metadata')
+        
+        if empty_components:
+            print(f"\n⚠ WARNING: Empty components detected: {', '.join(empty_components)}")
+            print(f"   This may indicate parsing issues or API response problems.")
+            print(f"   Full response length: {len(result.get('full_response', ''))} chars")
+        
+        # Step 3: Attach metadata to each FIRAC section
+        print("\n[STEP 3/3] Attaching metadata to each FIRAC section...")
         result['facts_metadata'] = metadata_text
         result['issues_metadata'] = metadata_text
         result['rules_metadata'] = metadata_text
@@ -1879,6 +2230,7 @@ def run_firac() -> dict:
         print(f"   • Rules: {len(result['rules'])} characters")
         print(f"   • Application: {len(result['application'])} characters")
         print(f"   • Conclusion: {len(result['conclusion'])} characters")
+        print(f"\n💡 Note: All components extracted in a single API call to reduce rate limiting.")
 
         return result
 

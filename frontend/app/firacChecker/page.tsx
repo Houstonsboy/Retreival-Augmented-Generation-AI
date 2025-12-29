@@ -38,11 +38,15 @@ export default function FiracChecker() {
     setEmbeddingMessage({ type: null, text: '' }); // Clear embedding message when processing new document
 
     try {
+      // Process Wilson Wanjala PDF (default) using combined API call
       const response = await fetch("http://localhost:5000/api/firac", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
+        body: JSON.stringify({
+          // No file_path specified, uses default Wilson Wanjala PDF
+        }),
       });
 
       const data = await response.json();
@@ -101,36 +105,22 @@ export default function FiracChecker() {
   };
 
   const handleEmbed = async () => {
-    // Check if we have FIRAC data to embed
-    if (!facts && !issues && !rules && !application && !conclusion) {
-      setEmbeddingMessage({
-        type: 'error',
-        text: 'No FIRAC data available. Please process the document first.'
-      });
-      return;
-    }
-
     setIsEmbedding(true);
     setEmbeddingMessage({ type: null, text: '' });
 
     try {
-      // Prepare FIRAC data in the format expected by the backend
-      const firacData = {
-        document: document || '',
-        metadata: metadata || '',
-        facts: facts || { content: '', metadata: '' },
-        issues: issues || { content: '', metadata: '' },
-        rules: rules || { content: '', metadata: '' },
-        application: application || { content: '', metadata: '' },
-        conclusion: conclusion || { content: '', metadata: '' },
-      };
-
-      const response = await fetch("http://localhost:5000/api/ingest-firac", {
+      // Call digest endpoint which extracts FIRAC from PDFs and embeds them into ChromaDB
+      // If file_path is provided in body, processes only that file (for testing)
+      // Otherwise, processes all PDFs in Res_ipsa_loquitur directory
+      const response = await fetch("http://localhost:5000/api/digest", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(firacData),
+        body: JSON.stringify({
+          // Optional: Add "file_path": "path/to/file.pdf" to test a single file
+          // Leave empty to process all files in Res_ipsa_loquitur
+        }),
       });
 
       const data = await response.json();
@@ -139,22 +129,38 @@ export default function FiracChecker() {
         throw new Error(data.error || "Embedding failed");
       }
 
+      // Show success message with detailed statistics
+      const filesSucceeded = data.files_succeeded || 0;
+      const filesFailed = data.files_failed || 0;
+      const filesProcessed = data.files_processed || 0;
+      
+      let successMsg;
+      if (filesFailed === 0) {
+        successMsg = `✅ Successfully extracted and embedded FIRAC from ${filesSucceeded} document(s)!`;
+      } else {
+        successMsg = `⚠️ Processed ${filesProcessed} document(s): ${filesSucceeded} succeeded, ${filesFailed} failed.`;
+        if (data.failed_files && data.failed_files.length > 0) {
+          const failedNames = data.failed_files.slice(0, 3).map((f: any) => f.file).join(', ');
+          successMsg += ` Failed: ${failedNames}${data.failed_files.length > 3 ? '...' : ''}`;
+        }
+      }
+      
       setEmbeddingMessage({
-        type: 'success',
-        text: data.message || 'FIRAC elements successfully embedded into vector database!'
+        type: filesFailed === 0 ? 'success' : 'error',
+        text: successMsg
       });
     } catch (error) {
       setEmbeddingMessage({
         type: 'error',
-        text: error instanceof Error ? error.message : "Failed to embed FIRAC data"
+        text: error instanceof Error ? error.message : "Failed to extract and embed FIRAC data"
       });
     } finally {
       setIsEmbedding(false);
     }
   };
 
-  // Check if FIRAC data is available for embedding
-  const hasFiracData = facts || issues || rules || application || conclusion;
+  // Embed button is always available (no need to check for FIRAC data)
+  const hasFiracData = true;
 
   return (
     <div className="flex min-h-screen flex-col bg-white dark:bg-gray-900">
@@ -273,13 +279,13 @@ export default function FiracChecker() {
                         d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
                       />
                     </svg>
-                    <span>Embed FIRAC Elements</span>
+                    <span>Extract & Embed All Documents</span>
                   </>
                 )}
               </button>
             </div>
             <p className="mt-2 text-center text-xs text-gray-500 dark:text-gray-400">
-              First extract FIRAC components, then embed them into the vector database
+              Extract FIRAC from all PDFs in Res_ipsa_loquitur and embed into vector database
             </p>
           </div>
 

@@ -8,7 +8,7 @@ from pathlib import Path
 from werkzeug.utils import secure_filename
 from digester import digest_repo
 from pixe import run_rag_pipeline
-from firac import run_firac
+from firac import run_firac, run_firac_from_file
 from ingester import ingest_firac_data
 
 app = Flask(__name__)
@@ -16,6 +16,7 @@ CORS(app)  # Enable CORS for frontend
 
 # Path to the Repo directory
 REPO_DIR = Path(__file__).resolve().parent / "Repo"
+RES_IPSA_LOQUITUR_DIR = REPO_DIR / "Res_ipsa_loquitur"
 
 @app.route('/api/chat', methods=['POST'])
 def chat():
@@ -150,59 +151,132 @@ def serve_file(filename):
 @app.route('/api/digest', methods=['POST'])
 def digest():
     """
-    Trigger the digester to process files in the Repo directory.
-    The digester will only process new or changed files (based on file hash).
+    Process PDF files: Extract FIRAC and embed into ChromaDB.
+    Outputs processing steps directly to the server console.
     """
     try:
-        # Capture stdout to get digest output
-        old_stdout = sys.stdout
-        sys.stdout = captured_output = io.StringIO()
+        # --- INPUT VALIDATION & INITIALIZATION ---
+        data = request.get_json() or {}
+        file_path = data.get('file_path')
         
-        try:
-            # Run the digester
-            digest_repo(repo_dir=REPO_DIR)
-            output = captured_output.getvalue()
+        if file_path:
+            file_path_obj = Path(file_path)
+            if not file_path_obj.exists():
+                return jsonify({'error': f'File not found: {file_path}', 'status': 'error'}), 404
+            pdf_files = [file_path_obj]
+        else:
+            if not RES_IPSA_LOQUITUR_DIR.exists():
+                return jsonify({'error': f'Directory not found: {RES_IPSA_LOQUITUR_DIR}', 'status': 'error'}), 404
+            pdf_files = list(RES_IPSA_LOQUITUR_DIR.glob("*.pdf"))
+
+        if not pdf_files:
+            print("\n[!] No PDF files found to process.")
+            return jsonify({'message': 'No files found', 'status': 'success'}), 200
+
+        # --- LOGGING START ---
+        print(f"\n{'='*80}")
+        print(f"🚀 STARTING DIGEST PROCESS")
+        print(f"Target: {'Specific file' if file_path else 'Directory scan'}")
+        print(f"Total files to process: {len(pdf_files)}")
+        print(f"{'='*80}\n")
+        
+        files_processed = 0
+        files_succeeded = 0
+        files_failed = 0
+        failed_files = []
+        
+        for idx, pdf_file in enumerate(pdf_files, 1):
+            print(f"({idx}/{len(pdf_files)}) 📂 FILE: {pdf_file.name}")
+            print(f"{'-'*40}")
             
-            return jsonify({
-                'message': 'Digest completed successfully',
-                'output': output,
-                'status': 'success'
-            }), 200
-        except FileNotFoundError as e:
-            return jsonify({
-                'error': f'Repository directory not found: {str(e)}',
-                'status': 'error'
-            }), 404
-        except Exception as e:
-            output = captured_output.getvalue()
-            return jsonify({
-                'error': f'Digest failed: {str(e)}',
-                'output': output,
-                'status': 'error'
-            }), 500
-        finally:
-            sys.stdout = old_stdout
-            
-    except Exception as e:
+            try:
+                # STEP 1: FIRAC EXTRACTION
+                print(f"  [STEP 1] Extracting FIRAC via LLM...")
+                firac_result = run_firac_from_file(pdf_file)
+                
+                if firac_result.get('error'):
+                    print(f"  [❌] Extraction Error: {firac_result['error']}")
+                    files_failed += 1
+                    failed_files.append({'file': pdf_file.name, 'error': firac_result['error']})
+                    continue
+                
+                # Validation of components
+                firac_components = ['facts', 'issues', 'rules', 'application', 'conclusion']
+                empty = [c for c in firac_components if not firac_result.get(c, '').strip()]
+                if empty:
+                    print(f"  [!] Warning: Missing data in fields: {', '.join(empty)}")
+                
+                # STEP 2: CHROMA DB INGESTION
+                print(f"  [STEP 2] Generating embeddings and saving to ChromaDB...")
+                ingest_firac_data(
+                    firac_data=firac_result,
+                    source_file_path=pdf_file
+                )
+                
+                files_succeeded += 1
+                files_processed += 1
+                print(f"  [✅] SUCCESS: {pdf_file.name} is now searchable.\n")
+                
+            except Exception as e:
+                print(f"  [❌] CRITICAL ERROR processing {pdf_file.name}: {str(e)}")
+                files_failed += 1
+                failed_files.append({'file': pdf_file.name, 'error': str(e)})
+                continue
+
+        # --- FINAL SUMMARY ---
+        print(f"{'='*80}")
+        print(f"🏁 PROCESS COMPLETE")
+        print(f"   - Total Succeeded: {files_succeeded}")
+        print(f"   - Total Failed:    {files_failed}")
+        print(f"{'='*80}\n")
+        
         return jsonify({
-            'error': f'Unexpected error: {str(e)}',
-            'status': 'error'
-        }), 500
+            'message': f'Processed {files_processed} file(s)',
+            'files_succeeded': files_succeeded,
+            'files_failed': files_failed,
+            'failed_files': failed_files,
+            'status': 'success' if files_succeeded > 0 else 'failed'
+        }), 200
+
+    except Exception as e:
+        print(f"\n[🚨] GLOBAL API ERROR: {str(e)}")
+        return jsonify({'error': f'Processing failed: {str(e)}', 'status': 'error'}), 500
 
 @app.route('/api/firac', methods=['POST'])
 def firac():
     """
-    Execute firac.py to process the Wilson Wanjala PDF document.
+    Execute firac.py to process a PDF document (defaults to Wilson Wanjala).
+    Accepts optional file_path in request body to process a specific file.
     Returns the extracted and cleaned text content.
+    
+    Request body (optional):
+    {
+        "file_path": "path/to/file.pdf"  # If not provided, uses Wilson Wanjala PDF
+    }
     """
     try:
+        data = request.get_json() or {}
+        file_path = data.get('file_path')
+        
         # Capture stdout to get processing output (logs/print statements)
         old_stdout = sys.stdout
         sys.stdout = captured_output = io.StringIO()
         
         try:
-            # Run the FIRAC processor (combined call)
-            result = run_firac()
+            # If file_path is provided, use it; otherwise use default Wilson PDF
+            if file_path:
+                file_path_obj = Path(file_path)
+                if not file_path_obj.exists():
+                    return jsonify({
+                        'error': f'File not found: {file_path}',
+                        'status': 'error'
+                    }), 404
+                # Process specific file using combined API call
+                result = run_firac_from_file(file_path_obj)
+            else:
+                # Default: Process Wilson Wanjala PDF using combined API call
+                result = run_firac()
+            
             output = captured_output.getvalue()
             
             if result.get('error'):
@@ -266,9 +340,10 @@ def firac():
             
         except FileNotFoundError as e:
             output = captured_output.getvalue()
+            file_name = file_path if file_path else "Wilson Wanjala PDF"
             return jsonify({
-                'error': f'Wilson Wanjala PDF not found: {str(e)}',
-                'content': 'Error: Wilson Wanjala PDF file not found in the repository.',
+                'error': f'PDF not found: {str(e)}',
+                'content': f'Error: {file_name} file not found in the repository.',
                 'output': output,
                 'status': 'error'
             }), 404
@@ -294,23 +369,63 @@ def firac():
 def ingest_firac():
     """
     Ingest FIRAC data into ChromaDB vector database.
-    Accepts FIRAC data from the frontend and stores each component as a separate chunk.
+    Accepts a file path, extracts FIRAC using firac.py, then stores in ChromaDB.
+    
+    Request body (optional):
+    {
+        "file_path": "path/to/file.pdf"  # If not provided, uses frontend data (backward compatibility)
+    }
     """
     try:
-        data = request.get_json()
-        
-        if not data:
-            return jsonify({
-                'error': 'No FIRAC data provided',
-                'status': 'error'
-            }), 400
+        data = request.get_json() or {}
         
         # Capture stdout to get ingestion output
         old_stdout = sys.stdout
         sys.stdout = captured_output = io.StringIO()
         
         try:
-            # Reconstruct FIRAC data structure from frontend format
+            # If file_path is provided, extract FIRAC from that file
+            if data.get('file_path'):
+                file_path = Path(data['file_path'])
+                
+                if not file_path.exists():
+                    return jsonify({
+                        'error': f'File not found: {file_path}',
+                        'status': 'error'
+                    }), 404
+                
+                # Extract FIRAC from file
+                firac_result = run_firac_from_file(file_path)
+                
+                if firac_result.get('error'):
+                    output = captured_output.getvalue()
+                    return jsonify({
+                        'error': f'FIRAC extraction failed: {firac_result["error"]}',
+                        'output': output,
+                        'status': 'error'
+                    }), 400
+                
+                # Ingest into ChromaDB
+                ingest_firac_data(
+                    firac_data=firac_result,
+                    source_file_path=file_path
+                )
+                
+                output = captured_output.getvalue()
+                return jsonify({
+                    'message': f'FIRAC data extracted and ingested successfully for {file_path.name}',
+                    'output': output,
+                    'status': 'success'
+                }), 200
+            
+            # Backward compatibility: accept FIRAC data from frontend
+            if not data:
+                return jsonify({
+                    'error': 'No file path or FIRAC data provided',
+                    'status': 'error'
+                }), 400
+            
+            # Reconstruct FIRAC data structure from frontend format (backward compatibility)
             firac_data = {
                 'document': data.get('document', ''),
                 'metadata': data.get('metadata', ''),
@@ -327,7 +442,6 @@ def ingest_firac():
                 'error': None
             }
             
-            # Get optional source file path if provided
             source_file_path = data.get('source_file_path')
             case_identifier = data.get('case_identifier')
             
@@ -335,7 +449,7 @@ def ingest_firac():
             ingest_firac_data(
                 firac_data=firac_data,
                 case_identifier=case_identifier,
-                source_file_path=source_file_path
+                source_file_path=Path(source_file_path) if source_file_path else None
             )
             
             output = captured_output.getvalue()

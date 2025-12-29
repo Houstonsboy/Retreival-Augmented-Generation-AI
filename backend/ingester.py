@@ -64,26 +64,26 @@ def parse_metadata(metadata_text: Union[str, Dict]) -> Dict[str, str]:
         if not line:
             continue
             
-        # Match pattern: "KEY: value"
-        match = re.match(r"^([^:]+):\s*(.+)$", line)
+        # Match pattern: "KEY: value" (handles variations in spacing and case)
+        match = re.match(r"^([^:]+)[:\-]\s*(.+)$", line, re.IGNORECASE)
         if match:
             key = match.group(1).strip().lower().replace(" ", "_")
             value = match.group(2).strip()
             
-            # Map keys to metadata dict
-            if key == "file_name":
+            # Map keys to metadata dict (handle variations)
+            if key in ["file_name", "filename", "case_name", "case_title"]:
                 metadata["file_name"] = value
             elif key == "parties":
                 metadata["parties"] = value
-            elif key == "court_level":
+            elif key in ["court_level", "court", "courtlevel"]:
                 metadata["court_level"] = value
-            elif key == "judge":
+            elif key in ["judge", "judges", "judge(s)"]:
                 metadata["judge"] = value
             elif key == "year":
                 metadata["year"] = value
-            elif key == "legal_domain":
+            elif key in ["legal_domain", "domain", "legaldomain", "area_of_law"]:
                 metadata["legal_domain"] = value
-            elif key == "winning_party":
+            elif key in ["winning_party", "winner", "winningparty", "prevailing_party"]:
                 metadata["winning_party"] = value
     
     return metadata
@@ -220,22 +220,40 @@ def ingest_firac_data(
         source_path_str = str(source_path.resolve()) if source_path.exists() else str(source_path)
     
     print(f"\nCase identifier: {case_identifier}")
-    print(f"Parsed metadata: {parsed_metadata}")
+    print(f"Parsed metadata:")
+    print(f"  • File Name: {parsed_metadata.get('file_name', 'N/A')}")
+    print(f"  • Parties: {parsed_metadata.get('parties', 'N/A')[:60]}..." if len(parsed_metadata.get('parties', '')) > 60 else f"  • Parties: {parsed_metadata.get('parties', 'N/A')}")
+    print(f"  • Court Level: {parsed_metadata.get('court_level', 'N/A')}")
+    print(f"  • Judge: {parsed_metadata.get('judge', 'N/A')}")
+    print(f"  • Year: {parsed_metadata.get('year', 'N/A')}")
+    print(f"  • Legal Domain: {parsed_metadata.get('legal_domain', 'N/A')}")
+    print(f"  • Winning Party: {parsed_metadata.get('winning_party', 'N/A')}")
     if source_path_str:
         print(f"Source file: {source_path_str}")
     if document_hash:
         print(f"Document hash: {document_hash[:16]}...")
     
+    # Verify metadata was parsed correctly
+    metadata_fields_populated = sum(1 for key in ['file_name', 'parties', 'court_level', 'judge', 'year', 'legal_domain', 'winning_party'] 
+                                    if parsed_metadata.get(key) and parsed_metadata.get(key).strip())
+    if metadata_fields_populated == 0:
+        print(f"⚠ WARNING: No metadata fields were parsed from metadata text!")
+        print(f"   Raw metadata text (first 200 chars): {metadata_text[:200]}")
+    elif metadata_fields_populated < 4:
+        print(f"⚠ WARNING: Only {metadata_fields_populated}/7 metadata fields were parsed")
+    
     # Prepare chunks: each FIRAC component becomes its own chunk
     chunks = []
     chunk_metadatas = []
     chunk_ids = []
+    empty_components = []
     
     for component in FIRAC_COMPONENTS:
         content = firac_data.get(component, "").strip()
         
         # Skip empty components
         if not content:
+            empty_components.append(component)
             print(f"⚠ Skipping empty {component} component")
             continue
         
@@ -273,18 +291,30 @@ def ingest_firac_data(
         chunk_ids.append(chunk_id)
         
         print(f"✓ Prepared {component} chunk ({len(content)} chars)")
+        # Debug: Show metadata being stored
+        if component == FIRAC_COMPONENTS[0]:  # Only show for first component to avoid spam
+            print(f"   Metadata fields: file_name={chunk_metadata.get('file_name', 'N/A')[:50]}, "
+                  f"parties={chunk_metadata.get('parties', 'N/A')[:30]}, "
+                  f"court_level={chunk_metadata.get('court_level', 'N/A')[:30]}, "
+                  f"year={chunk_metadata.get('year', 'N/A')}")
     
     if not chunks:
-        print("❌ ERROR: No valid FIRAC components to ingest")
-        return
+        error_msg = (
+            f"No valid FIRAC components to ingest - all components are empty or missing. "
+            f"Empty components: {', '.join(empty_components) if empty_components else 'all 5 components'}. "
+            f"Case identifier: {case_identifier}"
+        )
+        print(f"❌ ERROR: {error_msg}")
+        raise ValueError(error_msg)
     
     # Create embeddings
     print(f"\nCreating embeddings for {len(chunks)} chunk(s)...")
     embeddings = create_embeddings(chunks, model)
     
     if embeddings.size == 0:
-        print("❌ ERROR: Failed to create embeddings")
-        return
+        error_msg = "Failed to create embeddings - embedding array is empty"
+        print(f"❌ ERROR: {error_msg}")
+        raise ValueError(error_msg)
     
     # Check for existing chunks from this case and remove them if re-ingesting
     existing = collection.get(
