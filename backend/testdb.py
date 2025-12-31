@@ -1,7 +1,7 @@
 """
-Simple Vector Database Test Script
+Enhanced Vector Database Test Script
 
-Quick check to verify if documents are embedded and stored correctly.
+Displays parent documents and all their chunks with complete metadata.
 """
 
 import chromadb
@@ -14,11 +14,11 @@ CHROMA_COLLECTION_NAME = "legal_summaries"
 
 
 def test_vector_db():
-    """Simple test to check if documents are in the database."""
+    """Enhanced test to check documents and their chunks in detail."""
     
-    print("\n" + "="*60)
-    print("🔍 VECTOR DATABASE QUICK TEST")
-    print("="*60)
+    print("\n" + "="*80)
+    print("🔍 VECTOR DATABASE DETAILED TEST")
+    print("="*80)
     
     # Check if database directory exists
     if not CHROMA_DB_DIR.exists():
@@ -43,9 +43,9 @@ def test_vector_db():
     
     total_chunks = len(results["ids"])
     
-    print(f"\n{'='*60}")
-    print(f"📊 RESULTS")
-    print(f"{'='*60}")
+    print(f"\n{'='*80}")
+    print(f"📊 OVERALL STATISTICS")
+    print(f"{'='*80}")
     print(f"\n✅ Total chunks in database: {total_chunks}")
     
     if total_chunks == 0:
@@ -55,13 +55,23 @@ def test_vector_db():
         print("2. Run ingester.py to embed and store the data")
         return
     
-    # Count unique cases
-    cases = set()
-    for metadata in results["metadatas"]:
+    # Organize chunks by case
+    cases_data = {}
+    for idx, chunk_id in enumerate(results["ids"]):
+        metadata = results["metadatas"][idx]
+        document = results["documents"][idx]
         case_id = metadata.get("case_identifier", "unknown")
-        cases.add(case_id)
+        
+        if case_id not in cases_data:
+            cases_data[case_id] = []
+        
+        cases_data[case_id].append({
+            "id": chunk_id,
+            "metadata": metadata,
+            "document": document
+        })
     
-    print(f"📁 Unique cases: {len(cases)}")
+    print(f"📁 Unique cases (parent documents): {len(cases_data)}")
     
     # Count by FIRAC component
     components = {
@@ -77,30 +87,10 @@ def test_vector_db():
         if comp in components:
             components[comp] += 1
     
-    print(f"\n📝 Chunks by component:")
+    print(f"\n📝 Total chunks by FIRAC component:")
     for comp, count in components.items():
         status = "✓" if count > 0 else "✗"
         print(f"   {status} {comp.capitalize()}: {count}")
-    
-    # List all cases with metadata
-    print(f"\n📋 Cases in database:")
-    for i, case in enumerate(sorted(cases), 1):
-        # Count components for this case
-        case_chunks = [m for m in results["metadatas"] 
-                      if m.get("case_identifier") == case]
-        print(f"   {i}. {case} ({len(case_chunks)} chunks)")
-        
-        # Show metadata for first chunk of this case (as sample)
-        if case_chunks:
-            sample_meta = case_chunks[0]
-            print(f"      Metadata sample:")
-            print(f"        • File Name: {sample_meta.get('file_name', 'N/A')}")
-            print(f"        • Parties: {sample_meta.get('parties', 'N/A')[:60]}..." if len(sample_meta.get('parties', '')) > 60 else f"        • Parties: {sample_meta.get('parties', 'N/A')}")
-            print(f"        • Court Level: {sample_meta.get('court_level', 'N/A')}")
-            print(f"        • Judge: {sample_meta.get('judge', 'N/A')}")
-            print(f"        • Year: {sample_meta.get('year', 'N/A')}")
-            print(f"        • Legal Domain: {sample_meta.get('legal_domain', 'N/A')}")
-            print(f"        • Winning Party: {sample_meta.get('winning_party', 'N/A')}")
     
     # Check for embeddings
     results_with_embeddings = collection.get(
@@ -114,18 +104,61 @@ def test_vector_db():
     else:
         print(f"\n⚠️  WARNING: No embeddings found!")
     
+    # Detailed display of each parent document and its chunks
+    print(f"\n{'='*80}")
+    print(f"📚 DETAILED BREAKDOWN: PARENTS AND CHUNKS")
+    print(f"{'='*80}")
+    
+    for case_num, (case_id, chunks) in enumerate(sorted(cases_data.items()), 1):
+        print(f"\n{'─'*80}")
+        print(f"📄 PARENT DOCUMENT #{case_num}: {case_id}")
+        print(f"{'─'*80}")
+        print(f"Total chunks: {len(chunks)}\n")
+        
+        # Sort chunks by FIRAC component for logical display
+        component_order = ["facts", "issues", "rules", "application", "conclusion"]
+        sorted_chunks = sorted(chunks, key=lambda x: component_order.index(x["metadata"].get("firac_component", "unknown")) 
+                              if x["metadata"].get("firac_component") in component_order else 999)
+        
+        for chunk_num, chunk_data in enumerate(sorted_chunks, 1):
+            metadata = chunk_data["metadata"]
+            document_text = chunk_data["document"]
+            chunk_id = chunk_data["id"]
+            
+            print(f"  🔹 CHUNK {chunk_num}/{len(chunks)}")
+            print(f"  {'┄'*76}")
+            print(f"  Chunk ID: {chunk_id}")
+            print(f"  FIRAC Component: {metadata.get('firac_component', 'N/A').upper()}")
+            print(f"\n  📋 Metadata:")
+            print(f"    • Case Identifier: {metadata.get('case_identifier', 'N/A')}")
+            print(f"    • File Name: {metadata.get('file_name', 'N/A')}")
+            print(f"    • Parties: {metadata.get('parties', 'N/A')}")
+            print(f"    • Court Level: {metadata.get('court_level', 'N/A')}")
+            print(f"    • Judge: {metadata.get('judge', 'N/A')}")
+            print(f"    • Year: {metadata.get('year', 'N/A')}")
+            print(f"    • Legal Domain: {metadata.get('legal_domain', 'N/A')}")
+            print(f"    • Winning Party: {metadata.get('winning_party', 'N/A')}")
+            
+            # Display document text (truncated if too long)
+            print(f"\n  📝 Document Text:")
+            if len(document_text) > 300:
+                print(f"    {document_text[:300]}...")
+                print(f"    (... truncated, full length: {len(document_text)} characters)")
+            else:
+                print(f"    {document_text}")
+            
+            print()  # Blank line between chunks
+    
     # Completeness check
-    print(f"\n{'='*60}")
+    print(f"\n{'='*80}")
     print(f"🔍 COMPLETENESS CHECK")
-    print(f"{'='*60}")
+    print(f"{'='*80}")
     
     incomplete_cases = []
     cases_without_metadata = []
     
-    for case in cases:
-        case_chunks = [m for m in results["metadatas"] 
-                      if m.get("case_identifier") == case]
-        case_components = [m.get("firac_component") for m in case_chunks]
+    for case_id, chunks in cases_data.items():
+        case_components = [chunk["metadata"].get("firac_component") for chunk in chunks]
         
         # Check if all 5 components are present
         missing = []
@@ -134,14 +167,15 @@ def test_vector_db():
                 missing.append(comp)
         
         if missing:
-            incomplete_cases.append((case, missing))
+            incomplete_cases.append((case_id, missing))
         
         # Check if metadata fields are populated
-        sample_meta = case_chunks[0] if case_chunks else {}
+        sample_meta = chunks[0]["metadata"] if chunks else {}
         metadata_fields = ['file_name', 'parties', 'court_level', 'judge', 'year', 'legal_domain', 'winning_party']
-        missing_metadata = [field for field in metadata_fields if not sample_meta.get(field) or sample_meta.get(field) == ""]
+        missing_metadata = [field for field in metadata_fields 
+                          if not sample_meta.get(field) or sample_meta.get(field) == ""]
         if missing_metadata:
-            cases_without_metadata.append((case, missing_metadata))
+            cases_without_metadata.append((case_id, missing_metadata))
     
     if incomplete_cases:
         print(f"\n⚠️  Found {len(incomplete_cases)} incomplete case(s):")
@@ -156,11 +190,11 @@ def test_vector_db():
         for case, missing_fields in cases_without_metadata:
             print(f"   • {case}: missing {', '.join(missing_fields)}")
     else:
-        print(f"\n✅ All cases have complete metadata (file_name, parties, court_level, judge, year, legal_domain, winning_party)")
+        print(f"\n✅ All cases have complete metadata")
     
-    print(f"\n{'='*60}")
+    print(f"\n{'='*80}")
     print("✅ TEST COMPLETE")
-    print(f"{'='*60}\n")
+    print(f"{'='*80}\n")
 
 
 if __name__ == "__main__":

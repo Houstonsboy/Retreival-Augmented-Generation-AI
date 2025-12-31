@@ -1,0 +1,307 @@
+import os
+import json
+import requests
+from typing import Dict, Any, Optional
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
+
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+if not GROQ_API_KEY:
+    raise ValueError("GROQ_API_KEY not found in environment variables. Please set it in your .env file.")
+
+MODEL_NAME = "llama-3.3-70b-versatile"
+GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
+
+# System prompt for the legal classifier
+SYSTEM_PROMPT = """You are a Kenyan legal research specialist trained in FIRAC case analysis methodology. Your task is to transform complex natural language legal queries into structured, multi-dimensional JSON objects to drive high-precision semantic search.
+
+### FIELD DEFINITIONS & MULTI-LABEL LOGIC
+
+1. "intents": (List of strings) Identify ALL applicable goals:
+   - SCENARIO_MATCH: User describes facts and wants similar stories.
+   - RULE_SEARCH: User wants a specific legal test, standard, or statutory interpretation.
+   - OUTCOME_ANALYSIS: User seeks specific verdicts or results (e.g., "was the charge reduced?", "was it struck out?").
+   - PROCEDURAL_GUIDANCE: User asks about filings, jurisdiction, or court steps.
+
+2. "target_components": (List of strings) Select ALL relevant FIRAC parts:
+   - FACTS: For scenario matching and situational similarity.
+   - ISSUES: To find cases dealing with the same specific legal questions.
+   - RULES: To retrieve the legal standards, tests, or sections of law.
+   - APPLICATION: To see how judges reasoned through similar logic.
+   - CONCLUSION: To find specific holdings, orders, and sentencing outcomes.
+
+3. "legal_domains": (List of strings) Identify the primary and any secondary areas of law (e.g., Criminal, Land/ELC, Constitutional, Family, Tax).
+
+4. "entities": Extract or infer specific Case Names, Statutes (Section/Article), and Judges. 
+   - *Logic*: If "Murder" is mentioned, imply "Penal Code Sec 203". If "Preliminary Objection" is mentioned, imply "Mukisa Biscuit".
+
+5. "vector_query": A dense, professional search string. 
+   - *Requirement*: If multiple intents exist, the vector_query must blend keywords for all of them.
+   - *Example*: Combine "test for putative self-defense" with "murder reduced to manslaughter lack of malice".
+
+### CONSTRAINTS
+- Return ONLY a JSON object. No preamble or conversational text.
+- MULTI-LABELING: If the user asks for a 'test' and an 'outcome', you MUST include both intents and both target components.
+- LEGAL DENSITY: Use terms found in the Laws of Kenya and superior court judgments.
+
+### JSON SCHEMA
+{
+  "intents": ["string"],
+  "target_components": ["string"],
+  "legal_domains": ["string"],
+  "entities": {
+    "statutes": ["string"],
+    "cases": ["string"],
+    "judges": ["string"]
+  },
+  "vector_query": "string",
+  "reasoning_summary": "string"
+}"""
+
+
+def classify_legal_query(user_query: str, max_retries: int = 3) -> Optional[Dict[str, Any]]:
+    """
+    Classifies a legal query using the Groq API.
+    
+    Args:
+        user_query: The natural language legal query from the user
+        max_retries: Maximum number of retry attempts for API calls
+        
+    Returns:
+        Dictionary containing the classified query structure, or None if failed
+    """
+    
+    headers = {
+        "Authorization": f"Bearer {GROQ_API_KEY}",
+        "Content-Type": "application/json"
+    }
+    
+    payload = {
+        "model": MODEL_NAME,
+        "messages": [
+            {
+                "role": "system",
+                "content": SYSTEM_PROMPT
+            },
+            {
+                "role": "user",
+                "content": user_query
+            }
+        ],
+        "temperature": 0.1,  # Low temperature for consistent, deterministic output
+        "max_tokens": 800,
+        "top_p": 1,
+        "stream": False
+    }
+    
+    api_call_count = 0
+    
+    for attempt in range(max_retries):
+        try:
+            api_call_count += 1
+            print(f"[API Call #{api_call_count}] Sending query to Groq API...")
+            
+            response = requests.post(
+                GROQ_API_URL,
+                headers=headers,
+                json=payload,
+                timeout=30
+            )
+            
+            # Enhanced debugging for HTTP errors
+            print(f"[DEBUG] Response Status Code: {response.status_code}")
+            
+            # Check for rate limiting (429) or other HTTP errors
+            if response.status_code == 429:
+                print(f"[ERROR] Rate limit exceeded! Groq API returned 429.")
+                print(f"[DEBUG] Response headers: {dict(response.headers)}")
+                if attempt < max_retries - 1:
+                    wait_time = 5 * (attempt + 1)  # Exponential backoff
+                    print(f"[INFO] Waiting {wait_time} seconds before retry...")
+                    import time
+                    time.sleep(wait_time)
+                continue
+            
+            elif response.status_code == 401:
+                print(f"[ERROR] Authentication failed! Check your GROQ_API_KEY.")
+                print(f"[DEBUG] API Key (first 10 chars): {GROQ_API_KEY[:10]}...")
+                return None
+            
+            elif response.status_code == 400:
+                print(f"[ERROR] Bad request! The API rejected your request.")
+                try:
+                    error_detail = response.json()
+                    print(f"[DEBUG] Error details: {json.dumps(error_detail, indent=2)}")
+                except:
+                    print(f"[DEBUG] Raw response: {response.text}")
+                return None
+            
+            response.raise_for_status()
+            
+            # Extract the response content
+            response_data = response.json()
+            
+            # Debug: Print full response structure
+            print(f"[DEBUG] Response keys: {response_data.keys()}")
+            
+            if "choices" not in response_data or len(response_data["choices"]) == 0:
+                print(f"[ERROR] No 'choices' in API response!")
+                print(f"[DEBUG] Full response: {json.dumps(response_data, indent=2)}")
+                continue
+            
+            assistant_message = response_data["choices"][0]["message"]["content"]
+            
+            # Debug: Print raw LLM output
+            print(f"[DEBUG] Raw LLM response (first 300 chars):\n{assistant_message[:300]}\n")
+            
+            # Try to parse as JSON
+            try:
+                # Remove potential markdown code fences
+                clean_response = assistant_message.strip()
+                if clean_response.startswith("```json"):
+                    clean_response = clean_response[7:]
+                if clean_response.startswith("```"):
+                    clean_response = clean_response[3:]
+                if clean_response.endswith("```"):
+                    clean_response = clean_response[:-3]
+                
+                clean_response = clean_response.strip()
+                
+                # Debug: Show cleaned response
+                print(f"[DEBUG] Cleaned response (first 200 chars):\n{clean_response[:200]}\n")
+                
+                # Parse JSON
+                classification = json.loads(clean_response)
+                
+                # Debug: Show parsed fields
+                print(f"[DEBUG] Parsed JSON keys: {list(classification.keys())}")
+                
+                # Updated validation for new schema (intents, target_components are now arrays)
+                required_fields = ["intents", "target_components", "legal_domains", "entities", "vector_query"]
+                missing_fields = [field for field in required_fields if field not in classification]
+                
+                if missing_fields:
+                    print(f"[WARNING] Missing required fields: {missing_fields}")
+                    print(f"[DEBUG] Available fields: {list(classification.keys())}")
+                    print(f"[DEBUG] Full classification object:\n{json.dumps(classification, indent=2)}")
+                    
+                    if attempt < max_retries - 1:
+                        print(f"[INFO] Retrying with explicit field requirements...")
+                        payload["messages"].append({
+                            "role": "assistant",
+                            "content": assistant_message
+                        })
+                        payload["messages"].append({
+                            "role": "user",
+                            "content": f"Your response is missing these required fields: {missing_fields}. Please include ALL required fields: {required_fields}"
+                        })
+                    continue
+                
+                print(f"[SUCCESS] Query classified successfully! (Total API calls: {api_call_count})")
+                return classification
+                    
+            except json.JSONDecodeError as e:
+                print(f"[ERROR] Failed to parse JSON response!")
+                print(f"[DEBUG] JSON Error: {str(e)}")
+                print(f"[DEBUG] Error at position: {e.pos}")
+                print(f"[DEBUG] Problematic section: ...{clean_response[max(0, e.pos-50):e.pos+50]}...")
+                print(f"[DEBUG] Full cleaned response:\n{clean_response}\n")
+                
+                if attempt < max_retries - 1:
+                    print(f"[INFO] Retrying with stricter JSON instructions...")
+                    payload["messages"].append({
+                        "role": "assistant",
+                        "content": assistant_message
+                    })
+                    payload["messages"].append({
+                        "role": "user",
+                        "content": "Please output ONLY valid JSON with no additional text, markdown formatting, or code fences. Ensure all strings are properly quoted and all arrays/objects are properly closed."
+                    })
+                continue
+                
+        except requests.exceptions.Timeout:
+            print(f"[ERROR] Request timed out after 30 seconds!")
+            if attempt < max_retries - 1:
+                print(f"[INFO] Retrying...")
+            continue
+            
+        except requests.exceptions.ConnectionError as e:
+            print(f"[ERROR] Connection error: {str(e)}")
+            print(f"[DEBUG] Unable to reach {GROQ_API_URL}")
+            if attempt < max_retries - 1:
+                print(f"[INFO] Retrying in 3 seconds...")
+                import time
+                time.sleep(3)
+            continue
+            
+        except requests.exceptions.RequestException as e:
+            print(f"[ERROR] API request failed: {str(e)}")
+            print(f"[DEBUG] Exception type: {type(e).__name__}")
+            if attempt < max_retries - 1:
+                print(f"[INFO] Retrying in 2 seconds...")
+                import time
+                time.sleep(2)
+            continue
+    
+    print(f"[FAILURE] Failed to classify query after {api_call_count} API calls.")
+    print(f"[TROUBLESHOOTING TIPS]:")
+    print(f"  1. Check your API key is valid: {GROQ_API_KEY[:10]}...")
+    print(f"  2. Verify you have Groq API credits/quota remaining")
+    print(f"  3. Try a simpler query to test basic connectivity")
+    print(f"  4. Check Groq API status: https://status.groq.com/")
+    return None
+
+
+def print_classification(classification: Dict[str, Any]) -> None:
+    """Pretty print the classification result."""
+    print("\n" + "="*60)
+    print("LEGAL QUERY CLASSIFICATION RESULT")
+    print("="*60)
+    print(json.dumps(classification, indent=2, ensure_ascii=False))
+    print("="*60 + "\n")
+
+
+def main():
+    """Main function to demonstrate the classifier."""
+    
+    print("\n" + "="*60)
+    print("KENYAN LEGAL QUERY CLASSIFIER")
+    print("="*60)
+    print("\nEnter your legal query below:")
+    print("(Type your query and press Enter when done)\n")
+    
+    # Simple single-line input
+    user_query = input("Query: ").strip()
+    
+    if not user_query:
+        print("\n❌ No query entered. Exiting.")
+        return
+    
+    print(f"\n📋 You entered:\n{user_query}\n")
+    
+    # Classify the query
+    print("🔄 Processing your query...\n")
+    result = classify_legal_query(user_query)
+    
+    if result:
+        print_classification(result)
+        
+        # Optionally save to file
+        save_to_file = input("Save result to file? (y/n): ").strip().lower()
+        if save_to_file == 'y':
+            filename = "classification_result.json"
+            with open(filename, 'w', encoding='utf-8') as f:
+                json.dump(result, f, indent=2, ensure_ascii=False)
+            print(f"✅ Result saved to {filename}")
+    else:
+        print("❌ Classification failed.")
+        print("\n💡 Suggestions:")
+        print("  - Run with a test query: 'What is adverse possession?'")
+        print("  - Check your .env file contains valid GROQ_API_KEY")
+        print("  - Verify internet connectivity")
+
+
+if __name__ == "__main__":
+    main()
