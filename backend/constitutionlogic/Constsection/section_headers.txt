@@ -1,0 +1,2667 @@
+CONSTITUTION SECTION HEADERS
+================================================================================
+
+MATCH #1
+Header: Sovereignty of the people.
+Number: 1
+Sentence: 1. (1)  All sovereign power belongs to the people of Kenya and shall be exercised
+--------------------------------------------------------------------------------
+
+MATCH #2
+Header: Supremacy of this Constitution.
+Number: 2
+Sentence: 2. (1)  This Constitution is the supreme law of the Republic and binds all persons
+--------------------------------------------------------------------------------
+
+MATCH #3
+Header: Defence of this Constitution.
+Number: 3
+Sentence: 3. (1)    Every person has an obligation to respect, uphold and defend this
+--------------------------------------------------------------------------------
+
+MATCH #4
+Header: Declaration of the Republic.
+Number: 4
+Sentence: 4. (1)  Kenya is a sovereign Republic.
+--------------------------------------------------------------------------------
+
+MATCH #5
+Header: Territory of Kenya.
+Number: 5
+Sentence: 5. Kenya consists of the territory and territorial waters comprising Kenya on the
+--------------------------------------------------------------------------------
+
+MATCH #6
+Header: Devolution and access to services.
+Number: 6
+Sentence: 6. (1)  The territory of Kenya is divided into the counties speciﬁed in the First
+--------------------------------------------------------------------------------
+
+MATCH #7
+Header: National, ofﬁcial and other languages.
+Number: 7
+Sentence: 7. (1)  The national language of the Republic is Kiswahili.
+--------------------------------------------------------------------------------
+
+MATCH #8
+Header: State and religion.
+Number: 8
+Sentence: 8. There shall be no State religion.
+--------------------------------------------------------------------------------
+
+MATCH #9
+Header: National symbols and national days.
+Number: 9
+Sentence: 9. (1)  The national symbols of the Republic are—
+--------------------------------------------------------------------------------
+
+MATCH #10
+Header: National values and principles of governance.
+Number: 10
+Sentence: 10. (1)  The national values and principles of governance in this Article bind all
+--------------------------------------------------------------------------------
+
+MATCH #11
+Header: Culture.
+Number: 11
+Sentence: 11. (1)  This Constitution recognises culture as the foundation of the nation and
+--------------------------------------------------------------------------------
+
+MATCH #12
+Header: Entitlements of citizens.
+Number: 12
+Sentence: 12. (1)  Every citizen is entitled to—
+--------------------------------------------------------------------------------
+
+MATCH #13
+Header: Retention and acquisition of citizenship.
+Number: 13
+Sentence: 13. (1)  Every person who was a citizen immediately before the effective date
+--------------------------------------------------------------------------------
+
+MATCH #14
+Header: Citizenship by birth.
+Number: 14
+Sentence: 14. (1)  A person is a citizen by birth if on the day of the person’s birth, whether or
+--------------------------------------------------------------------------------
+
+MATCH #15
+Header: Citizenship by registration.
+Number: 15
+Sentence: 15. (1)  A person who has been married to a citizen for a period of at least seven
+--------------------------------------------------------------------------------
+
+MATCH #16
+Header: Dual citizenship.
+Number: 16
+Sentence: 16. A citizen by birth does not lose citizenship by acquiring the citizenship of
+--------------------------------------------------------------------------------
+
+MATCH #17
+Header: Revocation of citizenship.
+Number: 17
+Sentence: 17. (1)  If a person acquired citizenship by registration, the citizenship may be
+--------------------------------------------------------------------------------
+
+MATCH #18
+Header: Legislation on citizenship.
+Number: 18
+Sentence: 18. Parliament shall enact legislation—
+--------------------------------------------------------------------------------
+
+MATCH #19
+Header: Rights and fundamental freedoms.
+Number: 19
+Sentence: 19. (1)  The Bill of Rights is an integral part of Kenya’s democratic state and is
+--------------------------------------------------------------------------------
+
+MATCH #20
+Header: Application of Bill of Rights.
+Number: 20
+Sentence: 20. (1)  The Bill of Rights applies to all law and binds all State organs and all
+--------------------------------------------------------------------------------
+
+MATCH #21
+Header: Implementation of rights and fundamental freedoms.
+Number: 21
+Sentence: 21. (1)  It is a fundamental duty of the State and every State organ to observe,
+--------------------------------------------------------------------------------
+
+MATCH #22
+Header: Enforcement of Bill of Rights.
+Number: 22
+Sentence: 22. (1)  Every person has the right to institute court proceedings claiming that
+--------------------------------------------------------------------------------
+
+MATCH #23
+Header: Authority of courts to uphold and enforce the Bill of Rights.
+Number: 23
+Sentence: 23. (1)  The High Court has jurisdiction, in accordance with Article 165, to hear
+--------------------------------------------------------------------------------
+
+MATCH #24
+Header: Limitation of rights and fundamental freedoms.
+Number: 24
+Sentence: 24. (1)  A right or fundamental freedom in the Bill of Rights shall not be limited
+--------------------------------------------------------------------------------
+
+MATCH #25
+Header: Fundamental Rights and freedoms that may not be limited.
+Number: 25
+Sentence: 25. Despite any other provision in this Constitution, the following rights and
+--------------------------------------------------------------------------------
+
+MATCH #26
+Header: Right to life.
+Number: 26
+Sentence: 26. (1)  Every person has the right to life.
+--------------------------------------------------------------------------------
+
+MATCH #27
+Header: Equality and freedom from discrimination.
+Number: 27
+Sentence: 27. (1)  Every person is equal before the law and has the right to equal protection
+--------------------------------------------------------------------------------
+
+MATCH #28
+Header: Human dignity.
+Number: 28
+Sentence: 28. Every person has inherent dignity and the right to have that dignity respected
+--------------------------------------------------------------------------------
+
+MATCH #29
+Header: Freedom and security of the person.
+Number: 29
+Sentence: 29. Every person has the right to freedom and security of the person, which
+--------------------------------------------------------------------------------
+
+MATCH #30
+Header: Slavery, servitude and forced labour.
+Number: 30
+Sentence: 30. (1)  A person shall not be held in slavery or servitude.
+--------------------------------------------------------------------------------
+
+MATCH #31
+Header: Privacy.
+Number: 31
+Sentence: 31. Every person has the right to privacy, which includes the right not to have—
+--------------------------------------------------------------------------------
+
+MATCH #32
+Header: Freedom of conscience, religion, belief and opinion.
+Number: 32
+Sentence: 32. (1)  Every person has the right to freedom of conscience, religion, thought,
+--------------------------------------------------------------------------------
+
+MATCH #33
+Header: Freedom of expression.
+Number: 33
+Sentence: 33. (1)  Every person has the right to freedom of expression, which includes—
+--------------------------------------------------------------------------------
+
+MATCH #34
+Header: Freedom of the media.
+Number: 34
+Sentence: 34. (1)  Freedom and independence of electronic, print and all other types of
+--------------------------------------------------------------------------------
+
+MATCH #35
+Header: Access to information.
+Number: 35
+Sentence: 35. (1)  Every citizen has the right of access to—
+--------------------------------------------------------------------------------
+
+MATCH #36
+Header: Freedom of association.
+Number: 36
+Sentence: 36. (1)  Every person has the right to freedom of association, which includes the
+--------------------------------------------------------------------------------
+
+MATCH #37
+Header: Assembly, demonstration, picketing and petition.
+Number: 37
+Sentence: 37. Every person has the right, peaceably and unarmed, to assemble, to
+--------------------------------------------------------------------------------
+
+MATCH #38
+Header: Political rights.
+Number: 38
+Sentence: 38. (1)  Every citizen is free to make political choices, which includes the right—
+--------------------------------------------------------------------------------
+
+MATCH #39
+Header: Freedom of movement and residence.
+Number: 39
+Sentence: 39. (1)  Every person has the right to freedom of movement.
+--------------------------------------------------------------------------------
+
+MATCH #40
+Header: Protection of right to property.
+Number: 40
+Sentence: 40. (1)  Subject to Article 65, every person has the right, either individually or
+--------------------------------------------------------------------------------
+
+MATCH #41
+Header: Labour relations.
+Number: 41
+Sentence: 41. (1)  Every person has the right to fair labour practices.
+--------------------------------------------------------------------------------
+
+MATCH #42
+Header: Environment.
+Number: 42
+Sentence: 42. Every person has the right to a clean and healthy environment, which
+--------------------------------------------------------------------------------
+
+MATCH #43
+Header: Economic and social rights.
+Number: 43
+Sentence: 43. (1)  Every person has the right—
+--------------------------------------------------------------------------------
+
+MATCH #44
+Header: Language and culture.
+Number: 44
+Sentence: 44. (1)  Every person has the right to use the language, and to participate in the
+--------------------------------------------------------------------------------
+
+MATCH #45
+Header: Family.
+Number: 45
+Sentence: 45. (1)    The family is the natural and fundamental unit of society and the
+--------------------------------------------------------------------------------
+
+MATCH #46
+Header: Consumer rights.
+Number: 46
+Sentence: 46. (1)  Consumers have the right—
+--------------------------------------------------------------------------------
+
+MATCH #47
+Header: Fair administrative action.
+Number: 47
+Sentence: 47. (1)  Every person has the right to administrative action that is expeditious,
+--------------------------------------------------------------------------------
+
+MATCH #48
+Header: Access to justice.
+Number: 48
+Sentence: 48. The State shall ensure access to justice for all persons and, if any fee is
+--------------------------------------------------------------------------------
+
+MATCH #49
+Header: Rights of arrested persons.
+Number: 49
+Sentence: 49. (1)  An arrested person has the right—
+--------------------------------------------------------------------------------
+
+MATCH #50
+Header: Fair hearing.
+Number: 50
+Sentence: 50. (1)  Every person has the right to have any dispute that can be resolved
+--------------------------------------------------------------------------------
+
+MATCH #51
+Header: Rights of persons detained, held in custody or imprisoned.
+Number: 51
+Sentence: 51. (1)  A person who is detained, held in custody or imprisoned under the law,
+--------------------------------------------------------------------------------
+
+MATCH #52
+Header: Interpretation of this Part.
+Number: 52
+Sentence: 52. (1)  This Part elaborates certain rights to ensure greater certainty as to the
+--------------------------------------------------------------------------------
+
+MATCH #53
+Header: Children.
+Number: 53
+Sentence: 53. (1)  Every child has the right—
+--------------------------------------------------------------------------------
+
+MATCH #54
+Header: Persons with disabilities.
+Number: 54
+Sentence: 54. (1)  A person with any disability is entitled—
+--------------------------------------------------------------------------------
+
+MATCH #55
+Header: Youth.
+Number: 55
+Sentence: 55. The State shall take measures, including afﬁrmative action programmes, to
+--------------------------------------------------------------------------------
+
+MATCH #56
+Header: Minorities and marginalised groups.
+Number: 56
+Sentence: 56. The State shall put in place afﬁrmative action programmes designed to
+--------------------------------------------------------------------------------
+
+MATCH #57
+Header: Older members of society.
+Number: 57
+Sentence: 57. The State shall take measures to ensure the rights of older persons—
+--------------------------------------------------------------------------------
+
+MATCH #58
+Header: State of emergency.
+Number: 58
+Sentence: 58. (1)  A state of emergency may be declared only under Article 132 (4) (d) and
+--------------------------------------------------------------------------------
+
+MATCH #59
+Header: Kenya National Human Rights and Equality Commission.
+Number: 59
+Sentence: 59. (1)  There is established the Kenya National Human Rights and Equality
+--------------------------------------------------------------------------------
+
+MATCH #60
+Header: Principles of land policy.
+Number: 60
+Sentence: 60. (1)    Land in Kenya shall be held, used and managed in a manner that
+--------------------------------------------------------------------------------
+
+MATCH #61
+Header: Classiﬁcation of land.
+Number: 61
+Sentence: 61. (1)  All land in Kenya belongs to the people of Kenya collectively as a nation,
+--------------------------------------------------------------------------------
+
+MATCH #62
+Header: Public land.
+Number: 62
+Sentence: 62. (1)  Public land is—
+--------------------------------------------------------------------------------
+
+MATCH #63
+Header: Community land.
+Number: 63
+Sentence: 63. (1)  Community land shall vest in and be held by communities identiﬁed on
+--------------------------------------------------------------------------------
+
+MATCH #64
+Header: Private land.
+Number: 64
+Sentence: 64. Private land consists of —
+--------------------------------------------------------------------------------
+
+MATCH #65
+Header: Landholding by non-citizens.
+Number: 65
+Sentence: 65. (1)  A person who is not a citizen may hold land on the basis of leasehold
+--------------------------------------------------------------------------------
+
+MATCH #66
+Header: Regulation of land use and property.
+Number: 66
+Sentence: 66. (1)  The State may regulate the use of any land, or any interest in or right
+--------------------------------------------------------------------------------
+
+MATCH #67
+Header: National Land Commission.
+Number: 67
+Sentence: 67. (1)  There is established the National Land Commission.
+--------------------------------------------------------------------------------
+
+MATCH #68
+Header: Legislation on land.
+Number: 68
+Sentence: 68. Parliament shall—
+--------------------------------------------------------------------------------
+
+MATCH #69
+Header: Obligations in respect of the environment.
+Number: 69
+Sentence: 69. (1)  The State shall—
+--------------------------------------------------------------------------------
+
+MATCH #70
+Header: Enforcement of environmental rights.
+Number: 70
+Sentence: 70. (1)  If a person alleges that a right to a clean and healthy environment
+--------------------------------------------------------------------------------
+
+MATCH #71
+Header: Agreements relating to natural resources.
+Number: 71
+Sentence: 71. (1)  A transaction is subject to ratiﬁcation by Parliament if it—
+--------------------------------------------------------------------------------
+
+MATCH #72
+Header: Legislation relating to the environment.
+Number: 72
+Sentence: 72. Parliament shall enact legislation to give full effect to the provisions of this
+--------------------------------------------------------------------------------
+
+MATCH #73
+Header: Responsibilities of leadership.
+Number: 73
+Sentence: 73. (1)  Authority assigned to a State ofﬁcer—
+--------------------------------------------------------------------------------
+
+MATCH #74
+Header: Oath of ofﬁce of State ofﬁcers.
+Number: 74
+Sentence: 74. Before assuming a State ofﬁce, acting in a State ofﬁce, or performing any
+--------------------------------------------------------------------------------
+
+MATCH #75
+Header: Conduct of State ofﬁcers.
+Number: 75
+Sentence: 75. (1)  A State ofﬁcer shall behave, whether in public and ofﬁcial life, in private
+--------------------------------------------------------------------------------
+
+MATCH #76
+Header: Financial probity of State ofﬁcers.
+Number: 76
+Sentence: 76. (1)  A gift or donation to a State ofﬁcer on a public or ofﬁcial occasion is a
+--------------------------------------------------------------------------------
+
+MATCH #77
+Header: Restriction on activities of State ofﬁcers.
+Number: 77
+Sentence: 77. (1)    A full-time State ofﬁcer shall not participate in any other gainful
+--------------------------------------------------------------------------------
+
+MATCH #78
+Header: Citizenship and leadership.
+Number: 78
+Sentence: 78. (1)  A person is not eligible for election or appointment to a State ofﬁce
+--------------------------------------------------------------------------------
+
+MATCH #79
+Header: Legislation to establish the ethics and anti-corruption commission.
+Number: 79
+Sentence: 79. Parliament shall enact legislation to establish an independent ethics and
+--------------------------------------------------------------------------------
+
+MATCH #80
+Header: Legislation on leadership.
+Number: 80
+Sentence: 80. Parliament shall enact legislation—
+--------------------------------------------------------------------------------
+
+MATCH #81
+Header: General principles for the electoral system.
+Number: 81
+Sentence: 81. The electoral system shall comply with the following principles—
+--------------------------------------------------------------------------------
+
+MATCH #82
+Header: Legislation on elections.
+Number: 82
+Sentence: 82. (1)  Parliament shall enact legislation to provide for—
+--------------------------------------------------------------------------------
+
+MATCH #83
+Header: Registration as a voter.
+Number: 83
+Sentence: 83. (1)  A person qualiﬁes for registration as a voter at elections or referenda
+--------------------------------------------------------------------------------
+
+MATCH #84
+Header: Candidates for election and political parties to comply with code of conduct.
+Number: 84
+Sentence: 84. In every election, all candidates and all political parties shall comply
+--------------------------------------------------------------------------------
+
+MATCH #85
+Header: Eligibility to stand as an independent candidate.
+Number: 85
+Sentence: 85. Any person is eligible to stand as an independent candidate for election if
+--------------------------------------------------------------------------------
+
+MATCH #86
+Header: Voting.
+Number: 86
+Sentence: 86. At every election, the Independent Electoral and Boundaries Commission
+--------------------------------------------------------------------------------
+
+MATCH #87
+Header: Electoral disputes.
+Number: 87
+Sentence: 87. (1)  Parliament shall enact legislation to establish mechanisms for timely
+--------------------------------------------------------------------------------
+
+MATCH #88
+Header: Independent Electoral and Boundaries Commission.
+Number: 88
+Sentence: 88. (1)    There is established the Independent Electoral and Boundaries
+--------------------------------------------------------------------------------
+
+MATCH #89
+Header: Delimitation of electoral units.
+Number: 89
+Sentence: 89. (1)  There shall be two hundred and ninety constituencies for the purposes of
+--------------------------------------------------------------------------------
+
+MATCH #90
+Header: Allocation of party list seats.
+Number: 90
+Sentence: 90. (1)  Elections for the seats in Parliament provided for under Articles 97(1)(c)
+--------------------------------------------------------------------------------
+
+MATCH #91
+Header: Basic requirements for political parties.
+Number: 91
+Sentence: 91. (1)  Every political party shall—
+--------------------------------------------------------------------------------
+
+MATCH #92
+Header: Legislation on political parties.
+Number: 92
+Sentence: 92. Parliament shall enact legislation to provide for—
+--------------------------------------------------------------------------------
+
+MATCH #93
+Header: Establishment of Parliament.
+Number: 93
+Sentence: 93. (1)  There is established a Parliament of Kenya, which shall consist of the
+--------------------------------------------------------------------------------
+
+MATCH #94
+Header: Role of Parliament.
+Number: 94
+Sentence: 94. (1)  The legislative authority of the Republic is derived from the people and,
+--------------------------------------------------------------------------------
+
+MATCH #95
+Header: Role of the National Assembly.
+Number: 95
+Sentence: 95. (1)  The National Assembly represents the people of the constituencies and
+--------------------------------------------------------------------------------
+
+MATCH #96
+Header: Role of the Senate.
+Number: 96
+Sentence: 96. (1)  The Senate represents the counties, and serves to protect the interests
+--------------------------------------------------------------------------------
+
+MATCH #97
+Header: Membership of the National Assembly.
+Number: 97
+Sentence: 97. (1)  The National Assembly consists of—
+--------------------------------------------------------------------------------
+
+MATCH #98
+Header: Membership of the Senate.
+Number: 98
+Sentence: 98. (1)  The Senate consists of—
+--------------------------------------------------------------------------------
+
+MATCH #99
+Header: Qualiﬁcations and disqualiﬁcations for election as member of Parliament.
+Number: 99
+Sentence: 99. (1)  Unless disqualiﬁed under clause (2), a person is eligible for election as
+--------------------------------------------------------------------------------
+
+MATCH #100
+Header: Promotion of representation of marginalised groups.
+Number: 100
+Sentence: 100. Parliament shall enact legislation to promote the representation in
+--------------------------------------------------------------------------------
+
+MATCH #101
+Header: Election of members of Parliament.
+Number: 101
+Sentence: 101. (1)  A general election of members of Parliament shall be held on the second
+--------------------------------------------------------------------------------
+
+MATCH #102
+Header: Term of Parliament.
+Number: 102
+Sentence: 102. (1)  The term of each House of Parliament expires on the date of the next
+--------------------------------------------------------------------------------
+
+MATCH #103
+Header: Vacation of ofﬁce of member of Parliament.
+Number: 103
+Sentence: 103. (1)  The ofﬁce of a member of Parliament becomes vacant—
+--------------------------------------------------------------------------------
+
+MATCH #104
+Header: Right of recall.
+Number: 104
+Sentence: 104. (1)  The electorate under Articles 97 and 98 have the right to recall the
+--------------------------------------------------------------------------------
+
+MATCH #105
+Header: Determination of questions of membership.
+Number: 105
+Sentence: 105. (1)  The High Court shall hear and determine any question whether—
+--------------------------------------------------------------------------------
+
+MATCH #106
+Header: Speakers and Deputy Speakers of Parliament.
+Number: 106
+Sentence: 106. (1)  There shall be—
+--------------------------------------------------------------------------------
+
+MATCH #107
+Header: Presiding in Parliament.
+Number: 107
+Sentence: 107. (1)  At any sitting of a House of Parliament—
+--------------------------------------------------------------------------------
+
+MATCH #108
+Header: Party leaders.
+Number: 108
+Sentence: 108. (1)  There shall be a leader of the majority party and a leader of the minority
+--------------------------------------------------------------------------------
+
+MATCH #109
+Header: Exercise of legislative powers.
+Number: 109
+Sentence: 109. (1)  Parliament shall exercise its legislative power through Bills passed by
+--------------------------------------------------------------------------------
+
+MATCH #110
+Header: Bills concerning county government.
+Number: 110
+Sentence: 110. (1)  In this Constitution, "a Bill concerning county government" means—
+--------------------------------------------------------------------------------
+
+MATCH #111
+Header: Special Bills concerning county governments.
+Number: 111
+Sentence: 111. (1)  A special Bill concerning a county government shall proceed in the
+--------------------------------------------------------------------------------
+
+MATCH #112
+Header: Ordinary Bills concerning county governments.
+Number: 112
+Sentence: 112. (1)  If one House passes an ordinary Bill concerning counties, and the second
+--------------------------------------------------------------------------------
+
+MATCH #113
+Header: Mediation committees.
+Number: 113
+Sentence: 113. (1)  If a Bill is referred to a mediation committee under Article 112, the
+--------------------------------------------------------------------------------
+
+MATCH #114
+Header: Money Bills.
+Number: 114
+Sentence: 114. (1)  A money Bill may not deal with any matter other than those listed in
+--------------------------------------------------------------------------------
+
+MATCH #115
+Header: Presidential assent and referral.
+Number: 115
+Sentence: 115. (1)  Within fourteen days after receipt of a Bill, the President shall—
+--------------------------------------------------------------------------------
+
+MATCH #116
+Header: Coming into force of laws.
+Number: 116
+Sentence: 116. (1)  A Bill passed by Parliament and assented to by the President shall be
+--------------------------------------------------------------------------------
+
+MATCH #117
+Header: Powers, privileges and immunities.
+Number: 117
+Sentence: 117. (1)  There shall be freedom of speech and debate in Parliament.
+--------------------------------------------------------------------------------
+
+MATCH #118
+Header: Public access and participation.
+Number: 118
+Sentence: 118. (1)  Parliament shall—
+--------------------------------------------------------------------------------
+
+MATCH #119
+Header: Right to petition Parliament.
+Number: 119
+Sentence: 119. (1)  Every person has a right to petition Parliament to consider any matter
+--------------------------------------------------------------------------------
+
+MATCH #120
+Header: Ofﬁcial languages of Parliament.
+Number: 120
+Sentence: 120. (1)  The ofﬁcial languages of Parliament shall be Kiswahili, English and
+--------------------------------------------------------------------------------
+
+MATCH #121
+Header: Quorum.
+Number: 121
+Sentence: 121. The quorum of Parliament shall be–
+--------------------------------------------------------------------------------
+
+MATCH #122
+Header: Voting in Parliament.
+Number: 122
+Sentence: 122. (1)    Except as otherwise provided in this Constitution, any question
+--------------------------------------------------------------------------------
+
+MATCH #123
+Header: Decisions of Senate.
+Number: 123
+Sentence: 123. (1)  On election, all the members of the Senate who were registered as voters
+--------------------------------------------------------------------------------
+
+MATCH #124
+Header: Committees and Standing Orders.
+Number: 124
+Sentence: 124. (1)    Each House of Parliament may establish committees, and shall
+--------------------------------------------------------------------------------
+
+MATCH #125
+Header: Power to call for evidence.
+Number: 125
+Sentence: 125. (1)  Either House of Parliament, and any of its committees, has power
+--------------------------------------------------------------------------------
+
+MATCH #126
+Header: Location of sittings of Parliament.
+Number: 126
+Sentence: 126. (1)  A sitting of either House may be held at any place within Kenya and
+--------------------------------------------------------------------------------
+
+MATCH #127
+Header: Parliamentary Service Commission.
+Number: 127
+Sentence: 127. (1)  There is established the Parliamentary Service Commission.
+--------------------------------------------------------------------------------
+
+MATCH #128
+Header: Clerks and staff of Parliament.
+Number: 128
+Sentence: 128. (1)  There shall be a Clerk for each House of Parliament, appointed by the
+--------------------------------------------------------------------------------
+
+MATCH #129
+Header: Principles of executive authority.
+Number: 129
+Sentence: 129. (1)  Executive authority derives from the people of Kenya and shall be
+--------------------------------------------------------------------------------
+
+MATCH #130
+Header: The National Executive.
+Number: 130
+Sentence: 130. (1)  The national executive of the Republic comprises the President, the
+--------------------------------------------------------------------------------
+
+MATCH #131
+Header: Authority of the President.
+Number: 131
+Sentence: 131. (1)  The President—
+--------------------------------------------------------------------------------
+
+MATCH #132
+Header: Functions of the President.
+Number: 132
+Sentence: 132. (1)  The President shall—
+--------------------------------------------------------------------------------
+
+MATCH #133
+Header: Power of mercy.
+Number: 133
+Sentence: 133. (1)  On the petition of any person, the President may exercise a power of
+--------------------------------------------------------------------------------
+
+MATCH #134
+Header: Exercise of presidential powers during temporary incumbency.
+Number: 134
+Sentence: 134. (1)  A person who holds the ofﬁce of President or who is authorised in terms
+--------------------------------------------------------------------------------
+
+MATCH #135
+Header: Decisions of the President.
+Number: 135
+Sentence: 135. A decision of the President in the performance of any function of the
+--------------------------------------------------------------------------------
+
+MATCH #136
+Header: Election of the President.
+Number: 136
+Sentence: 136. (1)  The President shall be elected by registered voters in a national election
+--------------------------------------------------------------------------------
+
+MATCH #137
+Header: Qualiﬁcations and disqualiﬁcations for election as President.
+Number: 137
+Sentence: 137. (1)  A person qualiﬁes for nomination as a presidential candidate if the
+--------------------------------------------------------------------------------
+
+MATCH #138
+Header: Procedure at presidential election.
+Number: 138
+Sentence: 138. (1)  If only one candidate for President is nominated, that candidate shall
+--------------------------------------------------------------------------------
+
+MATCH #139
+Header: Death before assuming ofﬁce.
+Number: 139
+Sentence: 139. (1)  If a President-elect dies after being declared elected as President, but
+--------------------------------------------------------------------------------
+
+MATCH #140
+Header: Questions as to validity of presidential election.
+Number: 140
+Sentence: 140. (1)  A person may ﬁle a petition in the Supreme Court to challenge the
+--------------------------------------------------------------------------------
+
+MATCH #141
+Header: Assumption of ofﬁce of President.
+Number: 141
+Sentence: 141. (1)  The swearing in of the President-elect shall be in public before the Chief
+--------------------------------------------------------------------------------
+
+MATCH #142
+Header: Term of ofﬁce of President.
+Number: 142
+Sentence: 142. (1)  The President shall hold ofﬁce for a term beginning on the date on which
+--------------------------------------------------------------------------------
+
+MATCH #143
+Header: Protection from legal proceedings.
+Number: 143
+Sentence: 143. (1)  Criminal proceedings shall not be instituted or continued in any court
+--------------------------------------------------------------------------------
+
+MATCH #144
+Header: Removal of President on grounds of incapacity.
+Number: 144
+Sentence: 144. (1)  A member of the National Assembly, supported by at least a quarter of
+--------------------------------------------------------------------------------
+
+MATCH #145
+Header: Removal of President by impeachment.
+Number: 145
+Sentence: 145. (1)  A member of the National Assembly, supported by at least a third of all
+--------------------------------------------------------------------------------
+
+MATCH #146
+Header: Vacancy in the ofﬁce of President.
+Number: 146
+Sentence: 146. (1)  The ofﬁce of President shall become vacant if the holder of the ofﬁce —
+--------------------------------------------------------------------------------
+
+MATCH #147
+Header: Functions of the Deputy President.
+Number: 147
+Sentence: 147. (1)  The Deputy President shall be the principal assistant of the President
+--------------------------------------------------------------------------------
+
+MATCH #148
+Header: Election and swearing-in of Deputy President.
+Number: 148
+Sentence: 148. (1)  Each candidate in a presidential election shall nominate a person
+--------------------------------------------------------------------------------
+
+MATCH #149
+Header: Vacancy in the ofﬁce of Deputy President.
+Number: 149
+Sentence: 149. (1)  Within fourteen days after a vacancy in the ofﬁce of Deputy President
+--------------------------------------------------------------------------------
+
+MATCH #150
+Header: Removal of Deputy President.
+Number: 150
+Sentence: 150. (1)  The Deputy President may be removed from ofﬁce—
+--------------------------------------------------------------------------------
+
+MATCH #151
+Header: Remuneration and beneﬁts of President and Deputy President.
+Number: 151
+Sentence: 151. (1)  The remuneration and beneﬁts payable to the President and the Deputy
+--------------------------------------------------------------------------------
+
+MATCH #152
+Header: Cabinet.
+Number: 152
+Sentence: 152. (1)  The Cabinet consists of—
+--------------------------------------------------------------------------------
+
+MATCH #153
+Header: Decisions, responsibility and accountability of the Cabinet.
+Number: 153
+Sentence: 153. (1)  A decision by the Cabinet shall be in writing.
+--------------------------------------------------------------------------------
+
+MATCH #154
+Header: Secretary to the Cabinet.
+Number: 154
+Sentence: 154. (1)  There is established the ofﬁce of Secretary to the Cabinet, which is an
+--------------------------------------------------------------------------------
+
+MATCH #155
+Header: Principal Secretaries.
+Number: 155
+Sentence: 155. (1)  There is established the ofﬁce of Principal Secretary, which is an ofﬁce
+--------------------------------------------------------------------------------
+
+MATCH #156
+Header: Attorney-General.
+Number: 156
+Sentence: 156. (1)  There is established the ofﬁce of Attorney-General.
+--------------------------------------------------------------------------------
+
+MATCH #157
+Header: Director of Public Prosecutions.
+Number: 157
+Sentence: 157. (1)  There is established the ofﬁce of Director of Public Prosecutions.
+--------------------------------------------------------------------------------
+
+MATCH #158
+Header: Removal and resignation of Director of Public Prosecutions.
+Number: 158
+Sentence: 158. (1)  The Director of Public Prosecutions may be removed from ofﬁce only
+--------------------------------------------------------------------------------
+
+MATCH #159
+Header: Judicial authority.
+Number: 159
+Sentence: 159. (1)  Judicial authority is derived from the people and vests in, and shall be
+--------------------------------------------------------------------------------
+
+MATCH #160
+Header: Independence of the Judiciary.
+Number: 160
+Sentence: 160. (1)  In the exercise of judicial authority, the Judiciary, as constituted by
+--------------------------------------------------------------------------------
+
+MATCH #161
+Header: Judicial ofﬁces and ofﬁcers.
+Number: 161
+Sentence: 161. (1)  The Judiciary consists of the judges of the superior courts, magistrates,
+--------------------------------------------------------------------------------
+
+MATCH #162
+Header: System of courts.
+Number: 162
+Sentence: 162. (1)  The superior courts are the Supreme Court, the Court of Appeal, the
+--------------------------------------------------------------------------------
+
+MATCH #163
+Header: Supreme Court.
+Number: 163
+Sentence: 163. (1)  There is established the Supreme Court, which shall consist of—
+--------------------------------------------------------------------------------
+
+MATCH #164
+Header: Court of Appeal.
+Number: 164
+Sentence: 164. (1)  There is established the Court of Appeal, which—
+--------------------------------------------------------------------------------
+
+MATCH #165
+Header: High Court.
+Number: 165
+Sentence: 165. (1)  There is established the High Court, which—
+--------------------------------------------------------------------------------
+
+MATCH #166
+Header: Appointment of Chief Justice, Deputy Chief Justice and other judges.
+Number: 166
+Sentence: 166. (1)  The President shall appoint—
+--------------------------------------------------------------------------------
+
+MATCH #167
+Header: Tenure of ofﬁce of the Chief Justice and other judges.
+Number: 167
+Sentence: 167. (1)  A judge shall retire from ofﬁce on attaining the age of seventy years,
+--------------------------------------------------------------------------------
+
+MATCH #168
+Header: Removal from ofﬁce.
+Number: 168
+Sentence: 168. (1)  A judge of a superior court may be removed from ofﬁce only on the
+--------------------------------------------------------------------------------
+
+MATCH #169
+Header: Subordinate courts.
+Number: 169
+Sentence: 169. (1)  The subordinate courts are—
+--------------------------------------------------------------------------------
+
+MATCH #170
+Header: Kadhis’ courts.
+Number: 170
+Sentence: 170. (1)  There shall be a Chief Kadhi and such number, being not fewer than
+--------------------------------------------------------------------------------
+
+MATCH #171
+Header: Establishment of the Judicial Service Commission.
+Number: 171
+Sentence: 171. (1)  There is established the Judicial Service Commission.
+--------------------------------------------------------------------------------
+
+MATCH #172
+Header: Functions of the Judicial Service Commission.
+Number: 172
+Sentence: 172. (1)    The Judicial Service Commission shall promote and facilitate the
+--------------------------------------------------------------------------------
+
+MATCH #173
+Header: Judiciary Fund.
+Number: 173
+Sentence: 173. (1)  There is established a fund to be known as the Judiciary Fund which
+--------------------------------------------------------------------------------
+
+MATCH #174
+Header: Objects of devolution.
+Number: 174
+Sentence: 174. The objects of the devolution of government are—
+--------------------------------------------------------------------------------
+
+MATCH #175
+Header: Principles of devolved government.
+Number: 175
+Sentence: 175. County governments established under this Constitution shall reﬂect the
+--------------------------------------------------------------------------------
+
+MATCH #176
+Header: County governments.
+Number: 176
+Sentence: 176. (1)  There shall be a county government for each county, consisting of a
+--------------------------------------------------------------------------------
+
+MATCH #177
+Header: Membership of county assembly.
+Number: 177
+Sentence: 177. (1)  A county assembly consists of—
+--------------------------------------------------------------------------------
+
+MATCH #178
+Header: Speaker of a county assembly.
+Number: 178
+Sentence: 178. (1)    Each county assembly shall have a speaker elected by the county
+--------------------------------------------------------------------------------
+
+MATCH #179
+Header: County executive committees.
+Number: 179
+Sentence: 179. (1)  The executive authority of the county is vested in, and exercised by, a
+--------------------------------------------------------------------------------
+
+MATCH #180
+Header: Election of county governor and deputy county governor.
+Number: 180
+Sentence: 180. (1)  The county governor shall be directly elected by the voters registered in
+--------------------------------------------------------------------------------
+
+MATCH #181
+Header: Removal of a county governor.
+Number: 181
+Sentence: 181. (1)  A county governor may be removed from ofﬁce on any of the following
+--------------------------------------------------------------------------------
+
+MATCH #182
+Header: Vacancy in the ofﬁce of county governor.
+Number: 182
+Sentence: 182. (1)  The ofﬁce of the county governor shall become vacant if the holder of
+--------------------------------------------------------------------------------
+
+MATCH #183
+Header: Functions of county executive committees.
+Number: 183
+Sentence: 183. (1)  A county executive committee shall—
+--------------------------------------------------------------------------------
+
+MATCH #184
+Header: Urban areas and cities.
+Number: 184
+Sentence: 184. (1)  National legislation shall provide for the governance and management
+--------------------------------------------------------------------------------
+
+MATCH #185
+Header: Legislative authority of county assemblies.
+Number: 185
+Sentence: 185. (1)  The legislative authority of a county is vested in, and exercised by, its
+--------------------------------------------------------------------------------
+
+MATCH #186
+Header: Respective functions and powers of national and county governments.
+Number: 186
+Sentence: 186. (1)  Except as otherwise provided by this Constitution, the functions and
+--------------------------------------------------------------------------------
+
+MATCH #187
+Header: Transfer of functions and powers between levels of government.
+Number: 187
+Sentence: 187. (1)  A function or power of government at one level may be transferred to
+--------------------------------------------------------------------------------
+
+MATCH #188
+Header: Boundaries of counties.
+Number: 188
+Sentence: 188. (1)  The boundaries of a county may be altered only by a resolution—
+--------------------------------------------------------------------------------
+
+MATCH #189
+Header: Cooperation between national and county governments.
+Number: 189
+Sentence: 189. (1)  Government at either level shall—
+--------------------------------------------------------------------------------
+
+MATCH #190
+Header: Support for county governments.
+Number: 190
+Sentence: 190. (1)  Parliament shall by legislation ensure that county governments have
+--------------------------------------------------------------------------------
+
+MATCH #191
+Header: Conﬂict of laws.
+Number: 191
+Sentence: 191. (1)  This Article applies to conﬂicts between national and county legislation
+--------------------------------------------------------------------------------
+
+MATCH #192
+Header: Suspension of a county government.
+Number: 192
+Sentence: 192. (1)  The President may suspend a county government—
+--------------------------------------------------------------------------------
+
+MATCH #193
+Header: Qualiﬁcations for election as member of county assembly.
+Number: 193
+Sentence: 193. (1)  Unless disqualiﬁed under clause (2), a person is eligible for election as
+--------------------------------------------------------------------------------
+
+MATCH #194
+Header: Vacation of ofﬁce of member of county assembly.
+Number: 194
+Sentence: 194. (1)  The ofﬁce of a member of a county assembly becomes vacant—
+--------------------------------------------------------------------------------
+
+MATCH #195
+Header: County assembly power to summon witnesses.
+Number: 195
+Sentence: 195. (1)  A county assembly or any of its committees has power to summon
+--------------------------------------------------------------------------------
+
+MATCH #196
+Header: Public participation and county assembly powers, privileges and immunities.
+Number: 196
+Sentence: 196. (1)  A county assembly shall—
+--------------------------------------------------------------------------------
+
+MATCH #197
+Header: County assembly gender balance and diversity.
+Number: 197
+Sentence: 197. (1)  Not more than two-thirds of the members of any county assembly or
+--------------------------------------------------------------------------------
+
+MATCH #198
+Header: County government during transition.
+Number: 198
+Sentence: 198. While an election is being held to constitute a county assembly under
+--------------------------------------------------------------------------------
+
+MATCH #199
+Header: Publication of county legislation.
+Number: 199
+Sentence: 199. (1)  County legislation does not take effect unless published in the Gazette.
+--------------------------------------------------------------------------------
+
+MATCH #200
+Header: Legislation on Chapter.
+Number: 200
+Sentence: 200. (1)  Parliament shall enact legislation providing for all matters necessary
+--------------------------------------------------------------------------------
+
+MATCH #201
+Header: Principles of public ﬁnance.
+Number: 201
+Sentence: 201. The following principles shall guide all aspects of public ﬁnance in the
+--------------------------------------------------------------------------------
+
+MATCH #202
+Header: Equitable sharing of national revenue.
+Number: 202
+Sentence: 202. (1)  Revenue raised nationally shall be shared equitably among the national
+--------------------------------------------------------------------------------
+
+MATCH #203
+Header: Equitable share and other ﬁnancial laws.
+Number: 203
+Sentence: 203. (1)    The following criteria shall be taken into account in determining
+--------------------------------------------------------------------------------
+
+MATCH #204
+Header: Equalisation Fund.
+Number: 204
+Sentence: 204. (1)  There is established an Equalisation Fund into which shall be paid
+--------------------------------------------------------------------------------
+
+MATCH #205
+Header: Consultation on ﬁnancial legislation affecting counties.
+Number: 205
+Sentence: 205. (1)    When a Bill that includes provisions dealing with the sharing of
+--------------------------------------------------------------------------------
+
+MATCH #206
+Header: Consolidated Fund and other public funds.
+Number: 206
+Sentence: 206. (1)  There is established the Consolidated Fund into which shall be paid all
+--------------------------------------------------------------------------------
+
+MATCH #207
+Header: Revenue Funds for county governments.
+Number: 207
+Sentence: 207. (1)  There shall be established a Revenue Fund for each county government,
+--------------------------------------------------------------------------------
+
+MATCH #208
+Header: Contingencies Fund.
+Number: 208
+Sentence: 208. (1)  There is established a Contingencies Fund, the operation of which shall
+--------------------------------------------------------------------------------
+
+MATCH #209
+Header: Power to impose taxes and charges.
+Number: 209
+Sentence: 209. (1)  Only the national government may impose—
+--------------------------------------------------------------------------------
+
+MATCH #210
+Header: Imposition of tax.
+Number: 210
+Sentence: 210. (1)  No tax or licensing fee may be imposed, waived or varied except as
+--------------------------------------------------------------------------------
+
+MATCH #211
+Header: Borrowing by national government.
+Number: 211
+Sentence: 211. (1)  Parliament may, by legislation—
+--------------------------------------------------------------------------------
+
+MATCH #212
+Header: Borrowing by counties.
+Number: 212
+Sentence: 212. A county government may borrow only—
+--------------------------------------------------------------------------------
+
+MATCH #213
+Header: Loan guarantees by national government.
+Number: 213
+Sentence: 213. (1)  An Act of Parliament shall prescribe terms and conditions under which
+--------------------------------------------------------------------------------
+
+MATCH #214
+Header: Public debt.
+Number: 214
+Sentence: 214. (1)  The public debt is a charge on the Consolidated Fund, but an Act of
+--------------------------------------------------------------------------------
+
+MATCH #215
+Header: Commission on Revenue Allocation.
+Number: 215
+Sentence: 215. (1)  There is established the Commission on Revenue Allocation.
+--------------------------------------------------------------------------------
+
+MATCH #216
+Header: Functions of the Commission on Revenue Allocation.
+Number: 216
+Sentence: 216. (1)  The principal function of the Commission on Revenue Allocation is to
+--------------------------------------------------------------------------------
+
+MATCH #217
+Header: Division of revenue.
+Number: 217
+Sentence: 217. (1)  Once every ﬁve years, the Senate shall, by resolution, determine the
+--------------------------------------------------------------------------------
+
+MATCH #218
+Header: Annual Division and Allocation of Revenue Bills.
+Number: 218
+Sentence: 218. (1)  At least two months before the end of each ﬁnancial year, there shall
+--------------------------------------------------------------------------------
+
+MATCH #219
+Header: Transfer of equitable share.
+Number: 219
+Sentence: 219. A county’s share of revenue raised by the national government shall be
+--------------------------------------------------------------------------------
+
+MATCH #220
+Header: Form, content and timing of budgets.
+Number: 220
+Sentence: 220. (1)  Budgets of the national and county governments shall contain—
+--------------------------------------------------------------------------------
+
+MATCH #221
+Header: Budget estimates and annual Appropriation Bill.
+Number: 221
+Sentence: 221. (1)  At least two months before the end of each ﬁnancial year, the Cabinet
+--------------------------------------------------------------------------------
+
+MATCH #222
+Header: Expenditure before annual budget is passed.
+Number: 222
+Sentence: 222. (1)  If the Appropriation Act for a ﬁnancial year has not been assented to,
+--------------------------------------------------------------------------------
+
+MATCH #223
+Header: Supplementary appropriation.
+Number: 223
+Sentence: 223. (1)  Subject to clauses (2) to (4), the national government may spend money
+--------------------------------------------------------------------------------
+
+MATCH #224
+Header: County appropriation Bills.
+Number: 224
+Sentence: 224. On the basis of the Division of Revenue Bill passed by Parliament under
+--------------------------------------------------------------------------------
+
+MATCH #225
+Header: Financial control.
+Number: 225
+Sentence: 225. (1)  An Act of Parliament shall provide for the establishment, functions and
+--------------------------------------------------------------------------------
+
+MATCH #226
+Header: Accounts and audit of public entities.
+Number: 226
+Sentence: 226. (1)  An Act of Parliament shall provide for—
+--------------------------------------------------------------------------------
+
+MATCH #227
+Header: Procurement of public goods and services.
+Number: 227
+Sentence: 227. (1)  When a State organ or any other public entity contracts for goods or
+--------------------------------------------------------------------------------
+
+MATCH #228
+Header: Controller of Budget.
+Number: 228
+Sentence: 228. (1)    There shall be a Controller of Budget who shall be nominated by
+--------------------------------------------------------------------------------
+
+MATCH #229
+Header: Auditor-General.
+Number: 229
+Sentence: 229. (1)    There shall be an Auditor-General who shall be nominated by
+--------------------------------------------------------------------------------
+
+MATCH #230
+Header: Salaries and Remuneration Commission.
+Number: 230
+Sentence: 230. (1)  There is established the Salaries and Remuneration Commission.
+--------------------------------------------------------------------------------
+
+MATCH #231
+Header: Central Bank of Kenya.
+Number: 231
+Sentence: 231. (1)  There is established the Central Bank of Kenya.
+--------------------------------------------------------------------------------
+
+MATCH #232
+Header: Values and principles of public service.
+Number: 232
+Sentence: 232. (1)  The values and principles of public service include—
+--------------------------------------------------------------------------------
+
+MATCH #233
+Header: The Public Service Commission.
+Number: 233
+Sentence: 233. (1)  There is established the Public Service Commission.
+--------------------------------------------------------------------------------
+
+MATCH #234
+Header: Functions and powers of the Public Service Commission.
+Number: 234
+Sentence: 234. (1)  The functions and powers of the Commission are as set out in this
+--------------------------------------------------------------------------------
+
+MATCH #235
+Header: Stafﬁng of county governments.
+Number: 235
+Sentence: 235. (1)  A county government is responsible, within a framework of uniform
+--------------------------------------------------------------------------------
+
+MATCH #236
+Header: Protection of public ofﬁcers.
+Number: 236
+Sentence: 236. A public ofﬁcer shall not be—
+--------------------------------------------------------------------------------
+
+MATCH #237
+Header: Teachers Service Commission.
+Number: 237
+Sentence: 237. (1)  There is established the Teachers Service Commission.
+--------------------------------------------------------------------------------
+
+MATCH #238
+Header: Principles of national security.
+Number: 238
+Sentence: 238. (1)  National security is the protection against internal and external threats
+--------------------------------------------------------------------------------
+
+MATCH #239
+Header: National security organs.
+Number: 239
+Sentence: 239. (1)  The national security organs are—
+--------------------------------------------------------------------------------
+
+MATCH #240
+Header: Establishment of the National Security Council.
+Number: 240
+Sentence: 240. (1)  There is established a National Security Council.
+--------------------------------------------------------------------------------
+
+MATCH #241
+Header: Establishment of Kenya Defence Forces and Defence Council.
+Number: 241
+Sentence: 241. (1)  There are established the Kenya Defence Forces.
+--------------------------------------------------------------------------------
+
+MATCH #242
+Header: Establishment of National Intelligence Service.
+Number: 242
+Sentence: 242. (1)  There is established the National Intelligence Service.
+--------------------------------------------------------------------------------
+
+MATCH #243
+Header: Establishment of the National Police Service.
+Number: 243
+Sentence: 243. (1)  There is established the National Police Service.
+--------------------------------------------------------------------------------
+
+MATCH #244
+Header: Objects and functions of the National Police Service.
+Number: 244
+Sentence: 244. The National Police Service shall—
+--------------------------------------------------------------------------------
+
+MATCH #245
+Header: Command of the National Police Service.
+Number: 245
+Sentence: 245. (1)  There is established the ofﬁce of the Inspector-General of the National
+--------------------------------------------------------------------------------
+
+MATCH #246
+Header: National Police Service Commission.
+Number: 246
+Sentence: 246. (1)  There is established the National Police Service Commission.
+--------------------------------------------------------------------------------
+
+MATCH #247
+Header: Other police services.
+Number: 247
+Sentence: 247. Parliament may enact legislation establishing other police services under
+--------------------------------------------------------------------------------
+
+MATCH #248
+Header: Application of Chapter.
+Number: 248
+Sentence: 248. (1)  This Chapter applies to the commissions speciﬁed in clause (2) and the
+--------------------------------------------------------------------------------
+
+MATCH #249
+Header: Objects, authority and funding of commissions and independent ofﬁces.
+Number: 249
+Sentence: 249. (1)  The objects of the commissions and the independent ofﬁces are to—
+--------------------------------------------------------------------------------
+
+MATCH #250
+Header: Composition, appointment and terms of ofﬁce.
+Number: 250
+Sentence: 250. (1)  Each commission shall consist of at least three, but not more than nine,
+--------------------------------------------------------------------------------
+
+MATCH #251
+Header: Removal from ofﬁce.
+Number: 251
+Sentence: 251. (1)  A member of a commission (other than an ex ofﬁcio member), or the
+--------------------------------------------------------------------------------
+
+MATCH #252
+Header: General functions and powers.
+Number: 252
+Sentence: 252. (1)  Each commission, and each holder of an independent ofﬁce—
+--------------------------------------------------------------------------------
+
+MATCH #253
+Header: Incorporation of commissions and independent ofﬁces.
+Number: 253
+Sentence: 253. Each commission and each independent ofﬁce—
+--------------------------------------------------------------------------------
+
+MATCH #254
+Header: Reporting by commissions and independent ofﬁces.
+Number: 254
+Sentence: 254. (1)    As soon as practicable after the end of each ﬁnancial year, each
+--------------------------------------------------------------------------------
+
+MATCH #255
+Header: Amendment of this Constitution.
+Number: 255
+Sentence: 255. (1)    A proposed amendment to this Constitution shall be enacted in
+--------------------------------------------------------------------------------
+
+MATCH #256
+Header: Amendment by parliamentary initiative.
+Number: 256
+Sentence: 256. (1)  A Bill to amend this Constitution—
+--------------------------------------------------------------------------------
+
+MATCH #257
+Header: Amendment by popular initiative.
+Number: 257
+Sentence: 257. (1)  An amendment to this Constitution may be proposed by a popular
+--------------------------------------------------------------------------------
+
+MATCH #258
+Header: Enforcement of this Constitution.
+Number: 258
+Sentence: 258. (1)  Every person has the right to institute court proceedings, claiming that
+--------------------------------------------------------------------------------
+
+MATCH #259
+Header: Construing this Constitution.
+Number: 259
+Sentence: 259. (1)  This Constitution shall be interpreted in a manner that—
+--------------------------------------------------------------------------------
+
+MATCH #260
+Header: Interpretation.
+Number: 260
+Sentence: 260. In this Constitution, unless the context requires otherwise—
+--------------------------------------------------------------------------------
+
+MATCH #261
+Header: Consequential legislation.
+Number: 261
+Sentence: 261. (1)  Parliament shall enact any legislation required by this Constitution
+--------------------------------------------------------------------------------
+
+MATCH #262
+Header: Transitional and consequential provisions.
+Number: 262
+Sentence: 262. The transitional and consequential provisions set out in the Sixth Schedule
+--------------------------------------------------------------------------------
+
+MATCH #263
+Header: Effective Date.
+Number: 263
+Sentence: 263. This Constitution shall come into force on its promulgation by the President
+--------------------------------------------------------------------------------
+
+MATCH #264
+Header: Repeal of previous Constitution.
+Number: 264
+Sentence: 264. Subject to the Sixth Schedule, for the avoidance of doubt, the Constitution
+--------------------------------------------------------------------------------
+
+MATCH #265
+Header: Article 6(1)
+Number: 1
+Sentence: 1. Mombasa
+--------------------------------------------------------------------------------
+
+MATCH #266
+Header: 1.   Mombasa
+Number: 2
+Sentence: 2. Kwale
+--------------------------------------------------------------------------------
+
+MATCH #267
+Header: 2.   Kwale
+Number: 3
+Sentence: 3. Kiliﬁ
+--------------------------------------------------------------------------------
+
+MATCH #268
+Header: 3.   Kiliﬁ
+Number: 4
+Sentence: 4. Tana River
+--------------------------------------------------------------------------------
+
+MATCH #269
+Header: 4.   Tana River
+Number: 5
+Sentence: 5. Lamu
+--------------------------------------------------------------------------------
+
+MATCH #270
+Header: 5.   Lamu
+Number: 6
+Sentence: 6. Taita/Taveta
+--------------------------------------------------------------------------------
+
+MATCH #271
+Header: 6.   Taita/Taveta
+Number: 7
+Sentence: 7. Garissa
+--------------------------------------------------------------------------------
+
+MATCH #272
+Header: 7.   Garissa
+Number: 8
+Sentence: 8. Wajir
+--------------------------------------------------------------------------------
+
+MATCH #273
+Header: 8.   Wajir
+Number: 9
+Sentence: 9. Mandera
+--------------------------------------------------------------------------------
+
+MATCH #274
+Header: 9.   Mandera
+Number: 10
+Sentence: 10. Marsabit
+--------------------------------------------------------------------------------
+
+MATCH #275
+Header: 10.   Marsabit
+Number: 11
+Sentence: 11. Isiolo
+--------------------------------------------------------------------------------
+
+MATCH #276
+Header: 11.   Isiolo
+Number: 12
+Sentence: 12. Meru
+--------------------------------------------------------------------------------
+
+MATCH #277
+Header: 12.   Meru
+Number: 13
+Sentence: 13. Tharaka-Nithi
+--------------------------------------------------------------------------------
+
+MATCH #278
+Header: 13.   Tharaka-Nithi
+Number: 14
+Sentence: 14. Embu
+--------------------------------------------------------------------------------
+
+MATCH #279
+Header: 14.   Embu
+Number: 15
+Sentence: 15. Kitui
+--------------------------------------------------------------------------------
+
+MATCH #280
+Header: 15.   Kitui
+Number: 16
+Sentence: 16. Machakos
+--------------------------------------------------------------------------------
+
+MATCH #281
+Header: 16.   Machakos
+Number: 17
+Sentence: 17. Makueni
+--------------------------------------------------------------------------------
+
+MATCH #282
+Header: 17.   Makueni
+Number: 18
+Sentence: 18. Nyandarua
+--------------------------------------------------------------------------------
+
+MATCH #283
+Header: 18.   Nyandarua
+Number: 19
+Sentence: 19. Nyeri
+--------------------------------------------------------------------------------
+
+MATCH #284
+Header: 19.   Nyeri
+Number: 20
+Sentence: 20. Kirinyaga
+--------------------------------------------------------------------------------
+
+MATCH #285
+Header: 20.   Kirinyaga
+Number: 21
+Sentence: 21. Murang'a
+--------------------------------------------------------------------------------
+
+MATCH #286
+Header: 21.   Murang'a
+Number: 22
+Sentence: 22. Kiambu
+--------------------------------------------------------------------------------
+
+MATCH #287
+Header: 22.   Kiambu
+Number: 23
+Sentence: 23. Turkana
+--------------------------------------------------------------------------------
+
+MATCH #288
+Header: 23.   Turkana
+Number: 24
+Sentence: 24. West Pokot
+--------------------------------------------------------------------------------
+
+MATCH #289
+Header: 24.   West Pokot
+Number: 25
+Sentence: 25. Samburu
+--------------------------------------------------------------------------------
+
+MATCH #290
+Header: 25.   Samburu
+Number: 26
+Sentence: 26. Trans Nzoia
+--------------------------------------------------------------------------------
+
+MATCH #291
+Header: 26.   Trans Nzoia
+Number: 27
+Sentence: 27. Uasin Gishu
+--------------------------------------------------------------------------------
+
+MATCH #292
+Header: 27.   Uasin Gishu
+Number: 28
+Sentence: 28. Elgeyo/Marakwet
+--------------------------------------------------------------------------------
+
+MATCH #293
+Header: 28.   Elgeyo/Marakwet
+Number: 29
+Sentence: 29. Nandi
+--------------------------------------------------------------------------------
+
+MATCH #294
+Header: 29.   Nandi
+Number: 30
+Sentence: 30. Baringo
+--------------------------------------------------------------------------------
+
+MATCH #295
+Header: 30.   Baringo
+Number: 31
+Sentence: 31. Laikipia
+--------------------------------------------------------------------------------
+
+MATCH #296
+Header: 125
+Number: 32
+Sentence: 32. Nakuru
+--------------------------------------------------------------------------------
+
+MATCH #297
+Header: 32.   Nakuru
+Number: 33
+Sentence: 33. Narok
+--------------------------------------------------------------------------------
+
+MATCH #298
+Header: 33.   Narok
+Number: 34
+Sentence: 34. Kajiado
+--------------------------------------------------------------------------------
+
+MATCH #299
+Header: 34.   Kajiado
+Number: 35
+Sentence: 35. Kericho
+--------------------------------------------------------------------------------
+
+MATCH #300
+Header: 35.   Kericho
+Number: 36
+Sentence: 36. Bomet
+--------------------------------------------------------------------------------
+
+MATCH #301
+Header: 36.   Bomet
+Number: 37
+Sentence: 37. Kakamega
+--------------------------------------------------------------------------------
+
+MATCH #302
+Header: 37.   Kakamega
+Number: 38
+Sentence: 38. Vihiga
+--------------------------------------------------------------------------------
+
+MATCH #303
+Header: 38.   Vihiga
+Number: 39
+Sentence: 39. Bungoma
+--------------------------------------------------------------------------------
+
+MATCH #304
+Header: 39.   Bungoma
+Number: 40
+Sentence: 40. Busia
+--------------------------------------------------------------------------------
+
+MATCH #305
+Header: 40.   Busia
+Number: 41
+Sentence: 41. Siaya
+--------------------------------------------------------------------------------
+
+MATCH #306
+Header: 41.   Siaya
+Number: 42
+Sentence: 42. Kisumu
+--------------------------------------------------------------------------------
+
+MATCH #307
+Header: 42.   Kisumu
+Number: 43
+Sentence: 43. Homa Bay
+--------------------------------------------------------------------------------
+
+MATCH #308
+Header: 43.   Homa Bay
+Number: 44
+Sentence: 44. Migori
+--------------------------------------------------------------------------------
+
+MATCH #309
+Header: 44.   Migori
+Number: 45
+Sentence: 45. Kisii
+--------------------------------------------------------------------------------
+
+MATCH #310
+Header: 45.   Kisii
+Number: 46
+Sentence: 46. Nyamira
+--------------------------------------------------------------------------------
+
+MATCH #311
+Header: 46.   Nyamira
+Number: 47
+Sentence: 47. Nairobi City
+--------------------------------------------------------------------------------
+
+MATCH #312
+Header: PART 1 – NATIONAL GOVERNMENT
+Number: 1
+Sentence: 1. Foreign affairs, foreign policy and international trade.
+--------------------------------------------------------------------------------
+
+MATCH #313
+Header: 1.   Foreign affairs, foreign policy and international trade.
+Number: 2
+Sentence: 2. The use of international waters and water resources.
+--------------------------------------------------------------------------------
+
+MATCH #314
+Header: 2.   The use of international waters and water resources.
+Number: 3
+Sentence: 3. Immigration and citizenship.
+--------------------------------------------------------------------------------
+
+MATCH #315
+Header: 3.   Immigration and citizenship.
+Number: 4
+Sentence: 4. The relationship between religion and state.
+--------------------------------------------------------------------------------
+
+MATCH #316
+Header: 4.   The relationship between religion and state.
+Number: 5
+Sentence: 5. Language policy and the promotion of ofﬁcial and local languages.
+--------------------------------------------------------------------------------
+
+MATCH #317
+Header: 5.   Language policy and the promotion of ofﬁcial and local languages.
+Number: 6
+Sentence: 6. National defence and the use of the national defence services.
+--------------------------------------------------------------------------------
+
+MATCH #318
+Header: 6.   National defence and the use of the national defence services.
+Number: 7
+Sentence: 7. Police services, including—
+--------------------------------------------------------------------------------
+
+MATCH #319
+Header: correctional services.
+Number: 8
+Sentence: 8. Courts.
+--------------------------------------------------------------------------------
+
+MATCH #320
+Header: 8.   Courts.
+Number: 9
+Sentence: 9. National economic policy and planning.
+--------------------------------------------------------------------------------
+
+MATCH #321
+Header: 9.   National economic policy and planning.
+Number: 10
+Sentence: 10. Monetary policy, currency, banking (including central banking), the
+--------------------------------------------------------------------------------
+
+MATCH #322
+Header: incorporation and regulation of banking, insurance and ﬁnancial corporations.
+Number: 11
+Sentence: 11. National statistics and data on population, the economy and society generally.
+--------------------------------------------------------------------------------
+
+MATCH #323
+Header: 11.   National statistics and data on population, the economy and society generally.
+Number: 12
+Sentence: 12. Intellectual property rights.
+--------------------------------------------------------------------------------
+
+MATCH #324
+Header: 12.   Intellectual property rights.
+Number: 13
+Sentence: 13. Labour standards.
+--------------------------------------------------------------------------------
+
+MATCH #325
+Header: 13.   Labour standards.
+Number: 14
+Sentence: 14. Consumer protection, including standards for social security and professional
+--------------------------------------------------------------------------------
+
+MATCH #326
+Header: pension plans.
+Number: 15
+Sentence: 15. Education policy, standards, curricula, examinations and the granting of
+--------------------------------------------------------------------------------
+
+MATCH #327
+Header: university charters.
+Number: 16
+Sentence: 16. Universities, tertiary educational institutions and other institutions of research
+--------------------------------------------------------------------------------
+
+MATCH #328
+Header: special education institutions.
+Number: 17
+Sentence: 17. Promotion of sports and sports education.
+--------------------------------------------------------------------------------
+
+MATCH #329
+Header: 17.   Promotion of sports and sports education.
+Number: 18
+Sentence: 18. Transport and communications, including, in particular—
+--------------------------------------------------------------------------------
+
+MATCH #330
+Header: radio and television broadcasting.
+Number: 19
+Sentence: 19. National public works.
+--------------------------------------------------------------------------------
+
+MATCH #331
+Header: 19.   National public works.
+Number: 20
+Sentence: 20. Housing policy.
+--------------------------------------------------------------------------------
+
+MATCH #332
+Header: 20.   Housing policy.
+Number: 21
+Sentence: 21. General principles of land planning and the co-ordination of planning by the
+--------------------------------------------------------------------------------
+
+MATCH #333
+Header: counties.
+Number: 22
+Sentence: 22. Protection of the environment and natural resources with a view to establishing
+--------------------------------------------------------------------------------
+
+MATCH #334
+Header: energy policy.
+Number: 23
+Sentence: 23. National referral health facilities.
+--------------------------------------------------------------------------------
+
+MATCH #335
+Header: 23.   National referral health facilities.
+Number: 24
+Sentence: 24. Disaster management.
+--------------------------------------------------------------------------------
+
+MATCH #336
+Header: 24.   Disaster management.
+Number: 25
+Sentence: 25. Ancient and historical monuments of national importance.
+--------------------------------------------------------------------------------
+
+MATCH #337
+Header: 25.   Ancient and historical monuments of national importance.
+Number: 26
+Sentence: 26. National elections.
+--------------------------------------------------------------------------------
+
+MATCH #338
+Header: 26.   National elections.
+Number: 27
+Sentence: 27. Health policy.
+--------------------------------------------------------------------------------
+
+MATCH #339
+Header: 27.   Health policy.
+Number: 28
+Sentence: 28. Agricultural policy.
+--------------------------------------------------------------------------------
+
+MATCH #340
+Header: 28.   Agricultural policy.
+Number: 29
+Sentence: 29. Veterinary policy.
+--------------------------------------------------------------------------------
+
+MATCH #341
+Header: 29.   Veterinary policy.
+Number: 30
+Sentence: 30. Energy policy including electricity and gas reticulation and energy regulation.
+--------------------------------------------------------------------------------
+
+MATCH #342
+Header: 30.   Energy policy including electricity and gas reticulation and energy regulation.
+Number: 31
+Sentence: 31. Capacity building and technical assistance to the counties.
+--------------------------------------------------------------------------------
+
+MATCH #343
+Header: 31.   Capacity building and technical assistance to the counties.
+Number: 32
+Sentence: 32. Public investment.
+--------------------------------------------------------------------------------
+
+MATCH #344
+Header: 32.   Public investment.
+Number: 33
+Sentence: 33. National betting, casinos and other forms of gambling.
+--------------------------------------------------------------------------------
+
+MATCH #345
+Header: 33.   National betting, casinos and other forms of gambling.
+Number: 34
+Sentence: 34. Tourism policy and development.
+--------------------------------------------------------------------------------
+
+MATCH #346
+Header: The functions and powers of the county are—
+Number: 1
+Sentence: 1. Agriculture, including—
+--------------------------------------------------------------------------------
+
+MATCH #347
+Header: ﬁsheries.
+Number: 2
+Sentence: 2. County health services, including, in particular—
+--------------------------------------------------------------------------------
+
+MATCH #348
+Header: refuse removal, refuse dumps and solid waste disposal.
+Number: 3
+Sentence: 3. Control of air pollution, noise pollution, other public nuisances and outdoor
+--------------------------------------------------------------------------------
+
+MATCH #349
+Header: advertising.
+Number: 4
+Sentence: 4. Cultural activities, public entertainment and public amenities, including—
+--------------------------------------------------------------------------------
+
+MATCH #350
+Header: county parks, beaches and recreation facilities.
+Number: 5
+Sentence: 5. County transport, including—
+--------------------------------------------------------------------------------
+
+MATCH #351
+Header: national shipping and matters related thereto.
+Number: 6
+Sentence: 6. Animal control and welfare, including—
+--------------------------------------------------------------------------------
+
+MATCH #352
+Header: facilities for the accommodation, care and burial of animals.
+Number: 7
+Sentence: 7. Trade development and regulation, including—
+--------------------------------------------------------------------------------
+
+MATCH #353
+Header: cooperative societies.
+Number: 8
+Sentence: 8. County planning and development, including—
+--------------------------------------------------------------------------------
+
+MATCH #354
+Header: electricity and gas reticulation and energy regulation.
+Number: 9
+Sentence: 9. Pre-primary education, village polytechnics, homecraft centres and childcare
+--------------------------------------------------------------------------------
+
+MATCH #355
+Header: facilities.
+Number: 10
+Sentence: 10. Implementation of speciﬁc national government policies on natural resources
+--------------------------------------------------------------------------------
+
+MATCH #356
+Header: forestry.
+Number: 11
+Sentence: 11. County public works and services, including—
+--------------------------------------------------------------------------------
+
+MATCH #357
+Header: water and sanitation services.
+Number: 12
+Sentence: 12. Fire ﬁghting services and disaster management.
+--------------------------------------------------------------------------------
+
+MATCH #358
+Header: 12.   Fire ﬁghting services and disaster management.
+Number: 13
+Sentence: 13. Control of drugs and pornography.
+--------------------------------------------------------------------------------
+
+MATCH #359
+Header: 13.   Control of drugs and pornography.
+Number: 14
+Sentence: 14. Ensuring and coordinating the participation of communities and locations in
+--------------------------------------------------------------------------------
+
+MATCH #360
+Header: PART 1 – GENERAL
+Number: 1
+Sentence: 1. Interpretation
+--------------------------------------------------------------------------------
+
+MATCH #361
+Header: Constitution came into force.
+Number: 2
+Sentence: 2. Suspension of provisions of this Constitution
+--------------------------------------------------------------------------------
+
+MATCH #362
+Header: established.
+Number: 3
+Sentence: 3. Extension of application of provisions of the former constitution
+--------------------------------------------------------------------------------
+
+MATCH #363
+Header: discipline and the removal of persons from ofﬁce in the National Police Service.
+Number: 4
+Sentence: 4. Parliamentary Select Committee
+--------------------------------------------------------------------------------
+
+MATCH #364
+Header: problems in the implementation of this Constitution.
+Number: 5
+Sentence: 5. Commission for the Implementation of the Constitution
+--------------------------------------------------------------------------------
+
+MATCH #365
+Header: PART 2 – EXISTING OBLIGATIONS, LAWS AND RIGHTS
+Number: 6
+Sentence: 6. Rights, duties and obligations of the State
+--------------------------------------------------------------------------------
+
+MATCH #366
+Header: obligations of the national government or the Republic under this Constitution.
+Number: 7
+Sentence: 7. Existing laws
+--------------------------------------------------------------------------------
+
+MATCH #367
+Header: the provisions of this Constitution prevail to the extent of the conﬂict.
+Number: 8
+Sentence: 8. Existing land holdings and agreements relating to natural resources
+--------------------------------------------------------------------------------
+
+MATCH #368
+Header: PART 3 – NATIONAL GOVERNMENT
+Number: 9
+Sentence: 9. Elections and by-elections
+--------------------------------------------------------------------------------
+
+MATCH #369
+Header: assemblies and governors shall be held during 2012.
+Number: 10
+Sentence: 10. National Assembly
+--------------------------------------------------------------------------------
+
+MATCH #370
+Header: unexpired term.
+Number: 11
+Sentence: 11. The Senate
+--------------------------------------------------------------------------------
+
+MATCH #371
+Header: have been duly performed or exercised by the Senate.
+Number: 12
+Sentence: 12. The Executive
+--------------------------------------------------------------------------------
+
+MATCH #372
+Header: 141
+Number: 13
+Sentence: 13. Oath of allegiance to this Constitution
+--------------------------------------------------------------------------------
+
+MATCH #373
+Header: PART 4 – DEVOLVED GOVERNMENT
+Number: 14
+Sentence: 14. Operation of provisions relating to devolved government
+--------------------------------------------------------------------------------
+
+MATCH #374
+Header: of the Constitution is dissolved.
+Number: 15
+Sentence: 15. Provision for devolution of functions to be made by Act of Parliament
+--------------------------------------------------------------------------------
+
+MATCH #375
+Header: the implementation of the system of devolved government effectively.
+Number: 16
+Sentence: 16. Division of revenue
+--------------------------------------------------------------------------------
+
+MATCH #376
+Header: than every ﬁve years as provided in that Article.
+Number: 17
+Sentence: 17. Provincial Administration
+--------------------------------------------------------------------------------
+
+MATCH #377
+Header: established under this Constitution.
+Number: 18
+Sentence: 18. Local authorities
+--------------------------------------------------------------------------------
+
+MATCH #378
+Header: PART 5 – ADMINISTRATION OF JUSTICE
+Number: 19
+Sentence: 19. Rules for the enforcement of the Bill of Rights
+--------------------------------------------------------------------------------
+
+MATCH #379
+Header: with Article 22.
+Number: 20
+Sentence: 20. The Judicial Service Commission
+--------------------------------------------------------------------------------
+
+MATCH #380
+Header: Commission.
+Number: 21
+Sentence: 21. Establishment of the Supreme Court
+--------------------------------------------------------------------------------
+
+MATCH #381
+Header: jurisdiction over matters assigned to the Supreme Court.
+Number: 22
+Sentence: 22. Judicial proceedings and pending matters
+--------------------------------------------------------------------------------
+
+MATCH #382
+Header: this Constitution or as directed by the Chief Justice or the Registrar of the High Court.
+Number: 23
+Sentence: 23. Judges
+--------------------------------------------------------------------------------
+
+MATCH #383
+Header: subject to question in, or review by, any court.
+Number: 24
+Sentence: 24. Chief Justice
+--------------------------------------------------------------------------------
+
+MATCH #384
+Header: PART 6 – COMMISSIONS AND OFFICES
+Number: 25
+Sentence: 25. Constitutional Commissions
+--------------------------------------------------------------------------------
+
+MATCH #385
+Header: approval of the National Assembly.
+Number: 26
+Sentence: 26. The Kenya National Human Rights and Equality Commission
+--------------------------------------------------------------------------------
+
+MATCH #386
+Header: unexpired term.
+Number: 27
+Sentence: 27. The Interim Independent Boundaries Commission
+--------------------------------------------------------------------------------
+
+MATCH #387
+Header: of a constituency existing on the effective date.
+Number: 28
+Sentence: 28. The Interim Independent Electoral Commission and Independent Electoral and
+--------------------------------------------------------------------------------
+
+MATCH #388
+Header: and experience.
+Number: 29
+Sentence: 29. New appointments
+--------------------------------------------------------------------------------
+
+MATCH #389
+Header: PART 7 – MISCELLANEOUS MATTERS
+Number: 30
+Sentence: 30. Citizenship by birth
+--------------------------------------------------------------------------------
+
+MATCH #390
+Header: 1963."
+Number: 31
+Sentence: 31. Existing ofﬁces
+--------------------------------------------------------------------------------
+
+MATCH #391
+Header: Constitution.
+Number: 32
+Sentence: 32. Pensions, gratuities and other beneﬁts
+--------------------------------------------------------------------------------
+
+MATCH #392
+Header: less favourable to the person.
+Number: 33
+Sentence: 33. Succession of institutions, ofﬁces, assets and liabilities
+--------------------------------------------------------------------------------
+
+MATCH #393
+Header: known by the same or a new name.
+Number: 34
+Sentence: 34. Currency
+--------------------------------------------------------------------------------
+
+MATCH #394
+Header: Citation.
+Number: 1
+Sentence: 1. These rules may be cited as the Constitution of Kenya (Protection of Rights and
+--------------------------------------------------------------------------------
+
+MATCH #395
+Header: Interpretation.
+Number: 2
+Sentence: 2. In these rules, unless the context requires otherwise—
+--------------------------------------------------------------------------------
+
+MATCH #396
+Header: Scope and objectives.
+Number: 3
+Sentence: 3. (1)    These Rules shall apply to all proceedings made under Article 22 of the
+--------------------------------------------------------------------------------
+
+MATCH #397
+Header: Contravention of rights or fundamental freedoms.
+Number: 4
+Sentence: 4. (1)    Where any right or fundamental freedom provided for in the Constitution is
+--------------------------------------------------------------------------------
+
+MATCH #398
+Header: Addition, joinder, substitution and striking out of parties.
+Number: 5
+Sentence: 5. The following procedure shall apply with respect to addition, joinder, substitution and
+--------------------------------------------------------------------------------
+
+MATCH #399
+Header: Friend of the Court.
+Number: 6
+Sentence: 6. The following procedure shall apply with respect to a friend of the court—
+--------------------------------------------------------------------------------
+
+MATCH #400
+Header: Interested party.
+Number: 7
+Sentence: 7. (1)  A person, with leave of the Court, may make an oral or written application to be
+--------------------------------------------------------------------------------
+
+MATCH #401
+Header: Place of ﬁling.
+Number: 8
+Sentence: 8. (1)  Every case shall be instituted in the High Court within whose jurisdiction the
+--------------------------------------------------------------------------------
+
+MATCH #402
+Header: Notice of institution of the petition.
+Number: 9
+Sentence: 9. (1)  The Court may direct that notice of institution of petition be posted on the Court
+--------------------------------------------------------------------------------
+
+MATCH #403
+Header: Form of petition.
+Number: 10
+Sentence: 10. (1)  An application under rule 4 shall be made by way of a petition as set out in Form
+--------------------------------------------------------------------------------
+
+MATCH #404
+Header: Documents to be annexed to afﬁdavit or petition.
+Number: 11
+Sentence: 11. (1)  The petition ﬁled under these rules may be supported by an afﬁdavit.
+--------------------------------------------------------------------------------
+
+MATCH #405
+Header: Registrar to assist in ﬁling of petitions.
+Number: 12
+Sentence: 12. The Registrar shall cause a prescribed form to be available in the Registry to assist
+--------------------------------------------------------------------------------
+
+MATCH #406
+Header: Failure to respond within stipulated time.
+Number: 16
+Sentence: 16. (1)  If the respondent does not respond within the time stipulated in rule 15, the Court
+--------------------------------------------------------------------------------
+
+MATCH #407
+Header: Consolidation.
+Number: 17
+Sentence: 17. The Court may on its own motion or on application by any party consolidate several
+--------------------------------------------------------------------------------
+
+MATCH #408
+Header: Amendment of pleadings.
+Number: 18
+Sentence: 18. A party that wishes to amend its pleadings at any stage of the proceedings may do so
+--------------------------------------------------------------------------------
+
+MATCH #409
+Header: Formal applications.
+Number: 19
+Sentence: 19. A formal application under these rules shall be by Notice of Motion set out in Form D
+--------------------------------------------------------------------------------
+
+MATCH #410
+Header: Hearing of the petition.
+Number: 20
+Sentence: 20. (1)  The hearing of the petition shall, unless the Court otherwise directs, be by way of—
+--------------------------------------------------------------------------------
+
+MATCH #411
+Header: Written submissions.
+Number: 22
+Sentence: 22. (1)  Each party may ﬁle written submissions.
+--------------------------------------------------------------------------------
+
+MATCH #412
+Header: Conservatory or interim orders.
+Number: 23
+Sentence: 23. (1)  Despite any provision to the contrary, a Judge before whom a petition under rule
+--------------------------------------------------------------------------------
+
+MATCH #413
+Header: Application under rule 21.
+Number: 24
+Sentence: 24. (1)  An application under rule 23 may be made by way of notice of motion or by
+--------------------------------------------------------------------------------
+
+MATCH #414
+Header: Setting aside, varying or discharge.
+Number: 25
+Sentence: 25. An order issued under rule 22 may be discharged, varied or set aside by the Court
+--------------------------------------------------------------------------------
+
+MATCH #415
+Header: Costs.
+Number: 26
+Sentence: 26. (1)  The award of costs is at the discretion of the Court.
+--------------------------------------------------------------------------------
+
+MATCH #416
+Header: Withdrawal or discontinuance.
+Number: 27
+Sentence: 27. (1)  The petitioner may—
+--------------------------------------------------------------------------------
+
+MATCH #417
+Header: Acquiescence.
+Number: 28
+Sentence: 28. If the respondent does not dispute the facts in the petition whether wholly or in part,
+--------------------------------------------------------------------------------
+
+MATCH #418
+Header: Settlement by consent.
+Number: 29
+Sentence: 29. The parties may, with leave of the Court, record an amicable settlement reached by
+--------------------------------------------------------------------------------
+
+MATCH #419
+Header: Extension of time.
+Number: 30
+Sentence: 30. The Court may extend time limited by these rules, or by any decision of the Court.
+--------------------------------------------------------------------------------
+
+MATCH #420
+Header: Use of alternative dispute resolution.
+Number: 31
+Sentence: 31. The Court may refer a matter for hearing and determination by alternative dispute
+--------------------------------------------------------------------------------
+
+MATCH #421
+Header: Stay pending appeal.
+Number: 32
+Sentence: 32. (1)  An appeal or a second appeal shall not operate as a stay of execution or proceedings
+--------------------------------------------------------------------------------
+
+MATCH #422
+Header: Revocation of part III of L.N. 6 of 2006.
+Number: 33
+Sentence: 33. (1)  Part III of The Constitution of Kenya (Supervisory Jurisdiction and Protection
+--------------------------------------------------------------------------------
+
+MATCH #423
+Header: Court Fees.
+Number: 34
+Sentence: 34. There shall be paid in respect of all proceedings under these Rules the same court
+--------------------------------------------------------------------------------
+
+MATCH #424
+Header: Waiver of court fees.
+Number: 35
+Sentence: 35. (1)  A person who wishes to be exempted from paying court fees may apply to the
+--------------------------------------------------------------------------------
+
+MATCH #425
+Header: Practice Directions.
+Number: 36
+Sentence: 36. The Chief Justice may issue practice directions for the better carrying out of these
+--------------------------------------------------------------------------------
+
+MATCH #426
+Header: Review.
+Number: 37
+Sentence: 37. The Chief Justice may review these rules from time to time.
+--------------------------------------------------------------------------------
+
+MATCH #427
+Header: RULES GOVERNING THE COMMEMORATIVE AWARD
+Number: 1
+Sentence: 1. The medal shall be known as “The Linda Nchi Campaign Medal” (hereinafter referred to
+--------------------------------------------------------------------------------
+
+MATCH #428
+Header: as “the medal”).
+Number: 2
+Sentence: 2. The medal shall consist of a cupro-nickel ﬁnishing polished and circular in design
+--------------------------------------------------------------------------------
+
+MATCH #429
+Header: [Subsidiary]
+Number: 3
+Sentence: 3. The medal shall be awarded to all ranks of the Kenya Army, the Kenya Air Force, the Kenya
+--------------------------------------------------------------------------------
+
+MATCH #430
+Header: area.
+Number: 4
+Sentence: 4. For the purpose of this proclamation—
+--------------------------------------------------------------------------------
+
+MATCH #431
+Header: or operational maritime manoeuvres into the Operation Area.
+Number: 5
+Sentence: 5. Notwithstanding paragraph 3, the medal shall be awarded to—
+--------------------------------------------------------------------------------
+
+MATCH #432
+Header: the aircrew of all ranks who ﬂew sorties or missions during the operation.
+Number: 6
+Sentence: 6. The medal may be awarded posthumously to a deceased ofﬁcer and it shall not be
+--------------------------------------------------------------------------------
+
+MATCH #433
+Header: in the Operation Area.
+Number: 7
+Sentence: 7. The ofﬁcer to whom authority has been delegated for the approval of the award of the
+--------------------------------------------------------------------------------
+
+MATCH #434
+Header: publish those names in the appropriate order.
+Number: 8
+Sentence: 8. The medal shall be worn on the left breast pendant from its ribband in such a position in
+--------------------------------------------------------------------------------
+
+MATCH #435
+Header: regard to other orders, decorations and medals.
+Number: 9
+Sentence: 9. The President may annul and restore the award of the medal by notice in the Gazette.
+--------------------------------------------------------------------------------
+
+MATCH #436
+Header: RULES GOVERNING THE COMMEMORATIVE AWARD
+Number: 1
+Sentence: 1. The Medal shall be known as the "Promulgation of the New Constitution
+--------------------------------------------------------------------------------
+
+MATCH #437
+Header: Commemorative Medal."
+Number: 2
+Sentence: 2. The Medal shall consist of cupro-nickel with beaded ﬁnish designed round with an insignia
+--------------------------------------------------------------------------------
+
+MATCH #438
+Header: shall be the map of Kenya and the Emblem of Justice.
+Number: 3
+Sentence: 3. The Medal may be awarded to all members of the Disciplined Services, recommended
+--------------------------------------------------------------------------------
+
+MATCH #439
+Header: New Constitution of 27th August, 2010.
+Number: 4
+Sentence: 4. Non-Kenyan may be awarded the Medal.
+--------------------------------------------------------------------------------
+
+MATCH #440
+Header: 4.   Non-Kenyan may be awarded the Medal.
+Number: 5
+Sentence: 5. The Medal may be awarded posthumously.
+--------------------------------------------------------------------------------
+
+MATCH #441
+Header: 5.   The Medal may be awarded posthumously.
+Number: 6
+Sentence: 6. The ofﬁcers to whom authority has been delegated for the approval of the award of the
+--------------------------------------------------------------------------------
+
+MATCH #442
+Header: those names in appropriate orders.
+Number: 7
+Sentence: 7. The Medal shall be worn on the left breast pendant from its riband in such a position in
+--------------------------------------------------------------------------------
+
+MATCH #443
+Header: regard to other orders, decorations or medals.
+Number: 8
+Sentence: 8. The issue of the Promulgation of the New Constitution Commemorative Medal shall be
+--------------------------------------------------------------------------------
+
+MATCH #444
+Header: the 27 th August, 2010.
+Number: 9
+Sentence: 9. The President may annul the award of the medal and may also restore it after annulment
+--------------------------------------------------------------------------------
+

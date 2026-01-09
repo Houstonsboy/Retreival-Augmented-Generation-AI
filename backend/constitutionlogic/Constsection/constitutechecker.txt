@@ -1,0 +1,2118 @@
+CONSTITUTION SECTION HEADERS
+================================================================================
+
+Total Articles Found: 264 (Maximum: 264)
+================================================================================
+
+MATCH #1
+Header: Sovereignty of the people.
+Number: 1
+Sentence: 1. (1)  All sovereign power belongs to the people of Kenya and shall be exercised
+CHAPTER: ONE
+PART: [Not within a PART section]
+--------------------------------------------------------------------------------
+
+MATCH #2
+Header: Supremacy of this Constitution.
+Number: 2
+Sentence: 2. (1)  This Constitution is the supreme law of the Republic and binds all persons
+CHAPTER: ONE
+PART: [Not within a PART section]
+--------------------------------------------------------------------------------
+
+MATCH #3
+Header: Defence of this Constitution.
+Number: 3
+Sentence: 3. (1)    Every person has an obligation to respect, uphold and defend this
+CHAPTER: ONE
+PART: [Not within a PART section]
+--------------------------------------------------------------------------------
+
+MATCH #4
+Header: Declaration of the Republic.
+Number: 4
+Sentence: 4. (1)  Kenya is a sovereign Republic.
+CHAPTER: TWO
+PART: [Not within a PART section]
+--------------------------------------------------------------------------------
+
+MATCH #5
+Header: Territory of Kenya.
+Number: 5
+Sentence: 5. Kenya consists of the territory and territorial waters comprising Kenya on the
+CHAPTER: TWO
+PART: [Not within a PART section]
+--------------------------------------------------------------------------------
+
+MATCH #6
+Header: Devolution and access to services.
+Number: 6
+Sentence: 6. (1)  The territory of Kenya is divided into the counties speciﬁed in the First
+CHAPTER: TWO
+PART: [Not within a PART section]
+--------------------------------------------------------------------------------
+
+MATCH #7
+Header: National, ofﬁcial and other languages.
+Number: 7
+Sentence: 7. (1)  The national language of the Republic is Kiswahili.
+CHAPTER: TWO
+PART: [Not within a PART section]
+--------------------------------------------------------------------------------
+
+MATCH #8
+Header: State and religion.
+Number: 8
+Sentence: 8. There shall be no State religion.
+CHAPTER: TWO
+PART: [Not within a PART section]
+--------------------------------------------------------------------------------
+
+MATCH #9
+Header: National symbols and national days.
+Number: 9
+Sentence: 9. (1)  The national symbols of the Republic are—
+CHAPTER: TWO
+PART: [Not within a PART section]
+--------------------------------------------------------------------------------
+
+MATCH #10
+Header: National values and principles of governance.
+Number: 10
+Sentence: 10. (1)  The national values and principles of governance in this Article bind all
+CHAPTER: TWO
+PART: [Not within a PART section]
+--------------------------------------------------------------------------------
+
+MATCH #11
+Header: Culture.
+Number: 11
+Sentence: 11. (1)  This Constitution recognises culture as the foundation of the nation and
+CHAPTER: TWO
+PART: [Not within a PART section]
+--------------------------------------------------------------------------------
+
+MATCH #12
+Header: Entitlements of citizens.
+Number: 12
+Sentence: 12. (1)  Every citizen is entitled to—
+CHAPTER: THREE
+PART: [Not within a PART section]
+--------------------------------------------------------------------------------
+
+MATCH #13
+Header: Retention and acquisition of citizenship.
+Number: 13
+Sentence: 13. (1)  Every person who was a citizen immediately before the effective date
+CHAPTER: THREE
+PART: [Not within a PART section]
+--------------------------------------------------------------------------------
+
+MATCH #14
+Header: Citizenship by birth.
+Number: 14
+Sentence: 14. (1)  A person is a citizen by birth if on the day of the person’s birth, whether or
+CHAPTER: THREE
+PART: [Not within a PART section]
+--------------------------------------------------------------------------------
+
+MATCH #15
+Header: Citizenship by registration.
+Number: 15
+Sentence: 15. (1)  A person who has been married to a citizen for a period of at least seven
+CHAPTER: THREE
+PART: [Not within a PART section]
+--------------------------------------------------------------------------------
+
+MATCH #16
+Header: Dual citizenship.
+Number: 16
+Sentence: 16. A citizen by birth does not lose citizenship by acquiring the citizenship of
+CHAPTER: THREE
+PART: [Not within a PART section]
+--------------------------------------------------------------------------------
+
+MATCH #17
+Header: Revocation of citizenship.
+Number: 17
+Sentence: 17. (1)  If a person acquired citizenship by registration, the citizenship may be
+CHAPTER: THREE
+PART: [Not within a PART section]
+--------------------------------------------------------------------------------
+
+MATCH #18
+Header: Legislation on citizenship.
+Number: 18
+Sentence: 18. Parliament shall enact legislation—
+CHAPTER: THREE
+PART: [Not within a PART section]
+--------------------------------------------------------------------------------
+
+MATCH #19
+Header: Rights and fundamental freedoms.
+Number: 19
+Sentence: 19. (1)  The Bill of Rights is an integral part of Kenya’s democratic state and is
+CHAPTER: FOUR
+PART: PART 1 - GENERAL PROVISIONS TO THE BILL OF RIGHTS
+--------------------------------------------------------------------------------
+
+MATCH #20
+Header: Application of Bill of Rights.
+Number: 20
+Sentence: 20. (1)  The Bill of Rights applies to all law and binds all State organs and all
+CHAPTER: FOUR
+PART: PART 1 - GENERAL PROVISIONS TO THE BILL OF RIGHTS
+--------------------------------------------------------------------------------
+
+MATCH #21
+Header: Implementation of rights and fundamental freedoms.
+Number: 21
+Sentence: 21. (1)  It is a fundamental duty of the State and every State organ to observe,
+CHAPTER: FOUR
+PART: PART 1 - GENERAL PROVISIONS TO THE BILL OF RIGHTS
+--------------------------------------------------------------------------------
+
+MATCH #22
+Header: Enforcement of Bill of Rights.
+Number: 22
+Sentence: 22. (1)  Every person has the right to institute court proceedings claiming that
+CHAPTER: FOUR
+PART: PART 1 - GENERAL PROVISIONS TO THE BILL OF RIGHTS
+--------------------------------------------------------------------------------
+
+MATCH #23
+Header: Authority of courts to uphold and enforce the Bill of Rights.
+Number: 23
+Sentence: 23. (1)  The High Court has jurisdiction, in accordance with Article 165, to hear
+CHAPTER: FOUR
+PART: PART 1 - GENERAL PROVISIONS TO THE BILL OF RIGHTS
+--------------------------------------------------------------------------------
+
+MATCH #24
+Header: Limitation of rights and fundamental freedoms.
+Number: 24
+Sentence: 24. (1)  A right or fundamental freedom in the Bill of Rights shall not be limited
+CHAPTER: FOUR
+PART: PART 1 - GENERAL PROVISIONS TO THE BILL OF RIGHTS
+--------------------------------------------------------------------------------
+
+MATCH #25
+Header: Fundamental Rights and freedoms that may not be limited.
+Number: 25
+Sentence: 25. Despite any other provision in this Constitution, the following rights and
+CHAPTER: FOUR
+PART: PART 1 - GENERAL PROVISIONS TO THE BILL OF RIGHTS
+--------------------------------------------------------------------------------
+
+MATCH #26
+Header: Right to life.
+Number: 26
+Sentence: 26. (1)  Every person has the right to life.
+CHAPTER: FOUR
+PART: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
+--------------------------------------------------------------------------------
+
+MATCH #27
+Header: Equality and freedom from discrimination.
+Number: 27
+Sentence: 27. (1)  Every person is equal before the law and has the right to equal protection
+CHAPTER: FOUR
+PART: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
+--------------------------------------------------------------------------------
+
+MATCH #28
+Header: Human dignity.
+Number: 28
+Sentence: 28. Every person has inherent dignity and the right to have that dignity respected
+CHAPTER: FOUR
+PART: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
+--------------------------------------------------------------------------------
+
+MATCH #29
+Header: Freedom and security of the person.
+Number: 29
+Sentence: 29. Every person has the right to freedom and security of the person, which
+CHAPTER: FOUR
+PART: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
+--------------------------------------------------------------------------------
+
+MATCH #30
+Header: Slavery, servitude and forced labour.
+Number: 30
+Sentence: 30. (1)  A person shall not be held in slavery or servitude.
+CHAPTER: FOUR
+PART: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
+--------------------------------------------------------------------------------
+
+MATCH #31
+Header: Privacy.
+Number: 31
+Sentence: 31. Every person has the right to privacy, which includes the right not to have—
+CHAPTER: FOUR
+PART: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
+--------------------------------------------------------------------------------
+
+MATCH #32
+Header: Freedom of conscience, religion, belief and opinion.
+Number: 32
+Sentence: 32. (1)  Every person has the right to freedom of conscience, religion, thought,
+CHAPTER: FOUR
+PART: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
+--------------------------------------------------------------------------------
+
+MATCH #33
+Header: Freedom of expression.
+Number: 33
+Sentence: 33. (1)  Every person has the right to freedom of expression, which includes—
+CHAPTER: FOUR
+PART: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
+--------------------------------------------------------------------------------
+
+MATCH #34
+Header: Freedom of the media.
+Number: 34
+Sentence: 34. (1)  Freedom and independence of electronic, print and all other types of
+CHAPTER: FOUR
+PART: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
+--------------------------------------------------------------------------------
+
+MATCH #35
+Header: Access to information.
+Number: 35
+Sentence: 35. (1)  Every citizen has the right of access to—
+CHAPTER: FOUR
+PART: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
+--------------------------------------------------------------------------------
+
+MATCH #36
+Header: Freedom of association.
+Number: 36
+Sentence: 36. (1)  Every person has the right to freedom of association, which includes the
+CHAPTER: FOUR
+PART: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
+--------------------------------------------------------------------------------
+
+MATCH #37
+Header: Assembly, demonstration, picketing and petition.
+Number: 37
+Sentence: 37. Every person has the right, peaceably and unarmed, to assemble, to
+CHAPTER: FOUR
+PART: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
+--------------------------------------------------------------------------------
+
+MATCH #38
+Header: Political rights.
+Number: 38
+Sentence: 38. (1)  Every citizen is free to make political choices, which includes the right—
+CHAPTER: FOUR
+PART: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
+--------------------------------------------------------------------------------
+
+MATCH #39
+Header: Freedom of movement and residence.
+Number: 39
+Sentence: 39. (1)  Every person has the right to freedom of movement.
+CHAPTER: FOUR
+PART: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
+--------------------------------------------------------------------------------
+
+MATCH #40
+Header: Protection of right to property.
+Number: 40
+Sentence: 40. (1)  Subject to Article 65, every person has the right, either individually or
+CHAPTER: FOUR
+PART: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
+--------------------------------------------------------------------------------
+
+MATCH #41
+Header: Labour relations.
+Number: 41
+Sentence: 41. (1)  Every person has the right to fair labour practices.
+CHAPTER: FOUR
+PART: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
+--------------------------------------------------------------------------------
+
+MATCH #42
+Header: Environment.
+Number: 42
+Sentence: 42. Every person has the right to a clean and healthy environment, which
+CHAPTER: FOUR
+PART: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
+--------------------------------------------------------------------------------
+
+MATCH #43
+Header: Economic and social rights.
+Number: 43
+Sentence: 43. (1)  Every person has the right—
+CHAPTER: FOUR
+PART: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
+--------------------------------------------------------------------------------
+
+MATCH #44
+Header: Language and culture.
+Number: 44
+Sentence: 44. (1)  Every person has the right to use the language, and to participate in the
+CHAPTER: FOUR
+PART: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
+--------------------------------------------------------------------------------
+
+MATCH #45
+Header: Family.
+Number: 45
+Sentence: 45. (1)    The family is the natural and fundamental unit of society and the
+CHAPTER: FOUR
+PART: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
+--------------------------------------------------------------------------------
+
+MATCH #46
+Header: Consumer rights.
+Number: 46
+Sentence: 46. (1)  Consumers have the right—
+CHAPTER: FOUR
+PART: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
+--------------------------------------------------------------------------------
+
+MATCH #47
+Header: Fair administrative action.
+Number: 47
+Sentence: 47. (1)  Every person has the right to administrative action that is expeditious,
+CHAPTER: FOUR
+PART: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
+--------------------------------------------------------------------------------
+
+MATCH #48
+Header: Access to justice.
+Number: 48
+Sentence: 48. The State shall ensure access to justice for all persons and, if any fee is
+CHAPTER: FOUR
+PART: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
+--------------------------------------------------------------------------------
+
+MATCH #49
+Header: Rights of arrested persons.
+Number: 49
+Sentence: 49. (1)  An arrested person has the right—
+CHAPTER: FOUR
+PART: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
+--------------------------------------------------------------------------------
+
+MATCH #50
+Header: Fair hearing.
+Number: 50
+Sentence: 50. (1)  Every person has the right to have any dispute that can be resolved
+CHAPTER: FOUR
+PART: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
+--------------------------------------------------------------------------------
+
+MATCH #51
+Header: Rights of persons detained, held in custody or imprisoned.
+Number: 51
+Sentence: 51. (1)  A person who is detained, held in custody or imprisoned under the law,
+CHAPTER: FOUR
+PART: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
+--------------------------------------------------------------------------------
+
+MATCH #52
+Header: Interpretation of this Part.
+Number: 52
+Sentence: 52. (1)  This Part elaborates certain rights to ensure greater certainty as to the
+CHAPTER: FOUR
+PART: PART 3 - SPECIFIC APPLICATION OF RIGHTS
+--------------------------------------------------------------------------------
+
+MATCH #53
+Header: Children.
+Number: 53
+Sentence: 53. (1)  Every child has the right—
+CHAPTER: FOUR
+PART: PART 3 - SPECIFIC APPLICATION OF RIGHTS
+--------------------------------------------------------------------------------
+
+MATCH #54
+Header: Persons with disabilities.
+Number: 54
+Sentence: 54. (1)  A person with any disability is entitled—
+CHAPTER: FOUR
+PART: PART 3 - SPECIFIC APPLICATION OF RIGHTS
+--------------------------------------------------------------------------------
+
+MATCH #55
+Header: Youth.
+Number: 55
+Sentence: 55. The State shall take measures, including afﬁrmative action programmes, to
+CHAPTER: FOUR
+PART: PART 3 - SPECIFIC APPLICATION OF RIGHTS
+--------------------------------------------------------------------------------
+
+MATCH #56
+Header: Minorities and marginalised groups.
+Number: 56
+Sentence: 56. The State shall put in place afﬁrmative action programmes designed to
+CHAPTER: FOUR
+PART: PART 3 - SPECIFIC APPLICATION OF RIGHTS
+--------------------------------------------------------------------------------
+
+MATCH #57
+Header: Older members of society.
+Number: 57
+Sentence: 57. The State shall take measures to ensure the rights of older persons—
+CHAPTER: FOUR
+PART: PART 3 - SPECIFIC APPLICATION OF RIGHTS
+--------------------------------------------------------------------------------
+
+MATCH #58
+Header: State of emergency.
+Number: 58
+Sentence: 58. (1)  A state of emergency may be declared only under Article 132 (4) (d) and
+CHAPTER: FOUR
+PART: PART 4 - STATE OF EMERGENCY
+--------------------------------------------------------------------------------
+
+MATCH #59
+Header: Kenya National Human Rights and Equality Commission.
+Number: 59
+Sentence: 59. (1)  There is established the Kenya National Human Rights and Equality
+CHAPTER: FOUR
+PART: PART 5 - KENYA NATIONAL HUMAN RIGHTS AND EQUALITY COMMISSION
+--------------------------------------------------------------------------------
+
+MATCH #60
+Header: Principles of land policy.
+Number: 60
+Sentence: 60. (1)    Land in Kenya shall be held, used and managed in a manner that
+CHAPTER: FIVE
+PART: PART 1 - LAND
+--------------------------------------------------------------------------------
+
+MATCH #61
+Header: Classiﬁcation of land.
+Number: 61
+Sentence: 61. (1)  All land in Kenya belongs to the people of Kenya collectively as a nation,
+CHAPTER: FIVE
+PART: PART 1 - LAND
+--------------------------------------------------------------------------------
+
+MATCH #62
+Header: Public land.
+Number: 62
+Sentence: 62. (1)  Public land is—
+CHAPTER: FIVE
+PART: PART 1 - LAND
+--------------------------------------------------------------------------------
+
+MATCH #63
+Header: Community land.
+Number: 63
+Sentence: 63. (1)  Community land shall vest in and be held by communities identiﬁed on
+CHAPTER: FIVE
+PART: PART 1 - LAND
+--------------------------------------------------------------------------------
+
+MATCH #64
+Header: Private land.
+Number: 64
+Sentence: 64. Private land consists of —
+CHAPTER: FIVE
+PART: PART 1 - LAND
+--------------------------------------------------------------------------------
+
+MATCH #65
+Header: Landholding by non-citizens.
+Number: 65
+Sentence: 65. (1)  A person who is not a citizen may hold land on the basis of leasehold
+CHAPTER: FIVE
+PART: PART 1 - LAND
+--------------------------------------------------------------------------------
+
+MATCH #66
+Header: Regulation of land use and property.
+Number: 66
+Sentence: 66. (1)  The State may regulate the use of any land, or any interest in or right
+CHAPTER: FIVE
+PART: PART 1 - LAND
+--------------------------------------------------------------------------------
+
+MATCH #67
+Header: National Land Commission.
+Number: 67
+Sentence: 67. (1)  There is established the National Land Commission.
+CHAPTER: FIVE
+PART: PART 1 - LAND
+--------------------------------------------------------------------------------
+
+MATCH #68
+Header: Legislation on land.
+Number: 68
+Sentence: 68. Parliament shall—
+CHAPTER: FIVE
+PART: PART 1 - LAND
+--------------------------------------------------------------------------------
+
+MATCH #69
+Header: Obligations in respect of the environment.
+Number: 69
+Sentence: 69. (1)  The State shall—
+CHAPTER: FIVE
+PART: PART 2 - ENVIRONMENT AND NATURAL RESOURCES
+--------------------------------------------------------------------------------
+
+MATCH #70
+Header: Enforcement of environmental rights.
+Number: 70
+Sentence: 70. (1)  If a person alleges that a right to a clean and healthy environment
+CHAPTER: FIVE
+PART: PART 2 - ENVIRONMENT AND NATURAL RESOURCES
+--------------------------------------------------------------------------------
+
+MATCH #71
+Header: Agreements relating to natural resources.
+Number: 71
+Sentence: 71. (1)  A transaction is subject to ratiﬁcation by Parliament if it—
+CHAPTER: FIVE
+PART: PART 2 - ENVIRONMENT AND NATURAL RESOURCES
+--------------------------------------------------------------------------------
+
+MATCH #72
+Header: Legislation relating to the environment.
+Number: 72
+Sentence: 72. Parliament shall enact legislation to give full effect to the provisions of this
+CHAPTER: FIVE
+PART: PART 2 - ENVIRONMENT AND NATURAL RESOURCES
+--------------------------------------------------------------------------------
+
+MATCH #73
+Header: Responsibilities of leadership.
+Number: 73
+Sentence: 73. (1)  Authority assigned to a State ofﬁcer—
+CHAPTER: SIX
+PART: [Not within a PART section]
+--------------------------------------------------------------------------------
+
+MATCH #74
+Header: Oath of ofﬁce of State ofﬁcers.
+Number: 74
+Sentence: 74. Before assuming a State ofﬁce, acting in a State ofﬁce, or performing any
+CHAPTER: SIX
+PART: [Not within a PART section]
+--------------------------------------------------------------------------------
+
+MATCH #75
+Header: Conduct of State ofﬁcers.
+Number: 75
+Sentence: 75. (1)  A State ofﬁcer shall behave, whether in public and ofﬁcial life, in private
+CHAPTER: SIX
+PART: [Not within a PART section]
+--------------------------------------------------------------------------------
+
+MATCH #76
+Header: Financial probity of State ofﬁcers.
+Number: 76
+Sentence: 76. (1)  A gift or donation to a State ofﬁcer on a public or ofﬁcial occasion is a
+CHAPTER: SIX
+PART: [Not within a PART section]
+--------------------------------------------------------------------------------
+
+MATCH #77
+Header: Restriction on activities of State ofﬁcers.
+Number: 77
+Sentence: 77. (1)    A full-time State ofﬁcer shall not participate in any other gainful
+CHAPTER: SIX
+PART: [Not within a PART section]
+--------------------------------------------------------------------------------
+
+MATCH #78
+Header: Citizenship and leadership.
+Number: 78
+Sentence: 78. (1)  A person is not eligible for election or appointment to a State ofﬁce
+CHAPTER: SIX
+PART: [Not within a PART section]
+--------------------------------------------------------------------------------
+
+MATCH #79
+Header: Legislation to establish the ethics and anti-corruption commission.
+Number: 79
+Sentence: 79. Parliament shall enact legislation to establish an independent ethics and
+CHAPTER: SIX
+PART: [Not within a PART section]
+--------------------------------------------------------------------------------
+
+MATCH #80
+Header: Legislation on leadership.
+Number: 80
+Sentence: 80. Parliament shall enact legislation—
+CHAPTER: SIX
+PART: [Not within a PART section]
+--------------------------------------------------------------------------------
+
+MATCH #81
+Header: General principles for the electoral system.
+Number: 81
+Sentence: 81. The electoral system shall comply with the following principles—
+CHAPTER: SEVEN
+PART: PART 1 - ELECTORAL SYSTEM AND PROCESS
+--------------------------------------------------------------------------------
+
+MATCH #82
+Header: Legislation on elections.
+Number: 82
+Sentence: 82. (1)  Parliament shall enact legislation to provide for—
+CHAPTER: SEVEN
+PART: PART 1 - ELECTORAL SYSTEM AND PROCESS
+--------------------------------------------------------------------------------
+
+MATCH #83
+Header: Registration as a voter.
+Number: 83
+Sentence: 83. (1)  A person qualiﬁes for registration as a voter at elections or referenda
+CHAPTER: SEVEN
+PART: PART 1 - ELECTORAL SYSTEM AND PROCESS
+--------------------------------------------------------------------------------
+
+MATCH #84
+Header: Candidates for election and political parties to comply with code of conduct.
+Number: 84
+Sentence: 84. In every election, all candidates and all political parties shall comply
+CHAPTER: SEVEN
+PART: PART 1 - ELECTORAL SYSTEM AND PROCESS
+--------------------------------------------------------------------------------
+
+MATCH #85
+Header: Eligibility to stand as an independent candidate.
+Number: 85
+Sentence: 85. Any person is eligible to stand as an independent candidate for election if
+CHAPTER: SEVEN
+PART: PART 1 - ELECTORAL SYSTEM AND PROCESS
+--------------------------------------------------------------------------------
+
+MATCH #86
+Header: Voting.
+Number: 86
+Sentence: 86. At every election, the Independent Electoral and Boundaries Commission
+CHAPTER: SEVEN
+PART: PART 1 - ELECTORAL SYSTEM AND PROCESS
+--------------------------------------------------------------------------------
+
+MATCH #87
+Header: Electoral disputes.
+Number: 87
+Sentence: 87. (1)  Parliament shall enact legislation to establish mechanisms for timely
+CHAPTER: SEVEN
+PART: PART 1 - ELECTORAL SYSTEM AND PROCESS
+--------------------------------------------------------------------------------
+
+MATCH #88
+Header: Independent Electoral and Boundaries Commission.
+Number: 88
+Sentence: 88. (1)    There is established the Independent Electoral and Boundaries
+CHAPTER: SEVEN
+PART: PART 2 - INDEPENDENT ELECTORAL AND BOUNDARIES
+--------------------------------------------------------------------------------
+
+MATCH #89
+Header: Delimitation of electoral units.
+Number: 89
+Sentence: 89. (1)  There shall be two hundred and ninety constituencies for the purposes of
+CHAPTER: SEVEN
+PART: PART 2 - INDEPENDENT ELECTORAL AND BOUNDARIES
+--------------------------------------------------------------------------------
+
+MATCH #90
+Header: Allocation of party list seats.
+Number: 90
+Sentence: 90. (1)  Elections for the seats in Parliament provided for under Articles 97(1)(c)
+CHAPTER: SEVEN
+PART: PART 2 - INDEPENDENT ELECTORAL AND BOUNDARIES
+--------------------------------------------------------------------------------
+
+MATCH #91
+Header: Basic requirements for political parties.
+Number: 91
+Sentence: 91. (1)  Every political party shall—
+CHAPTER: SEVEN
+PART: PART 3 - POLITICAL PARTIES
+--------------------------------------------------------------------------------
+
+MATCH #92
+Header: Legislation on political parties.
+Number: 92
+Sentence: 92. Parliament shall enact legislation to provide for—
+CHAPTER: SEVEN
+PART: PART 3 - POLITICAL PARTIES
+--------------------------------------------------------------------------------
+
+MATCH #93
+Header: Establishment of Parliament.
+Number: 93
+Sentence: 93. (1)  There is established a Parliament of Kenya, which shall consist of the
+CHAPTER: EIGHT
+PART: PART 1 - ESTABLISHMENT AND ROLE OF PARLIAMENT
+--------------------------------------------------------------------------------
+
+MATCH #94
+Header: Role of Parliament.
+Number: 94
+Sentence: 94. (1)  The legislative authority of the Republic is derived from the people and,
+CHAPTER: EIGHT
+PART: PART 1 - ESTABLISHMENT AND ROLE OF PARLIAMENT
+--------------------------------------------------------------------------------
+
+MATCH #95
+Header: Role of the National Assembly.
+Number: 95
+Sentence: 95. (1)  The National Assembly represents the people of the constituencies and
+CHAPTER: EIGHT
+PART: PART 1 - ESTABLISHMENT AND ROLE OF PARLIAMENT
+--------------------------------------------------------------------------------
+
+MATCH #96
+Header: Role of the Senate.
+Number: 96
+Sentence: 96. (1)  The Senate represents the counties, and serves to protect the interests
+CHAPTER: EIGHT
+PART: PART 1 - ESTABLISHMENT AND ROLE OF PARLIAMENT
+--------------------------------------------------------------------------------
+
+MATCH #97
+Header: Membership of the National Assembly.
+Number: 97
+Sentence: 97. (1)  The National Assembly consists of—
+CHAPTER: EIGHT
+PART: PART 2 - COMPOSITION AND MEMBERSHIP OF PARLIAMENT
+--------------------------------------------------------------------------------
+
+MATCH #98
+Header: Membership of the Senate.
+Number: 98
+Sentence: 98. (1)  The Senate consists of—
+CHAPTER: EIGHT
+PART: PART 2 - COMPOSITION AND MEMBERSHIP OF PARLIAMENT
+--------------------------------------------------------------------------------
+
+MATCH #99
+Header: Qualiﬁcations and disqualiﬁcations for election as member of Parliament.
+Number: 99
+Sentence: 99. (1)  Unless disqualiﬁed under clause (2), a person is eligible for election as
+CHAPTER: EIGHT
+PART: PART 2 - COMPOSITION AND MEMBERSHIP OF PARLIAMENT
+--------------------------------------------------------------------------------
+
+MATCH #100
+Header: Promotion of representation of marginalised groups.
+Number: 100
+Sentence: 100. Parliament shall enact legislation to promote the representation in
+CHAPTER: EIGHT
+PART: PART 2 - COMPOSITION AND MEMBERSHIP OF PARLIAMENT
+--------------------------------------------------------------------------------
+
+MATCH #101
+Header: Election of members of Parliament.
+Number: 101
+Sentence: 101. (1)  A general election of members of Parliament shall be held on the second
+CHAPTER: EIGHT
+PART: PART 2 - COMPOSITION AND MEMBERSHIP OF PARLIAMENT
+--------------------------------------------------------------------------------
+
+MATCH #102
+Header: Term of Parliament.
+Number: 102
+Sentence: 102. (1)  The term of each House of Parliament expires on the date of the next
+CHAPTER: EIGHT
+PART: PART 2 - COMPOSITION AND MEMBERSHIP OF PARLIAMENT
+--------------------------------------------------------------------------------
+
+MATCH #103
+Header: Vacation of ofﬁce of member of Parliament.
+Number: 103
+Sentence: 103. (1)  The ofﬁce of a member of Parliament becomes vacant—
+CHAPTER: EIGHT
+PART: PART 2 - COMPOSITION AND MEMBERSHIP OF PARLIAMENT
+--------------------------------------------------------------------------------
+
+MATCH #104
+Header: Right of recall.
+Number: 104
+Sentence: 104. (1)  The electorate under Articles 97 and 98 have the right to recall the
+CHAPTER: EIGHT
+PART: PART 2 - COMPOSITION AND MEMBERSHIP OF PARLIAMENT
+--------------------------------------------------------------------------------
+
+MATCH #105
+Header: Determination of questions of membership.
+Number: 105
+Sentence: 105. (1)  The High Court shall hear and determine any question whether—
+CHAPTER: EIGHT
+PART: PART 2 - COMPOSITION AND MEMBERSHIP OF PARLIAMENT
+--------------------------------------------------------------------------------
+
+MATCH #106
+Header: Speakers and Deputy Speakers of Parliament.
+Number: 106
+Sentence: 106. (1)  There shall be—
+CHAPTER: EIGHT
+PART: PART 3 - OFFICES OF PARLIAMENT
+--------------------------------------------------------------------------------
+
+MATCH #107
+Header: Presiding in Parliament.
+Number: 107
+Sentence: 107. (1)  At any sitting of a House of Parliament—
+CHAPTER: EIGHT
+PART: PART 3 - OFFICES OF PARLIAMENT
+--------------------------------------------------------------------------------
+
+MATCH #108
+Header: Party leaders.
+Number: 108
+Sentence: 108. (1)  There shall be a leader of the majority party and a leader of the minority
+CHAPTER: EIGHT
+PART: PART 3 - OFFICES OF PARLIAMENT
+--------------------------------------------------------------------------------
+
+MATCH #109
+Header: Exercise of legislative powers.
+Number: 109
+Sentence: 109. (1)  Parliament shall exercise its legislative power through Bills passed by
+CHAPTER: EIGHT
+PART: PART 4 - PROCEDURES FOR ENACTING LEGISLATION
+--------------------------------------------------------------------------------
+
+MATCH #110
+Header: Bills concerning county government.
+Number: 110
+Sentence: 110. (1)  In this Constitution, "a Bill concerning county government" means—
+CHAPTER: EIGHT
+PART: PART 4 - PROCEDURES FOR ENACTING LEGISLATION
+--------------------------------------------------------------------------------
+
+MATCH #111
+Header: Special Bills concerning county governments.
+Number: 111
+Sentence: 111. (1)  A special Bill concerning a county government shall proceed in the
+CHAPTER: EIGHT
+PART: PART 4 - PROCEDURES FOR ENACTING LEGISLATION
+--------------------------------------------------------------------------------
+
+MATCH #112
+Header: Ordinary Bills concerning county governments.
+Number: 112
+Sentence: 112. (1)  If one House passes an ordinary Bill concerning counties, and the second
+CHAPTER: EIGHT
+PART: PART 4 - PROCEDURES FOR ENACTING LEGISLATION
+--------------------------------------------------------------------------------
+
+MATCH #113
+Header: Mediation committees.
+Number: 113
+Sentence: 113. (1)  If a Bill is referred to a mediation committee under Article 112, the
+CHAPTER: EIGHT
+PART: PART 4 - PROCEDURES FOR ENACTING LEGISLATION
+--------------------------------------------------------------------------------
+
+MATCH #114
+Header: Money Bills.
+Number: 114
+Sentence: 114. (1)  A money Bill may not deal with any matter other than those listed in
+CHAPTER: EIGHT
+PART: PART 4 - PROCEDURES FOR ENACTING LEGISLATION
+--------------------------------------------------------------------------------
+
+MATCH #115
+Header: Presidential assent and referral.
+Number: 115
+Sentence: 115. (1)  Within fourteen days after receipt of a Bill, the President shall—
+CHAPTER: EIGHT
+PART: PART 4 - PROCEDURES FOR ENACTING LEGISLATION
+--------------------------------------------------------------------------------
+
+MATCH #116
+Header: Coming into force of laws.
+Number: 116
+Sentence: 116. (1)  A Bill passed by Parliament and assented to by the President shall be
+CHAPTER: EIGHT
+PART: PART 4 - PROCEDURES FOR ENACTING LEGISLATION
+--------------------------------------------------------------------------------
+
+MATCH #117
+Header: Powers, privileges and immunities.
+Number: 117
+Sentence: 117. (1)  There shall be freedom of speech and debate in Parliament.
+CHAPTER: EIGHT
+PART: PART 5 - PARLIAMENT'S GENERAL PROCEDURES AND RULES
+--------------------------------------------------------------------------------
+
+MATCH #118
+Header: Public access and participation.
+Number: 118
+Sentence: 118. (1)  Parliament shall—
+CHAPTER: EIGHT
+PART: PART 5 - PARLIAMENT'S GENERAL PROCEDURES AND RULES
+--------------------------------------------------------------------------------
+
+MATCH #119
+Header: Right to petition Parliament.
+Number: 119
+Sentence: 119. (1)  Every person has a right to petition Parliament to consider any matter
+CHAPTER: EIGHT
+PART: PART 5 - PARLIAMENT'S GENERAL PROCEDURES AND RULES
+--------------------------------------------------------------------------------
+
+MATCH #120
+Header: Ofﬁcial languages of Parliament.
+Number: 120
+Sentence: 120. (1)  The ofﬁcial languages of Parliament shall be Kiswahili, English and
+CHAPTER: EIGHT
+PART: PART 5 - PARLIAMENT'S GENERAL PROCEDURES AND RULES
+--------------------------------------------------------------------------------
+
+MATCH #121
+Header: Quorum.
+Number: 121
+Sentence: 121. The quorum of Parliament shall be–
+CHAPTER: EIGHT
+PART: PART 5 - PARLIAMENT'S GENERAL PROCEDURES AND RULES
+--------------------------------------------------------------------------------
+
+MATCH #122
+Header: Voting in Parliament.
+Number: 122
+Sentence: 122. (1)    Except as otherwise provided in this Constitution, any question
+CHAPTER: EIGHT
+PART: PART 5 - PARLIAMENT'S GENERAL PROCEDURES AND RULES
+--------------------------------------------------------------------------------
+
+MATCH #123
+Header: Decisions of Senate.
+Number: 123
+Sentence: 123. (1)  On election, all the members of the Senate who were registered as voters
+CHAPTER: EIGHT
+PART: PART 5 - PARLIAMENT'S GENERAL PROCEDURES AND RULES
+--------------------------------------------------------------------------------
+
+MATCH #124
+Header: Committees and Standing Orders.
+Number: 124
+Sentence: 124. (1)    Each House of Parliament may establish committees, and shall
+CHAPTER: EIGHT
+PART: PART 5 - PARLIAMENT'S GENERAL PROCEDURES AND RULES
+--------------------------------------------------------------------------------
+
+MATCH #125
+Header: Power to call for evidence.
+Number: 125
+Sentence: 125. (1)  Either House of Parliament, and any of its committees, has power
+CHAPTER: EIGHT
+PART: PART 5 - PARLIAMENT'S GENERAL PROCEDURES AND RULES
+--------------------------------------------------------------------------------
+
+MATCH #126
+Header: Location of sittings of Parliament.
+Number: 126
+Sentence: 126. (1)  A sitting of either House may be held at any place within Kenya and
+CHAPTER: EIGHT
+PART: PART 6 - MISCELLANEOUS
+--------------------------------------------------------------------------------
+
+MATCH #127
+Header: Parliamentary Service Commission.
+Number: 127
+Sentence: 127. (1)  There is established the Parliamentary Service Commission.
+CHAPTER: EIGHT
+PART: PART 6 - MISCELLANEOUS
+--------------------------------------------------------------------------------
+
+MATCH #128
+Header: Clerks and staff of Parliament.
+Number: 128
+Sentence: 128. (1)  There shall be a Clerk for each House of Parliament, appointed by the
+CHAPTER: EIGHT
+PART: PART 6 - MISCELLANEOUS
+--------------------------------------------------------------------------------
+
+MATCH #129
+Header: Principles of executive authority.
+Number: 129
+Sentence: 129. (1)  Executive authority derives from the people of Kenya and shall be
+CHAPTER: NINE
+PART: PART 1 - PRINCIPLES AND STRUCTURE OF THE NATIONAL EXECUTIVE
+--------------------------------------------------------------------------------
+
+MATCH #130
+Header: The National Executive.
+Number: 130
+Sentence: 130. (1)  The national executive of the Republic comprises the President, the
+CHAPTER: NINE
+PART: PART 1 - PRINCIPLES AND STRUCTURE OF THE NATIONAL EXECUTIVE
+--------------------------------------------------------------------------------
+
+MATCH #131
+Header: Authority of the President.
+Number: 131
+Sentence: 131. (1)  The President—
+CHAPTER: NINE
+PART: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
+--------------------------------------------------------------------------------
+
+MATCH #132
+Header: Functions of the President.
+Number: 132
+Sentence: 132. (1)  The President shall—
+CHAPTER: NINE
+PART: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
+--------------------------------------------------------------------------------
+
+MATCH #133
+Header: Power of mercy.
+Number: 133
+Sentence: 133. (1)  On the petition of any person, the President may exercise a power of
+CHAPTER: NINE
+PART: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
+--------------------------------------------------------------------------------
+
+MATCH #134
+Header: Exercise of presidential powers during temporary incumbency.
+Number: 134
+Sentence: 134. (1)  A person who holds the ofﬁce of President or who is authorised in terms
+CHAPTER: NINE
+PART: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
+--------------------------------------------------------------------------------
+
+MATCH #135
+Header: Decisions of the President.
+Number: 135
+Sentence: 135. A decision of the President in the performance of any function of the
+CHAPTER: NINE
+PART: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
+--------------------------------------------------------------------------------
+
+MATCH #136
+Header: Election of the President.
+Number: 136
+Sentence: 136. (1)  The President shall be elected by registered voters in a national election
+CHAPTER: NINE
+PART: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
+--------------------------------------------------------------------------------
+
+MATCH #137
+Header: Qualiﬁcations and disqualiﬁcations for election as President.
+Number: 137
+Sentence: 137. (1)  A person qualiﬁes for nomination as a presidential candidate if the
+CHAPTER: NINE
+PART: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
+--------------------------------------------------------------------------------
+
+MATCH #138
+Header: Procedure at presidential election.
+Number: 138
+Sentence: 138. (1)  If only one candidate for President is nominated, that candidate shall
+CHAPTER: NINE
+PART: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
+--------------------------------------------------------------------------------
+
+MATCH #139
+Header: Death before assuming ofﬁce.
+Number: 139
+Sentence: 139. (1)  If a President-elect dies after being declared elected as President, but
+CHAPTER: NINE
+PART: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
+--------------------------------------------------------------------------------
+
+MATCH #140
+Header: Questions as to validity of presidential election.
+Number: 140
+Sentence: 140. (1)  A person may ﬁle a petition in the Supreme Court to challenge the
+CHAPTER: NINE
+PART: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
+--------------------------------------------------------------------------------
+
+MATCH #141
+Header: Assumption of ofﬁce of President.
+Number: 141
+Sentence: 141. (1)  The swearing in of the President-elect shall be in public before the Chief
+CHAPTER: NINE
+PART: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
+--------------------------------------------------------------------------------
+
+MATCH #142
+Header: Term of ofﬁce of President.
+Number: 142
+Sentence: 142. (1)  The President shall hold ofﬁce for a term beginning on the date on which
+CHAPTER: NINE
+PART: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
+--------------------------------------------------------------------------------
+
+MATCH #143
+Header: Protection from legal proceedings.
+Number: 143
+Sentence: 143. (1)  Criminal proceedings shall not be instituted or continued in any court
+CHAPTER: NINE
+PART: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
+--------------------------------------------------------------------------------
+
+MATCH #144
+Header: Removal of President on grounds of incapacity.
+Number: 144
+Sentence: 144. (1)  A member of the National Assembly, supported by at least a quarter of
+CHAPTER: NINE
+PART: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
+--------------------------------------------------------------------------------
+
+MATCH #145
+Header: Removal of President by impeachment.
+Number: 145
+Sentence: 145. (1)  A member of the National Assembly, supported by at least a third of all
+CHAPTER: NINE
+PART: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
+--------------------------------------------------------------------------------
+
+MATCH #146
+Header: Vacancy in the ofﬁce of President.
+Number: 146
+Sentence: 146. (1)  The ofﬁce of President shall become vacant if the holder of the ofﬁce —
+CHAPTER: NINE
+PART: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
+--------------------------------------------------------------------------------
+
+MATCH #147
+Header: Functions of the Deputy President.
+Number: 147
+Sentence: 147. (1)  The Deputy President shall be the principal assistant of the President
+CHAPTER: NINE
+PART: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
+--------------------------------------------------------------------------------
+
+MATCH #148
+Header: Election and swearing-in of Deputy President.
+Number: 148
+Sentence: 148. (1)  Each candidate in a presidential election shall nominate a person
+CHAPTER: NINE
+PART: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
+--------------------------------------------------------------------------------
+
+MATCH #149
+Header: Vacancy in the ofﬁce of Deputy President.
+Number: 149
+Sentence: 149. (1)  Within fourteen days after a vacancy in the ofﬁce of Deputy President
+CHAPTER: NINE
+PART: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
+--------------------------------------------------------------------------------
+
+MATCH #150
+Header: Removal of Deputy President.
+Number: 150
+Sentence: 150. (1)  The Deputy President may be removed from ofﬁce—
+CHAPTER: NINE
+PART: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
+--------------------------------------------------------------------------------
+
+MATCH #151
+Header: Remuneration and beneﬁts of President and Deputy President.
+Number: 151
+Sentence: 151. (1)  The remuneration and beneﬁts payable to the President and the Deputy
+CHAPTER: NINE
+PART: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
+--------------------------------------------------------------------------------
+
+MATCH #152
+Header: Cabinet.
+Number: 152
+Sentence: 152. (1)  The Cabinet consists of—
+CHAPTER: NINE
+PART: PART 3 - THE CABINET
+--------------------------------------------------------------------------------
+
+MATCH #153
+Header: Decisions, responsibility and accountability of the Cabinet.
+Number: 153
+Sentence: 153. (1)  A decision by the Cabinet shall be in writing.
+CHAPTER: NINE
+PART: PART 3 - THE CABINET
+--------------------------------------------------------------------------------
+
+MATCH #154
+Header: Secretary to the Cabinet.
+Number: 154
+Sentence: 154. (1)  There is established the ofﬁce of Secretary to the Cabinet, which is an
+CHAPTER: NINE
+PART: PART 3 - THE CABINET
+--------------------------------------------------------------------------------
+
+MATCH #155
+Header: Principal Secretaries.
+Number: 155
+Sentence: 155. (1)  There is established the ofﬁce of Principal Secretary, which is an ofﬁce
+CHAPTER: NINE
+PART: PART 3 - THE CABINET
+--------------------------------------------------------------------------------
+
+MATCH #156
+Header: Attorney-General.
+Number: 156
+Sentence: 156. (1)  There is established the ofﬁce of Attorney-General.
+CHAPTER: NINE
+PART: PART 4 - OTHER OFFICES
+--------------------------------------------------------------------------------
+
+MATCH #157
+Header: Director of Public Prosecutions.
+Number: 157
+Sentence: 157. (1)  There is established the ofﬁce of Director of Public Prosecutions.
+CHAPTER: NINE
+PART: PART 4 - OTHER OFFICES
+--------------------------------------------------------------------------------
+
+MATCH #158
+Header: Removal and resignation of Director of Public Prosecutions.
+Number: 158
+Sentence: 158. (1)  The Director of Public Prosecutions may be removed from ofﬁce only
+CHAPTER: NINE
+PART: PART 4 - OTHER OFFICES
+--------------------------------------------------------------------------------
+
+MATCH #159
+Header: Judicial authority.
+Number: 159
+Sentence: 159. (1)  Judicial authority is derived from the people and vests in, and shall be
+CHAPTER: TEN
+PART: PART 1 - JUDICIAL AUTHORITY AND LEGAL SYSTEM
+--------------------------------------------------------------------------------
+
+MATCH #160
+Header: Independence of the Judiciary.
+Number: 160
+Sentence: 160. (1)  In the exercise of judicial authority, the Judiciary, as constituted by
+CHAPTER: TEN
+PART: PART 1 - JUDICIAL AUTHORITY AND LEGAL SYSTEM
+--------------------------------------------------------------------------------
+
+MATCH #161
+Header: Judicial ofﬁces and ofﬁcers.
+Number: 161
+Sentence: 161. (1)  The Judiciary consists of the judges of the superior courts, magistrates,
+CHAPTER: TEN
+PART: PART 1 - JUDICIAL AUTHORITY AND LEGAL SYSTEM
+--------------------------------------------------------------------------------
+
+MATCH #162
+Header: System of courts.
+Number: 162
+Sentence: 162. (1)  The superior courts are the Supreme Court, the Court of Appeal, the
+CHAPTER: TEN
+PART: PART 1 - JUDICIAL AUTHORITY AND LEGAL SYSTEM
+--------------------------------------------------------------------------------
+
+MATCH #163
+Header: Supreme Court.
+Number: 163
+Sentence: 163. (1)  There is established the Supreme Court, which shall consist of—
+CHAPTER: TEN
+PART: PART 2 - SUPERIOR COURTS
+--------------------------------------------------------------------------------
+
+MATCH #164
+Header: Court of Appeal.
+Number: 164
+Sentence: 164. (1)  There is established the Court of Appeal, which—
+CHAPTER: TEN
+PART: PART 2 - SUPERIOR COURTS
+--------------------------------------------------------------------------------
+
+MATCH #165
+Header: High Court.
+Number: 165
+Sentence: 165. (1)  There is established the High Court, which—
+CHAPTER: TEN
+PART: PART 2 - SUPERIOR COURTS
+--------------------------------------------------------------------------------
+
+MATCH #166
+Header: Appointment of Chief Justice, Deputy Chief Justice and other judges.
+Number: 166
+Sentence: 166. (1)  The President shall appoint—
+CHAPTER: TEN
+PART: PART 2 - SUPERIOR COURTS
+--------------------------------------------------------------------------------
+
+MATCH #167
+Header: Tenure of ofﬁce of the Chief Justice and other judges.
+Number: 167
+Sentence: 167. (1)  A judge shall retire from ofﬁce on attaining the age of seventy years,
+CHAPTER: TEN
+PART: PART 2 - SUPERIOR COURTS
+--------------------------------------------------------------------------------
+
+MATCH #168
+Header: Removal from ofﬁce.
+Number: 168
+Sentence: 168. (1)  A judge of a superior court may be removed from ofﬁce only on the
+CHAPTER: TEN
+PART: PART 2 - SUPERIOR COURTS
+--------------------------------------------------------------------------------
+
+MATCH #169
+Header: Subordinate courts.
+Number: 169
+Sentence: 169. (1)  The subordinate courts are—
+CHAPTER: TEN
+PART: PART 3 - SUBORDINATE COURTS
+--------------------------------------------------------------------------------
+
+MATCH #170
+Header: Kadhis’ courts.
+Number: 170
+Sentence: 170. (1)  There shall be a Chief Kadhi and such number, being not fewer than
+CHAPTER: TEN
+PART: PART 3 - SUBORDINATE COURTS
+--------------------------------------------------------------------------------
+
+MATCH #171
+Header: Establishment of the Judicial Service Commission.
+Number: 171
+Sentence: 171. (1)  There is established the Judicial Service Commission.
+CHAPTER: TEN
+PART: PART 4 - JUDICIAL SERVICE COMMISSION
+--------------------------------------------------------------------------------
+
+MATCH #172
+Header: Functions of the Judicial Service Commission.
+Number: 172
+Sentence: 172. (1)    The Judicial Service Commission shall promote and facilitate the
+CHAPTER: TEN
+PART: PART 4 - JUDICIAL SERVICE COMMISSION
+--------------------------------------------------------------------------------
+
+MATCH #173
+Header: Judiciary Fund.
+Number: 173
+Sentence: 173. (1)  There is established a fund to be known as the Judiciary Fund which
+CHAPTER: TEN
+PART: PART 4 - JUDICIAL SERVICE COMMISSION
+--------------------------------------------------------------------------------
+
+MATCH #174
+Header: Objects of devolution.
+Number: 174
+Sentence: 174. The objects of the devolution of government are—
+CHAPTER: ELEVEN
+PART: PART 1 - OBJECTS AND PRINCIPLES OF DEVOLVED GOVERNMENT
+--------------------------------------------------------------------------------
+
+MATCH #175
+Header: Principles of devolved government.
+Number: 175
+Sentence: 175. County governments established under this Constitution shall reﬂect the
+CHAPTER: ELEVEN
+PART: PART 1 - OBJECTS AND PRINCIPLES OF DEVOLVED GOVERNMENT
+--------------------------------------------------------------------------------
+
+MATCH #176
+Header: County governments.
+Number: 176
+Sentence: 176. (1)  There shall be a county government for each county, consisting of a
+CHAPTER: ELEVEN
+PART: PART 2 - COUNTY GOVERNMENTS
+--------------------------------------------------------------------------------
+
+MATCH #177
+Header: Membership of county assembly.
+Number: 177
+Sentence: 177. (1)  A county assembly consists of—
+CHAPTER: ELEVEN
+PART: PART 2 - COUNTY GOVERNMENTS
+--------------------------------------------------------------------------------
+
+MATCH #178
+Header: Speaker of a county assembly.
+Number: 178
+Sentence: 178. (1)    Each county assembly shall have a speaker elected by the county
+CHAPTER: ELEVEN
+PART: PART 2 - COUNTY GOVERNMENTS
+--------------------------------------------------------------------------------
+
+MATCH #179
+Header: County executive committees.
+Number: 179
+Sentence: 179. (1)  The executive authority of the county is vested in, and exercised by, a
+CHAPTER: ELEVEN
+PART: PART 2 - COUNTY GOVERNMENTS
+--------------------------------------------------------------------------------
+
+MATCH #180
+Header: Election of county governor and deputy county governor.
+Number: 180
+Sentence: 180. (1)  The county governor shall be directly elected by the voters registered in
+CHAPTER: ELEVEN
+PART: PART 2 - COUNTY GOVERNMENTS
+--------------------------------------------------------------------------------
+
+MATCH #181
+Header: Removal of a county governor.
+Number: 181
+Sentence: 181. (1)  A county governor may be removed from ofﬁce on any of the following
+CHAPTER: ELEVEN
+PART: PART 2 - COUNTY GOVERNMENTS
+--------------------------------------------------------------------------------
+
+MATCH #182
+Header: Vacancy in the ofﬁce of county governor.
+Number: 182
+Sentence: 182. (1)  The ofﬁce of the county governor shall become vacant if the holder of
+CHAPTER: ELEVEN
+PART: PART 2 - COUNTY GOVERNMENTS
+--------------------------------------------------------------------------------
+
+MATCH #183
+Header: Functions of county executive committees.
+Number: 183
+Sentence: 183. (1)  A county executive committee shall—
+CHAPTER: ELEVEN
+PART: PART 2 - COUNTY GOVERNMENTS
+--------------------------------------------------------------------------------
+
+MATCH #184
+Header: Urban areas and cities.
+Number: 184
+Sentence: 184. (1)  National legislation shall provide for the governance and management
+CHAPTER: ELEVEN
+PART: PART 2 - COUNTY GOVERNMENTS
+--------------------------------------------------------------------------------
+
+MATCH #185
+Header: Legislative authority of county assemblies.
+Number: 185
+Sentence: 185. (1)  The legislative authority of a county is vested in, and exercised by, its
+CHAPTER: ELEVEN
+PART: PART 2 - COUNTY GOVERNMENTS
+--------------------------------------------------------------------------------
+
+MATCH #186
+Header: Respective functions and powers of national and county governments.
+Number: 186
+Sentence: 186. (1)  Except as otherwise provided by this Constitution, the functions and
+CHAPTER: ELEVEN
+PART: PART 3 - FUNCTIONS AND POWERS OF COUNTY GOVERNMENTS
+--------------------------------------------------------------------------------
+
+MATCH #187
+Header: Transfer of functions and powers between levels of government.
+Number: 187
+Sentence: 187. (1)  A function or power of government at one level may be transferred to
+CHAPTER: ELEVEN
+PART: PART 3 - FUNCTIONS AND POWERS OF COUNTY GOVERNMENTS
+--------------------------------------------------------------------------------
+
+MATCH #188
+Header: Boundaries of counties.
+Number: 188
+Sentence: 188. (1)  The boundaries of a county may be altered only by a resolution—
+CHAPTER: ELEVEN
+PART: PART 4 - THE BOUNDARIES OF COUNTIES
+--------------------------------------------------------------------------------
+
+MATCH #189
+Header: Cooperation between national and county governments.
+Number: 189
+Sentence: 189. (1)  Government at either level shall—
+CHAPTER: ELEVEN
+PART: PART 5 - RELATIONSHIP BETWEEN GOVERNMENTS
+--------------------------------------------------------------------------------
+
+MATCH #190
+Header: Support for county governments.
+Number: 190
+Sentence: 190. (1)  Parliament shall by legislation ensure that county governments have
+CHAPTER: ELEVEN
+PART: PART 5 - RELATIONSHIP BETWEEN GOVERNMENTS
+--------------------------------------------------------------------------------
+
+MATCH #191
+Header: Conﬂict of laws.
+Number: 191
+Sentence: 191. (1)  This Article applies to conﬂicts between national and county legislation
+CHAPTER: ELEVEN
+PART: PART 5 - RELATIONSHIP BETWEEN GOVERNMENTS
+--------------------------------------------------------------------------------
+
+MATCH #192
+Header: Suspension of a county government.
+Number: 192
+Sentence: 192. (1)  The President may suspend a county government—
+CHAPTER: ELEVEN
+PART: PART 6 - SUSPENSION OF COUNTY GOVERNMENTS
+--------------------------------------------------------------------------------
+
+MATCH #193
+Header: Qualiﬁcations for election as member of county assembly.
+Number: 193
+Sentence: 193. (1)  Unless disqualiﬁed under clause (2), a person is eligible for election as
+CHAPTER: ELEVEN
+PART: PART 7 - GENERAL
+--------------------------------------------------------------------------------
+
+MATCH #194
+Header: Vacation of ofﬁce of member of county assembly.
+Number: 194
+Sentence: 194. (1)  The ofﬁce of a member of a county assembly becomes vacant—
+CHAPTER: ELEVEN
+PART: PART 7 - GENERAL
+--------------------------------------------------------------------------------
+
+MATCH #195
+Header: County assembly power to summon witnesses.
+Number: 195
+Sentence: 195. (1)  A county assembly or any of its committees has power to summon
+CHAPTER: ELEVEN
+PART: PART 7 - GENERAL
+--------------------------------------------------------------------------------
+
+MATCH #196
+Header: Public participation and county assembly powers, privileges and immunities.
+Number: 196
+Sentence: 196. (1)  A county assembly shall—
+CHAPTER: ELEVEN
+PART: PART 7 - GENERAL
+--------------------------------------------------------------------------------
+
+MATCH #197
+Header: County assembly gender balance and diversity.
+Number: 197
+Sentence: 197. (1)  Not more than two-thirds of the members of any county assembly or
+CHAPTER: ELEVEN
+PART: PART 7 - GENERAL
+--------------------------------------------------------------------------------
+
+MATCH #198
+Header: County government during transition.
+Number: 198
+Sentence: 198. While an election is being held to constitute a county assembly under
+CHAPTER: ELEVEN
+PART: PART 7 - GENERAL
+--------------------------------------------------------------------------------
+
+MATCH #199
+Header: Publication of county legislation.
+Number: 199
+Sentence: 199. (1)  County legislation does not take effect unless published in the Gazette.
+CHAPTER: ELEVEN
+PART: PART 7 - GENERAL
+--------------------------------------------------------------------------------
+
+MATCH #200
+Header: Legislation on Chapter.
+Number: 200
+Sentence: 200. (1)  Parliament shall enact legislation providing for all matters necessary
+CHAPTER: ELEVEN
+PART: PART 7 - GENERAL
+--------------------------------------------------------------------------------
+
+MATCH #201
+Header: Principles of public ﬁnance.
+Number: 201
+Sentence: 201. The following principles shall guide all aspects of public ﬁnance in the
+CHAPTER: TWELVE
+PART: [Not within a PART section]
+--------------------------------------------------------------------------------
+
+MATCH #202
+Header: Equitable sharing of national revenue.
+Number: 202
+Sentence: 202. (1)  Revenue raised nationally shall be shared equitably among the national
+CHAPTER: TWELVE
+PART: [Not within a PART section]
+--------------------------------------------------------------------------------
+
+MATCH #203
+Header: Equitable share and other ﬁnancial laws.
+Number: 203
+Sentence: 203. (1)    The following criteria shall be taken into account in determining
+CHAPTER: TWELVE
+PART: [Not within a PART section]
+--------------------------------------------------------------------------------
+
+MATCH #204
+Header: Equalisation Fund.
+Number: 204
+Sentence: 204. (1)  There is established an Equalisation Fund into which shall be paid
+CHAPTER: TWELVE
+PART: [Not within a PART section]
+--------------------------------------------------------------------------------
+
+MATCH #205
+Header: Consultation on ﬁnancial legislation affecting counties.
+Number: 205
+Sentence: 205. (1)    When a Bill that includes provisions dealing with the sharing of
+CHAPTER: TWELVE
+PART: [Not within a PART section]
+--------------------------------------------------------------------------------
+
+MATCH #206
+Header: Consolidated Fund and other public funds.
+Number: 206
+Sentence: 206. (1)  There is established the Consolidated Fund into which shall be paid all
+CHAPTER: TWELVE
+PART: PART 2 - OTHER PUBLIC FUNDS
+--------------------------------------------------------------------------------
+
+MATCH #207
+Header: Revenue Funds for county governments.
+Number: 207
+Sentence: 207. (1)  There shall be established a Revenue Fund for each county government,
+CHAPTER: TWELVE
+PART: PART 2 - OTHER PUBLIC FUNDS
+--------------------------------------------------------------------------------
+
+MATCH #208
+Header: Contingencies Fund.
+Number: 208
+Sentence: 208. (1)  There is established a Contingencies Fund, the operation of which shall
+CHAPTER: TWELVE
+PART: PART 2 - OTHER PUBLIC FUNDS
+--------------------------------------------------------------------------------
+
+MATCH #209
+Header: Power to impose taxes and charges.
+Number: 209
+Sentence: 209. (1)  Only the national government may impose—
+CHAPTER: TWELVE
+PART: PART 3 - REVENUE-RAISING AND THE PUBLIC DEBT
+--------------------------------------------------------------------------------
+
+MATCH #210
+Header: Imposition of tax.
+Number: 210
+Sentence: 210. (1)  No tax or licensing fee may be imposed, waived or varied except as
+CHAPTER: TWELVE
+PART: PART 3 - REVENUE-RAISING AND THE PUBLIC DEBT
+--------------------------------------------------------------------------------
+
+MATCH #211
+Header: Borrowing by national government.
+Number: 211
+Sentence: 211. (1)  Parliament may, by legislation—
+CHAPTER: TWELVE
+PART: PART 3 - REVENUE-RAISING AND THE PUBLIC DEBT
+--------------------------------------------------------------------------------
+
+MATCH #212
+Header: Borrowing by counties.
+Number: 212
+Sentence: 212. A county government may borrow only—
+CHAPTER: TWELVE
+PART: PART 3 - REVENUE-RAISING AND THE PUBLIC DEBT
+--------------------------------------------------------------------------------
+
+MATCH #213
+Header: Loan guarantees by national government.
+Number: 213
+Sentence: 213. (1)  An Act of Parliament shall prescribe terms and conditions under which
+CHAPTER: TWELVE
+PART: PART 3 - REVENUE-RAISING AND THE PUBLIC DEBT
+--------------------------------------------------------------------------------
+
+MATCH #214
+Header: Public debt.
+Number: 214
+Sentence: 214. (1)  The public debt is a charge on the Consolidated Fund, but an Act of
+CHAPTER: TWELVE
+PART: PART 3 - REVENUE-RAISING AND THE PUBLIC DEBT
+--------------------------------------------------------------------------------
+
+MATCH #215
+Header: Commission on Revenue Allocation.
+Number: 215
+Sentence: 215. (1)  There is established the Commission on Revenue Allocation.
+CHAPTER: TWELVE
+PART: PART 4 - REVENUE ALLOCATION
+--------------------------------------------------------------------------------
+
+MATCH #216
+Header: Functions of the Commission on Revenue Allocation.
+Number: 216
+Sentence: 216. (1)  The principal function of the Commission on Revenue Allocation is to
+CHAPTER: TWELVE
+PART: PART 4 - REVENUE ALLOCATION
+--------------------------------------------------------------------------------
+
+MATCH #217
+Header: Division of revenue.
+Number: 217
+Sentence: 217. (1)  Once every ﬁve years, the Senate shall, by resolution, determine the
+CHAPTER: TWELVE
+PART: PART 4 - REVENUE ALLOCATION
+--------------------------------------------------------------------------------
+
+MATCH #218
+Header: Annual Division and Allocation of Revenue Bills.
+Number: 218
+Sentence: 218. (1)  At least two months before the end of each ﬁnancial year, there shall
+CHAPTER: TWELVE
+PART: PART 4 - REVENUE ALLOCATION
+--------------------------------------------------------------------------------
+
+MATCH #219
+Header: Transfer of equitable share.
+Number: 219
+Sentence: 219. A county’s share of revenue raised by the national government shall be
+CHAPTER: TWELVE
+PART: PART 4 - REVENUE ALLOCATION
+--------------------------------------------------------------------------------
+
+MATCH #220
+Header: Form, content and timing of budgets.
+Number: 220
+Sentence: 220. (1)  Budgets of the national and county governments shall contain—
+CHAPTER: TWELVE
+PART: PART 5 - BUDGETS AND SPENDING
+--------------------------------------------------------------------------------
+
+MATCH #221
+Header: Budget estimates and annual Appropriation Bill.
+Number: 221
+Sentence: 221. (1)  At least two months before the end of each ﬁnancial year, the Cabinet
+CHAPTER: TWELVE
+PART: PART 5 - BUDGETS AND SPENDING
+--------------------------------------------------------------------------------
+
+MATCH #222
+Header: Expenditure before annual budget is passed.
+Number: 222
+Sentence: 222. (1)  If the Appropriation Act for a ﬁnancial year has not been assented to,
+CHAPTER: TWELVE
+PART: PART 5 - BUDGETS AND SPENDING
+--------------------------------------------------------------------------------
+
+MATCH #223
+Header: Supplementary appropriation.
+Number: 223
+Sentence: 223. (1)  Subject to clauses (2) to (4), the national government may spend money
+CHAPTER: TWELVE
+PART: PART 5 - BUDGETS AND SPENDING
+--------------------------------------------------------------------------------
+
+MATCH #224
+Header: County appropriation Bills.
+Number: 224
+Sentence: 224. On the basis of the Division of Revenue Bill passed by Parliament under
+CHAPTER: TWELVE
+PART: PART 5 - BUDGETS AND SPENDING
+--------------------------------------------------------------------------------
+
+MATCH #225
+Header: Financial control.
+Number: 225
+Sentence: 225. (1)  An Act of Parliament shall provide for the establishment, functions and
+CHAPTER: TWELVE
+PART: PART 6 - CONTROL OF PUBLIC MONEY
+--------------------------------------------------------------------------------
+
+MATCH #226
+Header: Accounts and audit of public entities.
+Number: 226
+Sentence: 226. (1)  An Act of Parliament shall provide for—
+CHAPTER: TWELVE
+PART: PART 6 - CONTROL OF PUBLIC MONEY
+--------------------------------------------------------------------------------
+
+MATCH #227
+Header: Procurement of public goods and services.
+Number: 227
+Sentence: 227. (1)  When a State organ or any other public entity contracts for goods or
+CHAPTER: TWELVE
+PART: PART 6 - CONTROL OF PUBLIC MONEY
+--------------------------------------------------------------------------------
+
+MATCH #228
+Header: Controller of Budget.
+Number: 228
+Sentence: 228. (1)    There shall be a Controller of Budget who shall be nominated by
+CHAPTER: TWELVE
+PART: PART 7 - FINANCIAL OFFICERS AND INSTITUTIONS
+--------------------------------------------------------------------------------
+
+MATCH #229
+Header: Auditor-General.
+Number: 229
+Sentence: 229. (1)    There shall be an Auditor-General who shall be nominated by
+CHAPTER: TWELVE
+PART: PART 7 - FINANCIAL OFFICERS AND INSTITUTIONS
+--------------------------------------------------------------------------------
+
+MATCH #230
+Header: Salaries and Remuneration Commission.
+Number: 230
+Sentence: 230. (1)  There is established the Salaries and Remuneration Commission.
+CHAPTER: TWELVE
+PART: PART 7 - FINANCIAL OFFICERS AND INSTITUTIONS
+--------------------------------------------------------------------------------
+
+MATCH #231
+Header: Central Bank of Kenya.
+Number: 231
+Sentence: 231. (1)  There is established the Central Bank of Kenya.
+CHAPTER: TWELVE
+PART: PART 7 - FINANCIAL OFFICERS AND INSTITUTIONS
+--------------------------------------------------------------------------------
+
+MATCH #232
+Header: Values and principles of public service.
+Number: 232
+Sentence: 232. (1)  The values and principles of public service include—
+CHAPTER: THIRTEEN
+PART: PART 1 - VALUES AND PRINCIPLES OF PUBLIC SERVICE
+--------------------------------------------------------------------------------
+
+MATCH #233
+Header: The Public Service Commission.
+Number: 233
+Sentence: 233. (1)  There is established the Public Service Commission.
+CHAPTER: THIRTEEN
+PART: PART 2 - THE PUBLIC SERVICE COMMISSION
+--------------------------------------------------------------------------------
+
+MATCH #234
+Header: Functions and powers of the Public Service Commission.
+Number: 234
+Sentence: 234. (1)  The functions and powers of the Commission are as set out in this
+CHAPTER: THIRTEEN
+PART: PART 2 - THE PUBLIC SERVICE COMMISSION
+--------------------------------------------------------------------------------
+
+MATCH #235
+Header: Stafﬁng of county governments.
+Number: 235
+Sentence: 235. (1)  A county government is responsible, within a framework of uniform
+CHAPTER: THIRTEEN
+PART: PART 2 - THE PUBLIC SERVICE COMMISSION
+--------------------------------------------------------------------------------
+
+MATCH #236
+Header: Protection of public ofﬁcers.
+Number: 236
+Sentence: 236. A public ofﬁcer shall not be—
+CHAPTER: THIRTEEN
+PART: PART 2 - THE PUBLIC SERVICE COMMISSION
+--------------------------------------------------------------------------------
+
+MATCH #237
+Header: Teachers Service Commission.
+Number: 237
+Sentence: 237. (1)  There is established the Teachers Service Commission.
+CHAPTER: THIRTEEN
+PART: PART 3 - TEACHERS SERVICE COMMISSION
+--------------------------------------------------------------------------------
+
+MATCH #238
+Header: Principles of national security.
+Number: 238
+Sentence: 238. (1)  National security is the protection against internal and external threats
+CHAPTER: FOURTEEN
+PART: PART 1 - NATIONAL SECURITY ORGANS
+--------------------------------------------------------------------------------
+
+MATCH #239
+Header: National security organs.
+Number: 239
+Sentence: 239. (1)  The national security organs are—
+CHAPTER: FOURTEEN
+PART: PART 1 - NATIONAL SECURITY ORGANS
+--------------------------------------------------------------------------------
+
+MATCH #240
+Header: Establishment of the National Security Council.
+Number: 240
+Sentence: 240. (1)  There is established a National Security Council.
+CHAPTER: FOURTEEN
+PART: PART 1 - NATIONAL SECURITY ORGANS
+--------------------------------------------------------------------------------
+
+MATCH #241
+Header: Establishment of Kenya Defence Forces and Defence Council.
+Number: 241
+Sentence: 241. (1)  There are established the Kenya Defence Forces.
+CHAPTER: FOURTEEN
+PART: PART 2 - THE KENYA DEFENCE FORCES
+--------------------------------------------------------------------------------
+
+MATCH #242
+Header: Establishment of National Intelligence Service.
+Number: 242
+Sentence: 242. (1)  There is established the National Intelligence Service.
+CHAPTER: FOURTEEN
+PART: PART 3 - THE NATIONAL INTELLIGENCE SERVICE
+--------------------------------------------------------------------------------
+
+MATCH #243
+Header: Establishment of the National Police Service.
+Number: 243
+Sentence: 243. (1)  There is established the National Police Service.
+CHAPTER: FOURTEEN
+PART: PART 4 - THE NATIONAL POLICE SERVICE
+--------------------------------------------------------------------------------
+
+MATCH #244
+Header: Objects and functions of the National Police Service.
+Number: 244
+Sentence: 244. The National Police Service shall—
+CHAPTER: FOURTEEN
+PART: PART 4 - THE NATIONAL POLICE SERVICE
+--------------------------------------------------------------------------------
+
+MATCH #245
+Header: Command of the National Police Service.
+Number: 245
+Sentence: 245. (1)  There is established the ofﬁce of the Inspector-General of the National
+CHAPTER: FOURTEEN
+PART: PART 4 - THE NATIONAL POLICE SERVICE
+--------------------------------------------------------------------------------
+
+MATCH #246
+Header: National Police Service Commission.
+Number: 246
+Sentence: 246. (1)  There is established the National Police Service Commission.
+CHAPTER: FOURTEEN
+PART: PART 4 - THE NATIONAL POLICE SERVICE
+--------------------------------------------------------------------------------
+
+MATCH #247
+Header: Other police services.
+Number: 247
+Sentence: 247. Parliament may enact legislation establishing other police services under
+CHAPTER: FOURTEEN
+PART: PART 4 - THE NATIONAL POLICE SERVICE
+--------------------------------------------------------------------------------
+
+MATCH #248
+Header: Application of Chapter.
+Number: 248
+Sentence: 248. (1)  This Chapter applies to the commissions speciﬁed in clause (2) and the
+CHAPTER: FIFTEEN
+PART: [Not within a PART section]
+--------------------------------------------------------------------------------
+
+MATCH #249
+Header: Objects, authority and funding of commissions and independent ofﬁces.
+Number: 249
+Sentence: 249. (1)  The objects of the commissions and the independent ofﬁces are to—
+CHAPTER: FIFTEEN
+PART: [Not within a PART section]
+--------------------------------------------------------------------------------
+
+MATCH #250
+Header: Composition, appointment and terms of ofﬁce.
+Number: 250
+Sentence: 250. (1)  Each commission shall consist of at least three, but not more than nine,
+CHAPTER: FIFTEEN
+PART: [Not within a PART section]
+--------------------------------------------------------------------------------
+
+MATCH #251
+Header: Removal from ofﬁce.
+Number: 251
+Sentence: 251. (1)  A member of a commission (other than an ex ofﬁcio member), or the
+CHAPTER: FIFTEEN
+PART: [Not within a PART section]
+--------------------------------------------------------------------------------
+
+MATCH #252
+Header: General functions and powers.
+Number: 252
+Sentence: 252. (1)  Each commission, and each holder of an independent ofﬁce—
+CHAPTER: FIFTEEN
+PART: [Not within a PART section]
+--------------------------------------------------------------------------------
+
+MATCH #253
+Header: Incorporation of commissions and independent ofﬁces.
+Number: 253
+Sentence: 253. Each commission and each independent ofﬁce—
+CHAPTER: FIFTEEN
+PART: [Not within a PART section]
+--------------------------------------------------------------------------------
+
+MATCH #254
+Header: Reporting by commissions and independent ofﬁces.
+Number: 254
+Sentence: 254. (1)    As soon as practicable after the end of each ﬁnancial year, each
+CHAPTER: FIFTEEN
+PART: [Not within a PART section]
+--------------------------------------------------------------------------------
+
+MATCH #255
+Header: Amendment of this Constitution.
+Number: 255
+Sentence: 255. (1)    A proposed amendment to this Constitution shall be enacted in
+CHAPTER: SIXTEEN
+PART: [Not within a PART section]
+--------------------------------------------------------------------------------
+
+MATCH #256
+Header: Amendment by parliamentary initiative.
+Number: 256
+Sentence: 256. (1)  A Bill to amend this Constitution—
+CHAPTER: SIXTEEN
+PART: [Not within a PART section]
+--------------------------------------------------------------------------------
+
+MATCH #257
+Header: Amendment by popular initiative.
+Number: 257
+Sentence: 257. (1)  An amendment to this Constitution may be proposed by a popular
+CHAPTER: SIXTEEN
+PART: [Not within a PART section]
+--------------------------------------------------------------------------------
+
+MATCH #258
+Header: Enforcement of this Constitution.
+Number: 258
+Sentence: 258. (1)  Every person has the right to institute court proceedings, claiming that
+CHAPTER: SEVENTEEN
+PART: [Not within a PART section]
+--------------------------------------------------------------------------------
+
+MATCH #259
+Header: Construing this Constitution.
+Number: 259
+Sentence: 259. (1)  This Constitution shall be interpreted in a manner that—
+CHAPTER: SEVENTEEN
+PART: [Not within a PART section]
+--------------------------------------------------------------------------------
+
+MATCH #260
+Header: Interpretation.
+Number: 260
+Sentence: 260. In this Constitution, unless the context requires otherwise—
+CHAPTER: SEVENTEEN
+PART: [Not within a PART section]
+--------------------------------------------------------------------------------
+
+MATCH #261
+Header: Consequential legislation.
+Number: 261
+Sentence: 261. (1)  Parliament shall enact any legislation required by this Constitution
+CHAPTER: EIGHTEEN
+PART: [Not within a PART section]
+--------------------------------------------------------------------------------
+
+MATCH #262
+Header: Transitional and consequential provisions.
+Number: 262
+Sentence: 262. The transitional and consequential provisions set out in the Sixth Schedule
+CHAPTER: EIGHTEEN
+PART: [Not within a PART section]
+--------------------------------------------------------------------------------
+
+MATCH #263
+Header: Effective Date.
+Number: 263
+Sentence: 263. This Constitution shall come into force on its promulgation by the President
+CHAPTER: EIGHTEEN
+PART: [Not within a PART section]
+--------------------------------------------------------------------------------
+
+MATCH #264
+Header: Repeal of previous Constitution.
+Number: 264
+Sentence: 264. Subject to the Sixth Schedule, for the avoidance of doubt, the Constitution
+CHAPTER: EIGHTEEN
+PART: [Not within a PART section]
+--------------------------------------------------------------------------------
+
