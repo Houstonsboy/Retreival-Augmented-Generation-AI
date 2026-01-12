@@ -1,160 +1,177 @@
-CONSTITUTION SECTION HEADERS WITH CHUNKING ANALYSIS
+CONSTITUTION ANALYSIS WITH LEGAL DOMAIN CLASSIFICATION
+(First 10 articles classified with LLM)
 ================================================================================
 
-Total Articles Found: 264 (Maximum: 264)
+Total Articles: 264
+Articles Classified: 10
 Chunk Size: 1000 characters
 Chunk Overlap: 300 characters
-Total Chunks Generated: 427
-Articles with Multiple Chunks: 86
+Total Chunks: 427
+Model Used: llama-3.3-70b-versatile
 ================================================================================
 
 MATCH #1
 Header: Sovereignty of the people.
 Number: 1
-Sentence (first 100 chars): 1. (1) All sovereign power belongs to the people of Kenya and shall be exercised
-CHAPTER: ONE
-PART: [Not within a PART section]
-Full Article Length: 730 characters
+Sentence: 1. (1) All sovereign power belongs to the people of Kenya and shall be exercised
+Legal Domain: Domain 1: Constitutional Supremacy & Sovereignty
+Chapter: ONE
+Part: [Not within a PART]
+Article Length: 730 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #2
 Header: Supremacy of this Constitution.
 Number: 2
-Sentence (first 100 chars): 2. (1) This Constitution is the supreme law of the Republic and binds all persons
-CHAPTER: ONE
-PART: [Not within a PART section]
-Full Article Length: 770 characters
+Sentence: 2. (1) This Constitution is the supreme law of the Republic and binds all persons
+Legal Domain: Domain 1: Constitutional Supremacy & Sovereignty
+Chapter: ONE
+Part: [Not within a PART]
+Article Length: 770 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #3
 Header: Defence of this Constitution.
 Number: 3
-Sentence (first 100 chars): 3. (1) Every person has an obligation to respect, uphold and defend this
-CHAPTER: ONE
-PART: [Not within a PART section]
-Full Article Length: 193 characters
+Sentence: 3. (1) Every person has an obligation to respect, uphold and defend this
+Legal Domain: Domain 1: Constitutional Supremacy & Sovereignty
+Chapter: ONE
+Part: [Not within a PART]
+Article Length: 193 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #4
 Header: Declaration of the Republic.
 Number: 4
-Sentence (first 100 chars): 4. (1) Kenya is a sovereign Republic.
-CHAPTER: TWO
-PART: [Not within a PART section]
-Full Article Length: 210 characters
+Sentence: 4. (1) Kenya is a sovereign Republic.
+Legal Domain: Domain 1: Constitutional Supremacy & Sovereignty
+Chapter: TWO
+Part: [Not within a PART]
+Article Length: 210 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #5
 Header: Territory of Kenya.
 Number: 5
-Sentence (first 100 chars): 5. Kenya consists of the territory and territorial waters comprising Kenya on the
-CHAPTER: TWO
-PART: [Not within a PART section]
-Full Article Length: 219 characters
+Sentence: 5. Kenya consists of the territory and territorial waters comprising Kenya on the
+Legal Domain: Domain 1: Constitutional Supremacy & Sovereignty
+Chapter: TWO
+Part: [Not within a PART]
+Article Length: 219 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #6
 Header: Devolution and access to services.
 Number: 6
-Sentence (first 100 chars): 6. (1) The territory of Kenya is divided into the counties speciﬁed in the First
-CHAPTER: TWO
-PART: [Not within a PART section]
-Full Article Length: 489 characters
+Sentence: 6. (1) The territory of Kenya is divided into the counties speciﬁed in the First
+Legal Domain: Domain 11: Devolution & County Government Law
+Chapter: TWO
+Part: [Not within a PART]
+Article Length: 489 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #7
 Header: National, ofﬁcial and other languages.
 Number: 7
-Sentence (first 100 chars): 7. (1) The national language of the Republic is Kiswahili.
-CHAPTER: TWO
-PART: [Not within a PART section]
-Full Article Length: 419 characters
+Sentence: 7. (1) The national language of the Republic is Kiswahili.
+Legal Domain: Domain 1: Constitutional Supremacy & Sovereignty
+Chapter: TWO
+Part: [Not within a PART]
+Article Length: 419 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #8
 Header: State and religion.
 Number: 8
-Sentence (first 100 chars): 8. There shall be no State religion.
-CHAPTER: TWO
-PART: [Not within a PART section]
-Full Article Length: 72 characters
+Sentence: 8. There shall be no State religion.
+Legal Domain: Domain 1: Constitutional Supremacy & Sovereignty
+Chapter: TWO
+Part: [Not within a PART]
+Article Length: 72 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #9
 Header: National symbols and national days.
 Number: 9
-Sentence (first 100 chars): 9. (1) The national symbols of the Republic are—
-CHAPTER: TWO
-PART: [Not within a PART section]
-Full Article Length: 568 characters
+Sentence: 9. (1) The national symbols of the Republic are—
+Legal Domain: Domain 1: Constitutional Supremacy & Sovereignty
+Chapter: TWO
+Part: [Not within a PART]
+Article Length: 568 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #10
 Header: National values and principles of governance.
 Number: 10
-Sentence (first 100 chars): 10. (1) The national values and principles of governance in this Article bind all
-CHAPTER: TWO
-PART: [Not within a PART section]
-Full Article Length: 706 characters
+Sentence: 10. (1) The national values and principles of governance in this Article bind all
+Legal Domain: Domain 1: Constitutional Supremacy & Sovereignty
+Chapter: TWO
+Part: [Not within a PART]
+Article Length: 706 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #11
 Header: Culture.
 Number: 11
-Sentence (first 100 chars): 11. (1) This Constitution recognises culture as the foundation of the nation and
-CHAPTER: TWO
-PART: [Not within a PART section]
-Full Article Length: 858 characters
+Sentence: 11. (1) This Constitution recognises culture as the foundation of the nation and
+Legal Domain: Not classified (beyond limit)
+Chapter: TWO
+Part: [Not within a PART]
+Article Length: 858 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #12
 Header: Entitlements of citizens.
 Number: 12
-Sentence (first 100 chars): 12. (1) Every citizen is entitled to—
-CHAPTER: THREE
-PART: [Not within a PART section]
-Full Article Length: 501 characters
+Sentence: 12. (1) Every citizen is entitled to—
+Legal Domain: Not classified (beyond limit)
+Chapter: THREE
+Part: [Not within a PART]
+Article Length: 501 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #13
 Header: Retention and acquisition of citizenship.
 Number: 13
-Sentence (first 100 chars): 13. (1) Every person who was a citizen immediately before the effective date
-CHAPTER: THREE
-PART: [Not within a PART section]
-Full Article Length: 286 characters
+Sentence: 13. (1) Every person who was a citizen immediately before the effective date
+Legal Domain: Not classified (beyond limit)
+Chapter: THREE
+Part: [Not within a PART]
+Article Length: 286 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #14
 Header: Citizenship by birth.
 Number: 14
-Sentence (first 100 chars): 14. (1) A person is a citizen by birth if on the day of the person’s birth, whether or
-CHAPTER: THREE
-PART: [Not within a PART section]
-Full Article Length: 911 characters
+Sentence: 14. (1) A person is a citizen by birth if on the day of the person’s birth, whether or
+Legal Domain: Not classified (beyond limit)
+Chapter: THREE
+Part: [Not within a PART]
+Article Length: 911 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #15
 Header: Citizenship by registration.
 Number: 15
-Sentence (first 100 chars): 15. (1) A person who has been married to a citizen for a period of at least seven
-CHAPTER: THREE
-PART: [Not within a PART section]
-Full Article Length: 1003 characters
+Sentence: 15. (1) A person who has been married to a citizen for a period of at least seven
+Legal Domain: Not classified (beyond limit)
+Chapter: THREE
+Part: [Not within a PART]
+Article Length: 1003 characters
 Number of Chunks: 2
 
 Chunk Breakdown:
@@ -173,20 +190,22 @@ citizen shall be regarded as having been satisﬁed i...
 MATCH #16
 Header: Dual citizenship.
 Number: 16
-Sentence (first 100 chars): 16. A citizen by birth does not lose citizenship by acquiring the citizenship of
-CHAPTER: THREE
-PART: [Not within a PART section]
-Full Article Length: 124 characters
+Sentence: 16. A citizen by birth does not lose citizenship by acquiring the citizenship of
+Legal Domain: Not classified (beyond limit)
+Chapter: THREE
+Part: [Not within a PART]
+Article Length: 124 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #17
 Header: Revocation of citizenship.
 Number: 17
-Sentence (first 100 chars): 17. (1) If a person acquired citizenship by registration, the citizenship may be
-CHAPTER: THREE
-PART: [Not within a PART section]
-Full Article Length: 1303 characters
+Sentence: 17. (1) If a person acquired citizenship by registration, the citizenship may be
+Legal Domain: Not classified (beyond limit)
+Chapter: THREE
+Part: [Not within a PART]
+Article Length: 1303 characters
 Number of Chunks: 2
 
 Chunk Breakdown:
@@ -208,30 +227,33 @@ a more severe penalty may be imposed.
 MATCH #18
 Header: Legislation on citizenship.
 Number: 18
-Sentence (first 100 chars): 18. Parliament shall enact legislation—
-CHAPTER: THREE
-PART: [Not within a PART section]
-Full Article Length: 413 characters
+Sentence: 18. Parliament shall enact legislation—
+Legal Domain: Not classified (beyond limit)
+Chapter: THREE
+Part: [Not within a PART]
+Article Length: 413 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #19
 Header: Rights and fundamental freedoms.
 Number: 19
-Sentence (first 100 chars): 19. (1) The Bill of Rights is an integral part of Kenya’s democratic state and is
-CHAPTER: FOUR
-PART: PART 1 - GENERAL PROVISIONS TO THE BILL OF RIGHTS
-Full Article Length: 781 characters
+Sentence: 19. (1) The Bill of Rights is an integral part of Kenya’s democratic state and is
+Legal Domain: Not classified (beyond limit)
+Chapter: FOUR
+Part: PART 1 - GENERAL PROVISIONS TO THE BILL OF RIGHTS
+Article Length: 781 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #20
 Header: Application of Bill of Rights.
 Number: 20
-Sentence (first 100 chars): 20. (1) The Bill of Rights applies to all law and binds all State organs and all
-CHAPTER: FOUR
-PART: PART 1 - GENERAL PROVISIONS TO THE BILL OF RIGHTS
-Full Article Length: 1579 characters
+Sentence: 20. (1) The Bill of Rights applies to all law and binds all State organs and all
+Legal Domain: Not classified (beyond limit)
+Chapter: FOUR
+Part: PART 1 - GENERAL PROVISIONS TO THE BILL OF RIGHTS
+Article Length: 1579 characters
 Number of Chunks: 3
 
 Chunk Breakdown:
@@ -255,20 +277,22 @@ Implementation of r...
 MATCH #21
 Header: Implementation of rights and fundamental freedoms.
 Number: 21
-Sentence (first 100 chars): 21. (1) It is a fundamental duty of the State and every State organ to observe,
-CHAPTER: FOUR
-PART: PART 1 - GENERAL PROVISIONS TO THE BILL OF RIGHTS
-Full Article Length: 853 characters
+Sentence: 21. (1) It is a fundamental duty of the State and every State organ to observe,
+Legal Domain: Not classified (beyond limit)
+Chapter: FOUR
+Part: PART 1 - GENERAL PROVISIONS TO THE BILL OF RIGHTS
+Article Length: 853 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #22
 Header: Enforcement of Bill of Rights.
 Number: 22
-Sentence (first 100 chars): 22. (1) Every person has the right to institute court proceedings claiming that
-CHAPTER: FOUR
-PART: PART 1 - GENERAL PROVISIONS TO THE BILL OF RIGHTS
-Full Article Length: 1584 characters
+Sentence: 22. (1) Every person has the right to institute court proceedings claiming that
+Legal Domain: Not classified (beyond limit)
+Chapter: FOUR
+Part: PART 1 - GENERAL PROVISIONS TO THE BILL OF RIGHTS
+Article Length: 1584 characters
 Number of Chunks: 3
 
 Chunk Breakdown:
@@ -292,20 +316,22 @@ Authority of courts to u...
 MATCH #23
 Header: Authority of courts to uphold and enforce the Bill of Rights.
 Number: 23
-Sentence (first 100 chars): 23. (1) The High Court has jurisdiction, in accordance with Article 165, to hear
-CHAPTER: FOUR
-PART: PART 1 - GENERAL PROVISIONS TO THE BILL OF RIGHTS
-Full Article Length: 944 characters
+Sentence: 23. (1) The High Court has jurisdiction, in accordance with Article 165, to hear
+Legal Domain: Not classified (beyond limit)
+Chapter: FOUR
+Part: PART 1 - GENERAL PROVISIONS TO THE BILL OF RIGHTS
+Article Length: 944 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #24
 Header: Limitation of rights and fundamental freedoms.
 Number: 24
-Sentence (first 100 chars): 24. (1) A right or fundamental freedom in the Bill of Rights shall not be limited
-CHAPTER: FOUR
-PART: PART 1 - GENERAL PROVISIONS TO THE BILL OF RIGHTS
-Full Article Length: 2354 characters
+Sentence: 24. (1) A right or fundamental freedom in the Bill of Rights shall not be limited
+Legal Domain: Not classified (beyond limit)
+Chapter: FOUR
+Part: PART 1 - GENERAL PROVISIONS TO THE BILL OF RIGHTS
+Article Length: 2354 characters
 Number of Chunks: 4
 
 Chunk Breakdown:
@@ -335,30 +361,33 @@ Article 43 — Economic and so...
 MATCH #25
 Header: Fundamental Rights and freedoms that may not be limited.
 Number: 25
-Sentence (first 100 chars): 25. Despite any other provision in this Constitution, the following rights and
-CHAPTER: FOUR
-PART: PART 1 - GENERAL PROVISIONS TO THE BILL OF RIGHTS
-Full Article Length: 305 characters
+Sentence: 25. Despite any other provision in this Constitution, the following rights and
+Legal Domain: Not classified (beyond limit)
+Chapter: FOUR
+Part: PART 1 - GENERAL PROVISIONS TO THE BILL OF RIGHTS
+Article Length: 305 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #26
 Header: Right to life.
 Number: 26
-Sentence (first 100 chars): 26. (1) Every person has the right to life.
-CHAPTER: FOUR
-PART: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
-Full Article Length: 483 characters
+Sentence: 26. (1) Every person has the right to life.
+Legal Domain: Not classified (beyond limit)
+Chapter: FOUR
+Part: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
+Article Length: 483 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #27
 Header: Equality and freedom from discrimination.
 Number: 27
-Sentence (first 100 chars): 27. (1) Every person is equal before the law and has the right to equal protection
-CHAPTER: FOUR
-PART: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
-Full Article Length: 1441 characters
+Sentence: 27. (1) Every person is equal before the law and has the right to equal protection
+Legal Domain: Not classified (beyond limit)
+Chapter: FOUR
+Part: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
+Article Length: 1441 characters
 Number of Chunks: 3
 
 Chunk Breakdown:
@@ -382,70 +411,77 @@ Human dignity.
 MATCH #28
 Header: Human dignity.
 Number: 28
-Sentence (first 100 chars): 28. Every person has inherent dignity and the right to have that dignity respected
-CHAPTER: FOUR
-PART: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
-Full Article Length: 133 characters
+Sentence: 28. Every person has inherent dignity and the right to have that dignity respected
+Legal Domain: Not classified (beyond limit)
+Chapter: FOUR
+Part: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
+Article Length: 133 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #29
 Header: Freedom and security of the person.
 Number: 29
-Sentence (first 100 chars): 29. Every person has the right to freedom and security of the person, which
-CHAPTER: FOUR
-PART: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
-Full Article Length: 554 characters
+Sentence: 29. Every person has the right to freedom and security of the person, which
+Legal Domain: Not classified (beyond limit)
+Chapter: FOUR
+Part: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
+Article Length: 554 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #30
 Header: Slavery, servitude and forced labour.
 Number: 30
-Sentence (first 100 chars): 30. (1) A person shall not be held in slavery or servitude.
-CHAPTER: FOUR
-PART: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
-Full Article Length: 129 characters
+Sentence: 30. (1) A person shall not be held in slavery or servitude.
+Legal Domain: Not classified (beyond limit)
+Chapter: FOUR
+Part: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
+Article Length: 129 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #31
 Header: Privacy.
 Number: 31
-Sentence (first 100 chars): 31. Every person has the right to privacy, which includes the right not to have—
-CHAPTER: FOUR
-PART: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
-Full Article Length: 342 characters
+Sentence: 31. Every person has the right to privacy, which includes the right not to have—
+Legal Domain: Not classified (beyond limit)
+Chapter: FOUR
+Part: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
+Article Length: 342 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #32
 Header: Freedom of conscience, religion, belief and opinion.
 Number: 32
-Sentence (first 100 chars): 32. (1) Every person has the right to freedom of conscience, religion, thought,
-CHAPTER: FOUR
-PART: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
-Full Article Length: 632 characters
+Sentence: 32. (1) Every person has the right to freedom of conscience, religion, thought,
+Legal Domain: Not classified (beyond limit)
+Chapter: FOUR
+Part: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
+Article Length: 632 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #33
 Header: Freedom of expression.
 Number: 33
-Sentence (first 100 chars): 33. (1) Every person has the right to freedom of expression, which includes—
-CHAPTER: FOUR
-PART: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
-Full Article Length: 684 characters
+Sentence: 33. (1) Every person has the right to freedom of expression, which includes—
+Legal Domain: Not classified (beyond limit)
+Chapter: FOUR
+Part: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
+Article Length: 684 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #34
 Header: Freedom of the media.
 Number: 34
-Sentence (first 100 chars): 34. (1) Freedom and independence of electronic, print and all other types of
-CHAPTER: FOUR
-PART: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
-Full Article Length: 1346 characters
+Sentence: 34. (1) Freedom and independence of electronic, print and all other types of
+Legal Domain: Not classified (beyond limit)
+Chapter: FOUR
+Part: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
+Article Length: 1346 characters
 Number of Chunks: 2
 
 Chunk Breakdown:
@@ -464,60 +500,66 @@ be free to determine independently the editorial ...
 MATCH #35
 Header: Access to information.
 Number: 35
-Sentence (first 100 chars): 35. (1) Every citizen has the right of access to—
-CHAPTER: FOUR
-PART: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
-Full Article Length: 436 characters
+Sentence: 35. (1) Every citizen has the right of access to—
+Legal Domain: Not classified (beyond limit)
+Chapter: FOUR
+Part: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
+Article Length: 436 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #36
 Header: Freedom of association.
 Number: 36
-Sentence (first 100 chars): 36. (1) Every person has the right to freedom of association, which includes the
-CHAPTER: FOUR
-PART: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
-Full Article Length: 528 characters
+Sentence: 36. (1) Every person has the right to freedom of association, which includes the
+Legal Domain: Not classified (beyond limit)
+Chapter: FOUR
+Part: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
+Article Length: 528 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #37
 Header: Assembly, demonstration, picketing and petition.
 Number: 37
-Sentence (first 100 chars): 37. Every person has the right, peaceably and unarmed, to assemble, to
-CHAPTER: FOUR
-PART: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
-Full Article Length: 160 characters
+Sentence: 37. Every person has the right, peaceably and unarmed, to assemble, to
+Legal Domain: Not classified (beyond limit)
+Chapter: FOUR
+Part: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
+Article Length: 160 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #38
 Header: Political rights.
 Number: 38
-Sentence (first 100 chars): 38. (1) Every citizen is free to make political choices, which includes the right—
-CHAPTER: FOUR
-PART: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
-Full Article Length: 891 characters
+Sentence: 38. (1) Every citizen is free to make political choices, which includes the right—
+Legal Domain: Not classified (beyond limit)
+Chapter: FOUR
+Part: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
+Article Length: 891 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #39
 Header: Freedom of movement and residence.
 Number: 39
-Sentence (first 100 chars): 39. (1) Every person has the right to freedom of movement.
-CHAPTER: FOUR
-PART: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
-Full Article Length: 220 characters
+Sentence: 39. (1) Every person has the right to freedom of movement.
+Legal Domain: Not classified (beyond limit)
+Chapter: FOUR
+Part: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
+Article Length: 220 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #40
 Header: Protection of right to property.
 Number: 40
-Sentence (first 100 chars): 40. (1) Subject to Article 65, every person has the right, either individually or
-CHAPTER: FOUR
-PART: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
-Full Article Length: 1587 characters
+Sentence: 40. (1) Subject to Article 65, every person has the right, either individually or
+Legal Domain: Not classified (beyond limit)
+Chapter: FOUR
+Part: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
+Article Length: 1587 characters
 Number of Chunks: 3
 
 Chunk Breakdown:
@@ -542,90 +584,99 @@ found to ha...
 MATCH #41
 Header: Labour relations.
 Number: 41
-Sentence (first 100 chars): 41. (1) Every person has the right to fair labour practices.
-CHAPTER: FOUR
-PART: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
-Full Article Length: 716 characters
+Sentence: 41. (1) Every person has the right to fair labour practices.
+Legal Domain: Not classified (beyond limit)
+Chapter: FOUR
+Part: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
+Article Length: 716 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #42
 Header: Environment.
 Number: 42
-Sentence (first 100 chars): 42. Every person has the right to a clean and healthy environment, which
-CHAPTER: FOUR
-PART: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
-Full Article Length: 369 characters
+Sentence: 42. Every person has the right to a clean and healthy environment, which
+Legal Domain: Not classified (beyond limit)
+Chapter: FOUR
+Part: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
+Article Length: 369 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #43
 Header: Economic and social rights.
 Number: 43
-Sentence (first 100 chars): 43. (1) Every person has the right—
-CHAPTER: FOUR
-PART: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
-Full Article Length: 615 characters
+Sentence: 43. (1) Every person has the right—
+Legal Domain: Not classified (beyond limit)
+Chapter: FOUR
+Part: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
+Article Length: 615 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #44
 Header: Language and culture.
 Number: 44
-Sentence (first 100 chars): 44. (1) Every person has the right to use the language, and to participate in the
-CHAPTER: FOUR
-PART: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
-Full Article Length: 512 characters
+Sentence: 44. (1) Every person has the right to use the language, and to participate in the
+Legal Domain: Not classified (beyond limit)
+Chapter: FOUR
+Part: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
+Article Length: 512 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #45
 Header: Family.
 Number: 45
-Sentence (first 100 chars): 45. (1) The family is the natural and fundamental unit of society and the
-CHAPTER: FOUR
-PART: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
-Full Article Length: 801 characters
+Sentence: 45. (1) The family is the natural and fundamental unit of society and the
+Legal Domain: Not classified (beyond limit)
+Chapter: FOUR
+Part: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
+Article Length: 801 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #46
 Header: Consumer rights.
 Number: 46
-Sentence (first 100 chars): 46. (1) Consumers have the right—
-CHAPTER: FOUR
-PART: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
-Full Article Length: 551 characters
+Sentence: 46. (1) Consumers have the right—
+Legal Domain: Not classified (beyond limit)
+Chapter: FOUR
+Part: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
+Article Length: 551 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #47
 Header: Fair administrative action.
 Number: 47
-Sentence (first 100 chars): 47. (1) Every person has the right to administrative action that is expeditious,
-CHAPTER: FOUR
-PART: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
-Full Article Length: 608 characters
+Sentence: 47. (1) Every person has the right to administrative action that is expeditious,
+Legal Domain: Not classified (beyond limit)
+Chapter: FOUR
+Part: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
+Article Length: 608 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #48
 Header: Access to justice.
 Number: 48
-Sentence (first 100 chars): 48. The State shall ensure access to justice for all persons and, if any fee is
-CHAPTER: FOUR
-PART: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
-Full Article Length: 180 characters
+Sentence: 48. The State shall ensure access to justice for all persons and, if any fee is
+Legal Domain: Not classified (beyond limit)
+Chapter: FOUR
+Part: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
+Article Length: 180 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #49
 Header: Rights of arrested persons.
 Number: 49
-Sentence (first 100 chars): 49. (1) An arrested person has the right—
-CHAPTER: FOUR
-PART: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
-Full Article Length: 1193 characters
+Sentence: 49. (1) An arrested person has the right—
+Legal Domain: Not classified (beyond limit)
+Chapter: FOUR
+Part: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
+Article Length: 1193 characters
 Number of Chunks: 2
 
 Chunk Breakdown:
@@ -648,10 +699,11 @@ for the detenti...
 MATCH #50
 Header: Fair hearing.
 Number: 50
-Sentence (first 100 chars): 50. (1) Every person has the right to have any dispute that can be resolved
-CHAPTER: FOUR
-PART: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
-Full Article Length: 3708 characters
+Sentence: 50. (1) Every person has the right to have any dispute that can be resolved
+Legal Domain: Not classified (beyond limit)
+Chapter: FOUR
+Part: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
+Article Length: 3708 characters
 Number of Chunks: 6
 
 Chunk Breakdown:
@@ -695,80 +747,88 @@ welfare of vic...
 MATCH #51
 Header: Rights of persons detained, held in custody or imprisoned.
 Number: 51
-Sentence (first 100 chars): 51. (1) A person who is detained, held in custody or imprisoned under the law,
-CHAPTER: FOUR
-PART: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
-Full Article Length: 629 characters
+Sentence: 51. (1) A person who is detained, held in custody or imprisoned under the law,
+Legal Domain: Not classified (beyond limit)
+Chapter: FOUR
+Part: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
+Article Length: 629 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #52
 Header: Interpretation of this Part.
 Number: 52
-Sentence (first 100 chars): 52. (1) This Part elaborates certain rights to ensure greater certainty as to the
-CHAPTER: FOUR
-PART: PART 3 - SPECIFIC APPLICATION OF RIGHTS
-Full Article Length: 248 characters
+Sentence: 52. (1) This Part elaborates certain rights to ensure greater certainty as to the
+Legal Domain: Not classified (beyond limit)
+Chapter: FOUR
+Part: PART 3 - SPECIFIC APPLICATION OF RIGHTS
+Article Length: 248 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #53
 Header: Children.
 Number: 53
-Sentence (first 100 chars): 53. (1) Every child has the right—
-CHAPTER: FOUR
-PART: PART 3 - SPECIFIC APPLICATION OF RIGHTS
-Full Article Length: 836 characters
+Sentence: 53. (1) Every child has the right—
+Legal Domain: Not classified (beyond limit)
+Chapter: FOUR
+Part: PART 3 - SPECIFIC APPLICATION OF RIGHTS
+Article Length: 836 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #54
 Header: Persons with disabilities.
 Number: 54
-Sentence (first 100 chars): 54. (1) A person with any disability is entitled—
-CHAPTER: FOUR
-PART: PART 3 - SPECIFIC APPLICATION OF RIGHTS
-Full Article Length: 776 characters
+Sentence: 54. (1) A person with any disability is entitled—
+Legal Domain: Not classified (beyond limit)
+Chapter: FOUR
+Part: PART 3 - SPECIFIC APPLICATION OF RIGHTS
+Article Length: 776 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #55
 Header: Youth.
 Number: 55
-Sentence (first 100 chars): 55. The State shall take measures, including afﬁrmative action programmes, to
-CHAPTER: FOUR
-PART: PART 3 - SPECIFIC APPLICATION OF RIGHTS
-Full Article Length: 385 characters
+Sentence: 55. The State shall take measures, including afﬁrmative action programmes, to
+Legal Domain: Not classified (beyond limit)
+Chapter: FOUR
+Part: PART 3 - SPECIFIC APPLICATION OF RIGHTS
+Article Length: 385 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #56
 Header: Minorities and marginalised groups.
 Number: 56
-Sentence (first 100 chars): 56. The State shall put in place afﬁrmative action programmes designed to
-CHAPTER: FOUR
-PART: PART 3 - SPECIFIC APPLICATION OF RIGHTS
-Full Article Length: 480 characters
+Sentence: 56. The State shall put in place afﬁrmative action programmes designed to
+Legal Domain: Not classified (beyond limit)
+Chapter: FOUR
+Part: PART 3 - SPECIFIC APPLICATION OF RIGHTS
+Article Length: 480 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #57
 Header: Older members of society.
 Number: 57
-Sentence (first 100 chars): 57. The State shall take measures to ensure the rights of older persons—
-CHAPTER: FOUR
-PART: PART 3 - SPECIFIC APPLICATION OF RIGHTS
-Full Article Length: 292 characters
+Sentence: 57. The State shall take measures to ensure the rights of older persons—
+Legal Domain: Not classified (beyond limit)
+Chapter: FOUR
+Part: PART 3 - SPECIFIC APPLICATION OF RIGHTS
+Article Length: 292 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #58
 Header: State of emergency.
 Number: 58
-Sentence (first 100 chars): 58. (1) A state of emergency may be declared only under Article 132 (4) (d) and
-CHAPTER: FOUR
-PART: PART 4 - STATE OF EMERGENCY
-Full Article Length: 2071 characters
+Sentence: 58. (1) A state of emergency may be declared only under Article 132 (4) (d) and
+Legal Domain: Not classified (beyond limit)
+Chapter: FOUR
+Part: PART 4 - STATE OF EMERGENCY
+Article Length: 2071 characters
 Number of Chunks: 3
 
 Chunk Breakdown:
@@ -795,10 +855,11 @@ may limit a right or fundamental freedom in the Bil...
 MATCH #59
 Header: Kenya National Human Rights and Equality Commission.
 Number: 59
-Sentence (first 100 chars): 59. (1) There is established the Kenya National Human Rights and Equality
-CHAPTER: FOUR
-PART: PART 5 - KENYA NATIONAL HUMAN RIGHTS AND EQUALITY COMMISSION
-Full Article Length: 2464 characters
+Sentence: 59. (1) There is established the Kenya National Human Rights and Equality
+Legal Domain: Not classified (beyond limit)
+Chapter: FOUR
+Part: PART 5 - KENYA NATIONAL HUMAN RIGHTS AND EQUALITY COMMISSION
+Article Length: 2464 characters
 Number of Chunks: 4
 
 Chunk Breakdown:
@@ -830,30 +891,33 @@ each of the successor commissions shall have p...
 MATCH #60
 Header: Principles of land policy.
 Number: 60
-Sentence (first 100 chars): 60. (1) Land in Kenya shall be held, used and managed in a manner that
-CHAPTER: FIVE
-PART: PART 1 - LAND
-Full Article Length: 816 characters
+Sentence: 60. (1) Land in Kenya shall be held, used and managed in a manner that
+Legal Domain: Not classified (beyond limit)
+Chapter: FIVE
+Part: PART 1 - LAND
+Article Length: 816 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #61
 Header: Classiﬁcation of land.
 Number: 61
-Sentence (first 100 chars): 61. (1) All land in Kenya belongs to the people of Kenya collectively as a nation,
-CHAPTER: FIVE
-PART: PART 1 - LAND
-Full Article Length: 194 characters
+Sentence: 61. (1) All land in Kenya belongs to the people of Kenya collectively as a nation,
+Legal Domain: Not classified (beyond limit)
+Chapter: FIVE
+Part: PART 1 - LAND
+Article Length: 194 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #62
 Header: Public land.
 Number: 62
-Sentence (first 100 chars): 62. (1) Public land is—
-CHAPTER: FIVE
-PART: PART 1 - LAND
-Full Article Length: 2019 characters
+Sentence: 62. (1) Public land is—
+Legal Domain: Not classified (beyond limit)
+Chapter: FIVE
+Part: PART 1 - LAND
+Article Length: 2019 characters
 Number of Chunks: 3
 
 Chunk Breakdown:
@@ -877,10 +941,11 @@ clause (1)(a), (c), (d) or...
 MATCH #63
 Header: Community land.
 Number: 63
-Sentence (first 100 chars): 63. (1) Community land shall vest in and be held by communities identiﬁed on
-CHAPTER: FIVE
-PART: PART 1 - LAND
-Full Article Length: 1193 characters
+Sentence: 63. (1) Community land shall vest in and be held by communities identiﬁed on
+Legal Domain: Not classified (beyond limit)
+Chapter: FIVE
+Part: PART 1 - LAND
+Article Length: 1193 characters
 Number of Chunks: 2
 
 Chunk Breakdown:
@@ -899,40 +964,44 @@ Article 62(2).
 MATCH #64
 Header: Private land.
 Number: 64
-Sentence (first 100 chars): 64. Private land consists of —
-CHAPTER: FIVE
-PART: PART 1 - LAND
-Full Article Length: 238 characters
+Sentence: 64. Private land consists of —
+Legal Domain: Not classified (beyond limit)
+Chapter: FIVE
+Part: PART 1 - LAND
+Article Length: 238 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #65
 Header: Landholding by non-citizens.
 Number: 65
-Sentence (first 100 chars): 65. (1) A person who is not a citizen may hold land on the basis of leasehold
-CHAPTER: FIVE
-PART: PART 1 - LAND
-Full Article Length: 916 characters
+Sentence: 65. (1) A person who is not a citizen may hold land on the basis of leasehold
+Legal Domain: Not classified (beyond limit)
+Chapter: FIVE
+Part: PART 1 - LAND
+Article Length: 916 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #66
 Header: Regulation of land use and property.
 Number: 66
-Sentence (first 100 chars): 66. (1) The State may regulate the use of any land, or any interest in or right
-CHAPTER: FIVE
-PART: PART 1 - LAND
-Full Article Length: 354 characters
+Sentence: 66. (1) The State may regulate the use of any land, or any interest in or right
+Legal Domain: Not classified (beyond limit)
+Chapter: FIVE
+Part: PART 1 - LAND
+Article Length: 354 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #67
 Header: National Land Commission.
 Number: 67
-Sentence (first 100 chars): 67. (1) There is established the National Land Commission.
-CHAPTER: FIVE
-PART: PART 1 - LAND
-Full Article Length: 1039 characters
+Sentence: 67. (1) There is established the National Land Commission.
+Legal Domain: Not classified (beyond limit)
+Chapter: FIVE
+Part: PART 1 - LAND
+Article Length: 1039 characters
 Number of Chunks: 2
 
 Chunk Breakdown:
@@ -953,20 +1022,22 @@ to monitor and have ov...
 MATCH #68
 Header: Legislation on land.
 Number: 68
-Sentence (first 100 chars): 68. Parliament shall—
-CHAPTER: FIVE
-PART: PART 1 - LAND
-Full Article Length: 943 characters
+Sentence: 68. Parliament shall—
+Legal Domain: Not classified (beyond limit)
+Chapter: FIVE
+Part: PART 1 - LAND
+Article Length: 943 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #69
 Header: Obligations in respect of the environment.
 Number: 69
-Sentence (first 100 chars): 69. (1) The State shall—
-CHAPTER: FIVE
-PART: PART 2 - ENVIRONMENT AND NATURAL RESOURCES
-Full Article Length: 1086 characters
+Sentence: 69. (1) The State shall—
+Legal Domain: Not classified (beyond limit)
+Chapter: FIVE
+Part: PART 2 - ENVIRONMENT AND NATURAL RESOURCES
+Article Length: 1086 characters
 Number of Chunks: 2
 
 Chunk Breakdown:
@@ -986,40 +1057,44 @@ people o...
 MATCH #70
 Header: Enforcement of environmental rights.
 Number: 70
-Sentence (first 100 chars): 70. (1) If a person alleges that a right to a clean and healthy environment
-CHAPTER: FIVE
-PART: PART 2 - ENVIRONMENT AND NATURAL RESOURCES
-Full Article Length: 947 characters
+Sentence: 70. (1) If a person alleges that a right to a clean and healthy environment
+Legal Domain: Not classified (beyond limit)
+Chapter: FIVE
+Part: PART 2 - ENVIRONMENT AND NATURAL RESOURCES
+Article Length: 947 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #71
 Header: Agreements relating to natural resources.
 Number: 71
-Sentence (first 100 chars): 71. (1) A transaction is subject to ratiﬁcation by Parliament if it—
-CHAPTER: FIVE
-PART: PART 2 - ENVIRONMENT AND NATURAL RESOURCES
-Full Article Length: 466 characters
+Sentence: 71. (1) A transaction is subject to ratiﬁcation by Parliament if it—
+Legal Domain: Not classified (beyond limit)
+Chapter: FIVE
+Part: PART 2 - ENVIRONMENT AND NATURAL RESOURCES
+Article Length: 466 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #72
 Header: Legislation relating to the environment.
 Number: 72
-Sentence (first 100 chars): 72. Parliament shall enact legislation to give full effect to the provisions of this
-CHAPTER: FIVE
-PART: PART 2 - ENVIRONMENT AND NATURAL RESOURCES
-Full Article Length: 90 characters
+Sentence: 72. Parliament shall enact legislation to give full effect to the provisions of this
+Legal Domain: Not classified (beyond limit)
+Chapter: FIVE
+Part: PART 2 - ENVIRONMENT AND NATURAL RESOURCES
+Article Length: 90 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #73
 Header: Responsibilities of leadership.
 Number: 73
-Sentence (first 100 chars): 73. (1) Authority assigned to a State ofﬁcer—
-CHAPTER: SIX
-PART: [Not within a PART section]
-Full Article Length: 1129 characters
+Sentence: 73. (1) Authority assigned to a State ofﬁcer—
+Legal Domain: Not classified (beyond limit)
+Chapter: SIX
+Part: [Not within a PART]
+Article Length: 1129 characters
 Number of Chunks: 2
 
 Chunk Breakdown:
@@ -1039,150 +1114,165 @@ selﬂess service based solely on the public...
 MATCH #74
 Header: Oath of ofﬁce of State ofﬁcers.
 Number: 74
-Sentence (first 100 chars): 74. Before assuming a State ofﬁce, acting in a State ofﬁce, or performing any
-CHAPTER: SIX
-PART: [Not within a PART section]
-Full Article Length: 288 characters
+Sentence: 74. Before assuming a State ofﬁce, acting in a State ofﬁce, or performing any
+Legal Domain: Not classified (beyond limit)
+Chapter: SIX
+Part: [Not within a PART]
+Article Length: 288 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #75
 Header: Conduct of State ofﬁcers.
 Number: 75
-Sentence (first 100 chars): 75. (1) A State ofﬁcer shall behave, whether in public and ofﬁcial life, in private
-CHAPTER: SIX
-PART: [Not within a PART section]
-Full Article Length: 838 characters
+Sentence: 75. (1) A State ofﬁcer shall behave, whether in public and ofﬁcial life, in private
+Legal Domain: Not classified (beyond limit)
+Chapter: SIX
+Part: [Not within a PART]
+Article Length: 838 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #76
 Header: Financial probity of State ofﬁcers.
 Number: 76
-Sentence (first 100 chars): 76. (1) A gift or donation to a State ofﬁcer on a public or ofﬁcial occasion is a
-CHAPTER: SIX
-PART: [Not within a PART section]
-Full Article Length: 466 characters
+Sentence: 76. (1) A gift or donation to a State ofﬁcer on a public or ofﬁcial occasion is a
+Legal Domain: Not classified (beyond limit)
+Chapter: SIX
+Part: [Not within a PART]
+Article Length: 466 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #77
 Header: Restriction on activities of State ofﬁcers.
 Number: 77
-Sentence (first 100 chars): 77. (1) A full-time State ofﬁcer shall not participate in any other gainful
-CHAPTER: SIX
-PART: [Not within a PART section]
-Full Article Length: 545 characters
+Sentence: 77. (1) A full-time State ofﬁcer shall not participate in any other gainful
+Legal Domain: Not classified (beyond limit)
+Chapter: SIX
+Part: [Not within a PART]
+Article Length: 545 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #78
 Header: Citizenship and leadership.
 Number: 78
-Sentence (first 100 chars): 78. (1) A person is not eligible for election or appointment to a State ofﬁce
-CHAPTER: SIX
-PART: [Not within a PART section]
-Full Article Length: 473 characters
+Sentence: 78. (1) A person is not eligible for election or appointment to a State ofﬁce
+Legal Domain: Not classified (beyond limit)
+Chapter: SIX
+Part: [Not within a PART]
+Article Length: 473 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #79
 Header: Legislation to establish the ethics and anti-corruption commission.
 Number: 79
-Sentence (first 100 chars): 79. Parliament shall enact legislation to establish an independent ethics and
-CHAPTER: SIX
-PART: [Not within a PART section]
-Full Article Length: 311 characters
+Sentence: 79. Parliament shall enact legislation to establish an independent ethics and
+Legal Domain: Not classified (beyond limit)
+Chapter: SIX
+Part: [Not within a PART]
+Article Length: 311 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #80
 Header: Legislation on leadership.
 Number: 80
-Sentence (first 100 chars): 80. Parliament shall enact legislation—
-CHAPTER: SIX
-PART: [Not within a PART section]
-Full Article Length: 547 characters
+Sentence: 80. Parliament shall enact legislation—
+Legal Domain: Not classified (beyond limit)
+Chapter: SIX
+Part: [Not within a PART]
+Article Length: 547 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #81
 Header: General principles for the electoral system.
 Number: 81
-Sentence (first 100 chars): 81. The electoral system shall comply with the following principles—
-CHAPTER: SEVEN
-PART: PART 1 - ELECTORAL SYSTEM AND PROCESS
-Full Article Length: 675 characters
+Sentence: 81. The electoral system shall comply with the following principles—
+Legal Domain: Not classified (beyond limit)
+Chapter: SEVEN
+Part: PART 1 - ELECTORAL SYSTEM AND PROCESS
+Article Length: 675 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #82
 Header: Legislation on elections.
 Number: 82
-Sentence (first 100 chars): 82. (1) Parliament shall enact legislation to provide for—
-CHAPTER: SEVEN
-PART: PART 1 - ELECTORAL SYSTEM AND PROCESS
-Full Article Length: 852 characters
+Sentence: 82. (1) Parliament shall enact legislation to provide for—
+Legal Domain: Not classified (beyond limit)
+Chapter: SEVEN
+Part: PART 1 - ELECTORAL SYSTEM AND PROCESS
+Article Length: 852 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #83
 Header: Registration as a voter.
 Number: 83
-Sentence (first 100 chars): 83. (1) A person qualiﬁes for registration as a voter at elections or referenda
-CHAPTER: SEVEN
-PART: PART 1 - ELECTORAL SYSTEM AND PROCESS
-Full Article Length: 628 characters
+Sentence: 83. (1) A person qualiﬁes for registration as a voter at elections or referenda
+Legal Domain: Not classified (beyond limit)
+Chapter: SEVEN
+Part: PART 1 - ELECTORAL SYSTEM AND PROCESS
+Article Length: 628 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #84
 Header: Candidates for election and political parties to comply with code of conduct.
 Number: 84
-Sentence (first 100 chars): 84. In every election, all candidates and all political parties shall comply
-CHAPTER: SEVEN
-PART: PART 1 - ELECTORAL SYSTEM AND PROCESS
-Full Article Length: 218 characters
+Sentence: 84. In every election, all candidates and all political parties shall comply
+Legal Domain: Not classified (beyond limit)
+Chapter: SEVEN
+Part: PART 1 - ELECTORAL SYSTEM AND PROCESS
+Article Length: 218 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #85
 Header: Eligibility to stand as an independent candidate.
 Number: 85
-Sentence (first 100 chars): 85. Any person is eligible to stand as an independent candidate for election if
-CHAPTER: SEVEN
-PART: PART 1 - ELECTORAL SYSTEM AND PROCESS
-Full Article Length: 494 characters
+Sentence: 85. Any person is eligible to stand as an independent candidate for election if
+Legal Domain: Not classified (beyond limit)
+Chapter: SEVEN
+Part: PART 1 - ELECTORAL SYSTEM AND PROCESS
+Article Length: 494 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #86
 Header: Voting.
 Number: 86
-Sentence (first 100 chars): 86. At every election, the Independent Electoral and Boundaries Commission
-CHAPTER: SEVEN
-PART: PART 1 - ELECTORAL SYSTEM AND PROCESS
-Full Article Length: 612 characters
+Sentence: 86. At every election, the Independent Electoral and Boundaries Commission
+Legal Domain: Not classified (beyond limit)
+Chapter: SEVEN
+Part: PART 1 - ELECTORAL SYSTEM AND PROCESS
+Article Length: 612 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #87
 Header: Electoral disputes.
 Number: 87
-Sentence (first 100 chars): 87. (1) Parliament shall enact legislation to establish mechanisms for timely
-CHAPTER: SEVEN
-PART: PART 1 - ELECTORAL SYSTEM AND PROCESS
-Full Article Length: 426 characters
+Sentence: 87. (1) Parliament shall enact legislation to establish mechanisms for timely
+Legal Domain: Not classified (beyond limit)
+Chapter: SEVEN
+Part: PART 1 - ELECTORAL SYSTEM AND PROCESS
+Article Length: 426 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #88
 Header: Independent Electoral and Boundaries Commission.
 Number: 88
-Sentence (first 100 chars): 88. (1) There is established the Independent Electoral and Boundaries
-CHAPTER: SEVEN
-PART: PART 2 - INDEPENDENT ELECTORAL AND BOUNDARIES
-Full Article Length: 1763 characters
+Sentence: 88. (1) There is established the Independent Electoral and Boundaries
+Legal Domain: Not classified (beyond limit)
+Chapter: SEVEN
+Part: PART 2 - INDEPENDENT ELECTORAL AND BOUNDARIES
+Article Length: 1763 characters
 Number of Chunks: 3
 
 Chunk Breakdown:
@@ -1208,10 +1298,11 @@ the monitoring of compliance with the legislation required by Artic...
 MATCH #89
 Header: Delimitation of electoral units.
 Number: 89
-Sentence (first 100 chars): 89. (1) There shall be two hundred and ninety constituencies for the purposes of
-CHAPTER: SEVEN
-PART: PART 2 - INDEPENDENT ELECTORAL AND BOUNDARIES
-Full Article Length: 2709 characters
+Sentence: 89. (1) There shall be two hundred and ninety constituencies for the purposes of
+Legal Domain: Not classified (beyond limit)
+Chapter: SEVEN
+Part: PART 2 - INDEPENDENT ELECTORAL AND BOUNDARIES
+Article Length: 2709 characters
 Number of Chunks: 4
 
 Chunk Breakdown:
@@ -1242,10 +1333,11 @@ Commission made under this Article.
 MATCH #90
 Header: Allocation of party list seats.
 Number: 90
-Sentence (first 100 chars): 90. (1) Elections for the seats in Parliament provided for under Articles 97(1)(c)
-CHAPTER: SEVEN
-PART: PART 2 - INDEPENDENT ELECTORAL AND BOUNDARIES
-Full Article Length: 1251 characters
+Sentence: 90. (1) Elections for the seats in Parliament provided for under Articles 97(1)(c)
+Legal Domain: Not classified (beyond limit)
+Chapter: SEVEN
+Part: PART 2 - INDEPENDENT ELECTORAL AND BOUNDARIES
+Article Length: 1251 characters
 Number of Chunks: 2
 
 Chunk Breakdown:
@@ -1264,10 +1356,11 @@ al...
 MATCH #91
 Header: Basic requirements for political parties.
 Number: 91
-Sentence (first 100 chars): 91. (1) Every political party shall—
-CHAPTER: SEVEN
-PART: PART 3 - POLITICAL PARTIES
-Full Article Length: 1290 characters
+Sentence: 91. (1) Every political party shall—
+Legal Domain: Not classified (beyond limit)
+Chapter: SEVEN
+Part: PART 3 - POLITICAL PARTIES
+Article Length: 1290 characters
 Number of Chunks: 2
 
 Chunk Breakdown:
@@ -1287,30 +1380,33 @@ basis or seek to engage in advocacy of hatred on a...
 MATCH #92
 Header: Legislation on political parties.
 Number: 92
-Sentence (first 100 chars): 92. Parliament shall enact legislation to provide for—
-CHAPTER: SEVEN
-PART: PART 3 - POLITICAL PARTIES
-Full Article Length: 736 characters
+Sentence: 92. Parliament shall enact legislation to provide for—
+Legal Domain: Not classified (beyond limit)
+Chapter: SEVEN
+Part: PART 3 - POLITICAL PARTIES
+Article Length: 736 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #93
 Header: Establishment of Parliament.
 Number: 93
-Sentence (first 100 chars): 93. (1) There is established a Parliament of Kenya, which shall consist of the
-CHAPTER: EIGHT
-PART: PART 1 - ESTABLISHMENT AND ROLE OF PARLIAMENT
-Full Article Length: 252 characters
+Sentence: 93. (1) There is established a Parliament of Kenya, which shall consist of the
+Legal Domain: Not classified (beyond limit)
+Chapter: EIGHT
+Part: PART 1 - ESTABLISHMENT AND ROLE OF PARLIAMENT
+Article Length: 252 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #94
 Header: Role of Parliament.
 Number: 94
-Sentence (first 100 chars): 94. (1) The legislative authority of the Republic is derived from the people and,
-CHAPTER: EIGHT
-PART: PART 1 - ESTABLISHMENT AND ROLE OF PARLIAMENT
-Full Article Length: 1178 characters
+Sentence: 94. (1) The legislative authority of the Republic is derived from the people and,
+Legal Domain: Not classified (beyond limit)
+Chapter: EIGHT
+Part: PART 1 - ESTABLISHMENT AND ROLE OF PARLIAMENT
+Article Length: 1178 characters
 Number of Chunks: 2
 
 Chunk Breakdown:
@@ -1328,50 +1424,55 @@ organ, State ofﬁcer or person the authority to make provision having the forc.
 MATCH #95
 Header: Role of the National Assembly.
 Number: 95
-Sentence (first 100 chars): 95. (1) The National Assembly represents the people of the constituencies and
-CHAPTER: EIGHT
-PART: PART 1 - ESTABLISHMENT AND ROLE OF PARLIAMENT
-Full Article Length: 935 characters
+Sentence: 95. (1) The National Assembly represents the people of the constituencies and
+Legal Domain: Not classified (beyond limit)
+Chapter: EIGHT
+Part: PART 1 - ESTABLISHMENT AND ROLE OF PARLIAMENT
+Article Length: 935 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #96
 Header: Role of the Senate.
 Number: 96
-Sentence (first 100 chars): 96. (1) The Senate represents the counties, and serves to protect the interests
-CHAPTER: EIGHT
-PART: PART 1 - ESTABLISHMENT AND ROLE OF PARLIAMENT
-Full Article Length: 672 characters
+Sentence: 96. (1) The Senate represents the counties, and serves to protect the interests
+Legal Domain: Not classified (beyond limit)
+Chapter: EIGHT
+Part: PART 1 - ESTABLISHMENT AND ROLE OF PARLIAMENT
+Article Length: 672 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #97
 Header: Membership of the National Assembly.
 Number: 97
-Sentence (first 100 chars): 97. (1) The National Assembly consists of—
-CHAPTER: EIGHT
-PART: PART 2 - COMPOSITION AND MEMBERSHIP OF PARLIAMENT
-Full Article Length: 713 characters
+Sentence: 97. (1) The National Assembly consists of—
+Legal Domain: Not classified (beyond limit)
+Chapter: EIGHT
+Part: PART 2 - COMPOSITION AND MEMBERSHIP OF PARLIAMENT
+Article Length: 713 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #98
 Header: Membership of the Senate.
 Number: 98
-Sentence (first 100 chars): 98. (1) The Senate consists of—
-CHAPTER: EIGHT
-PART: PART 2 - COMPOSITION AND MEMBERSHIP OF PARLIAMENT
-Full Article Length: 837 characters
+Sentence: 98. (1) The Senate consists of—
+Legal Domain: Not classified (beyond limit)
+Chapter: EIGHT
+Part: PART 2 - COMPOSITION AND MEMBERSHIP OF PARLIAMENT
+Article Length: 837 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #99
 Header: Qualiﬁcations and disqualiﬁcations for election as member of Parliament.
 Number: 99
-Sentence (first 100 chars): 99. (1) Unless disqualiﬁed under clause (2), a person is eligible for election as
-CHAPTER: EIGHT
-PART: PART 2 - COMPOSITION AND MEMBERSHIP OF PARLIAMENT
-Full Article Length: 1563 characters
+Sentence: 99. (1) Unless disqualiﬁed under clause (2), a person is eligible for election as
+Legal Domain: Not classified (beyond limit)
+Chapter: EIGHT
+Part: PART 2 - COMPOSITION AND MEMBERSHIP OF PARLIAMENT
+Article Length: 1563 characters
 Number of Chunks: 3
 
 Chunk Breakdown:
@@ -1397,20 +1498,22 @@ Promotion of representation of margi...
 MATCH #100
 Header: Promotion of representation of marginalised groups.
 Number: 100
-Sentence (first 100 chars): 100. Parliament shall enact legislation to promote the representation in
-CHAPTER: EIGHT
-PART: PART 2 - COMPOSITION AND MEMBERSHIP OF PARLIAMENT
-Full Article Length: 222 characters
+Sentence: 100. Parliament shall enact legislation to promote the representation in
+Legal Domain: Not classified (beyond limit)
+Chapter: EIGHT
+Part: PART 2 - COMPOSITION AND MEMBERSHIP OF PARLIAMENT
+Article Length: 222 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #101
 Header: Election of members of Parliament.
 Number: 101
-Sentence (first 100 chars): 101. (1) A general election of members of Parliament shall be held on the second
-CHAPTER: EIGHT
-PART: PART 2 - COMPOSITION AND MEMBERSHIP OF PARLIAMENT
-Full Article Length: 1338 characters
+Sentence: 101. (1) A general election of members of Parliament shall be held on the second
+Legal Domain: Not classified (beyond limit)
+Chapter: EIGHT
+Part: PART 2 - COMPOSITION AND MEMBERSHIP OF PARLIAMENT
+Article Length: 1338 characters
 Number of Chunks: 2
 
 Chunk Breakdown:
@@ -1429,20 +1532,22 @@ elected under Article 97(1)(a) o...
 MATCH #102
 Header: Term of Parliament.
 Number: 102
-Sentence (first 100 chars): 102. (1) The term of each House of Parliament expires on the date of the next
-CHAPTER: EIGHT
-PART: PART 2 - COMPOSITION AND MEMBERSHIP OF PARLIAMENT
-Full Article Length: 467 characters
+Sentence: 102. (1) The term of each House of Parliament expires on the date of the next
+Legal Domain: Not classified (beyond limit)
+Chapter: EIGHT
+Part: PART 2 - COMPOSITION AND MEMBERSHIP OF PARLIAMENT
+Article Length: 467 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #103
 Header: Vacation of ofﬁce of member of Parliament.
 Number: 103
-Sentence (first 100 chars): 103. (1) The ofﬁce of a member of Parliament becomes vacant—
-CHAPTER: EIGHT
-PART: PART 2 - COMPOSITION AND MEMBERSHIP OF PARLIAMENT
-Full Article Length: 1160 characters
+Sentence: 103. (1) The ofﬁce of a member of Parliament becomes vacant—
+Legal Domain: Not classified (beyond limit)
+Chapter: EIGHT
+Part: PART 2 - COMPOSITION AND MEMBERSHIP OF PARLIAMENT
+Article Length: 1160 characters
 Number of Chunks: 2
 
 Chunk Breakdown:
@@ -1462,70 +1567,77 @@ at the end of the term of the relevant Hous...
 MATCH #104
 Header: Right of recall.
 Number: 104
-Sentence (first 100 chars): 104. (1) The electorate under Articles 97 and 98 have the right to recall the
-CHAPTER: EIGHT
-PART: PART 2 - COMPOSITION AND MEMBERSHIP OF PARLIAMENT
-Full Article Length: 370 characters
+Sentence: 104. (1) The electorate under Articles 97 and 98 have the right to recall the
+Legal Domain: Not classified (beyond limit)
+Chapter: EIGHT
+Part: PART 2 - COMPOSITION AND MEMBERSHIP OF PARLIAMENT
+Article Length: 370 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #105
 Header: Determination of questions of membership.
 Number: 105
-Sentence (first 100 chars): 105. (1) The High Court shall hear and determine any question whether—
-CHAPTER: EIGHT
-PART: PART 2 - COMPOSITION AND MEMBERSHIP OF PARLIAMENT
-Full Article Length: 367 characters
+Sentence: 105. (1) The High Court shall hear and determine any question whether—
+Legal Domain: Not classified (beyond limit)
+Chapter: EIGHT
+Part: PART 2 - COMPOSITION AND MEMBERSHIP OF PARLIAMENT
+Article Length: 367 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #106
 Header: Speakers and Deputy Speakers of Parliament.
 Number: 106
-Sentence (first 100 chars): 106. (1) There shall be—
-CHAPTER: EIGHT
-PART: PART 3 - OFFICES OF PARLIAMENT
-Full Article Length: 840 characters
+Sentence: 106. (1) There shall be—
+Legal Domain: Not classified (beyond limit)
+Chapter: EIGHT
+Part: PART 3 - OFFICES OF PARLIAMENT
+Article Length: 840 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #107
 Header: Presiding in Parliament.
 Number: 107
-Sentence (first 100 chars): 107. (1) At any sitting of a House of Parliament—
-CHAPTER: EIGHT
-PART: PART 3 - OFFICES OF PARLIAMENT
-Full Article Length: 406 characters
+Sentence: 107. (1) At any sitting of a House of Parliament—
+Legal Domain: Not classified (beyond limit)
+Chapter: EIGHT
+Part: PART 3 - OFFICES OF PARLIAMENT
+Article Length: 406 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #108
 Header: Party leaders.
 Number: 108
-Sentence (first 100 chars): 108. (1) There shall be a leader of the majority party and a leader of the minority
-CHAPTER: EIGHT
-PART: PART 3 - OFFICES OF PARLIAMENT
-Full Article Length: 581 characters
+Sentence: 108. (1) There shall be a leader of the majority party and a leader of the minority
+Legal Domain: Not classified (beyond limit)
+Chapter: EIGHT
+Part: PART 3 - OFFICES OF PARLIAMENT
+Article Length: 581 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #109
 Header: Exercise of legislative powers.
 Number: 109
-Sentence (first 100 chars): 109. (1) Parliament shall exercise its legislative power through Bills passed by
-CHAPTER: EIGHT
-PART: PART 4 - PROCEDURES FOR ENACTING LEGISLATION
-Full Article Length: 780 characters
+Sentence: 109. (1) Parliament shall exercise its legislative power through Bills passed by
+Legal Domain: Not classified (beyond limit)
+Chapter: EIGHT
+Part: PART 4 - PROCEDURES FOR ENACTING LEGISLATION
+Article Length: 780 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #110
 Header: Bills concerning county government.
 Number: 110
-Sentence (first 100 chars): 110. (1) In this Constitution, "a Bill concerning county government" means—
-CHAPTER: EIGHT
-PART: PART 4 - PROCEDURES FOR ENACTING LEGISLATION
-Full Article Length: 1351 characters
+Sentence: 110. (1) In this Constitution, "a Bill concerning county government" means—
+Legal Domain: Not classified (beyond limit)
+Chapter: EIGHT
+Part: PART 4 - PROCEDURES FOR ENACTING LEGISLATION
+Article Length: 1351 characters
 Number of Chunks: 2
 
 Chunk Breakdown:
@@ -1545,40 +1657,44 @@ and Senate shall jointly resolve...
 MATCH #111
 Header: Special Bills concerning county governments.
 Number: 111
-Sentence (first 100 chars): 111. (1) A special Bill concerning a county government shall proceed in the
-CHAPTER: EIGHT
-PART: PART 4 - PROCEDURES FOR ENACTING LEGISLATION
-Full Article Length: 621 characters
+Sentence: 111. (1) A special Bill concerning a county government shall proceed in the
+Legal Domain: Not classified (beyond limit)
+Chapter: EIGHT
+Part: PART 4 - PROCEDURES FOR ENACTING LEGISLATION
+Article Length: 621 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #112
 Header: Ordinary Bills concerning county governments.
 Number: 112
-Sentence (first 100 chars): 112. (1) If one House passes an ordinary Bill concerning counties, and the second
-CHAPTER: EIGHT
-PART: PART 4 - PROCEDURES FOR ENACTING LEGISLATION
-Full Article Length: 652 characters
+Sentence: 112. (1) If one House passes an ordinary Bill concerning counties, and the second
+Legal Domain: Not classified (beyond limit)
+Chapter: EIGHT
+Part: PART 4 - PROCEDURES FOR ENACTING LEGISLATION
+Article Length: 652 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #113
 Header: Mediation committees.
 Number: 113
-Sentence (first 100 chars): 113. (1) If a Bill is referred to a mediation committee under Article 112, the
-CHAPTER: EIGHT
-PART: PART 4 - PROCEDURES FOR ENACTING LEGISLATION
-Full Article Length: 786 characters
+Sentence: 113. (1) If a Bill is referred to a mediation committee under Article 112, the
+Legal Domain: Not classified (beyond limit)
+Chapter: EIGHT
+Part: PART 4 - PROCEDURES FOR ENACTING LEGISLATION
+Article Length: 786 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #114
 Header: Money Bills.
 Number: 114
-Sentence (first 100 chars): 114. (1) A money Bill may not deal with any matter other than those listed in
-CHAPTER: EIGHT
-PART: PART 4 - PROCEDURES FOR ENACTING LEGISLATION
-Full Article Length: 1034 characters
+Sentence: 114. (1) A money Bill may not deal with any matter other than those listed in
+Legal Domain: Not classified (beyond limit)
+Chapter: EIGHT
+Part: PART 4 - PROCEDURES FOR ENACTING LEGISLATION
+Article Length: 1034 characters
 Number of Chunks: 2
 
 Chunk Breakdown:
@@ -1599,10 +1715,11 @@ mat...
 MATCH #115
 Header: Presidential assent and referral.
 Number: 115
-Sentence (first 100 chars): 115. (1) Within fourteen days after receipt of a Bill, the President shall—
-CHAPTER: EIGHT
-PART: PART 4 - PROCEDURES FOR ENACTING LEGISLATION
-Full Article Length: 1449 characters
+Sentence: 115. (1) Within fourteen days after receipt of a Bill, the President shall—
+Legal Domain: Not classified (beyond limit)
+Chapter: EIGHT
+Part: PART 4 - PROCEDURES FOR ENACTING LEGISLATION
+Article Length: 1449 characters
 Number of Chunks: 3
 
 Chunk Breakdown:
@@ -1625,80 +1742,88 @@ Coming into force of laws.
 MATCH #116
 Header: Coming into force of laws.
 Number: 116
-Sentence (first 100 chars): 116. (1) A Bill passed by Parliament and assented to by the President shall be
-CHAPTER: EIGHT
-PART: PART 4 - PROCEDURES FOR ENACTING LEGISLATION
-Full Article Length: 656 characters
+Sentence: 116. (1) A Bill passed by Parliament and assented to by the President shall be
+Legal Domain: Not classified (beyond limit)
+Chapter: EIGHT
+Part: PART 4 - PROCEDURES FOR ENACTING LEGISLATION
+Article Length: 656 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #117
 Header: Powers, privileges and immunities.
 Number: 117
-Sentence (first 100 chars): 117. (1) There shall be freedom of speech and debate in Parliament.
-CHAPTER: EIGHT
-PART: PART 5 - PARLIAMENT'S GENERAL PROCEDURES AND RULES
-Full Article Length: 399 characters
+Sentence: 117. (1) There shall be freedom of speech and debate in Parliament.
+Legal Domain: Not classified (beyond limit)
+Chapter: EIGHT
+Part: PART 5 - PARLIAMENT'S GENERAL PROCEDURES AND RULES
+Article Length: 399 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #118
 Header: Public access and participation.
 Number: 118
-Sentence (first 100 chars): 118. (1) Parliament shall—
-CHAPTER: EIGHT
-PART: PART 5 - PARLIAMENT'S GENERAL PROCEDURES AND RULES
-Full Article Length: 484 characters
+Sentence: 118. (1) Parliament shall—
+Legal Domain: Not classified (beyond limit)
+Chapter: EIGHT
+Part: PART 5 - PARLIAMENT'S GENERAL PROCEDURES AND RULES
+Article Length: 484 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #119
 Header: Right to petition Parliament.
 Number: 119
-Sentence (first 100 chars): 119. (1) Every person has a right to petition Parliament to consider any matter
-CHAPTER: EIGHT
-PART: PART 5 - PARLIAMENT'S GENERAL PROCEDURES AND RULES
-Full Article Length: 273 characters
+Sentence: 119. (1) Every person has a right to petition Parliament to consider any matter
+Legal Domain: Not classified (beyond limit)
+Chapter: EIGHT
+Part: PART 5 - PARLIAMENT'S GENERAL PROCEDURES AND RULES
+Article Length: 273 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #120
 Header: Ofﬁcial languages of Parliament.
 Number: 120
-Sentence (first 100 chars): 120. (1) The ofﬁcial languages of Parliament shall be Kiswahili, English and
-CHAPTER: EIGHT
-PART: PART 5 - PARLIAMENT'S GENERAL PROCEDURES AND RULES
-Full Article Length: 339 characters
+Sentence: 120. (1) The ofﬁcial languages of Parliament shall be Kiswahili, English and
+Legal Domain: Not classified (beyond limit)
+Chapter: EIGHT
+Part: PART 5 - PARLIAMENT'S GENERAL PROCEDURES AND RULES
+Article Length: 339 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #121
 Header: Quorum.
 Number: 121
-Sentence (first 100 chars): 121. The quorum of Parliament shall be–
-CHAPTER: EIGHT
-PART: PART 5 - PARLIAMENT'S GENERAL PROCEDURES AND RULES
-Full Article Length: 159 characters
+Sentence: 121. The quorum of Parliament shall be–
+Legal Domain: Not classified (beyond limit)
+Chapter: EIGHT
+Part: PART 5 - PARLIAMENT'S GENERAL PROCEDURES AND RULES
+Article Length: 159 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #122
 Header: Voting in Parliament.
 Number: 122
-Sentence (first 100 chars): 122. (1) Except as otherwise provided in this Constitution, any question
-CHAPTER: EIGHT
-PART: PART 5 - PARLIAMENT'S GENERAL PROCEDURES AND RULES
-Full Article Length: 614 characters
+Sentence: 122. (1) Except as otherwise provided in this Constitution, any question
+Legal Domain: Not classified (beyond limit)
+Chapter: EIGHT
+Part: PART 5 - PARLIAMENT'S GENERAL PROCEDURES AND RULES
+Article Length: 614 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #123
 Header: Decisions of Senate.
 Number: 123
-Sentence (first 100 chars): 123. (1) On election, all the members of the Senate who were registered as voters
-CHAPTER: EIGHT
-PART: PART 5 - PARLIAMENT'S GENERAL PROCEDURES AND RULES
-Full Article Length: 1151 characters
+Sentence: 123. (1) On election, all the members of the Senate who were registered as voters
+Legal Domain: Not classified (beyond limit)
+Chapter: EIGHT
+Part: PART 5 - PARLIAMENT'S GENERAL PROCEDURES AND RULES
+Article Length: 1151 characters
 Number of Chunks: 2
 
 Chunk Breakdown:
@@ -1716,40 +1841,44 @@ designated by the head of the dele...
 MATCH #124
 Header: Committees and Standing Orders.
 Number: 124
-Sentence (first 100 chars): 124. (1) Each House of Parliament may establish committees, and shall
-CHAPTER: EIGHT
-PART: PART 5 - PARLIAMENT'S GENERAL PROCEDURES AND RULES
-Full Article Length: 938 characters
+Sentence: 124. (1) Each House of Parliament may establish committees, and shall
+Legal Domain: Not classified (beyond limit)
+Chapter: EIGHT
+Part: PART 5 - PARLIAMENT'S GENERAL PROCEDURES AND RULES
+Article Length: 938 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #125
 Header: Power to call for evidence.
 Number: 125
-Sentence (first 100 chars): 125. (1) Either House of Parliament, and any of its committees, has power
-CHAPTER: EIGHT
-PART: PART 5 - PARLIAMENT'S GENERAL PROCEDURES AND RULES
-Full Article Length: 493 characters
+Sentence: 125. (1) Either House of Parliament, and any of its committees, has power
+Legal Domain: Not classified (beyond limit)
+Chapter: EIGHT
+Part: PART 5 - PARLIAMENT'S GENERAL PROCEDURES AND RULES
+Article Length: 493 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #126
 Header: Location of sittings of Parliament.
 Number: 126
-Sentence (first 100 chars): 126. (1) A sitting of either House may be held at any place within Kenya and
-CHAPTER: EIGHT
-PART: PART 6 - MISCELLANEOUS
-Full Article Length: 371 characters
+Sentence: 126. (1) A sitting of either House may be held at any place within Kenya and
+Legal Domain: Not classified (beyond limit)
+Chapter: EIGHT
+Part: PART 6 - MISCELLANEOUS
+Article Length: 371 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #127
 Header: Parliamentary Service Commission.
 Number: 127
-Sentence (first 100 chars): 127. (1) There is established the Parliamentary Service Commission.
-CHAPTER: EIGHT
-PART: PART 6 - MISCELLANEOUS
-Full Article Length: 2135 characters
+Sentence: 127. (1) There is established the Parliamentary Service Commission.
+Legal Domain: Not classified (beyond limit)
+Chapter: EIGHT
+Part: PART 6 - MISCELLANEOUS
+Article Length: 2135 characters
 Number of Chunks: 4
 
 Chunk Breakdown:
@@ -1779,50 +1908,55 @@ Clerks and staff of Parliament.
 MATCH #128
 Header: Clerks and staff of Parliament.
 Number: 128
-Sentence (first 100 chars): 128. (1) There shall be a Clerk for each House of Parliament, appointed by the
-CHAPTER: EIGHT
-PART: PART 6 - MISCELLANEOUS
-Full Article Length: 276 characters
+Sentence: 128. (1) There shall be a Clerk for each House of Parliament, appointed by the
+Legal Domain: Not classified (beyond limit)
+Chapter: EIGHT
+Part: PART 6 - MISCELLANEOUS
+Article Length: 276 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #129
 Header: Principles of executive authority.
 Number: 129
-Sentence (first 100 chars): 129. (1) Executive authority derives from the people of Kenya and shall be
-CHAPTER: NINE
-PART: PART 1 - PRINCIPLES AND STRUCTURE OF THE NATIONAL EXECUTIVE
-Full Article Length: 303 characters
+Sentence: 129. (1) Executive authority derives from the people of Kenya and shall be
+Legal Domain: Not classified (beyond limit)
+Chapter: NINE
+Part: PART 1 - PRINCIPLES AND STRUCTURE OF THE NATIONAL EXECUTIVE
+Article Length: 303 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #130
 Header: The National Executive.
 Number: 130
-Sentence (first 100 chars): 130. (1) The national executive of the Republic comprises the President, the
-CHAPTER: NINE
-PART: PART 1 - PRINCIPLES AND STRUCTURE OF THE NATIONAL EXECUTIVE
-Full Article Length: 239 characters
+Sentence: 130. (1) The national executive of the Republic comprises the President, the
+Legal Domain: Not classified (beyond limit)
+Chapter: NINE
+Part: PART 1 - PRINCIPLES AND STRUCTURE OF THE NATIONAL EXECUTIVE
+Article Length: 239 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #131
 Header: Authority of the President.
 Number: 131
-Sentence (first 100 chars): 131. (1) The President—
-CHAPTER: NINE
-PART: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
-Full Article Length: 741 characters
+Sentence: 131. (1) The President—
+Legal Domain: Not classified (beyond limit)
+Chapter: NINE
+Part: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
+Article Length: 741 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #132
 Header: Functions of the President.
 Number: 132
-Sentence (first 100 chars): 132. (1) The President shall—
-CHAPTER: NINE
-PART: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
-Full Article Length: 2198 characters
+Sentence: 132. (1) The President shall—
+Legal Domain: Not classified (beyond limit)
+Chapter: NINE
+Part: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
+Article Length: 2198 characters
 Number of Chunks: 4
 
 Chunk Breakdown:
@@ -1853,10 +1987,11 @@ Power of mercy.
 MATCH #133
 Header: Power of mercy.
 Number: 133
-Sentence (first 100 chars): 133. (1) On the petition of any person, the President may exercise a power of
-CHAPTER: NINE
-PART: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
-Full Article Length: 1177 characters
+Sentence: 133. (1) On the petition of any person, the President may exercise a power of
+Legal Domain: Not classified (beyond limit)
+Chapter: NINE
+Part: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
+Article Length: 1177 characters
 Number of Chunks: 2
 
 Chunk Breakdown:
@@ -1875,10 +2010,11 @@ the procedure of the Adviso...
 MATCH #134
 Header: Exercise of presidential powers during temporary incumbency.
 Number: 134
-Sentence (first 100 chars): 134. (1) A person who holds the ofﬁce of President or who is authorised in terms
-CHAPTER: NINE
-PART: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
-Full Article Length: 1051 characters
+Sentence: 134. (1) A person who holds the ofﬁce of President or who is authorised in terms
+Legal Domain: Not classified (beyond limit)
+Chapter: NINE
+Part: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
+Article Length: 1051 characters
 Number of Chunks: 2
 
 Chunk Breakdown:
@@ -1898,40 +2034,44 @@ the nomination or appointment or dismissal of...
 MATCH #135
 Header: Decisions of the President.
 Number: 135
-Sentence (first 100 chars): 135. A decision of the President in the performance of any function of the
-CHAPTER: NINE
-PART: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
-Full Article Length: 211 characters
+Sentence: 135. A decision of the President in the performance of any function of the
+Legal Domain: Not classified (beyond limit)
+Chapter: NINE
+Part: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
+Article Length: 211 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #136
 Header: Election of the President.
 Number: 136
-Sentence (first 100 chars): 136. (1) The President shall be elected by registered voters in a national election
-CHAPTER: NINE
-PART: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
-Full Article Length: 474 characters
+Sentence: 136. (1) The President shall be elected by registered voters in a national election
+Legal Domain: Not classified (beyond limit)
+Chapter: NINE
+Part: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
+Article Length: 474 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #137
 Header: Qualiﬁcations and disqualiﬁcations for election as President.
 Number: 137
-Sentence (first 100 chars): 137. (1) A person qualiﬁes for nomination as a presidential candidate if the
-CHAPTER: NINE
-PART: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
-Full Article Length: 664 characters
+Sentence: 137. (1) A person qualiﬁes for nomination as a presidential candidate if the
+Legal Domain: Not classified (beyond limit)
+Chapter: NINE
+Part: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
+Article Length: 664 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #138
 Header: Procedure at presidential election.
 Number: 138
-Sentence (first 100 chars): 138. (1) If only one candidate for President is nominated, that candidate shall
-CHAPTER: NINE
-PART: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
-Full Article Length: 2386 characters
+Sentence: 138. (1) If only one candidate for President is nominated, that candidate shall
+Legal Domain: Not classified (beyond limit)
+Chapter: NINE
+Part: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
+Article Length: 2386 characters
 Number of Chunks: 4
 
 Chunk Breakdown:
@@ -1961,50 +2101,55 @@ declare the resu...
 MATCH #139
 Header: Death before assuming ofﬁce.
 Number: 139
-Sentence (first 100 chars): 139. (1) If a President-elect dies after being declared elected as President, but
-CHAPTER: NINE
-PART: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
-Full Article Length: 959 characters
+Sentence: 139. (1) If a President-elect dies after being declared elected as President, but
+Legal Domain: Not classified (beyond limit)
+Chapter: NINE
+Part: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
+Article Length: 959 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #140
 Header: Questions as to validity of presidential election.
 Number: 140
-Sentence (first 100 chars): 140. (1) A person may ﬁle a petition in the Supreme Court to challenge the
-CHAPTER: NINE
-PART: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
-Full Article Length: 559 characters
+Sentence: 140. (1) A person may ﬁle a petition in the Supreme Court to challenge the
+Legal Domain: Not classified (beyond limit)
+Chapter: NINE
+Part: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
+Article Length: 559 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #141
 Header: Assumption of ofﬁce of President.
 Number: 141
-Sentence (first 100 chars): 141. (1) The swearing in of the President-elect shall be in public before the Chief
-CHAPTER: NINE
-PART: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
-Full Article Length: 897 characters
+Sentence: 141. (1) The swearing in of the President-elect shall be in public before the Chief
+Legal Domain: Not classified (beyond limit)
+Chapter: NINE
+Part: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
+Article Length: 897 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #142
 Header: Term of ofﬁce of President.
 Number: 142
-Sentence (first 100 chars): 142. (1) The President shall hold ofﬁce for a term beginning on the date on which
-CHAPTER: NINE
-PART: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
-Full Article Length: 316 characters
+Sentence: 142. (1) The President shall hold ofﬁce for a term beginning on the date on which
+Legal Domain: Not classified (beyond limit)
+Chapter: NINE
+Part: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
+Article Length: 316 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #143
 Header: Protection from legal proceedings.
 Number: 143
-Sentence (first 100 chars): 143. (1) Criminal proceedings shall not be instituted or continued in any court
-CHAPTER: NINE
-PART: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
-Full Article Length: 1017 characters
+Sentence: 143. (1) Criminal proceedings shall not be instituted or continued in any court
+Legal Domain: Not classified (beyond limit)
+Chapter: NINE
+Part: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
+Article Length: 1017 characters
 Number of Chunks: 2
 
 Chunk Breakdown:
@@ -2021,10 +2166,11 @@ against the President or a person performing the functions of that ofﬁ...
 MATCH #144
 Header: Removal of President on grounds of incapacity.
 Number: 144
-Sentence (first 100 chars): 144. (1) A member of the National Assembly, supported by at least a quarter of
-CHAPTER: NINE
-PART: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
-Full Article Length: 2349 characters
+Sentence: 144. (1) A member of the National Assembly, supported by at least a quarter of
+Legal Domain: Not classified (beyond limit)
+Chapter: NINE
+Part: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
+Article Length: 2349 characters
 Number of Chunks: 4
 
 Chunk Breakdown:
@@ -2053,10 +2199,11 @@ report.
 MATCH #145
 Header: Removal of President by impeachment.
 Number: 145
-Sentence (first 100 chars): 145. (1) A member of the National Assembly, supported by at least a third of all
-CHAPTER: NINE
-PART: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
-Full Article Length: 1937 characters
+Sentence: 145. (1) A member of the National Assembly, supported by at least a third of all
+Legal Domain: Not classified (beyond limit)
+Chapter: NINE
+Part: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
+Article Length: 1937 characters
 Number of Chunks: 3
 
 Chunk Breakdown:
@@ -2082,10 +2229,11 @@ have not been substantiated, furt...
 MATCH #146
 Header: Vacancy in the ofﬁce of President.
 Number: 146
-Sentence (first 100 chars): 146. (1) The ofﬁce of President shall become vacant if the holder of the ofﬁce —
-CHAPTER: NINE
-PART: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
-Full Article Length: 1600 characters
+Sentence: 146. (1) The ofﬁce of President shall become vacant if the holder of the ofﬁce —
+Legal Domain: Not classified (beyond limit)
+Chapter: NINE
+Part: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
+Article Length: 1600 characters
 Number of Chunks: 3
 
 Chunk Breakdown:
@@ -2110,20 +2258,22 @@ not to have served a term of ofﬁce as President...
 MATCH #147
 Header: Functions of the Deputy President.
 Number: 147
-Sentence (first 100 chars): 147. (1) The Deputy President shall be the principal assistant of the President
-CHAPTER: NINE
-PART: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
-Full Article Length: 631 characters
+Sentence: 147. (1) The Deputy President shall be the principal assistant of the President
+Legal Domain: Not classified (beyond limit)
+Chapter: NINE
+Part: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
+Article Length: 631 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #148
 Header: Election and swearing-in of Deputy President.
 Number: 148
-Sentence (first 100 chars): 148. (1) Each candidate in a presidential election shall nominate a person
-CHAPTER: NINE
-PART: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
-Full Article Length: 1674 characters
+Sentence: 148. (1) Each candidate in a presidential election shall nominate a person
+Legal Domain: Not classified (beyond limit)
+Chapter: NINE
+Part: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
+Article Length: 1674 characters
 Number of Chunks: 3
 
 Chunk Breakdown:
@@ -2147,40 +2297,44 @@ day after the notice ...
 MATCH #149
 Header: Vacancy in the ofﬁce of Deputy President.
 Number: 149
-Sentence (first 100 chars): 149. (1) Within fourteen days after a vacancy in the ofﬁce of Deputy President
-CHAPTER: NINE
-PART: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
-Full Article Length: 700 characters
+Sentence: 149. (1) Within fourteen days after a vacancy in the ofﬁce of Deputy President
+Legal Domain: Not classified (beyond limit)
+Chapter: NINE
+Part: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
+Article Length: 700 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #150
 Header: Removal of Deputy President.
 Number: 150
-Sentence (first 100 chars): 150. (1) The Deputy President may be removed from ofﬁce—
-CHAPTER: NINE
-PART: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
-Full Article Length: 644 characters
+Sentence: 150. (1) The Deputy President may be removed from ofﬁce—
+Legal Domain: Not classified (beyond limit)
+Chapter: NINE
+Part: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
+Article Length: 644 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #151
 Header: Remuneration and beneﬁts of President and Deputy President.
 Number: 151
-Sentence (first 100 chars): 151. (1) The remuneration and beneﬁts payable to the President and the Deputy
-CHAPTER: NINE
-PART: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
-Full Article Length: 489 characters
+Sentence: 151. (1) The remuneration and beneﬁts payable to the President and the Deputy
+Legal Domain: Not classified (beyond limit)
+Chapter: NINE
+Part: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
+Article Length: 489 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #152
 Header: Cabinet.
 Number: 152
-Sentence (first 100 chars): 152. (1) The Cabinet consists of—
-CHAPTER: NINE
-PART: PART 3 - THE CABINET
-Full Article Length: 2466 characters
+Sentence: 152. (1) The Cabinet consists of—
+Legal Domain: Not classified (beyond limit)
+Chapter: NINE
+Part: PART 3 - THE CABINET
+Article Length: 2466 characters
 Number of Chunks: 4
 
 Chunk Breakdown:
@@ -2214,40 +2368,44 @@ a Cabinet Secretary is supported by a...
 MATCH #153
 Header: Decisions, responsibility and accountability of the Cabinet.
 Number: 153
-Sentence (first 100 chars): 153. (1) A decision by the Cabinet shall be in writing.
-CHAPTER: NINE
-PART: PART 3 - THE CABINET
-Full Article Length: 630 characters
+Sentence: 153. (1) A decision by the Cabinet shall be in writing.
+Legal Domain: Not classified (beyond limit)
+Chapter: NINE
+Part: PART 3 - THE CABINET
+Article Length: 630 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #154
 Header: Secretary to the Cabinet.
 Number: 154
-Sentence (first 100 chars): 154. (1) There is established the ofﬁce of Secretary to the Cabinet, which is an
-CHAPTER: NINE
-PART: PART 3 - THE CABINET
-Full Article Length: 737 characters
+Sentence: 154. (1) There is established the ofﬁce of Secretary to the Cabinet, which is an
+Legal Domain: Not classified (beyond limit)
+Chapter: NINE
+Part: PART 3 - THE CABINET
+Article Length: 737 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #155
 Header: Principal Secretaries.
 Number: 155
-Sentence (first 100 chars): 155. (1) There is established the ofﬁce of Principal Secretary, which is an ofﬁce
-CHAPTER: NINE
-PART: PART 3 - THE CABINET
-Full Article Length: 566 characters
+Sentence: 155. (1) There is established the ofﬁce of Principal Secretary, which is an ofﬁce
+Legal Domain: Not classified (beyond limit)
+Chapter: NINE
+Part: PART 3 - THE CABINET
+Article Length: 566 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #156
 Header: Attorney-General.
 Number: 156
-Sentence (first 100 chars): 156. (1) There is established the ofﬁce of Attorney-General.
-CHAPTER: NINE
-PART: PART 4 - OTHER OFFICES
-Full Article Length: 1129 characters
+Sentence: 156. (1) There is established the ofﬁce of Attorney-General.
+Legal Domain: Not classified (beyond limit)
+Chapter: NINE
+Part: PART 4 - OTHER OFFICES
+Article Length: 1129 characters
 Number of Chunks: 2
 
 Chunk Breakdown:
@@ -2267,10 +2425,11 @@ not a party.
 MATCH #157
 Header: Director of Public Prosecutions.
 Number: 157
-Sentence (first 100 chars): 157. (1) There is established the ofﬁce of Director of Public Prosecutions.
-CHAPTER: NINE
-PART: PART 4 - OTHER OFFICES
-Full Article Length: 2585 characters
+Sentence: 157. (1) There is established the ofﬁce of Director of Public Prosecutions.
+Legal Domain: Not classified (beyond limit)
+Chapter: NINE
+Part: PART 4 - OTHER OFFICES
+Article Length: 2585 characters
 Number of Chunks: 4
 
 Chunk Breakdown:
@@ -2301,10 +2460,11 @@ Public Prosecutions shall...
 MATCH #158
 Header: Removal and resignation of Director of Public Prosecutions.
 Number: 158
-Sentence (first 100 chars): 158. (1) The Director of Public Prosecutions may be removed from ofﬁce only
-CHAPTER: NINE
-PART: PART 4 - OTHER OFFICES
-Full Article Length: 2054 characters
+Sentence: 158. (1) The Director of Public Prosecutions may be removed from ofﬁce only
+Legal Domain: Not classified (beyond limit)
+Chapter: NINE
+Part: PART 4 - OTHER OFFICES
+Article Length: 2054 characters
 Number of Chunks: 3
 
 Chunk Breakdown:
@@ -2329,10 +2489,11 @@ the recom...
 MATCH #159
 Header: Judicial authority.
 Number: 159
-Sentence (first 100 chars): 159. (1) Judicial authority is derived from the people and vests in, and shall be
-CHAPTER: TEN
-PART: PART 1 - JUDICIAL AUTHORITY AND LEGAL SYSTEM
-Full Article Length: 1005 characters
+Sentence: 159. (1) Judicial authority is derived from the people and vests in, and shall be
+Legal Domain: Not classified (beyond limit)
+Chapter: TEN
+Part: PART 1 - JUDICIAL AUTHORITY AND LEGAL SYSTEM
+Article Length: 1005 characters
 Number of Chunks: 2
 
 Chunk Breakdown:
@@ -2351,40 +2512,44 @@ is repugnant to justice and morali...
 MATCH #160
 Header: Independence of the Judiciary.
 Number: 160
-Sentence (first 100 chars): 160. (1) In the exercise of judicial authority, the Judiciary, as constituted by
-CHAPTER: TEN
-PART: PART 1 - JUDICIAL AUTHORITY AND LEGAL SYSTEM
-Full Article Length: 970 characters
+Sentence: 160. (1) In the exercise of judicial authority, the Judiciary, as constituted by
+Legal Domain: Not classified (beyond limit)
+Chapter: TEN
+Part: PART 1 - JUDICIAL AUTHORITY AND LEGAL SYSTEM
+Article Length: 970 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #161
 Header: Judicial ofﬁces and ofﬁcers.
 Number: 161
-Sentence (first 100 chars): 161. (1) The Judiciary consists of the judges of the superior courts, magistrates,
-CHAPTER: TEN
-PART: PART 1 - JUDICIAL AUTHORITY AND LEGAL SYSTEM
-Full Article Length: 509 characters
+Sentence: 161. (1) The Judiciary consists of the judges of the superior courts, magistrates,
+Legal Domain: Not classified (beyond limit)
+Chapter: TEN
+Part: PART 1 - JUDICIAL AUTHORITY AND LEGAL SYSTEM
+Article Length: 509 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #162
 Header: System of courts.
 Number: 162
-Sentence (first 100 chars): 162. (1) The superior courts are the Supreme Court, the Court of Appeal, the
-CHAPTER: TEN
-PART: PART 1 - JUDICIAL AUTHORITY AND LEGAL SYSTEM
-Full Article Length: 576 characters
+Sentence: 162. (1) The superior courts are the Supreme Court, the Court of Appeal, the
+Legal Domain: Not classified (beyond limit)
+Chapter: TEN
+Part: PART 1 - JUDICIAL AUTHORITY AND LEGAL SYSTEM
+Article Length: 576 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #163
 Header: Supreme Court.
 Number: 163
-Sentence (first 100 chars): 163. (1) There is established the Supreme Court, which shall consist of—
-CHAPTER: TEN
-PART: PART 2 - SUPERIOR COURTS
-Full Article Length: 1693 characters
+Sentence: 163. (1) There is established the Supreme Court, which shall consist of—
+Legal Domain: Not classified (beyond limit)
+Chapter: TEN
+Part: PART 2 - SUPERIOR COURTS
+Article Length: 1693 characters
 Number of Chunks: 3
 
 Chunk Breakdown:
@@ -2409,20 +2574,22 @@ Supreme Court.
 MATCH #164
 Header: Court of Appeal.
 Number: 164
-Sentence (first 100 chars): 164. (1) There is established the Court of Appeal, which—
-CHAPTER: TEN
-PART: PART 2 - SUPERIOR COURTS
-Full Article Length: 558 characters
+Sentence: 164. (1) There is established the Court of Appeal, which—
+Legal Domain: Not classified (beyond limit)
+Chapter: TEN
+Part: PART 2 - SUPERIOR COURTS
+Article Length: 558 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #165
 Header: High Court.
 Number: 165
-Sentence (first 100 chars): 165. (1) There is established the High Court, which—
-CHAPTER: TEN
-PART: PART 2 - SUPERIOR COURTS
-Full Article Length: 2540 characters
+Sentence: 165. (1) There is established the High Court, which—
+Legal Domain: Not classified (beyond limit)
+Chapter: TEN
+Part: PART 2 - SUPERIOR COURTS
+Article Length: 2540 characters
 Number of Chunks: 4
 
 Chunk Breakdown:
@@ -2453,10 +2620,11 @@ but not over a superior court.
 MATCH #166
 Header: Appointment of Chief Justice, Deputy Chief Justice and other judges.
 Number: 166
-Sentence (first 100 chars): 166. (1) The President shall appoint—
-CHAPTER: TEN
-PART: PART 2 - SUPERIOR COURTS
-Full Article Length: 2109 characters
+Sentence: 166. (1) The President shall appoint—
+Legal Domain: Not classified (beyond limit)
+Chapter: TEN
+Part: PART 2 - SUPERIOR COURTS
+Article Length: 2109 characters
 Number of Chunks: 4
 
 Chunk Breakdown:
@@ -2483,20 +2651,22 @@ held the qualiﬁcations ment...
 MATCH #167
 Header: Tenure of ofﬁce of the Chief Justice and other judges.
 Number: 167
-Sentence (first 100 chars): 167. (1) A judge shall retire from ofﬁce on attaining the age of seventy years,
-CHAPTER: TEN
-PART: PART 2 - SUPERIOR COURTS
-Full Article Length: 954 characters
+Sentence: 167. (1) A judge shall retire from ofﬁce on attaining the age of seventy years,
+Legal Domain: Not classified (beyond limit)
+Chapter: TEN
+Part: PART 2 - SUPERIOR COURTS
+Article Length: 954 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #168
 Header: Removal from ofﬁce.
 Number: 168
-Sentence (first 100 chars): 168. (1) A judge of a superior court may be removed from ofﬁce only on the
-CHAPTER: TEN
-PART: PART 2 - SUPERIOR COURTS
-Full Article Length: 3058 characters
+Sentence: 168. (1) A judge of a superior court may be removed from ofﬁce only on the
+Legal Domain: Not classified (beyond limit)
+Chapter: TEN
+Part: PART 2 - SUPERIOR COURTS
+Article Length: 3058 characters
 Number of Chunks: 5
 
 Chunk Breakdown:
@@ -2531,20 +2701,22 @@ matter afﬁrms the tribunal’s recom...
 MATCH #169
 Header: Subordinate courts.
 Number: 169
-Sentence (first 100 chars): 169. (1) The subordinate courts are—
-CHAPTER: TEN
-PART: PART 3 - SUBORDINATE COURTS
-Full Article Length: 396 characters
+Sentence: 169. (1) The subordinate courts are—
+Legal Domain: Not classified (beyond limit)
+Chapter: TEN
+Part: PART 3 - SUBORDINATE COURTS
+Article Length: 396 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #170
 Header: Kadhis’ courts.
 Number: 170
-Sentence (first 100 chars): 170. (1) There shall be a Chief Kadhi and such number, being not fewer than
-CHAPTER: TEN
-PART: PART 3 - SUBORDINATE COURTS
-Full Article Length: 1171 characters
+Sentence: 170. (1) There shall be a Chief Kadhi and such number, being not fewer than
+Legal Domain: Not classified (beyond limit)
+Chapter: TEN
+Part: PART 3 - SUBORDINATE COURTS
+Article Length: 1171 characters
 Number of Chunks: 2
 
 Chunk Breakdown:
@@ -2563,10 +2735,11 @@ of Parliament, shall each be empowered to hold a Kadhi’s court h...
 MATCH #171
 Header: Establishment of the Judicial Service Commission.
 Number: 171
-Sentence (first 100 chars): 171. (1) There is established the Judicial Service Commission.
-CHAPTER: TEN
-PART: PART 4 - JUDICIAL SERVICE COMMISSION
-Full Article Length: 1225 characters
+Sentence: 171. (1) There is established the Judicial Service Commission.
+Legal Domain: Not classified (beyond limit)
+Chapter: TEN
+Part: PART 4 - JUDICIAL SERVICE COMMISSION
+Article Length: 1225 characters
 Number of Chunks: 2
 
 Chunk Breakdown:
@@ -2585,10 +2758,11 @@ appointed by the President with the approval of the Nat...
 MATCH #172
 Header: Functions of the Judicial Service Commission.
 Number: 172
-Sentence (first 100 chars): 172. (1) The Judicial Service Commission shall promote and facilitate the
-CHAPTER: TEN
-PART: PART 4 - JUDICIAL SERVICE COMMISSION
-Full Article Length: 1112 characters
+Sentence: 172. (1) The Judicial Service Commission shall promote and facilitate the
+Legal Domain: Not classified (beyond limit)
+Chapter: TEN
+Part: PART 4 - JUDICIAL SERVICE COMMISSION
+Article Length: 1112 characters
 Number of Chunks: 2
 
 Chunk Breakdown:
@@ -2607,50 +2781,55 @@ administrat...
 MATCH #173
 Header: Judiciary Fund.
 Number: 173
-Sentence (first 100 chars): 173. (1) There is established a fund to be known as the Judiciary Fund which
-CHAPTER: TEN
-PART: PART 4 - JUDICIAL SERVICE COMMISSION
-Full Article Length: 734 characters
+Sentence: 173. (1) There is established a fund to be known as the Judiciary Fund which
+Legal Domain: Not classified (beyond limit)
+Chapter: TEN
+Part: PART 4 - JUDICIAL SERVICE COMMISSION
+Article Length: 734 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #174
 Header: Objects of devolution.
 Number: 174
-Sentence (first 100 chars): 174. The objects of the devolution of government are—
-CHAPTER: ELEVEN
-PART: PART 1 - OBJECTS AND PRINCIPLES OF DEVOLVED GOVERNMENT
-Full Article Length: 935 characters
+Sentence: 174. The objects of the devolution of government are—
+Legal Domain: Not classified (beyond limit)
+Chapter: ELEVEN
+Part: PART 1 - OBJECTS AND PRINCIPLES OF DEVOLVED GOVERNMENT
+Article Length: 935 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #175
 Header: Principles of devolved government.
 Number: 175
-Sentence (first 100 chars): 175. County governments established under this Constitution shall reﬂect the
-CHAPTER: ELEVEN
-PART: PART 1 - OBJECTS AND PRINCIPLES OF DEVOLVED GOVERNMENT
-Full Article Length: 427 characters
+Sentence: 175. County governments established under this Constitution shall reﬂect the
+Legal Domain: Not classified (beyond limit)
+Chapter: ELEVEN
+Part: PART 1 - OBJECTS AND PRINCIPLES OF DEVOLVED GOVERNMENT
+Article Length: 427 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #176
 Header: County governments.
 Number: 176
-Sentence (first 100 chars): 176. (1) There shall be a county government for each county, consisting of a
-CHAPTER: ELEVEN
-PART: PART 2 - COUNTY GOVERNMENTS
-Full Article Length: 302 characters
+Sentence: 176. (1) There shall be a county government for each county, consisting of a
+Legal Domain: Not classified (beyond limit)
+Chapter: ELEVEN
+Part: PART 2 - COUNTY GOVERNMENTS
+Article Length: 302 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #177
 Header: Membership of county assembly.
 Number: 177
-Sentence (first 100 chars): 177. (1) A county assembly consists of—
-CHAPTER: ELEVEN
-PART: PART 2 - COUNTY GOVERNMENTS
-Full Article Length: 1052 characters
+Sentence: 177. (1) A county assembly consists of—
+Legal Domain: Not classified (beyond limit)
+Chapter: ELEVEN
+Part: PART 2 - COUNTY GOVERNMENTS
+Article Length: 1052 characters
 Number of Chunks: 2
 
 Chunk Breakdown:
@@ -2669,20 +2848,22 @@ that county by each political party under paragraph (a) in accordance with Artic
 MATCH #178
 Header: Speaker of a county assembly.
 Number: 178
-Sentence (first 100 chars): 178. (1) Each county assembly shall have a speaker elected by the county
-CHAPTER: ELEVEN
-PART: PART 2 - COUNTY GOVERNMENTS
-Full Article Length: 476 characters
+Sentence: 178. (1) Each county assembly shall have a speaker elected by the county
+Legal Domain: Not classified (beyond limit)
+Chapter: ELEVEN
+Part: PART 2 - COUNTY GOVERNMENTS
+Article Length: 476 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #179
 Header: County executive committees.
 Number: 179
-Sentence (first 100 chars): 179. (1) The executive authority of the county is vested in, and exercised by, a
-CHAPTER: ELEVEN
-PART: PART 2 - COUNTY GOVERNMENTS
-Full Article Length: 1178 characters
+Sentence: 179. (1) The executive authority of the county is vested in, and exercised by, a
+Legal Domain: Not classified (beyond limit)
+Chapter: ELEVEN
+Part: PART 2 - COUNTY GOVERNMENTS
+Article Length: 1178 characters
 Number of Chunks: 2
 
 Chunk Breakdown:
@@ -2702,10 +2883,11 @@ the county governor.
 MATCH #180
 Header: Election of county governor and deputy county governor.
 Number: 180
-Sentence (first 100 chars): 180. (1) The county governor shall be directly elected by the voters registered in
-CHAPTER: ELEVEN
-PART: PART 2 - COUNTY GOVERNMENTS
-Full Article Length: 1375 characters
+Sentence: 180. (1) The county governor shall be directly elected by the voters registered in
+Legal Domain: Not classified (beyond limit)
+Chapter: ELEVEN
+Part: PART 2 - COUNTY GOVERNMENTS
+Article Length: 1375 characters
 Number of Chunks: 2
 
 Chunk Breakdown:
@@ -2723,20 +2905,22 @@ governor.
 MATCH #181
 Header: Removal of a county governor.
 Number: 181
-Sentence (first 100 chars): 181. (1) A county governor may be removed from ofﬁce on any of the following
-CHAPTER: ELEVEN
-PART: PART 2 - COUNTY GOVERNMENTS
-Full Article Length: 579 characters
+Sentence: 181. (1) A county governor may be removed from ofﬁce on any of the following
+Legal Domain: Not classified (beyond limit)
+Chapter: ELEVEN
+Part: PART 2 - COUNTY GOVERNMENTS
+Article Length: 579 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #182
 Header: Vacancy in the ofﬁce of county governor.
 Number: 182
-Sentence (first 100 chars): 182. (1) The ofﬁce of the county governor shall become vacant if the holder of
-CHAPTER: ELEVEN
-PART: PART 2 - COUNTY GOVERNMENTS
-Full Article Length: 1684 characters
+Sentence: 182. (1) The ofﬁce of the county governor shall become vacant if the holder of
+Legal Domain: Not classified (beyond limit)
+Chapter: ELEVEN
+Part: PART 2 - COUNTY GOVERNMENTS
+Article Length: 1684 characters
 Number of Chunks: 3
 
 Chunk Breakdown:
@@ -2761,70 +2945,77 @@ newly...
 MATCH #183
 Header: Functions of county executive committees.
 Number: 183
-Sentence (first 100 chars): 183. (1) A county executive committee shall—
-CHAPTER: ELEVEN
-PART: PART 2 - COUNTY GOVERNMENTS
-Full Article Length: 619 characters
+Sentence: 183. (1) A county executive committee shall—
+Legal Domain: Not classified (beyond limit)
+Chapter: ELEVEN
+Part: PART 2 - COUNTY GOVERNMENTS
+Article Length: 619 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #184
 Header: Urban areas and cities.
 Number: 184
-Sentence (first 100 chars): 184. (1) National legislation shall provide for the governance and management
-CHAPTER: ELEVEN
-PART: PART 2 - COUNTY GOVERNMENTS
-Full Article Length: 575 characters
+Sentence: 184. (1) National legislation shall provide for the governance and management
+Legal Domain: Not classified (beyond limit)
+Chapter: ELEVEN
+Part: PART 2 - COUNTY GOVERNMENTS
+Article Length: 575 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #185
 Header: Legislative authority of county assemblies.
 Number: 185
-Sentence (first 100 chars): 185. (1) The legislative authority of a county is vested in, and exercised by, its
-CHAPTER: ELEVEN
-PART: PART 2 - COUNTY GOVERNMENTS
-Full Article Length: 688 characters
+Sentence: 185. (1) The legislative authority of a county is vested in, and exercised by, its
+Legal Domain: Not classified (beyond limit)
+Chapter: ELEVEN
+Part: PART 2 - COUNTY GOVERNMENTS
+Article Length: 688 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #186
 Header: Respective functions and powers of national and county governments.
 Number: 186
-Sentence (first 100 chars): 186. (1) Except as otherwise provided by this Constitution, the functions and
-CHAPTER: ELEVEN
-PART: PART 3 - FUNCTIONS AND POWERS OF COUNTY GOVERNMENTS
-Full Article Length: 660 characters
+Sentence: 186. (1) Except as otherwise provided by this Constitution, the functions and
+Legal Domain: Not classified (beyond limit)
+Chapter: ELEVEN
+Part: PART 3 - FUNCTIONS AND POWERS OF COUNTY GOVERNMENTS
+Article Length: 660 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #187
 Header: Transfer of functions and powers between levels of government.
 Number: 187
-Sentence (first 100 chars): 187. (1) A function or power of government at one level may be transferred to
-CHAPTER: ELEVEN
-PART: PART 3 - FUNCTIONS AND POWERS OF COUNTY GOVERNMENTS
-Full Article Length: 814 characters
+Sentence: 187. (1) A function or power of government at one level may be transferred to
+Legal Domain: Not classified (beyond limit)
+Chapter: ELEVEN
+Part: PART 3 - FUNCTIONS AND POWERS OF COUNTY GOVERNMENTS
+Article Length: 814 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #188
 Header: Boundaries of counties.
 Number: 188
-Sentence (first 100 chars): 188. (1) The boundaries of a county may be altered only by a resolution—
-CHAPTER: ELEVEN
-PART: PART 4 - THE BOUNDARIES OF COUNTIES
-Full Article Length: 675 characters
+Sentence: 188. (1) The boundaries of a county may be altered only by a resolution—
+Legal Domain: Not classified (beyond limit)
+Chapter: ELEVEN
+Part: PART 4 - THE BOUNDARIES OF COUNTIES
+Article Length: 675 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #189
 Header: Cooperation between national and county governments.
 Number: 189
-Sentence (first 100 chars): 189. (1) Government at either level shall—
-CHAPTER: ELEVEN
-PART: PART 5 - RELATIONSHIP BETWEEN GOVERNMENTS
-Full Article Length: 1235 characters
+Sentence: 189. (1) Government at either level shall—
+Legal Domain: Not classified (beyond limit)
+Chapter: ELEVEN
+Part: PART 5 - RELATIONSHIP BETWEEN GOVERNMENTS
+Article Length: 1235 characters
 Number of Chunks: 2
 
 Chunk Breakdown:
@@ -2843,10 +3034,11 @@ purpose, may set up joint committees and joint authorities.
 MATCH #190
 Header: Support for county governments.
 Number: 190
-Sentence (first 100 chars): 190. (1) Parliament shall by legislation ensure that county governments have
-CHAPTER: ELEVEN
-PART: PART 5 - RELATIONSHIP BETWEEN GOVERNMENTS
-Full Article Length: 1403 characters
+Sentence: 190. (1) Parliament shall by legislation ensure that county governments have
+Legal Domain: Not classified (beyond limit)
+Chapter: ELEVEN
+Part: PART 5 - RELATIONSHIP BETWEEN GOVERNMENTS
+Article Length: 1403 characters
 Number of Chunks: 3
 
 Chunk Breakdown:
@@ -2868,10 +3060,11 @@ if necessary, to assume re...
 MATCH #191
 Header: Conﬂict of laws.
 Number: 191
-Sentence (first 100 chars): 191. (1) This Article applies to conﬂicts between national and county legislation
-CHAPTER: ELEVEN
-PART: PART 5 - RELATIONSHIP BETWEEN GOVERNMENTS
-Full Article Length: 2103 characters
+Sentence: 191. (1) This Article applies to conﬂicts between national and county legislation
+Legal Domain: Not classified (beyond limit)
+Chapter: ELEVEN
+Part: PART 5 - RELATIONSHIP BETWEEN GOVERNMENTS
+Article Length: 2103 characters
 Number of Chunks: 4
 
 Chunk Breakdown:
@@ -2899,20 +3092,22 @@ the protection of the environment.
 MATCH #192
 Header: Suspension of a county government.
 Number: 192
-Sentence (first 100 chars): 192. (1) The President may suspend a county government—
-CHAPTER: ELEVEN
-PART: PART 6 - SUSPENSION OF COUNTY GOVERNMENTS
-Full Article Length: 868 characters
+Sentence: 192. (1) The President may suspend a county government—
+Legal Domain: Not classified (beyond limit)
+Chapter: ELEVEN
+Part: PART 6 - SUSPENSION OF COUNTY GOVERNMENTS
+Article Length: 868 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #193
 Header: Qualiﬁcations for election as member of county assembly.
 Number: 193
-Sentence (first 100 chars): 193. (1) Unless disqualiﬁed under clause (2), a person is eligible for election as
-CHAPTER: ELEVEN
-PART: PART 7 - GENERAL
-Full Article Length: 1308 characters
+Sentence: 193. (1) Unless disqualiﬁed under clause (2), a person is eligible for election as
+Legal Domain: Not classified (beyond limit)
+Chapter: ELEVEN
+Part: PART 7 - GENERAL
+Article Length: 1308 characters
 Number of Chunks: 2
 
 Chunk Breakdown:
@@ -2932,10 +3127,11 @@ preceding the ...
 MATCH #194
 Header: Vacation of ofﬁce of member of county assembly.
 Number: 194
-Sentence (first 100 chars): 194. (1) The ofﬁce of a member of a county assembly becomes vacant—
-CHAPTER: ELEVEN
-PART: PART 7 - GENERAL
-Full Article Length: 1128 characters
+Sentence: 194. (1) The ofﬁce of a member of a county assembly becomes vacant—
+Legal Domain: Not classified (beyond limit)
+Chapter: ELEVEN
+Part: PART 7 - GENERAL
+Article Length: 1128 characters
 Number of Chunks: 2
 
 Chunk Breakdown:
@@ -2954,90 +3150,99 @@ if the member becomes disqualiﬁed for election o...
 MATCH #195
 Header: County assembly power to summon witnesses.
 Number: 195
-Sentence (first 100 chars): 195. (1) A county assembly or any of its committees has power to summon
-CHAPTER: ELEVEN
-PART: PART 7 - GENERAL
-Full Article Length: 517 characters
+Sentence: 195. (1) A county assembly or any of its committees has power to summon
+Legal Domain: Not classified (beyond limit)
+Chapter: ELEVEN
+Part: PART 7 - GENERAL
+Article Length: 517 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #196
 Header: Public participation and county assembly powers, privileges and immunities.
 Number: 196
-Sentence (first 100 chars): 196. (1) A county assembly shall—
-CHAPTER: ELEVEN
-PART: PART 7 - GENERAL
-Full Article Length: 642 characters
+Sentence: 196. (1) A county assembly shall—
+Legal Domain: Not classified (beyond limit)
+Chapter: ELEVEN
+Part: PART 7 - GENERAL
+Article Length: 642 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #197
 Header: County assembly gender balance and diversity.
 Number: 197
-Sentence (first 100 chars): 197. (1) Not more than two-thirds of the members of any county assembly or
-CHAPTER: ELEVEN
-PART: PART 7 - GENERAL
-Full Article Length: 402 characters
+Sentence: 197. (1) Not more than two-thirds of the members of any county assembly or
+Legal Domain: Not classified (beyond limit)
+Chapter: ELEVEN
+Part: PART 7 - GENERAL
+Article Length: 402 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #198
 Header: County government during transition.
 Number: 198
-Sentence (first 100 chars): 198. While an election is being held to constitute a county assembly under
-CHAPTER: ELEVEN
-PART: PART 7 - GENERAL
-Full Article Length: 303 characters
+Sentence: 198. While an election is being held to constitute a county assembly under
+Legal Domain: Not classified (beyond limit)
+Chapter: ELEVEN
+Part: PART 7 - GENERAL
+Article Length: 303 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #199
 Header: Publication of county legislation.
 Number: 199
-Sentence (first 100 chars): 199. (1) County legislation does not take effect unless published in the Gazette.
-CHAPTER: ELEVEN
-PART: PART 7 - GENERAL
-Full Article Length: 232 characters
+Sentence: 199. (1) County legislation does not take effect unless published in the Gazette.
+Legal Domain: Not classified (beyond limit)
+Chapter: ELEVEN
+Part: PART 7 - GENERAL
+Article Length: 232 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #200
 Header: Legislation on Chapter.
 Number: 200
-Sentence (first 100 chars): 200. (1) Parliament shall enact legislation providing for all matters necessary
-CHAPTER: ELEVEN
-PART: PART 7 - GENERAL
-Full Article Length: 765 characters
+Sentence: 200. (1) Parliament shall enact legislation providing for all matters necessary
+Legal Domain: Not classified (beyond limit)
+Chapter: ELEVEN
+Part: PART 7 - GENERAL
+Article Length: 765 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #201
 Header: Principles of public ﬁnance.
 Number: 201
-Sentence (first 100 chars): 201. The following principles shall guide all aspects of public ﬁnance in the
-CHAPTER: TWELVE
-PART: [Not within a PART section]
-Full Article Length: 873 characters
+Sentence: 201. The following principles shall guide all aspects of public ﬁnance in the
+Legal Domain: Not classified (beyond limit)
+Chapter: TWELVE
+Part: [Not within a PART]
+Article Length: 873 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #202
 Header: Equitable sharing of national revenue.
 Number: 202
-Sentence (first 100 chars): 202. (1) Revenue raised nationally shall be shared equitably among the national
-CHAPTER: TWELVE
-PART: [Not within a PART section]
-Full Article Length: 297 characters
+Sentence: 202. (1) Revenue raised nationally shall be shared equitably among the national
+Legal Domain: Not classified (beyond limit)
+Chapter: TWELVE
+Part: [Not within a PART]
+Article Length: 297 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #203
 Header: Equitable share and other ﬁnancial laws.
 Number: 203
-Sentence (first 100 chars): 203. (1) The following criteria shall be taken into account in determining
-CHAPTER: TWELVE
-PART: [Not within a PART section]
-Full Article Length: 1483 characters
+Sentence: 203. (1) The following criteria shall be taken into account in determining
+Legal Domain: Not classified (beyond limit)
+Chapter: TWELVE
+Part: [Not within a PART]
+Article Length: 1483 characters
 Number of Chunks: 3
 
 Chunk Breakdown:
@@ -3061,10 +3266,11 @@ Equalisation Fund.
 MATCH #204
 Header: Equalisation Fund.
 Number: 204
-Sentence (first 100 chars): 204. (1) There is established an Equalisation Fund into which shall be paid
-CHAPTER: TWELVE
-PART: [Not within a PART section]
-Full Article Length: 1855 characters
+Sentence: 204. (1) There is established an Equalisation Fund into which shall be paid
+Legal Domain: Not classified (beyond limit)
+Chapter: TWELVE
+Part: [Not within a PART]
+Article Length: 1855 characters
 Number of Chunks: 3
 
 Chunk Breakdown:
@@ -3087,20 +3293,22 @@ further ﬁxed period of years, subject to clause (8).
 MATCH #205
 Header: Consultation on ﬁnancial legislation affecting counties.
 Number: 205
-Sentence (first 100 chars): 205. (1) When a Bill that includes provisions dealing with the sharing of
-CHAPTER: TWELVE
-PART: [Not within a PART section]
-Full Article Length: 443 characters
+Sentence: 205. (1) When a Bill that includes provisions dealing with the sharing of
+Legal Domain: Not classified (beyond limit)
+Chapter: TWELVE
+Part: [Not within a PART]
+Article Length: 443 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #206
 Header: Consolidated Fund and other public funds.
 Number: 206
-Sentence (first 100 chars): 206. (1) There is established the Consolidated Fund into which shall be paid all
-CHAPTER: TWELVE
-PART: PART 2 - OTHER PUBLIC FUNDS
-Full Article Length: 1035 characters
+Sentence: 206. (1) There is established the Consolidated Fund into which shall be paid all
+Legal Domain: Not classified (beyond limit)
+Chapter: TWELVE
+Part: PART 2 - OTHER PUBLIC FUNDS
+Article Length: 1035 characters
 Number of Chunks: 2
 
 Chunk Breakdown:
@@ -3118,100 +3326,110 @@ Consolidated Fund, unless the withdrawal of the money has...
 MATCH #207
 Header: Revenue Funds for county governments.
 Number: 207
-Sentence (first 100 chars): 207. (1) There shall be established a Revenue Fund for each county government,
-CHAPTER: TWELVE
-PART: PART 2 - OTHER PUBLIC FUNDS
-Full Article Length: 831 characters
+Sentence: 207. (1) There shall be established a Revenue Fund for each county government,
+Legal Domain: Not classified (beyond limit)
+Chapter: TWELVE
+Part: PART 2 - OTHER PUBLIC FUNDS
+Article Length: 831 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #208
 Header: Contingencies Fund.
 Number: 208
-Sentence (first 100 chars): 208. (1) There is established a Contingencies Fund, the operation of which shall
-CHAPTER: TWELVE
-PART: PART 2 - OTHER PUBLIC FUNDS
-Full Article Length: 363 characters
+Sentence: 208. (1) There is established a Contingencies Fund, the operation of which shall
+Legal Domain: Not classified (beyond limit)
+Chapter: TWELVE
+Part: PART 2 - OTHER PUBLIC FUNDS
+Article Length: 363 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #209
 Header: Power to impose taxes and charges.
 Number: 209
-Sentence (first 100 chars): 209. (1) Only the national government may impose—
-CHAPTER: TWELVE
-PART: PART 3 - REVENUE-RAISING AND THE PUBLIC DEBT
-Full Article Length: 773 characters
+Sentence: 209. (1) Only the national government may impose—
+Legal Domain: Not classified (beyond limit)
+Chapter: TWELVE
+Part: PART 3 - REVENUE-RAISING AND THE PUBLIC DEBT
+Article Length: 773 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #210
 Header: Imposition of tax.
 Number: 210
-Sentence (first 100 chars): 210. (1) No tax or licensing fee may be imposed, waived or varied except as
-CHAPTER: TWELVE
-PART: PART 3 - REVENUE-RAISING AND THE PUBLIC DEBT
-Full Article Length: 562 characters
+Sentence: 210. (1) No tax or licensing fee may be imposed, waived or varied except as
+Legal Domain: Not classified (beyond limit)
+Chapter: TWELVE
+Part: PART 3 - REVENUE-RAISING AND THE PUBLIC DEBT
+Article Length: 562 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #211
 Header: Borrowing by national government.
 Number: 211
-Sentence (first 100 chars): 211. (1) Parliament may, by legislation—
-CHAPTER: TWELVE
-PART: PART 3 - REVENUE-RAISING AND THE PUBLIC DEBT
-Full Article Length: 683 characters
+Sentence: 211. (1) Parliament may, by legislation—
+Legal Domain: Not classified (beyond limit)
+Chapter: TWELVE
+Part: PART 3 - REVENUE-RAISING AND THE PUBLIC DEBT
+Article Length: 683 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #212
 Header: Borrowing by counties.
 Number: 212
-Sentence (first 100 chars): 212. A county government may borrow only—
-CHAPTER: TWELVE
-PART: PART 3 - REVENUE-RAISING AND THE PUBLIC DEBT
-Full Article Length: 188 characters
+Sentence: 212. A county government may borrow only—
+Legal Domain: Not classified (beyond limit)
+Chapter: TWELVE
+Part: PART 3 - REVENUE-RAISING AND THE PUBLIC DEBT
+Article Length: 188 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #213
 Header: Loan guarantees by national government.
 Number: 213
-Sentence (first 100 chars): 213. (1) An Act of Parliament shall prescribe terms and conditions under which
-CHAPTER: TWELVE
-PART: PART 3 - REVENUE-RAISING AND THE PUBLIC DEBT
-Full Article Length: 291 characters
+Sentence: 213. (1) An Act of Parliament shall prescribe terms and conditions under which
+Legal Domain: Not classified (beyond limit)
+Chapter: TWELVE
+Part: PART 3 - REVENUE-RAISING AND THE PUBLIC DEBT
+Article Length: 291 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #214
 Header: Public debt.
 Number: 214
-Sentence (first 100 chars): 214. (1) The public debt is a charge on the Consolidated Fund, but an Act of
-CHAPTER: TWELVE
-PART: PART 3 - REVENUE-RAISING AND THE PUBLIC DEBT
-Full Article Length: 357 characters
+Sentence: 214. (1) The public debt is a charge on the Consolidated Fund, but an Act of
+Legal Domain: Not classified (beyond limit)
+Chapter: TWELVE
+Part: PART 3 - REVENUE-RAISING AND THE PUBLIC DEBT
+Article Length: 357 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #215
 Header: Commission on Revenue Allocation.
 Number: 215
-Sentence (first 100 chars): 215. (1) There is established the Commission on Revenue Allocation.
-CHAPTER: TWELVE
-PART: PART 4 - REVENUE ALLOCATION
-Full Article Length: 889 characters
+Sentence: 215. (1) There is established the Commission on Revenue Allocation.
+Legal Domain: Not classified (beyond limit)
+Chapter: TWELVE
+Part: PART 4 - REVENUE ALLOCATION
+Article Length: 889 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #216
 Header: Functions of the Commission on Revenue Allocation.
 Number: 216
-Sentence (first 100 chars): 216. (1) The principal function of the Commission on Revenue Allocation is to
-CHAPTER: TWELVE
-PART: PART 4 - REVENUE ALLOCATION
-Full Article Length: 1104 characters
+Sentence: 216. (1) The principal function of the Commission on Revenue Allocation is to
+Legal Domain: Not classified (beyond limit)
+Chapter: TWELVE
+Part: PART 4 - REVENUE ALLOCATION
+Article Length: 1104 characters
 Number of Chunks: 2
 
 Chunk Breakdown:
@@ -3230,10 +3448,11 @@ which it sets out the crite...
 MATCH #217
 Header: Division of revenue.
 Number: 217
-Sentence (first 100 chars): 217. (1) Once every ﬁve years, the Senate shall, by resolution, determine the
-CHAPTER: TWELVE
-PART: PART 4 - REVENUE ALLOCATION
-Full Article Length: 2416 characters
+Sentence: 217. (1) Once every ﬁve years, the Senate shall, by resolution, determine the
+Legal Domain: Not classified (beyond limit)
+Chapter: TWELVE
+Part: PART 4 - REVENUE ALLOCATION
+Article Length: 2416 characters
 Number of Chunks: 4
 
 Chunk Breakdown:
@@ -3265,40 +3484,44 @@ thirds of its members, amend a resolution at an...
 MATCH #218
 Header: Annual Division and Allocation of Revenue Bills.
 Number: 218
-Sentence (first 100 chars): 218. (1) At least two months before the end of each ﬁnancial year, there shall
-CHAPTER: TWELVE
-PART: PART 4 - REVENUE ALLOCATION
-Full Article Length: 913 characters
+Sentence: 218. (1) At least two months before the end of each ﬁnancial year, there shall
+Legal Domain: Not classified (beyond limit)
+Chapter: TWELVE
+Part: PART 4 - REVENUE ALLOCATION
+Article Length: 913 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #219
 Header: Transfer of equitable share.
 Number: 219
-Sentence (first 100 chars): 219. A county’s share of revenue raised by the national government shall be
-CHAPTER: TWELVE
-PART: PART 4 - REVENUE ALLOCATION
-Full Article Length: 205 characters
+Sentence: 219. A county’s share of revenue raised by the national government shall be
+Legal Domain: Not classified (beyond limit)
+Chapter: TWELVE
+Part: PART 4 - REVENUE ALLOCATION
+Article Length: 205 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #220
 Header: Form, content and timing of budgets.
 Number: 220
-Sentence (first 100 chars): 220. (1) Budgets of the national and county governments shall contain—
-CHAPTER: TWELVE
-PART: PART 5 - BUDGETS AND SPENDING
-Full Article Length: 762 characters
+Sentence: 220. (1) Budgets of the national and county governments shall contain—
+Legal Domain: Not classified (beyond limit)
+Chapter: TWELVE
+Part: PART 5 - BUDGETS AND SPENDING
+Article Length: 762 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #221
 Header: Budget estimates and annual Appropriation Bill.
 Number: 221
-Sentence (first 100 chars): 221. (1) At least two months before the end of each ﬁnancial year, the Cabinet
-CHAPTER: TWELVE
-PART: PART 5 - BUDGETS AND SPENDING
-Full Article Length: 1809 characters
+Sentence: 221. (1) At least two months before the end of each ﬁnancial year, the Cabinet
+Legal Domain: Not classified (beyond limit)
+Chapter: TWELVE
+Part: PART 5 - BUDGETS AND SPENDING
+Article Length: 1809 characters
 Number of Chunks: 3
 
 Chunk Breakdown:
@@ -3321,20 +3544,22 @@ of the money needed for the expenditure, and for the appropri...
 MATCH #222
 Header: Expenditure before annual budget is passed.
 Number: 222
-Sentence (first 100 chars): 222. (1) If the Appropriation Act for a ﬁnancial year has not been assented to,
-CHAPTER: TWELVE
-PART: PART 5 - BUDGETS AND SPENDING
-Full Article Length: 770 characters
+Sentence: 222. (1) If the Appropriation Act for a ﬁnancial year has not been assented to,
+Legal Domain: Not classified (beyond limit)
+Chapter: TWELVE
+Part: PART 5 - BUDGETS AND SPENDING
+Article Length: 770 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #223
 Header: Supplementary appropriation.
 Number: 223
-Sentence (first 100 chars): 223. (1) Subject to clauses (2) to (4), the national government may spend money
-CHAPTER: TWELVE
-PART: PART 5 - BUDGETS AND SPENDING
-Full Article Length: 1171 characters
+Sentence: 223. (1) Subject to clauses (2) to (4), the national government may spend money
+Legal Domain: Not classified (beyond limit)
+Chapter: TWELVE
+Part: PART 5 - BUDGETS AND SPENDING
+Article Length: 1171 characters
 Number of Chunks: 2
 
 Chunk Breakdown:
@@ -3353,20 +3578,22 @@ appropriation Bill shall be introduced for...
 MATCH #224
 Header: County appropriation Bills.
 Number: 224
-Sentence (first 100 chars): 224. On the basis of the Division of Revenue Bill passed by Parliament under
-CHAPTER: TWELVE
-PART: PART 5 - BUDGETS AND SPENDING
-Full Article Length: 262 characters
+Sentence: 224. On the basis of the Division of Revenue Bill passed by Parliament under
+Legal Domain: Not classified (beyond limit)
+Chapter: TWELVE
+Part: PART 5 - BUDGETS AND SPENDING
+Article Length: 262 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #225
 Header: Financial control.
 Number: 225
-Sentence (first 100 chars): 225. (1) An Act of Parliament shall provide for the establishment, functions and
-CHAPTER: TWELVE
-PART: PART 6 - CONTROL OF PUBLIC MONEY
-Full Article Length: 1577 characters
+Sentence: 225. (1) An Act of Parliament shall provide for the establishment, functions and
+Legal Domain: Not classified (beyond limit)
+Chapter: TWELVE
+Part: PART 6 - CONTROL OF PUBLIC MONEY
+Article Length: 1577 characters
 Number of Chunks: 3
 
 Chunk Breakdown:
@@ -3390,10 +3617,11 @@ parliamentary committe...
 MATCH #226
 Header: Accounts and audit of public entities.
 Number: 226
-Sentence (first 100 chars): 226. (1) An Act of Parliament shall provide for—
-CHAPTER: TWELVE
-PART: PART 6 - CONTROL OF PUBLIC MONEY
-Full Article Length: 1206 characters
+Sentence: 226. (1) An Act of Parliament shall provide for—
+Legal Domain: Not classified (beyond limit)
+Chapter: TWELVE
+Part: PART 6 - CONTROL OF PUBLIC MONEY
+Article Length: 1206 characters
 Number of Chunks: 2
 
 Chunk Breakdown:
@@ -3412,30 +3640,33 @@ reported on by a professionally qualiﬁed accountant appoint...
 MATCH #227
 Header: Procurement of public goods and services.
 Number: 227
-Sentence (first 100 chars): 227. (1) When a State organ or any other public entity contracts for goods or
-CHAPTER: TWELVE
-PART: PART 6 - CONTROL OF PUBLIC MONEY
-Full Article Length: 905 characters
+Sentence: 227. (1) When a State organ or any other public entity contracts for goods or
+Legal Domain: Not classified (beyond limit)
+Chapter: TWELVE
+Part: PART 6 - CONTROL OF PUBLIC MONEY
+Article Length: 905 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #228
 Header: Controller of Budget.
 Number: 228
-Sentence (first 100 chars): 228. (1) There shall be a Controller of Budget who shall be nominated by
-CHAPTER: TWELVE
-PART: PART 7 - FINANCIAL OFFICERS AND INSTITUTIONS
-Full Article Length: 971 characters
+Sentence: 228. (1) There shall be a Controller of Budget who shall be nominated by
+Legal Domain: Not classified (beyond limit)
+Chapter: TWELVE
+Part: PART 7 - FINANCIAL OFFICERS AND INSTITUTIONS
+Article Length: 971 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #229
 Header: Auditor-General.
 Number: 229
-Sentence (first 100 chars): 229. (1) There shall be an Auditor-General who shall be nominated by
-CHAPTER: TWELVE
-PART: PART 7 - FINANCIAL OFFICERS AND INSTITUTIONS
-Full Article Length: 1610 characters
+Sentence: 229. (1) There shall be an Auditor-General who shall be nominated by
+Legal Domain: Not classified (beyond limit)
+Chapter: TWELVE
+Part: PART 7 - FINANCIAL OFFICERS AND INSTITUTIONS
+Article Length: 1610 characters
 Number of Chunks: 3
 
 Chunk Breakdown:
@@ -3462,10 +3693,11 @@ assembly shall debate and consider the repor...
 MATCH #230
 Header: Salaries and Remuneration Commission.
 Number: 230
-Sentence (first 100 chars): 230. (1) There is established the Salaries and Remuneration Commission.
-CHAPTER: TWELVE
-PART: PART 7 - FINANCIAL OFFICERS AND INSTITUTIONS
-Full Article Length: 1801 characters
+Sentence: 230. (1) There is established the Salaries and Remuneration Commission.
+Legal Domain: Not classified (beyond limit)
+Chapter: TWELVE
+Part: PART 7 - FINANCIAL OFFICERS AND INSTITUTIONS
+Article Length: 1801 characters
 Number of Chunks: 3
 
 Chunk Breakdown:
@@ -3491,20 +3723,22 @@ the need to ensure that the total public com...
 MATCH #231
 Header: Central Bank of Kenya.
 Number: 231
-Sentence (first 100 chars): 231. (1) There is established the Central Bank of Kenya.
-CHAPTER: TWELVE
-PART: PART 7 - FINANCIAL OFFICERS AND INSTITUTIONS
-Full Article Length: 726 characters
+Sentence: 231. (1) There is established the Central Bank of Kenya.
+Legal Domain: Not classified (beyond limit)
+Chapter: TWELVE
+Part: PART 7 - FINANCIAL OFFICERS AND INSTITUTIONS
+Article Length: 726 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #232
 Header: Values and principles of public service.
 Number: 232
-Sentence (first 100 chars): 232. (1) The values and principles of public service include—
-CHAPTER: THIRTEEN
-PART: PART 1 - VALUES AND PRINCIPLES OF PUBLIC SERVICE
-Full Article Length: 1005 characters
+Sentence: 232. (1) The values and principles of public service include—
+Legal Domain: Not classified (beyond limit)
+Chapter: THIRTEEN
+Part: PART 1 - VALUES AND PRINCIPLES OF PUBLIC SERVICE
+Article Length: 1005 characters
 Number of Chunks: 2
 
 Chunk Breakdown:
@@ -3526,10 +3760,11 @@ persons with disabilities.
 MATCH #233
 Header: The Public Service Commission.
 Number: 233
-Sentence (first 100 chars): 233. (1) There is established the Public Service Commission.
-CHAPTER: THIRTEEN
-PART: PART 2 - THE PUBLIC SERVICE COMMISSION
-Full Article Length: 1376 characters
+Sentence: 233. (1) There is established the Public Service Commission.
+Legal Domain: Not classified (beyond limit)
+Chapter: THIRTEEN
+Part: PART 2 - THE PUBLIC SERVICE COMMISSION
+Article Length: 1376 characters
 Number of Chunks: 2
 
 Chunk Breakdown:
@@ -3548,10 +3783,11 @@ sponsored or otherwise support...
 MATCH #234
 Header: Functions and powers of the Public Service Commission.
 Number: 234
-Sentence (first 100 chars): 234. (1) The functions and powers of the Commission are as set out in this
-CHAPTER: THIRTEEN
-PART: PART 2 - THE PUBLIC SERVICE COMMISSION
-Full Article Length: 2180 characters
+Sentence: 234. (1) The functions and powers of the Commission are as set out in this
+Legal Domain: Not classified (beyond limit)
+Chapter: THIRTEEN
+Part: PART 2 - THE PUBLIC SERVICE COMMISSION
+Article Length: 2180 characters
 Number of Chunks: 4
 
 Chunk Breakdown:
@@ -3585,50 +3821,55 @@ Stafﬁng of county governments.
 MATCH #235
 Header: Stafﬁng of county governments.
 Number: 235
-Sentence (first 100 chars): 235. (1) A county government is responsible, within a framework of uniform
-CHAPTER: THIRTEEN
-PART: PART 2 - THE PUBLIC SERVICE COMMISSION
-Full Article Length: 499 characters
+Sentence: 235. (1) A county government is responsible, within a framework of uniform
+Legal Domain: Not classified (beyond limit)
+Chapter: THIRTEEN
+Part: PART 2 - THE PUBLIC SERVICE COMMISSION
+Article Length: 499 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #236
 Header: Protection of public ofﬁcers.
 Number: 236
-Sentence (first 100 chars): 236. A public ofﬁcer shall not be—
-CHAPTER: THIRTEEN
-PART: PART 2 - THE PUBLIC SERVICE COMMISSION
-Full Article Length: 293 characters
+Sentence: 236. A public ofﬁcer shall not be—
+Legal Domain: Not classified (beyond limit)
+Chapter: THIRTEEN
+Part: PART 2 - THE PUBLIC SERVICE COMMISSION
+Article Length: 293 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #237
 Header: Teachers Service Commission.
 Number: 237
-Sentence (first 100 chars): 237. (1) There is established the Teachers Service Commission.
-CHAPTER: THIRTEEN
-PART: PART 3 - TEACHERS SERVICE COMMISSION
-Full Article Length: 646 characters
+Sentence: 237. (1) There is established the Teachers Service Commission.
+Legal Domain: Not classified (beyond limit)
+Chapter: THIRTEEN
+Part: PART 3 - TEACHERS SERVICE COMMISSION
+Article Length: 646 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #238
 Header: Principles of national security.
 Number: 238
-Sentence (first 100 chars): 238. (1) National security is the protection against internal and external threats
-CHAPTER: FOURTEEN
-PART: PART 1 - NATIONAL SECURITY ORGANS
-Full Article Length: 897 characters
+Sentence: 238. (1) National security is the protection against internal and external threats
+Legal Domain: Not classified (beyond limit)
+Chapter: FOURTEEN
+Part: PART 1 - NATIONAL SECURITY ORGANS
+Article Length: 897 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #239
 Header: National security organs.
 Number: 239
-Sentence (first 100 chars): 239. (1) The national security organs are—
-CHAPTER: FOURTEEN
-PART: PART 1 - NATIONAL SECURITY ORGANS
-Full Article Length: 1111 characters
+Sentence: 239. (1) The national security organs are—
+Legal Domain: Not classified (beyond limit)
+Chapter: FOURTEEN
+Part: PART 1 - NATIONAL SECURITY ORGANS
+Article Length: 1111 characters
 Number of Chunks: 2
 
 Chunk Breakdown:
@@ -3649,10 +3890,11 @@ this Constitution or an Act of Pa...
 MATCH #240
 Header: Establishment of the National Security Council.
 Number: 240
-Sentence (first 100 chars): 240. (1) There is established a National Security Council.
-CHAPTER: FOURTEEN
-PART: PART 1 - NATIONAL SECURITY ORGANS
-Full Article Length: 1380 characters
+Sentence: 240. (1) There is established a National Security Council.
+Legal Domain: Not classified (beyond limit)
+Chapter: FOURTEEN
+Part: PART 1 - NATIONAL SECURITY ORGANS
+Article Length: 1380 characters
 Number of Chunks: 2
 
 Chunk Breakdown:
@@ -3674,10 +3916,11 @@ national security in order to enable the nationa...
 MATCH #241
 Header: Establishment of Kenya Defence Forces and Defence Council.
 Number: 241
-Sentence (first 100 chars): 241. (1) There are established the Kenya Defence Forces.
-CHAPTER: FOURTEEN
-PART: PART 2 - THE KENYA DEFENCE FORCES
-Full Article Length: 1215 characters
+Sentence: 241. (1) There are established the Kenya Defence Forces.
+Legal Domain: Not classified (beyond limit)
+Chapter: FOURTEEN
+Part: PART 2 - THE KENYA DEFENCE FORCES
+Article Length: 1215 characters
 Number of Chunks: 2
 
 Chunk Breakdown:
@@ -3699,40 +3942,44 @@ the Cabinet Secretary responsible for de...
 MATCH #242
 Header: Establishment of National Intelligence Service.
 Number: 242
-Sentence (first 100 chars): 242. (1) There is established the National Intelligence Service.
-CHAPTER: FOURTEEN
-PART: PART 3 - THE NATIONAL INTELLIGENCE SERVICE
-Full Article Length: 305 characters
+Sentence: 242. (1) There is established the National Intelligence Service.
+Legal Domain: Not classified (beyond limit)
+Chapter: FOURTEEN
+Part: PART 3 - THE NATIONAL INTELLIGENCE SERVICE
+Article Length: 305 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #243
 Header: Establishment of the National Police Service.
 Number: 243
-Sentence (first 100 chars): 243. (1) There is established the National Police Service.
-CHAPTER: FOURTEEN
-PART: PART 4 - THE NATIONAL POLICE SERVICE
-Full Article Length: 389 characters
+Sentence: 243. (1) There is established the National Police Service.
+Legal Domain: Not classified (beyond limit)
+Chapter: FOURTEEN
+Part: PART 4 - THE NATIONAL POLICE SERVICE
+Article Length: 389 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #244
 Header: Objects and functions of the National Police Service.
 Number: 244
-Sentence (first 100 chars): 244. The National Police Service shall—
-CHAPTER: FOURTEEN
-PART: PART 4 - THE NATIONAL POLICE SERVICE
-Full Article Length: 524 characters
+Sentence: 244. The National Police Service shall—
+Legal Domain: Not classified (beyond limit)
+Chapter: FOURTEEN
+Part: PART 4 - THE NATIONAL POLICE SERVICE
+Article Length: 524 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #245
 Header: Command of the National Police Service.
 Number: 245
-Sentence (first 100 chars): 245. (1) There is established the ofﬁce of the Inspector-General of the National
-CHAPTER: FOURTEEN
-PART: PART 4 - THE NATIONAL POLICE SERVICE
-Full Article Length: 1929 characters
+Sentence: 245. (1) There is established the ofﬁce of the Inspector-General of the National
+Legal Domain: Not classified (beyond limit)
+Chapter: FOURTEEN
+Part: PART 4 - THE NATIONAL POLICE SERVICE
+Article Length: 1929 characters
 Number of Chunks: 3
 
 Chunk Breakdown:
@@ -3759,50 +4006,55 @@ serious violation of this Co...
 MATCH #246
 Header: National Police Service Commission.
 Number: 246
-Sentence (first 100 chars): 246. (1) There is established the National Police Service Commission.
-CHAPTER: FOURTEEN
-PART: PART 4 - THE NATIONAL POLICE SERVICE
-Full Article Length: 993 characters
+Sentence: 246. (1) There is established the National Police Service Commission.
+Legal Domain: Not classified (beyond limit)
+Chapter: FOURTEEN
+Part: PART 4 - THE NATIONAL POLICE SERVICE
+Article Length: 993 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #247
 Header: Other police services.
 Number: 247
-Sentence (first 100 chars): 247. Parliament may enact legislation establishing other police services under
-CHAPTER: FOURTEEN
-PART: PART 4 - THE NATIONAL POLICE SERVICE
-Full Article Length: 183 characters
+Sentence: 247. Parliament may enact legislation establishing other police services under
+Legal Domain: Not classified (beyond limit)
+Chapter: FOURTEEN
+Part: PART 4 - THE NATIONAL POLICE SERVICE
+Article Length: 183 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #248
 Header: Application of Chapter.
 Number: 248
-Sentence (first 100 chars): 248. (1) This Chapter applies to the commissions speciﬁed in clause (2) and the
-CHAPTER: FIFTEEN
-PART: [Not within a PART section]
-Full Article Length: 763 characters
+Sentence: 248. (1) This Chapter applies to the commissions speciﬁed in clause (2) and the
+Legal Domain: Not classified (beyond limit)
+Chapter: FIFTEEN
+Part: [Not within a PART]
+Article Length: 763 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #249
 Header: Objects, authority and funding of commissions and independent ofﬁces.
 Number: 249
-Sentence (first 100 chars): 249. (1) The objects of the commissions and the independent ofﬁces are to—
-CHAPTER: FIFTEEN
-PART: [Not within a PART section]
-Full Article Length: 666 characters
+Sentence: 249. (1) The objects of the commissions and the independent ofﬁces are to—
+Legal Domain: Not classified (beyond limit)
+Chapter: FIFTEEN
+Part: [Not within a PART]
+Article Length: 666 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #250
 Header: Composition, appointment and terms of ofﬁce.
 Number: 250
-Sentence (first 100 chars): 250. (1) Each commission shall consist of at least three, but not more than nine,
-CHAPTER: FIFTEEN
-PART: [Not within a PART section]
-Full Article Length: 2120 characters
+Sentence: 250. (1) Each commission shall consist of at least three, but not more than nine,
+Legal Domain: Not classified (beyond limit)
+Chapter: FIFTEEN
+Part: [Not within a PART]
+Article Length: 2120 characters
 Number of Chunks: 4
 
 Chunk Breakdown:
@@ -3831,10 +4083,11 @@ Removal from ofﬁce.
 MATCH #251
 Header: Removal from ofﬁce.
 Number: 251
-Sentence (first 100 chars): 251. (1) A member of a commission (other than an ex ofﬁcio member), or the
-CHAPTER: FIFTEEN
-PART: [Not within a PART section]
-Full Article Length: 1742 characters
+Sentence: 251. (1) A member of a commission (other than an ex ofﬁcio member), or the
+Legal Domain: Not classified (beyond limit)
+Chapter: FIFTEEN
+Part: [Not within a PART]
+Article Length: 1742 characters
 Number of Chunks: 3
 
 Chunk Breakdown:
@@ -3857,40 +4110,44 @@ with the recommenda...
 MATCH #252
 Header: General functions and powers.
 Number: 252
-Sentence (first 100 chars): 252. (1) Each commission, and each holder of an independent ofﬁce—
-CHAPTER: FIFTEEN
-PART: [Not within a PART section]
-Full Article Length: 923 characters
+Sentence: 252. (1) Each commission, and each holder of an independent ofﬁce—
+Legal Domain: Not classified (beyond limit)
+Chapter: FIFTEEN
+Part: [Not within a PART]
+Article Length: 923 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #253
 Header: Incorporation of commissions and independent ofﬁces.
 Number: 253
-Sentence (first 100 chars): 253. Each commission and each independent ofﬁce—
-CHAPTER: FIFTEEN
-PART: [Not within a PART section]
-Full Article Length: 217 characters
+Sentence: 253. Each commission and each independent ofﬁce—
+Legal Domain: Not classified (beyond limit)
+Chapter: FIFTEEN
+Part: [Not within a PART]
+Article Length: 217 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #254
 Header: Reporting by commissions and independent ofﬁces.
 Number: 254
-Sentence (first 100 chars): 254. (1) As soon as practicable after the end of each ﬁnancial year, each
-CHAPTER: FIFTEEN
-PART: [Not within a PART section]
-Full Article Length: 485 characters
+Sentence: 254. (1) As soon as practicable after the end of each ﬁnancial year, each
+Legal Domain: Not classified (beyond limit)
+Chapter: FIFTEEN
+Part: [Not within a PART]
+Article Length: 485 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #255
 Header: Amendment of this Constitution.
 Number: 255
-Sentence (first 100 chars): 255. (1) A proposed amendment to this Constitution shall be enacted in
-CHAPTER: SIXTEEN
-PART: [Not within a PART section]
-Full Article Length: 1256 characters
+Sentence: 255. (1) A proposed amendment to this Constitution shall be enacted in
+Legal Domain: Not classified (beyond limit)
+Chapter: SIXTEEN
+Part: [Not within a PART]
+Article Length: 1256 characters
 Number of Chunks: 2
 
 Chunk Breakdown:
@@ -3909,10 +4166,11 @@ at least twenty per cent of the registered voters in each of at l...
 MATCH #256
 Header: Amendment by parliamentary initiative.
 Number: 256
-Sentence (first 100 chars): 256. (1) A Bill to amend this Constitution—
-CHAPTER: SIXTEEN
-PART: [Not within a PART section]
-Full Article Length: 1669 characters
+Sentence: 256. (1) A Bill to amend this Constitution—
+Legal Domain: Not classified (beyond limit)
+Chapter: SIXTEEN
+Part: [Not within a PART]
+Article Length: 1669 characters
 Number of Chunks: 3
 
 Chunk Breakdown:
@@ -3937,10 +4195,11 @@ has been approved in accordan...
 MATCH #257
 Header: Amendment by popular initiative.
 Number: 257
-Sentence (first 100 chars): 257. (1) An amendment to this Constitution may be proposed by a popular
-CHAPTER: SIXTEEN
-PART: [Not within a PART section]
-Full Article Length: 1921 characters
+Sentence: 257. (1) An amendment to this Constitution may be proposed by a popular
+Legal Domain: Not classified (beyond limit)
+Chapter: SIXTEEN
+Part: [Not within a PART]
+Article Length: 1921 characters
 Number of Chunks: 3
 
 Chunk Breakdown:
@@ -3964,20 +4223,22 @@ of the members of each House.
 MATCH #258
 Header: Enforcement of this Constitution.
 Number: 258
-Sentence (first 100 chars): 258. (1) Every person has the right to institute court proceedings, claiming that
-CHAPTER: SEVENTEEN
-PART: [Not within a PART section]
-Full Article Length: 577 characters
+Sentence: 258. (1) Every person has the right to institute court proceedings, claiming that
+Legal Domain: Not classified (beyond limit)
+Chapter: SEVENTEEN
+Part: [Not within a PART]
+Article Length: 577 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #259
 Header: Construing this Constitution.
 Number: 259
-Sentence (first 100 chars): 259. (1) This Constitution shall be interpreted in a manner that—
-CHAPTER: SEVENTEEN
-PART: [Not within a PART section]
-Full Article Length: 3905 characters
+Sentence: 259. (1) This Constitution shall be interpreted in a manner that—
+Legal Domain: Not classified (beyond limit)
+Chapter: SEVENTEEN
+Part: [Not within a PART]
+Article Length: 3905 characters
 Number of Chunks: 6
 
 Chunk Breakdown:
@@ -4019,10 +4280,11 @@ approval or co...
 MATCH #260
 Header: Interpretation.
 Number: 260
-Sentence (first 100 chars): 260. In this Constitution, unless the context requires otherwise—
-CHAPTER: SEVENTEEN
-PART: [Not within a PART section]
-Full Article Length: 6602 characters
+Sentence: 260. In this Constitution, unless the context requires otherwise—
+Legal Domain: Not classified (beyond limit)
+Chapter: SEVENTEEN
+Part: [Not within a PART]
+Article Length: 6602 characters
 Number of Chunks: 10
 
 Chunk Breakdown:
@@ -4086,10 +4348,11 @@ any other means of representing or reproducing words in...
 MATCH #261
 Header: Consequential legislation.
 Number: 261
-Sentence (first 100 chars): 261. (1) Parliament shall enact any legislation required by this Constitution
-CHAPTER: EIGHTEEN
-PART: [Not within a PART section]
-Full Article Length: 2134 characters
+Sentence: 261. (1) Parliament shall enact any legislation required by this Constitution
+Legal Domain: Not classified (beyond limit)
+Chapter: EIGHTEEN
+Part: [Not within a PART]
+Article Length: 2134 characters
 Number of Chunks: 4
 
 Chunk Breakdown:
@@ -4117,30 +4380,33 @@ Transitional and consequential provisions.
 MATCH #262
 Header: Transitional and consequential provisions.
 Number: 262
-Sentence (first 100 chars): 262. The transitional and consequential provisions set out in the Sixth Schedule
-CHAPTER: EIGHTEEN
-PART: [Not within a PART section]
-Full Article Length: 137 characters
+Sentence: 262. The transitional and consequential provisions set out in the Sixth Schedule
+Legal Domain: Not classified (beyond limit)
+Chapter: EIGHTEEN
+Part: [Not within a PART]
+Article Length: 137 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #263
 Header: Effective Date.
 Number: 263
-Sentence (first 100 chars): 263. This Constitution shall come into force on its promulgation by the President
-CHAPTER: EIGHTEEN
-PART: [Not within a PART section]
-Full Article Length: 300 characters
+Sentence: 263. This Constitution shall come into force on its promulgation by the President
+Legal Domain: Not classified (beyond limit)
+Chapter: EIGHTEEN
+Part: [Not within a PART]
+Article Length: 300 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
 MATCH #264
 Header: Repeal of previous Constitution.
 Number: 264
-Sentence (first 100 chars): 264. Subject to the Sixth Schedule, for the avoidance of doubt, the Constitution
-CHAPTER: EIGHTEEN
-PART: [Not within a PART section]
-Full Article Length: 208 characters
+Sentence: 264. Subject to the Sixth Schedule, for the avoidance of doubt, the Constitution
+Legal Domain: Not classified (beyond limit)
+Chapter: EIGHTEEN
+Part: [Not within a PART]
+Article Length: 208 characters
 Number of Chunks: 1
 --------------------------------------------------------------------------------
 
