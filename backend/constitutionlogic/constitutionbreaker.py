@@ -2,16 +2,10 @@ import fitz  # PyMuPDF
 import pytesseract
 import io
 import re
-import os
-import requests
 import json
 from PIL import Image
 from pathlib import Path
-from typing import List, Dict, Tuple
-from dotenv import load_dotenv
-
-# Load environment variables
-load_dotenv()
+from typing import List, Dict
 
 # ===== CONFIGURATION =====
 SCRIPT_DIR = Path(__file__).parent
@@ -25,282 +19,6 @@ CONSTITUTION_DIR = SCRIPT_DIR / "../MasterRules/TheConstitutionOfKenya.pdf"
 # 3. Chunking configuration
 CHUNK_SIZE = 1000
 CHUNK_OVERLAP = 300
-
-# 4. LLM Classification Limit - MODIFIED TO 10
-MAX_ARTICLES_TO_CLASSIFY = 10
-
-# 5. Groq API Configuration
-GROQ_API_KEY = os.getenv("GROQ_API_KEY")
-if not GROQ_API_KEY:
-    raise ValueError("GROQ_API_KEY not found in environment variables. Please set it in your .env file.")
-
-MODEL_NAME = "llama-3.3-70b-versatile"
-GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
-
-# ===== LEGAL DOMAIN DEFINITIONS =====
-LEGAL_DOMAINS = """
-Constitutional Article Map by Legal Domain:
-
-1. Constitutional Supremacy & Sovereignty
-   * Articles: 1 – 11
-   * Focus: Power of the people, supremacy of the law, and national values.
-
-2. Citizenship & Immigration Law
-   * Articles: 12 – 18
-   * Focus: Acquisition, dual citizenship, and revocation.
-
-3. Human Rights & Bill of Rights
-   * Articles: 19 – 59
-   * Focus: Civil liberties, socio-economic rights, and enforcement of rights.
-
-4. Land & Property Law
-   * Articles: 60 – 68
-   * Focus: Land ownership, classification, and the National Land Commission.
-
-5. Environmental & Natural Resources Law
-   * Articles: 69 – 72 (also Art 42)
-   * Focus: Conservation, sustainable development, and resource management.
-
-6. Ethics, Integrity & Anti-Corruption
-   * Articles: 73 – 80
-   * Focus: Leadership standards and conduct for State Officers (Chapter Six).
-
-7. Electoral & Political Party Law
-   * Articles: 81 – 92
-   * Focus: IEBC, voting, and regulation of political parties.
-
-8. Parliamentary & Legislative Law
-   * Articles: 93 – 128
-   * Focus: The National Assembly, Senate, and the legislative process.
-
-9. Executive & State Office Law
-   * Articles: 129 – 158
-   * Focus: Powers of the President, Cabinet, Attorney-General, and DPP.
-
-10. Judiciary & Procedural Law
-   * Articles: 159 – 173
-   * Focus: Court hierarchy, judicial independence, and the JSC.
-
-11. Devolution & County Government Law
-   * Articles: 174 – 200
-   * Focus: Structure and functions of the 47 County Governments.
-
-12. Public Finance Management (PFM)
-   * Articles: 201 – 231
-   * Focus: Taxation, revenue sharing, the Auditor-General, and the Central Bank.
-
-13. Public Service & Labour Law
-   * Articles: 232 – 237 (also Art 41)
-   * Focus: Values of public service, the PSC, and the TSC.
-
-14. National Security Law
-   * Articles: 238 – 247
-   * Focus: KDF, National Intelligence Service, and the National Police Service.
-
-15. Constitutional Commissions & Watchdogs
-   * Articles: 248 – 254
-   * Focus: Independent commissions and their oversight functions.
-
-16. Constitutional Litigation & Amendments
-   * Articles: 255 – 257
-   * Focus: Referendum and amendment procedures.
-
-17. Interpretation & General Provisions
-   * Articles: 258 – 260
-   * Focus: Legal definitions and rules for interpreting the Constitution.
-
-18. Transitional & Implementation Provisions
-   * Articles: 261 – 264
-   * Focus: Enactment of consequential legislation and transition mechanisms.
-"""
-
-
-def call_groq_api(prompt: str, system_message: str, max_tokens: int = 500) -> str:
-    """
-    Make a request to Groq API to get LLM response.
-    
-    Args:
-        prompt: The user prompt to send
-        system_message: The system instruction
-        max_tokens: Maximum tokens in response
-        
-    Returns:
-        str: The model's response
-    """
-    try:
-        payload = {
-            "model": MODEL_NAME,
-            "messages": [
-                {
-                    "role": "system",
-                    "content": system_message
-                },
-                {
-                    "role": "user",
-                    "content": prompt
-                }
-            ],
-            "max_tokens": max_tokens,
-            "temperature": 0.1  # Low temperature for consistent classification
-        }
-        
-        headers = {
-            "Content-Type": "application/json",
-            "Authorization": f"Bearer {GROQ_API_KEY}"
-        }
-        
-        response = requests.post(
-            GROQ_API_URL,
-            json=payload,
-            headers=headers,
-            timeout=120
-        )
-        
-        response.raise_for_status()
-        result = response.json()
-        
-        if "choices" in result and len(result["choices"]) > 0:
-            return result["choices"][0]["message"]["content"]
-        else:
-            raise Exception(f"Unexpected response format: {result}")
-            
-    except requests.exceptions.RequestException as e:
-        raise Exception(f"Groq API request failed: {str(e)}")
-    except Exception as e:
-        raise Exception(f"Error calling Groq API: {str(e)}")
-
-
-def classify_article_domain(article_number: str, article_header: str, 
-                           article_text: str, chapter: str, part: str) -> str:
-    """
-    Use LLM to classify the legal domain of a constitutional article.
-    
-    Args:
-        article_number: The article number (e.g., "261")
-        article_header: The article header/title
-        article_text: Full text of the article
-        chapter: Chapter information
-        part: Part information
-        
-    Returns:
-        str: The classified legal domain
-    """
-    system_message = f"""You are a legal expert specializing in constitutional law of Kenya. 
-Your task is to classify constitutional articles into their correct legal domain based on their content.
-
-{LEGAL_DOMAINS}
-
-INSTRUCTIONS:
-1. Read the article number, header, chapter, part, and content carefully
-2. Determine which legal domain (1-18) best fits this article
-3. Respond with ONLY the domain number and name in this exact format:
-   "Domain X: Domain Name"
-   
-For example:
-   "Domain 12: Public Finance Management (PFM)"
-
-Be precise and consistent. Consider the article's primary focus and content, not just its number.
-If an article clearly fits multiple domains, choose the PRIMARY domain based on the main subject matter.
-"""
-
-    # Truncate article text if too long (keep first 2000 chars for context)
-    article_preview = article_text[:2000]
-    if len(article_text) > 2000:
-        article_preview += "\n... [truncated]"
-    
-    user_prompt = f"""Classify this constitutional article:
-
-Article Number: {article_number}
-Header: {article_header}
-Chapter: {chapter if chapter else 'Not specified'}
-Part: {part if part else 'Not specified'}
-
-Article Content:
-{article_preview}
-
-Which legal domain does this article belong to? Respond with only the domain number and name."""
-
-    try:
-        print(f"  📊 Classifying Article {article_number}...", end=" ")
-        response = call_groq_api(user_prompt, system_message, max_tokens=100)
-        
-        # Extract domain from response
-        # Expected format: "Domain X: Domain Name"
-        domain_match = re.search(r'Domain\s+(\d+):\s*(.+)', response, re.IGNORECASE)
-        
-        if domain_match:
-            domain_num = domain_match.group(1)
-            domain_name = domain_match.group(2).strip()
-            classified_domain = f"Domain {domain_num}: {domain_name}"
-            print(f"✓ {classified_domain}")
-            return classified_domain
-        else:
-            # Fallback: return the raw response if format doesn't match
-            print(f"⚠️ Unusual format: {response}")
-            return response.strip()
-            
-    except Exception as e:
-        error_msg = f"Classification Error: {str(e)}"
-        print(f"✗ {error_msg}")
-        return error_msg
-
-
-def classify_all_articles(articles: List[Dict]) -> List[Dict]:
-    """
-    Classify only the first MAX_ARTICLES_TO_CLASSIFY articles using the LLM.
-    Adds 'legal_domain' field to each article dictionary.
-    
-    Args:
-        articles: List of article dictionaries
-        
-    Returns:
-        List of articles with legal_domain field added (only first 10 classified)
-    """
-    print("\n" + "=" * 80)
-    print(f"CLASSIFYING FIRST {MAX_ARTICLES_TO_CLASSIFY} ARTICLES INTO LEGAL DOMAINS")
-    print("=" * 80 + "\n")
-    print(f"Classifying first {MAX_ARTICLES_TO_CLASSIFY} of {len(articles)} articles using {MODEL_NAME}...\n")
-    
-    classified_articles = []
-    
-    for idx, article in enumerate(articles, 1):
-        # Only classify the first MAX_ARTICLES_TO_CLASSIFY articles
-        if idx <= MAX_ARTICLES_TO_CLASSIFY:
-            print(f"[{idx}/{MAX_ARTICLES_TO_CLASSIFY}] ", end="")
-            
-            # Get article metadata
-            article_num = article['number']
-            header = article.get('header', 'No header')
-            full_text = article.get('full_article_text', '')
-            chapter = article.get('chapter', 'Not specified')
-            part_info = ""
-            if article.get('part'):
-                part_info = f"Part {article['part']} - {article.get('part_title', '')}"
-            else:
-                part_info = "Not specified"
-            
-            # Classify the article
-            legal_domain = classify_article_domain(
-                article_num, 
-                header, 
-                full_text, 
-                chapter, 
-                part_info
-            )
-            
-            # Add legal_domain to article
-            article_with_domain = article.copy()
-            article_with_domain['legal_domain'] = legal_domain
-            classified_articles.append(article_with_domain)
-        else:
-            # For articles beyond the limit, add them without classification
-            article_with_domain = article.copy()
-            article_with_domain['legal_domain'] = "Not classified (beyond limit)"
-            classified_articles.append(article_with_domain)
-    
-    print(f"\n✓ Classification complete! {MAX_ARTICLES_TO_CLASSIFY} articles classified with LLM.\n")
-    print(f"✓ Remaining {len(articles) - MAX_ARTICLES_TO_CLASSIFY} articles marked as 'Not classified'.\n")
-    return classified_articles
 
 
 def extract_text_from_pdf(file_path: Path, use_ocr_threshold: int = 50) -> str:
@@ -443,7 +161,7 @@ def load_constitution_document(file_path: Path) -> str:
 
 
 def find_numbered_sections_with_headers(text: str, max_matches: int = 264) -> List[Dict[str, str]]:
-    """Find all constitutional articles with metadata."""
+    """Find all constitutional articles with metadata including chapter titles."""
     lines = text.split('\n')
     results = []
     
@@ -454,6 +172,7 @@ def find_numbered_sections_with_headers(text: str, max_matches: int = 264) -> Li
     current_part = None
     current_part_title = None
     current_chapter = None
+    current_chapter_title = None
     
     i = 0
     while i < len(lines) and len(results) < max_matches:
@@ -471,6 +190,19 @@ def find_numbered_sections_with_headers(text: str, max_matches: int = 264) -> Li
             current_chapter = chapter_match.group(1).strip()
             current_part = None
             current_part_title = None
+            
+            # Extract chapter title from the next non-empty line
+            current_chapter_title = None
+            j = i + 1
+            while j < len(lines):
+                next_line = lines[j].strip()
+                if next_line:
+                    # Check if it's not a PART or numbered article
+                    if not part_pattern.match(next_line) and not numbered_pattern.match(next_line):
+                        current_chapter_title = next_line
+                    break
+                j += 1
+            
             i += 1
             continue
         
@@ -509,7 +241,8 @@ def find_numbered_sections_with_headers(text: str, max_matches: int = 264) -> Li
                 'full_article_text': full_article_text,
                 'part': current_part,
                 'part_title': current_part_title,
-                'chapter': current_chapter
+                'chapter': current_chapter,
+                'chapter_title': current_chapter_title
             })
             
             i = j
@@ -546,8 +279,8 @@ def chunk_article_text(article_text: str, chunk_size: int = CHUNK_SIZE,
     return chunks
 
 
-def process_articles_with_chunks(sections: List[Dict[str, str]]) -> List[Dict]:
-    """Process articles and create chunks."""
+def process_articles_with_chunks(sections: List[Dict[str, str]], source_pdf_path: Path) -> List[Dict]:
+    """Process articles and create chunks with source document metadata."""
     processed_articles = []
     
     for section in sections:
@@ -555,85 +288,151 @@ def process_articles_with_chunks(sections: List[Dict[str, str]]) -> List[Dict]:
         chunks = chunk_article_text(article_text)
         
         article_with_chunks = section.copy()
-        article_with_chunks['full_text'] = article_text
         article_with_chunks['text_length'] = len(article_text)
         article_with_chunks['num_chunks'] = len(chunks)
         article_with_chunks['chunks'] = chunks
+        article_with_chunks['source_document'] = source_pdf_path.name
         
         processed_articles.append(article_with_chunks)
     
     return processed_articles
 
 
-def main():
-    """Main function with legal domain classification for first 10 articles only."""
+def flatten_articles_to_embeddable_chunks(articles: List[Dict]) -> List[Dict]:
+    """
+    Convert articles with multiple chunks into individual embeddable units.
+    Each chunk becomes its own record with metadata (WITHOUT full_article_text to save space).
+    
+    Args:
+        articles: List of articles with nested chunks
+        
+    Returns:
+        List of individual chunk records ready for embedding
+    """
+    embeddable_chunks = []
+    
+    for article in articles:
+        num_chunks = article['num_chunks']
+        
+        # Create base metadata (shared across all chunks)
+        base_metadata = {
+            'article_number': article['number'],
+            'article_header': article.get('header', ''),
+            'chapter': article.get('chapter', ''),
+            'chapter_title': article.get('chapter_title', ''),
+            'part': article.get('part', ''),
+            'part_title': article.get('part_title', ''),
+            'source_document': article['source_document'],
+            'article_length': article['text_length'],
+            'total_chunks': num_chunks
+        }
+        
+        # Create individual chunk records
+        for chunk_idx, chunk_text in enumerate(article['chunks'], 1):
+            chunk_record = base_metadata.copy()
+            chunk_record['chunk_index'] = chunk_idx
+            chunk_record['chunk_text'] = chunk_text  # This is EITHER full article OR the specific chunk
+            chunk_record['chunk_length'] = len(chunk_text)
+            chunk_record['is_complete_article'] = (num_chunks == 1)
+            
+            embeddable_chunks.append(chunk_record)
+    
+    return embeddable_chunks
+
+
+def extract_constitution_articles(pdf_path: Path = None) -> List[Dict]:
+    """
+    Main extraction function that returns structured articles.
+    This is the primary function to be called from other modules.
+    
+    Args:
+        pdf_path: Path to Constitution PDF. If None, uses CONSTITUTION_DIR.
+        
+    Returns:
+        List of article dictionaries with chunks and metadata
+    """
+    if pdf_path is None:
+        pdf_path = CONSTITUTION_DIR
+    
     print("\n" + "=" * 80)
-    print("CONSTITUTION EXTRACTOR WITH LEGAL DOMAIN CLASSIFICATION (FIRST 10 ARTICLES)")
+    print("CONSTITUTION ARTICLE EXTRACTOR")
     print("=" * 80 + "\n")
     
     # Load constitution
-    constitution_text = load_constitution_document(CONSTITUTION_DIR)
+    constitution_text = load_constitution_document(pdf_path)
     
     if constitution_text.startswith("Error:"):
-        print("Failed to load document. Exiting.")
-        return
+        print(f"Failed to load document: {constitution_text}")
+        return []
     
     # Extract articles
     sections = find_numbered_sections_with_headers(constitution_text)
     
     if not sections:
         print("No articles found.")
+        return []
+    
+    # Process and chunk articles with source document
+    processed_articles = process_articles_with_chunks(sections, pdf_path)
+    
+    return processed_articles
+
+
+def main():
+    """Main function - extracts articles and outputs to both TXT and JSON formats."""
+    articles = extract_constitution_articles()
+    
+    if not articles:
+        print("No articles to process. Exiting.")
         return
     
-    # Process and chunk articles
-    processed_articles = process_articles_with_chunks(sections)
-    
-    # NEW: Classify ONLY first 10 articles using LLM
-    classified_articles = classify_all_articles(processed_articles)
-    
     # Calculate statistics
-    total_chunks = sum(article['num_chunks'] for article in classified_articles)
-    articles_with_multiple_chunks = sum(1 for article in classified_articles if article['num_chunks'] > 1)
-    articles_classified = sum(1 for article in classified_articles if article.get('legal_domain') != "Not classified (beyond limit)")
+    total_chunks = sum(article['num_chunks'] for article in articles)
+    articles_with_multiple_chunks = sum(1 for article in articles if article['num_chunks'] > 1)
     
-    print(f"Total Articles: {len(classified_articles)}")
-    print(f"Articles Classified with LLM: {articles_classified}")
-    print(f"Total Chunks: {total_chunks}")
-    print(f"Articles with multiple chunks: {articles_with_multiple_chunks}\n")
+    print(f"\n{'=' * 80}")
+    print("EXTRACTION SUMMARY")
+    print(f"{'=' * 80}")
+    print(f"Total Articles: {len(articles)}")
+    print(f"Total Embeddable Chunks: {total_chunks}")
+    print(f"Articles with multiple chunks: {articles_with_multiple_chunks}")
+    print(f"Chunk Size: {CHUNK_SIZE} characters")
+    print(f"Chunk Overlap: {CHUNK_OVERLAP} characters")
+    print(f"Source Document: {articles[0]['source_document'] if articles else 'N/A'}\n")
     
-    # Save to file
+    # Ensure output directory exists
     OUTPUT_DIR.mkdir(exist_ok=True)
-    output_file = OUTPUT_DIR / "constitutechecker.txt"
+    
+    # ===== OUTPUT 1: Human-readable TXT file (for inspection) =====
+    txt_output_file = OUTPUT_DIR / "constitutionchecker.txt"
     
     try:
-        with open(output_file, 'w', encoding='utf-8') as f:
-            f.write("CONSTITUTION ANALYSIS WITH LEGAL DOMAIN CLASSIFICATION\n")
-            f.write(f"(First {MAX_ARTICLES_TO_CLASSIFY} articles classified with LLM)\n")
+        with open(txt_output_file, 'w', encoding='utf-8') as f:
+            f.write("CONSTITUTION ARTICLE EXTRACTION REPORT\n")
             f.write("=" * 80 + "\n\n")
             
-            f.write(f"Total Articles: {len(classified_articles)}\n")
-            f.write(f"Articles Classified: {articles_classified}\n")
+            f.write(f"Total Articles: {len(articles)}\n")
             f.write(f"Chunk Size: {CHUNK_SIZE} characters\n")
             f.write(f"Chunk Overlap: {CHUNK_OVERLAP} characters\n")
             f.write(f"Total Chunks: {total_chunks}\n")
-            f.write(f"Model Used: {MODEL_NAME}\n")
+            f.write(f"Articles with multiple chunks: {articles_with_multiple_chunks}\n")
+            f.write(f"Source Document: {articles[0]['source_document'] if articles else 'N/A'}\n")
             f.write("=" * 80 + "\n\n")
             
-            for idx, article in enumerate(classified_articles, 1):
-                f.write(f"MATCH #{idx}\n")
+            for idx, article in enumerate(articles, 1):
+                f.write(f"{'=' * 80}\n")
+                f.write(f"ARTICLE #{idx}\n")
+                f.write(f"{'=' * 80}\n\n")
+                
+                f.write(f"Article Number: {article['number']}\n")
                 f.write(f"Header: {article['header'] if article['header'] else '[No header]'}\n")
-                f.write(f"Number: {article['number']}\n")
-                
-                sentence_preview = article['sentence'][:100]
-                if len(article['sentence']) > 100:
-                    sentence_preview += "..."
-                f.write(f"Sentence: {article['number']}. {sentence_preview}\n")
-                
-                # Add legal domain (classified or not)
-                f.write(f"Legal Domain: {article.get('legal_domain', 'Not classified')}\n")
+                f.write(f"Source Document: {article['source_document']}\n")
                 
                 if article['chapter']:
-                    f.write(f"Chapter: {article['chapter']}\n")
+                    chapter_display = article['chapter']
+                    if article.get('chapter_title'):
+                        chapter_display += f" - {article['chapter_title']}"
+                    f.write(f"Chapter: {chapter_display}\n")
                 else:
                     f.write(f"Chapter: [Not within a CHAPTER]\n")
                 
@@ -642,24 +441,125 @@ def main():
                 else:
                     f.write(f"Part: [Not within a PART]\n")
                 
-                f.write(f"Article Length: {article['text_length']} characters\n")
+                f.write(f"\nArticle Length: {article['text_length']} characters\n")
                 f.write(f"Number of Chunks: {article['num_chunks']}\n")
+                f.write(f"\n{'-' * 80}\n")
+                f.write("FULL ARTICLE TEXT:\n")
+                f.write(f"{'-' * 80}\n\n")
+                f.write(f"{article['full_article_text']}\n\n")
                 
                 if article['num_chunks'] > 1:
-                    f.write(f"\nChunk Breakdown:\n")
+                    f.write(f"{'-' * 80}\n")
+                    f.write("CHUNK BREAKDOWN:\n")
+                    f.write(f"{'-' * 80}\n\n")
                     for chunk_idx, chunk in enumerate(article['chunks'], 1):
-                        f.write(f"  Chunk {chunk_idx}/{article['num_chunks']} ({len(chunk)} chars):\n")
-                        chunk_preview = chunk[:150]
-                        if len(chunk) > 150:
-                            chunk_preview += "..."
-                        f.write(f"  {chunk_preview}\n\n")
+                        f.write(f"--- Chunk {chunk_idx}/{article['num_chunks']} ({len(chunk)} chars) ---\n\n")
+                        f.write(f"{chunk}\n\n")
                 
-                f.write("-" * 80 + "\n\n")
+                f.write("\n" + "=" * 80 + "\n\n")
         
-        print(f"\n✓ Results saved to: {output_file}")
+        print(f"✓ Human-readable report saved to: {txt_output_file}")
         
     except Exception as e:
-        print(f"ERROR: Failed to write file: {e}")
+        print(f"ERROR: Failed to write TXT file: {e}")
+    
+    # ===== OUTPUT 2: Flat embeddable chunks (PRIMARY - for ingester) =====
+    embeddable_json_file = OUTPUT_DIR / "constitution_embeddable_chunks.json"
+    
+    try:
+        # Flatten articles into individual embeddable chunks
+        embeddable_chunks = flatten_articles_to_embeddable_chunks(articles)
+        
+        # Calculate total size savings
+        total_chunk_text_size = sum(len(chunk['chunk_text']) for chunk in embeddable_chunks)
+        
+        json_data = {
+            "metadata": {
+                "total_articles": len(articles),
+                "total_embeddable_chunks": len(embeddable_chunks),
+                "chunk_size": CHUNK_SIZE,
+                "chunk_overlap": CHUNK_OVERLAP,
+                "source_document": articles[0]['source_document'] if articles else None,
+                "description": "Each chunk is an individual embeddable unit. 'chunk_text' contains either the full article (for short articles) or the specific chunk (for long articles). Embed 'chunk_text' and store all metadata."
+            },
+            "embeddable_chunks": embeddable_chunks
+        }
+        
+        with open(embeddable_json_file, 'w', encoding='utf-8') as f:
+            json.dump(json_data, f, indent=2, ensure_ascii=False)
+        
+        file_size_mb = embeddable_json_file.stat().st_size / (1024 * 1024)
+        
+        print(f"✓ Embeddable chunks saved to: {embeddable_json_file}")
+        print(f"  → {len(embeddable_chunks)} individual chunks ready for embedding")
+        print(f"  → File size: {file_size_mb:.2f} MB")
+        
+        # Show sample chunk structure
+        if embeddable_chunks:
+            print(f"\n📌 Sample chunk structure (short article):")
+            # Find a single-chunk article
+            single_chunk = next((c for c in embeddable_chunks if c['is_complete_article']), embeddable_chunks[0])
+            print(f"   - article_number: {single_chunk['article_number']}")
+            print(f"   - article_header: {single_chunk['article_header']}")
+            print(f"   - chunk_index: {single_chunk['chunk_index']}/{single_chunk['total_chunks']}")
+            print(f"   - chunk_length: {single_chunk['chunk_length']} chars")
+            print(f"   - is_complete_article: {single_chunk['is_complete_article']}")
+            print(f"   - chunk_text: {single_chunk['chunk_text'][:80]}...")
+            
+            # Find a multi-chunk article
+            multi_chunk = next((c for c in embeddable_chunks if not c['is_complete_article']), None)
+            if multi_chunk:
+                print(f"\n📌 Sample chunk structure (long article - chunk {multi_chunk['chunk_index']}):")
+                print(f"   - article_number: {multi_chunk['article_number']}")
+                print(f"   - article_header: {multi_chunk['article_header']}")
+                print(f"   - chunk_index: {multi_chunk['chunk_index']}/{multi_chunk['total_chunks']}")
+                print(f"   - chunk_length: {multi_chunk['chunk_length']} chars")
+                print(f"   - is_complete_article: {multi_chunk['is_complete_article']}")
+                print(f"   - chunk_text: {multi_chunk['chunk_text'][:80]}...")
+        
+    except Exception as e:
+        print(f"ERROR: Failed to write embeddable chunks file: {e}")
+    
+    # ===== OUTPUT 3: Original nested structure (backward compatibility) =====
+    original_json_file = OUTPUT_DIR / "constitution_articles.json"
+    
+    try:
+        json_data_original = {
+            "metadata": {
+                "total_articles": len(articles),
+                "total_chunks": total_chunks,
+                "chunk_size": CHUNK_SIZE,
+                "chunk_overlap": CHUNK_OVERLAP,
+                "source_document": articles[0]['source_document'] if articles else None,
+                "note": "This is the nested structure with full article text. Use 'constitution_embeddable_chunks.json' for embedding."
+            },
+            "articles": articles
+        }
+        
+        with open(original_json_file, 'w', encoding='utf-8') as f:
+            json.dump(json_data_original, f, indent=2, ensure_ascii=False)
+        
+        original_size_mb = original_json_file.stat().st_size / (1024 * 1024)
+        
+        print(f"✓ Original nested structure saved to: {original_json_file}")
+        print(f"  → File size: {original_size_mb:.2f} MB\n")
+        
+    except Exception as e:
+        print(f"ERROR: Failed to write original JSON file: {e}")
+    
+    print(f"{'=' * 80}")
+    print("✅ EXTRACTION COMPLETE - Ready for embedding!")
+    print(f"{'=' * 80}\n")
+    print("📌 FILES GENERATED:")
+    print(f"   1. {txt_output_file.name} - Human-readable inspection")
+    print(f"   2. {embeddable_json_file.name} - PRIMARY file for ingester ⭐")
+    print(f"   3. {original_json_file.name} - Nested structure (backup)\n")
+    print("🎯 KEY FEATURE:")
+    print("   - 'chunk_text' is the ONLY text field in embeddable chunks")
+    print("   - For short articles: chunk_text = full article")
+    print("   - For long articles: chunk_text = specific chunk portion")
+    print("   - No duplication of full_article_text = smaller file size!\n")
+    print("🚀 Next step: Use 'constitution_embeddable_chunks.json' with the ingester\n")
 
 
 if __name__ == "__main__":

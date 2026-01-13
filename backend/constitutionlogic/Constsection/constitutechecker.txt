@@ -1,9 +1,9 @@
 CONSTITUTION ANALYSIS WITH LEGAL DOMAIN CLASSIFICATION
-(First 10 articles classified with LLM)
+(Articles 11-30 classified with LLM)
 ================================================================================
 
 Total Articles: 264
-Articles Classified: 10
+Articles Classified: 20
 Chunk Size: 1000 characters
 Chunk Overlap: 300 characters
 Total Chunks: 427
@@ -14,7 +14,7 @@ MATCH #1
 Header: Sovereignty of the people.
 Number: 1
 Sentence: 1. (1) All sovereign power belongs to the people of Kenya and shall be exercised
-Legal Domain: Domain 1: Constitutional Supremacy & Sovereignty
+Legal Domain: Not classified (outside range)
 Chapter: ONE
 Part: [Not within a PART]
 Article Length: 730 characters
@@ -25,7 +25,7 @@ MATCH #2
 Header: Supremacy of this Constitution.
 Number: 2
 Sentence: 2. (1) This Constitution is the supreme law of the Republic and binds all persons
-Legal Domain: Domain 1: Constitutional Supremacy & Sovereignty
+Legal Domain: Not classified (outside range)
 Chapter: ONE
 Part: [Not within a PART]
 Article Length: 770 characters
@@ -36,7 +36,7 @@ MATCH #3
 Header: Defence of this Constitution.
 Number: 3
 Sentence: 3. (1) Every person has an obligation to respect, uphold and defend this
-Legal Domain: Domain 1: Constitutional Supremacy & Sovereignty
+Legal Domain: Not classified (outside range)
 Chapter: ONE
 Part: [Not within a PART]
 Article Length: 193 characters
@@ -47,7 +47,7 @@ MATCH #4
 Header: Declaration of the Republic.
 Number: 4
 Sentence: 4. (1) Kenya is a sovereign Republic.
-Legal Domain: Domain 1: Constitutional Supremacy & Sovereignty
+Legal Domain: Not classified (outside range)
 Chapter: TWO
 Part: [Not within a PART]
 Article Length: 210 characters
@@ -58,7 +58,7 @@ MATCH #5
 Header: Territory of Kenya.
 Number: 5
 Sentence: 5. Kenya consists of the territory and territorial waters comprising Kenya on the
-Legal Domain: Domain 1: Constitutional Supremacy & Sovereignty
+Legal Domain: Not classified (outside range)
 Chapter: TWO
 Part: [Not within a PART]
 Article Length: 219 characters
@@ -69,7 +69,7 @@ MATCH #6
 Header: Devolution and access to services.
 Number: 6
 Sentence: 6. (1) The territory of Kenya is divided into the counties speciﬁed in the First
-Legal Domain: Domain 11: Devolution & County Government Law
+Legal Domain: Not classified (outside range)
 Chapter: TWO
 Part: [Not within a PART]
 Article Length: 489 characters
@@ -80,7 +80,7 @@ MATCH #7
 Header: National, ofﬁcial and other languages.
 Number: 7
 Sentence: 7. (1) The national language of the Republic is Kiswahili.
-Legal Domain: Domain 1: Constitutional Supremacy & Sovereignty
+Legal Domain: Not classified (outside range)
 Chapter: TWO
 Part: [Not within a PART]
 Article Length: 419 characters
@@ -91,7 +91,7 @@ MATCH #8
 Header: State and religion.
 Number: 8
 Sentence: 8. There shall be no State religion.
-Legal Domain: Domain 1: Constitutional Supremacy & Sovereignty
+Legal Domain: Not classified (outside range)
 Chapter: TWO
 Part: [Not within a PART]
 Article Length: 72 characters
@@ -102,7 +102,7 @@ MATCH #9
 Header: National symbols and national days.
 Number: 9
 Sentence: 9. (1) The national symbols of the Republic are—
-Legal Domain: Domain 1: Constitutional Supremacy & Sovereignty
+Legal Domain: Not classified (outside range)
 Chapter: TWO
 Part: [Not within a PART]
 Article Length: 568 characters
@@ -113,7 +113,7 @@ MATCH #10
 Header: National values and principles of governance.
 Number: 10
 Sentence: 10. (1) The national values and principles of governance in this Article bind all
-Legal Domain: Domain 1: Constitutional Supremacy & Sovereignty
+Legal Domain: Not classified (outside range)
 Chapter: TWO
 Part: [Not within a PART]
 Article Length: 706 characters
@@ -124,7 +124,7 @@ MATCH #11
 Header: Culture.
 Number: 11
 Sentence: 11. (1) This Constitution recognises culture as the foundation of the nation and
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Domain 1: Constitutional Supremacy & Sovereignty
 Chapter: TWO
 Part: [Not within a PART]
 Article Length: 858 characters
@@ -135,7 +135,7 @@ MATCH #12
 Header: Entitlements of citizens.
 Number: 12
 Sentence: 12. (1) Every citizen is entitled to—
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Domain 2: Citizenship & Immigration Law
 Chapter: THREE
 Part: [Not within a PART]
 Article Length: 501 characters
@@ -146,7 +146,7 @@ MATCH #13
 Header: Retention and acquisition of citizenship.
 Number: 13
 Sentence: 13. (1) Every person who was a citizen immediately before the effective date
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Domain 2: Citizenship & Immigration Law
 Chapter: THREE
 Part: [Not within a PART]
 Article Length: 286 characters
@@ -157,7 +157,7 @@ MATCH #14
 Header: Citizenship by birth.
 Number: 14
 Sentence: 14. (1) A person is a citizen by birth if on the day of the person’s birth, whether or
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Domain 2: Citizenship & Immigration Law
 Chapter: THREE
 Part: [Not within a PART]
 Article Length: 911 characters
@@ -168,7 +168,7 @@ MATCH #15
 Header: Citizenship by registration.
 Number: 15
 Sentence: 15. (1) A person who has been married to a citizen for a period of at least seven
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Domain 2: Citizenship & Immigration Law
 Chapter: THREE
 Part: [Not within a PART]
 Article Length: 1003 characters
@@ -191,7 +191,7 @@ MATCH #16
 Header: Dual citizenship.
 Number: 16
 Sentence: 16. A citizen by birth does not lose citizenship by acquiring the citizenship of
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Domain 2: Citizenship & Immigration Law
 Chapter: THREE
 Part: [Not within a PART]
 Article Length: 124 characters
@@ -202,7 +202,7 @@ MATCH #17
 Header: Revocation of citizenship.
 Number: 17
 Sentence: 17. (1) If a person acquired citizenship by registration, the citizenship may be
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Domain 2: Citizenship & Immigration Law
 Chapter: THREE
 Part: [Not within a PART]
 Article Length: 1303 characters
@@ -228,7 +228,7 @@ MATCH #18
 Header: Legislation on citizenship.
 Number: 18
 Sentence: 18. Parliament shall enact legislation—
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Domain 2: Citizenship & Immigration Law
 Chapter: THREE
 Part: [Not within a PART]
 Article Length: 413 characters
@@ -239,7 +239,7 @@ MATCH #19
 Header: Rights and fundamental freedoms.
 Number: 19
 Sentence: 19. (1) The Bill of Rights is an integral part of Kenya’s democratic state and is
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Domain 3: Human Rights & Bill of Rights
 Chapter: FOUR
 Part: PART 1 - GENERAL PROVISIONS TO THE BILL OF RIGHTS
 Article Length: 781 characters
@@ -250,7 +250,7 @@ MATCH #20
 Header: Application of Bill of Rights.
 Number: 20
 Sentence: 20. (1) The Bill of Rights applies to all law and binds all State organs and all
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Domain 3: Human Rights & Bill of Rights
 Chapter: FOUR
 Part: PART 1 - GENERAL PROVISIONS TO THE BILL OF RIGHTS
 Article Length: 1579 characters
@@ -278,7 +278,7 @@ MATCH #21
 Header: Implementation of rights and fundamental freedoms.
 Number: 21
 Sentence: 21. (1) It is a fundamental duty of the State and every State organ to observe,
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Domain 3: Human Rights & Bill of Rights
 Chapter: FOUR
 Part: PART 1 - GENERAL PROVISIONS TO THE BILL OF RIGHTS
 Article Length: 853 characters
@@ -289,7 +289,7 @@ MATCH #22
 Header: Enforcement of Bill of Rights.
 Number: 22
 Sentence: 22. (1) Every person has the right to institute court proceedings claiming that
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Domain 3: Human Rights & Bill of Rights
 Chapter: FOUR
 Part: PART 1 - GENERAL PROVISIONS TO THE BILL OF RIGHTS
 Article Length: 1584 characters
@@ -317,7 +317,7 @@ MATCH #23
 Header: Authority of courts to uphold and enforce the Bill of Rights.
 Number: 23
 Sentence: 23. (1) The High Court has jurisdiction, in accordance with Article 165, to hear
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Classification Error: Groq API request failed: 429 Client Error: Too Many Requests for url: https://api.groq.com/openai/v1/chat/completions
 Chapter: FOUR
 Part: PART 1 - GENERAL PROVISIONS TO THE BILL OF RIGHTS
 Article Length: 944 characters
@@ -328,7 +328,7 @@ MATCH #24
 Header: Limitation of rights and fundamental freedoms.
 Number: 24
 Sentence: 24. (1) A right or fundamental freedom in the Bill of Rights shall not be limited
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Classification Error: Groq API request failed: 429 Client Error: Too Many Requests for url: https://api.groq.com/openai/v1/chat/completions
 Chapter: FOUR
 Part: PART 1 - GENERAL PROVISIONS TO THE BILL OF RIGHTS
 Article Length: 2354 characters
@@ -362,7 +362,7 @@ MATCH #25
 Header: Fundamental Rights and freedoms that may not be limited.
 Number: 25
 Sentence: 25. Despite any other provision in this Constitution, the following rights and
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Domain 3: Human Rights & Bill of Rights
 Chapter: FOUR
 Part: PART 1 - GENERAL PROVISIONS TO THE BILL OF RIGHTS
 Article Length: 305 characters
@@ -373,7 +373,7 @@ MATCH #26
 Header: Right to life.
 Number: 26
 Sentence: 26. (1) Every person has the right to life.
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Classification Error: Groq API request failed: 429 Client Error: Too Many Requests for url: https://api.groq.com/openai/v1/chat/completions
 Chapter: FOUR
 Part: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
 Article Length: 483 characters
@@ -384,7 +384,7 @@ MATCH #27
 Header: Equality and freedom from discrimination.
 Number: 27
 Sentence: 27. (1) Every person is equal before the law and has the right to equal protection
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Classification Error: Groq API request failed: 429 Client Error: Too Many Requests for url: https://api.groq.com/openai/v1/chat/completions
 Chapter: FOUR
 Part: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
 Article Length: 1441 characters
@@ -412,7 +412,7 @@ MATCH #28
 Header: Human dignity.
 Number: 28
 Sentence: 28. Every person has inherent dignity and the right to have that dignity respected
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Classification Error: Groq API request failed: 429 Client Error: Too Many Requests for url: https://api.groq.com/openai/v1/chat/completions
 Chapter: FOUR
 Part: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
 Article Length: 133 characters
@@ -423,7 +423,7 @@ MATCH #29
 Header: Freedom and security of the person.
 Number: 29
 Sentence: 29. Every person has the right to freedom and security of the person, which
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Classification Error: Groq API request failed: 429 Client Error: Too Many Requests for url: https://api.groq.com/openai/v1/chat/completions
 Chapter: FOUR
 Part: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
 Article Length: 554 characters
@@ -434,7 +434,7 @@ MATCH #30
 Header: Slavery, servitude and forced labour.
 Number: 30
 Sentence: 30. (1) A person shall not be held in slavery or servitude.
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Domain 3: Human Rights & Bill of Rights
 Chapter: FOUR
 Part: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
 Article Length: 129 characters
@@ -445,7 +445,7 @@ MATCH #31
 Header: Privacy.
 Number: 31
 Sentence: 31. Every person has the right to privacy, which includes the right not to have—
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: FOUR
 Part: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
 Article Length: 342 characters
@@ -456,7 +456,7 @@ MATCH #32
 Header: Freedom of conscience, religion, belief and opinion.
 Number: 32
 Sentence: 32. (1) Every person has the right to freedom of conscience, religion, thought,
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: FOUR
 Part: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
 Article Length: 632 characters
@@ -467,7 +467,7 @@ MATCH #33
 Header: Freedom of expression.
 Number: 33
 Sentence: 33. (1) Every person has the right to freedom of expression, which includes—
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: FOUR
 Part: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
 Article Length: 684 characters
@@ -478,7 +478,7 @@ MATCH #34
 Header: Freedom of the media.
 Number: 34
 Sentence: 34. (1) Freedom and independence of electronic, print and all other types of
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: FOUR
 Part: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
 Article Length: 1346 characters
@@ -501,7 +501,7 @@ MATCH #35
 Header: Access to information.
 Number: 35
 Sentence: 35. (1) Every citizen has the right of access to—
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: FOUR
 Part: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
 Article Length: 436 characters
@@ -512,7 +512,7 @@ MATCH #36
 Header: Freedom of association.
 Number: 36
 Sentence: 36. (1) Every person has the right to freedom of association, which includes the
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: FOUR
 Part: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
 Article Length: 528 characters
@@ -523,7 +523,7 @@ MATCH #37
 Header: Assembly, demonstration, picketing and petition.
 Number: 37
 Sentence: 37. Every person has the right, peaceably and unarmed, to assemble, to
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: FOUR
 Part: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
 Article Length: 160 characters
@@ -534,7 +534,7 @@ MATCH #38
 Header: Political rights.
 Number: 38
 Sentence: 38. (1) Every citizen is free to make political choices, which includes the right—
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: FOUR
 Part: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
 Article Length: 891 characters
@@ -545,7 +545,7 @@ MATCH #39
 Header: Freedom of movement and residence.
 Number: 39
 Sentence: 39. (1) Every person has the right to freedom of movement.
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: FOUR
 Part: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
 Article Length: 220 characters
@@ -556,7 +556,7 @@ MATCH #40
 Header: Protection of right to property.
 Number: 40
 Sentence: 40. (1) Subject to Article 65, every person has the right, either individually or
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: FOUR
 Part: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
 Article Length: 1587 characters
@@ -585,7 +585,7 @@ MATCH #41
 Header: Labour relations.
 Number: 41
 Sentence: 41. (1) Every person has the right to fair labour practices.
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: FOUR
 Part: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
 Article Length: 716 characters
@@ -596,7 +596,7 @@ MATCH #42
 Header: Environment.
 Number: 42
 Sentence: 42. Every person has the right to a clean and healthy environment, which
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: FOUR
 Part: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
 Article Length: 369 characters
@@ -607,7 +607,7 @@ MATCH #43
 Header: Economic and social rights.
 Number: 43
 Sentence: 43. (1) Every person has the right—
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: FOUR
 Part: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
 Article Length: 615 characters
@@ -618,7 +618,7 @@ MATCH #44
 Header: Language and culture.
 Number: 44
 Sentence: 44. (1) Every person has the right to use the language, and to participate in the
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: FOUR
 Part: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
 Article Length: 512 characters
@@ -629,7 +629,7 @@ MATCH #45
 Header: Family.
 Number: 45
 Sentence: 45. (1) The family is the natural and fundamental unit of society and the
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: FOUR
 Part: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
 Article Length: 801 characters
@@ -640,7 +640,7 @@ MATCH #46
 Header: Consumer rights.
 Number: 46
 Sentence: 46. (1) Consumers have the right—
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: FOUR
 Part: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
 Article Length: 551 characters
@@ -651,7 +651,7 @@ MATCH #47
 Header: Fair administrative action.
 Number: 47
 Sentence: 47. (1) Every person has the right to administrative action that is expeditious,
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: FOUR
 Part: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
 Article Length: 608 characters
@@ -662,7 +662,7 @@ MATCH #48
 Header: Access to justice.
 Number: 48
 Sentence: 48. The State shall ensure access to justice for all persons and, if any fee is
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: FOUR
 Part: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
 Article Length: 180 characters
@@ -673,7 +673,7 @@ MATCH #49
 Header: Rights of arrested persons.
 Number: 49
 Sentence: 49. (1) An arrested person has the right—
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: FOUR
 Part: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
 Article Length: 1193 characters
@@ -700,7 +700,7 @@ MATCH #50
 Header: Fair hearing.
 Number: 50
 Sentence: 50. (1) Every person has the right to have any dispute that can be resolved
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: FOUR
 Part: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
 Article Length: 3708 characters
@@ -748,7 +748,7 @@ MATCH #51
 Header: Rights of persons detained, held in custody or imprisoned.
 Number: 51
 Sentence: 51. (1) A person who is detained, held in custody or imprisoned under the law,
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: FOUR
 Part: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
 Article Length: 629 characters
@@ -759,7 +759,7 @@ MATCH #52
 Header: Interpretation of this Part.
 Number: 52
 Sentence: 52. (1) This Part elaborates certain rights to ensure greater certainty as to the
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: FOUR
 Part: PART 3 - SPECIFIC APPLICATION OF RIGHTS
 Article Length: 248 characters
@@ -770,7 +770,7 @@ MATCH #53
 Header: Children.
 Number: 53
 Sentence: 53. (1) Every child has the right—
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: FOUR
 Part: PART 3 - SPECIFIC APPLICATION OF RIGHTS
 Article Length: 836 characters
@@ -781,7 +781,7 @@ MATCH #54
 Header: Persons with disabilities.
 Number: 54
 Sentence: 54. (1) A person with any disability is entitled—
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: FOUR
 Part: PART 3 - SPECIFIC APPLICATION OF RIGHTS
 Article Length: 776 characters
@@ -792,7 +792,7 @@ MATCH #55
 Header: Youth.
 Number: 55
 Sentence: 55. The State shall take measures, including afﬁrmative action programmes, to
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: FOUR
 Part: PART 3 - SPECIFIC APPLICATION OF RIGHTS
 Article Length: 385 characters
@@ -803,7 +803,7 @@ MATCH #56
 Header: Minorities and marginalised groups.
 Number: 56
 Sentence: 56. The State shall put in place afﬁrmative action programmes designed to
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: FOUR
 Part: PART 3 - SPECIFIC APPLICATION OF RIGHTS
 Article Length: 480 characters
@@ -814,7 +814,7 @@ MATCH #57
 Header: Older members of society.
 Number: 57
 Sentence: 57. The State shall take measures to ensure the rights of older persons—
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: FOUR
 Part: PART 3 - SPECIFIC APPLICATION OF RIGHTS
 Article Length: 292 characters
@@ -825,7 +825,7 @@ MATCH #58
 Header: State of emergency.
 Number: 58
 Sentence: 58. (1) A state of emergency may be declared only under Article 132 (4) (d) and
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: FOUR
 Part: PART 4 - STATE OF EMERGENCY
 Article Length: 2071 characters
@@ -856,7 +856,7 @@ MATCH #59
 Header: Kenya National Human Rights and Equality Commission.
 Number: 59
 Sentence: 59. (1) There is established the Kenya National Human Rights and Equality
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: FOUR
 Part: PART 5 - KENYA NATIONAL HUMAN RIGHTS AND EQUALITY COMMISSION
 Article Length: 2464 characters
@@ -892,7 +892,7 @@ MATCH #60
 Header: Principles of land policy.
 Number: 60
 Sentence: 60. (1) Land in Kenya shall be held, used and managed in a manner that
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: FIVE
 Part: PART 1 - LAND
 Article Length: 816 characters
@@ -903,7 +903,7 @@ MATCH #61
 Header: Classiﬁcation of land.
 Number: 61
 Sentence: 61. (1) All land in Kenya belongs to the people of Kenya collectively as a nation,
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: FIVE
 Part: PART 1 - LAND
 Article Length: 194 characters
@@ -914,7 +914,7 @@ MATCH #62
 Header: Public land.
 Number: 62
 Sentence: 62. (1) Public land is—
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: FIVE
 Part: PART 1 - LAND
 Article Length: 2019 characters
@@ -942,7 +942,7 @@ MATCH #63
 Header: Community land.
 Number: 63
 Sentence: 63. (1) Community land shall vest in and be held by communities identiﬁed on
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: FIVE
 Part: PART 1 - LAND
 Article Length: 1193 characters
@@ -965,7 +965,7 @@ MATCH #64
 Header: Private land.
 Number: 64
 Sentence: 64. Private land consists of —
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: FIVE
 Part: PART 1 - LAND
 Article Length: 238 characters
@@ -976,7 +976,7 @@ MATCH #65
 Header: Landholding by non-citizens.
 Number: 65
 Sentence: 65. (1) A person who is not a citizen may hold land on the basis of leasehold
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: FIVE
 Part: PART 1 - LAND
 Article Length: 916 characters
@@ -987,7 +987,7 @@ MATCH #66
 Header: Regulation of land use and property.
 Number: 66
 Sentence: 66. (1) The State may regulate the use of any land, or any interest in or right
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: FIVE
 Part: PART 1 - LAND
 Article Length: 354 characters
@@ -998,7 +998,7 @@ MATCH #67
 Header: National Land Commission.
 Number: 67
 Sentence: 67. (1) There is established the National Land Commission.
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: FIVE
 Part: PART 1 - LAND
 Article Length: 1039 characters
@@ -1023,7 +1023,7 @@ MATCH #68
 Header: Legislation on land.
 Number: 68
 Sentence: 68. Parliament shall—
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: FIVE
 Part: PART 1 - LAND
 Article Length: 943 characters
@@ -1034,7 +1034,7 @@ MATCH #69
 Header: Obligations in respect of the environment.
 Number: 69
 Sentence: 69. (1) The State shall—
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: FIVE
 Part: PART 2 - ENVIRONMENT AND NATURAL RESOURCES
 Article Length: 1086 characters
@@ -1058,7 +1058,7 @@ MATCH #70
 Header: Enforcement of environmental rights.
 Number: 70
 Sentence: 70. (1) If a person alleges that a right to a clean and healthy environment
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: FIVE
 Part: PART 2 - ENVIRONMENT AND NATURAL RESOURCES
 Article Length: 947 characters
@@ -1069,7 +1069,7 @@ MATCH #71
 Header: Agreements relating to natural resources.
 Number: 71
 Sentence: 71. (1) A transaction is subject to ratiﬁcation by Parliament if it—
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: FIVE
 Part: PART 2 - ENVIRONMENT AND NATURAL RESOURCES
 Article Length: 466 characters
@@ -1080,7 +1080,7 @@ MATCH #72
 Header: Legislation relating to the environment.
 Number: 72
 Sentence: 72. Parliament shall enact legislation to give full effect to the provisions of this
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: FIVE
 Part: PART 2 - ENVIRONMENT AND NATURAL RESOURCES
 Article Length: 90 characters
@@ -1091,7 +1091,7 @@ MATCH #73
 Header: Responsibilities of leadership.
 Number: 73
 Sentence: 73. (1) Authority assigned to a State ofﬁcer—
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: SIX
 Part: [Not within a PART]
 Article Length: 1129 characters
@@ -1115,7 +1115,7 @@ MATCH #74
 Header: Oath of ofﬁce of State ofﬁcers.
 Number: 74
 Sentence: 74. Before assuming a State ofﬁce, acting in a State ofﬁce, or performing any
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: SIX
 Part: [Not within a PART]
 Article Length: 288 characters
@@ -1126,7 +1126,7 @@ MATCH #75
 Header: Conduct of State ofﬁcers.
 Number: 75
 Sentence: 75. (1) A State ofﬁcer shall behave, whether in public and ofﬁcial life, in private
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: SIX
 Part: [Not within a PART]
 Article Length: 838 characters
@@ -1137,7 +1137,7 @@ MATCH #76
 Header: Financial probity of State ofﬁcers.
 Number: 76
 Sentence: 76. (1) A gift or donation to a State ofﬁcer on a public or ofﬁcial occasion is a
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: SIX
 Part: [Not within a PART]
 Article Length: 466 characters
@@ -1148,7 +1148,7 @@ MATCH #77
 Header: Restriction on activities of State ofﬁcers.
 Number: 77
 Sentence: 77. (1) A full-time State ofﬁcer shall not participate in any other gainful
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: SIX
 Part: [Not within a PART]
 Article Length: 545 characters
@@ -1159,7 +1159,7 @@ MATCH #78
 Header: Citizenship and leadership.
 Number: 78
 Sentence: 78. (1) A person is not eligible for election or appointment to a State ofﬁce
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: SIX
 Part: [Not within a PART]
 Article Length: 473 characters
@@ -1170,7 +1170,7 @@ MATCH #79
 Header: Legislation to establish the ethics and anti-corruption commission.
 Number: 79
 Sentence: 79. Parliament shall enact legislation to establish an independent ethics and
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: SIX
 Part: [Not within a PART]
 Article Length: 311 characters
@@ -1181,7 +1181,7 @@ MATCH #80
 Header: Legislation on leadership.
 Number: 80
 Sentence: 80. Parliament shall enact legislation—
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: SIX
 Part: [Not within a PART]
 Article Length: 547 characters
@@ -1192,7 +1192,7 @@ MATCH #81
 Header: General principles for the electoral system.
 Number: 81
 Sentence: 81. The electoral system shall comply with the following principles—
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: SEVEN
 Part: PART 1 - ELECTORAL SYSTEM AND PROCESS
 Article Length: 675 characters
@@ -1203,7 +1203,7 @@ MATCH #82
 Header: Legislation on elections.
 Number: 82
 Sentence: 82. (1) Parliament shall enact legislation to provide for—
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: SEVEN
 Part: PART 1 - ELECTORAL SYSTEM AND PROCESS
 Article Length: 852 characters
@@ -1214,7 +1214,7 @@ MATCH #83
 Header: Registration as a voter.
 Number: 83
 Sentence: 83. (1) A person qualiﬁes for registration as a voter at elections or referenda
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: SEVEN
 Part: PART 1 - ELECTORAL SYSTEM AND PROCESS
 Article Length: 628 characters
@@ -1225,7 +1225,7 @@ MATCH #84
 Header: Candidates for election and political parties to comply with code of conduct.
 Number: 84
 Sentence: 84. In every election, all candidates and all political parties shall comply
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: SEVEN
 Part: PART 1 - ELECTORAL SYSTEM AND PROCESS
 Article Length: 218 characters
@@ -1236,7 +1236,7 @@ MATCH #85
 Header: Eligibility to stand as an independent candidate.
 Number: 85
 Sentence: 85. Any person is eligible to stand as an independent candidate for election if
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: SEVEN
 Part: PART 1 - ELECTORAL SYSTEM AND PROCESS
 Article Length: 494 characters
@@ -1247,7 +1247,7 @@ MATCH #86
 Header: Voting.
 Number: 86
 Sentence: 86. At every election, the Independent Electoral and Boundaries Commission
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: SEVEN
 Part: PART 1 - ELECTORAL SYSTEM AND PROCESS
 Article Length: 612 characters
@@ -1258,7 +1258,7 @@ MATCH #87
 Header: Electoral disputes.
 Number: 87
 Sentence: 87. (1) Parliament shall enact legislation to establish mechanisms for timely
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: SEVEN
 Part: PART 1 - ELECTORAL SYSTEM AND PROCESS
 Article Length: 426 characters
@@ -1269,7 +1269,7 @@ MATCH #88
 Header: Independent Electoral and Boundaries Commission.
 Number: 88
 Sentence: 88. (1) There is established the Independent Electoral and Boundaries
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: SEVEN
 Part: PART 2 - INDEPENDENT ELECTORAL AND BOUNDARIES
 Article Length: 1763 characters
@@ -1299,7 +1299,7 @@ MATCH #89
 Header: Delimitation of electoral units.
 Number: 89
 Sentence: 89. (1) There shall be two hundred and ninety constituencies for the purposes of
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: SEVEN
 Part: PART 2 - INDEPENDENT ELECTORAL AND BOUNDARIES
 Article Length: 2709 characters
@@ -1334,7 +1334,7 @@ MATCH #90
 Header: Allocation of party list seats.
 Number: 90
 Sentence: 90. (1) Elections for the seats in Parliament provided for under Articles 97(1)(c)
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: SEVEN
 Part: PART 2 - INDEPENDENT ELECTORAL AND BOUNDARIES
 Article Length: 1251 characters
@@ -1357,7 +1357,7 @@ MATCH #91
 Header: Basic requirements for political parties.
 Number: 91
 Sentence: 91. (1) Every political party shall—
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: SEVEN
 Part: PART 3 - POLITICAL PARTIES
 Article Length: 1290 characters
@@ -1381,7 +1381,7 @@ MATCH #92
 Header: Legislation on political parties.
 Number: 92
 Sentence: 92. Parliament shall enact legislation to provide for—
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: SEVEN
 Part: PART 3 - POLITICAL PARTIES
 Article Length: 736 characters
@@ -1392,7 +1392,7 @@ MATCH #93
 Header: Establishment of Parliament.
 Number: 93
 Sentence: 93. (1) There is established a Parliament of Kenya, which shall consist of the
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: EIGHT
 Part: PART 1 - ESTABLISHMENT AND ROLE OF PARLIAMENT
 Article Length: 252 characters
@@ -1403,7 +1403,7 @@ MATCH #94
 Header: Role of Parliament.
 Number: 94
 Sentence: 94. (1) The legislative authority of the Republic is derived from the people and,
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: EIGHT
 Part: PART 1 - ESTABLISHMENT AND ROLE OF PARLIAMENT
 Article Length: 1178 characters
@@ -1425,7 +1425,7 @@ MATCH #95
 Header: Role of the National Assembly.
 Number: 95
 Sentence: 95. (1) The National Assembly represents the people of the constituencies and
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: EIGHT
 Part: PART 1 - ESTABLISHMENT AND ROLE OF PARLIAMENT
 Article Length: 935 characters
@@ -1436,7 +1436,7 @@ MATCH #96
 Header: Role of the Senate.
 Number: 96
 Sentence: 96. (1) The Senate represents the counties, and serves to protect the interests
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: EIGHT
 Part: PART 1 - ESTABLISHMENT AND ROLE OF PARLIAMENT
 Article Length: 672 characters
@@ -1447,7 +1447,7 @@ MATCH #97
 Header: Membership of the National Assembly.
 Number: 97
 Sentence: 97. (1) The National Assembly consists of—
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: EIGHT
 Part: PART 2 - COMPOSITION AND MEMBERSHIP OF PARLIAMENT
 Article Length: 713 characters
@@ -1458,7 +1458,7 @@ MATCH #98
 Header: Membership of the Senate.
 Number: 98
 Sentence: 98. (1) The Senate consists of—
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: EIGHT
 Part: PART 2 - COMPOSITION AND MEMBERSHIP OF PARLIAMENT
 Article Length: 837 characters
@@ -1469,7 +1469,7 @@ MATCH #99
 Header: Qualiﬁcations and disqualiﬁcations for election as member of Parliament.
 Number: 99
 Sentence: 99. (1) Unless disqualiﬁed under clause (2), a person is eligible for election as
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: EIGHT
 Part: PART 2 - COMPOSITION AND MEMBERSHIP OF PARLIAMENT
 Article Length: 1563 characters
@@ -1499,7 +1499,7 @@ MATCH #100
 Header: Promotion of representation of marginalised groups.
 Number: 100
 Sentence: 100. Parliament shall enact legislation to promote the representation in
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: EIGHT
 Part: PART 2 - COMPOSITION AND MEMBERSHIP OF PARLIAMENT
 Article Length: 222 characters
@@ -1510,7 +1510,7 @@ MATCH #101
 Header: Election of members of Parliament.
 Number: 101
 Sentence: 101. (1) A general election of members of Parliament shall be held on the second
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: EIGHT
 Part: PART 2 - COMPOSITION AND MEMBERSHIP OF PARLIAMENT
 Article Length: 1338 characters
@@ -1533,7 +1533,7 @@ MATCH #102
 Header: Term of Parliament.
 Number: 102
 Sentence: 102. (1) The term of each House of Parliament expires on the date of the next
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: EIGHT
 Part: PART 2 - COMPOSITION AND MEMBERSHIP OF PARLIAMENT
 Article Length: 467 characters
@@ -1544,7 +1544,7 @@ MATCH #103
 Header: Vacation of ofﬁce of member of Parliament.
 Number: 103
 Sentence: 103. (1) The ofﬁce of a member of Parliament becomes vacant—
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: EIGHT
 Part: PART 2 - COMPOSITION AND MEMBERSHIP OF PARLIAMENT
 Article Length: 1160 characters
@@ -1568,7 +1568,7 @@ MATCH #104
 Header: Right of recall.
 Number: 104
 Sentence: 104. (1) The electorate under Articles 97 and 98 have the right to recall the
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: EIGHT
 Part: PART 2 - COMPOSITION AND MEMBERSHIP OF PARLIAMENT
 Article Length: 370 characters
@@ -1579,7 +1579,7 @@ MATCH #105
 Header: Determination of questions of membership.
 Number: 105
 Sentence: 105. (1) The High Court shall hear and determine any question whether—
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: EIGHT
 Part: PART 2 - COMPOSITION AND MEMBERSHIP OF PARLIAMENT
 Article Length: 367 characters
@@ -1590,7 +1590,7 @@ MATCH #106
 Header: Speakers and Deputy Speakers of Parliament.
 Number: 106
 Sentence: 106. (1) There shall be—
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: EIGHT
 Part: PART 3 - OFFICES OF PARLIAMENT
 Article Length: 840 characters
@@ -1601,7 +1601,7 @@ MATCH #107
 Header: Presiding in Parliament.
 Number: 107
 Sentence: 107. (1) At any sitting of a House of Parliament—
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: EIGHT
 Part: PART 3 - OFFICES OF PARLIAMENT
 Article Length: 406 characters
@@ -1612,7 +1612,7 @@ MATCH #108
 Header: Party leaders.
 Number: 108
 Sentence: 108. (1) There shall be a leader of the majority party and a leader of the minority
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: EIGHT
 Part: PART 3 - OFFICES OF PARLIAMENT
 Article Length: 581 characters
@@ -1623,7 +1623,7 @@ MATCH #109
 Header: Exercise of legislative powers.
 Number: 109
 Sentence: 109. (1) Parliament shall exercise its legislative power through Bills passed by
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: EIGHT
 Part: PART 4 - PROCEDURES FOR ENACTING LEGISLATION
 Article Length: 780 characters
@@ -1634,7 +1634,7 @@ MATCH #110
 Header: Bills concerning county government.
 Number: 110
 Sentence: 110. (1) In this Constitution, "a Bill concerning county government" means—
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: EIGHT
 Part: PART 4 - PROCEDURES FOR ENACTING LEGISLATION
 Article Length: 1351 characters
@@ -1658,7 +1658,7 @@ MATCH #111
 Header: Special Bills concerning county governments.
 Number: 111
 Sentence: 111. (1) A special Bill concerning a county government shall proceed in the
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: EIGHT
 Part: PART 4 - PROCEDURES FOR ENACTING LEGISLATION
 Article Length: 621 characters
@@ -1669,7 +1669,7 @@ MATCH #112
 Header: Ordinary Bills concerning county governments.
 Number: 112
 Sentence: 112. (1) If one House passes an ordinary Bill concerning counties, and the second
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: EIGHT
 Part: PART 4 - PROCEDURES FOR ENACTING LEGISLATION
 Article Length: 652 characters
@@ -1680,7 +1680,7 @@ MATCH #113
 Header: Mediation committees.
 Number: 113
 Sentence: 113. (1) If a Bill is referred to a mediation committee under Article 112, the
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: EIGHT
 Part: PART 4 - PROCEDURES FOR ENACTING LEGISLATION
 Article Length: 786 characters
@@ -1691,7 +1691,7 @@ MATCH #114
 Header: Money Bills.
 Number: 114
 Sentence: 114. (1) A money Bill may not deal with any matter other than those listed in
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: EIGHT
 Part: PART 4 - PROCEDURES FOR ENACTING LEGISLATION
 Article Length: 1034 characters
@@ -1716,7 +1716,7 @@ MATCH #115
 Header: Presidential assent and referral.
 Number: 115
 Sentence: 115. (1) Within fourteen days after receipt of a Bill, the President shall—
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: EIGHT
 Part: PART 4 - PROCEDURES FOR ENACTING LEGISLATION
 Article Length: 1449 characters
@@ -1743,7 +1743,7 @@ MATCH #116
 Header: Coming into force of laws.
 Number: 116
 Sentence: 116. (1) A Bill passed by Parliament and assented to by the President shall be
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: EIGHT
 Part: PART 4 - PROCEDURES FOR ENACTING LEGISLATION
 Article Length: 656 characters
@@ -1754,7 +1754,7 @@ MATCH #117
 Header: Powers, privileges and immunities.
 Number: 117
 Sentence: 117. (1) There shall be freedom of speech and debate in Parliament.
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: EIGHT
 Part: PART 5 - PARLIAMENT'S GENERAL PROCEDURES AND RULES
 Article Length: 399 characters
@@ -1765,7 +1765,7 @@ MATCH #118
 Header: Public access and participation.
 Number: 118
 Sentence: 118. (1) Parliament shall—
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: EIGHT
 Part: PART 5 - PARLIAMENT'S GENERAL PROCEDURES AND RULES
 Article Length: 484 characters
@@ -1776,7 +1776,7 @@ MATCH #119
 Header: Right to petition Parliament.
 Number: 119
 Sentence: 119. (1) Every person has a right to petition Parliament to consider any matter
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: EIGHT
 Part: PART 5 - PARLIAMENT'S GENERAL PROCEDURES AND RULES
 Article Length: 273 characters
@@ -1787,7 +1787,7 @@ MATCH #120
 Header: Ofﬁcial languages of Parliament.
 Number: 120
 Sentence: 120. (1) The ofﬁcial languages of Parliament shall be Kiswahili, English and
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: EIGHT
 Part: PART 5 - PARLIAMENT'S GENERAL PROCEDURES AND RULES
 Article Length: 339 characters
@@ -1798,7 +1798,7 @@ MATCH #121
 Header: Quorum.
 Number: 121
 Sentence: 121. The quorum of Parliament shall be–
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: EIGHT
 Part: PART 5 - PARLIAMENT'S GENERAL PROCEDURES AND RULES
 Article Length: 159 characters
@@ -1809,7 +1809,7 @@ MATCH #122
 Header: Voting in Parliament.
 Number: 122
 Sentence: 122. (1) Except as otherwise provided in this Constitution, any question
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: EIGHT
 Part: PART 5 - PARLIAMENT'S GENERAL PROCEDURES AND RULES
 Article Length: 614 characters
@@ -1820,7 +1820,7 @@ MATCH #123
 Header: Decisions of Senate.
 Number: 123
 Sentence: 123. (1) On election, all the members of the Senate who were registered as voters
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: EIGHT
 Part: PART 5 - PARLIAMENT'S GENERAL PROCEDURES AND RULES
 Article Length: 1151 characters
@@ -1842,7 +1842,7 @@ MATCH #124
 Header: Committees and Standing Orders.
 Number: 124
 Sentence: 124. (1) Each House of Parliament may establish committees, and shall
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: EIGHT
 Part: PART 5 - PARLIAMENT'S GENERAL PROCEDURES AND RULES
 Article Length: 938 characters
@@ -1853,7 +1853,7 @@ MATCH #125
 Header: Power to call for evidence.
 Number: 125
 Sentence: 125. (1) Either House of Parliament, and any of its committees, has power
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: EIGHT
 Part: PART 5 - PARLIAMENT'S GENERAL PROCEDURES AND RULES
 Article Length: 493 characters
@@ -1864,7 +1864,7 @@ MATCH #126
 Header: Location of sittings of Parliament.
 Number: 126
 Sentence: 126. (1) A sitting of either House may be held at any place within Kenya and
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: EIGHT
 Part: PART 6 - MISCELLANEOUS
 Article Length: 371 characters
@@ -1875,7 +1875,7 @@ MATCH #127
 Header: Parliamentary Service Commission.
 Number: 127
 Sentence: 127. (1) There is established the Parliamentary Service Commission.
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: EIGHT
 Part: PART 6 - MISCELLANEOUS
 Article Length: 2135 characters
@@ -1909,7 +1909,7 @@ MATCH #128
 Header: Clerks and staff of Parliament.
 Number: 128
 Sentence: 128. (1) There shall be a Clerk for each House of Parliament, appointed by the
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: EIGHT
 Part: PART 6 - MISCELLANEOUS
 Article Length: 276 characters
@@ -1920,7 +1920,7 @@ MATCH #129
 Header: Principles of executive authority.
 Number: 129
 Sentence: 129. (1) Executive authority derives from the people of Kenya and shall be
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: NINE
 Part: PART 1 - PRINCIPLES AND STRUCTURE OF THE NATIONAL EXECUTIVE
 Article Length: 303 characters
@@ -1931,7 +1931,7 @@ MATCH #130
 Header: The National Executive.
 Number: 130
 Sentence: 130. (1) The national executive of the Republic comprises the President, the
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: NINE
 Part: PART 1 - PRINCIPLES AND STRUCTURE OF THE NATIONAL EXECUTIVE
 Article Length: 239 characters
@@ -1942,7 +1942,7 @@ MATCH #131
 Header: Authority of the President.
 Number: 131
 Sentence: 131. (1) The President—
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: NINE
 Part: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
 Article Length: 741 characters
@@ -1953,7 +1953,7 @@ MATCH #132
 Header: Functions of the President.
 Number: 132
 Sentence: 132. (1) The President shall—
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: NINE
 Part: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
 Article Length: 2198 characters
@@ -1988,7 +1988,7 @@ MATCH #133
 Header: Power of mercy.
 Number: 133
 Sentence: 133. (1) On the petition of any person, the President may exercise a power of
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: NINE
 Part: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
 Article Length: 1177 characters
@@ -2011,7 +2011,7 @@ MATCH #134
 Header: Exercise of presidential powers during temporary incumbency.
 Number: 134
 Sentence: 134. (1) A person who holds the ofﬁce of President or who is authorised in terms
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: NINE
 Part: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
 Article Length: 1051 characters
@@ -2035,7 +2035,7 @@ MATCH #135
 Header: Decisions of the President.
 Number: 135
 Sentence: 135. A decision of the President in the performance of any function of the
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: NINE
 Part: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
 Article Length: 211 characters
@@ -2046,7 +2046,7 @@ MATCH #136
 Header: Election of the President.
 Number: 136
 Sentence: 136. (1) The President shall be elected by registered voters in a national election
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: NINE
 Part: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
 Article Length: 474 characters
@@ -2057,7 +2057,7 @@ MATCH #137
 Header: Qualiﬁcations and disqualiﬁcations for election as President.
 Number: 137
 Sentence: 137. (1) A person qualiﬁes for nomination as a presidential candidate if the
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: NINE
 Part: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
 Article Length: 664 characters
@@ -2068,7 +2068,7 @@ MATCH #138
 Header: Procedure at presidential election.
 Number: 138
 Sentence: 138. (1) If only one candidate for President is nominated, that candidate shall
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: NINE
 Part: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
 Article Length: 2386 characters
@@ -2102,7 +2102,7 @@ MATCH #139
 Header: Death before assuming ofﬁce.
 Number: 139
 Sentence: 139. (1) If a President-elect dies after being declared elected as President, but
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: NINE
 Part: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
 Article Length: 959 characters
@@ -2113,7 +2113,7 @@ MATCH #140
 Header: Questions as to validity of presidential election.
 Number: 140
 Sentence: 140. (1) A person may ﬁle a petition in the Supreme Court to challenge the
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: NINE
 Part: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
 Article Length: 559 characters
@@ -2124,7 +2124,7 @@ MATCH #141
 Header: Assumption of ofﬁce of President.
 Number: 141
 Sentence: 141. (1) The swearing in of the President-elect shall be in public before the Chief
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: NINE
 Part: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
 Article Length: 897 characters
@@ -2135,7 +2135,7 @@ MATCH #142
 Header: Term of ofﬁce of President.
 Number: 142
 Sentence: 142. (1) The President shall hold ofﬁce for a term beginning on the date on which
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: NINE
 Part: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
 Article Length: 316 characters
@@ -2146,7 +2146,7 @@ MATCH #143
 Header: Protection from legal proceedings.
 Number: 143
 Sentence: 143. (1) Criminal proceedings shall not be instituted or continued in any court
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: NINE
 Part: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
 Article Length: 1017 characters
@@ -2167,7 +2167,7 @@ MATCH #144
 Header: Removal of President on grounds of incapacity.
 Number: 144
 Sentence: 144. (1) A member of the National Assembly, supported by at least a quarter of
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: NINE
 Part: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
 Article Length: 2349 characters
@@ -2200,7 +2200,7 @@ MATCH #145
 Header: Removal of President by impeachment.
 Number: 145
 Sentence: 145. (1) A member of the National Assembly, supported by at least a third of all
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: NINE
 Part: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
 Article Length: 1937 characters
@@ -2230,7 +2230,7 @@ MATCH #146
 Header: Vacancy in the ofﬁce of President.
 Number: 146
 Sentence: 146. (1) The ofﬁce of President shall become vacant if the holder of the ofﬁce —
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: NINE
 Part: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
 Article Length: 1600 characters
@@ -2259,7 +2259,7 @@ MATCH #147
 Header: Functions of the Deputy President.
 Number: 147
 Sentence: 147. (1) The Deputy President shall be the principal assistant of the President
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: NINE
 Part: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
 Article Length: 631 characters
@@ -2270,7 +2270,7 @@ MATCH #148
 Header: Election and swearing-in of Deputy President.
 Number: 148
 Sentence: 148. (1) Each candidate in a presidential election shall nominate a person
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: NINE
 Part: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
 Article Length: 1674 characters
@@ -2298,7 +2298,7 @@ MATCH #149
 Header: Vacancy in the ofﬁce of Deputy President.
 Number: 149
 Sentence: 149. (1) Within fourteen days after a vacancy in the ofﬁce of Deputy President
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: NINE
 Part: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
 Article Length: 700 characters
@@ -2309,7 +2309,7 @@ MATCH #150
 Header: Removal of Deputy President.
 Number: 150
 Sentence: 150. (1) The Deputy President may be removed from ofﬁce—
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: NINE
 Part: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
 Article Length: 644 characters
@@ -2320,7 +2320,7 @@ MATCH #151
 Header: Remuneration and beneﬁts of President and Deputy President.
 Number: 151
 Sentence: 151. (1) The remuneration and beneﬁts payable to the President and the Deputy
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: NINE
 Part: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
 Article Length: 489 characters
@@ -2331,7 +2331,7 @@ MATCH #152
 Header: Cabinet.
 Number: 152
 Sentence: 152. (1) The Cabinet consists of—
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: NINE
 Part: PART 3 - THE CABINET
 Article Length: 2466 characters
@@ -2369,7 +2369,7 @@ MATCH #153
 Header: Decisions, responsibility and accountability of the Cabinet.
 Number: 153
 Sentence: 153. (1) A decision by the Cabinet shall be in writing.
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: NINE
 Part: PART 3 - THE CABINET
 Article Length: 630 characters
@@ -2380,7 +2380,7 @@ MATCH #154
 Header: Secretary to the Cabinet.
 Number: 154
 Sentence: 154. (1) There is established the ofﬁce of Secretary to the Cabinet, which is an
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: NINE
 Part: PART 3 - THE CABINET
 Article Length: 737 characters
@@ -2391,7 +2391,7 @@ MATCH #155
 Header: Principal Secretaries.
 Number: 155
 Sentence: 155. (1) There is established the ofﬁce of Principal Secretary, which is an ofﬁce
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: NINE
 Part: PART 3 - THE CABINET
 Article Length: 566 characters
@@ -2402,7 +2402,7 @@ MATCH #156
 Header: Attorney-General.
 Number: 156
 Sentence: 156. (1) There is established the ofﬁce of Attorney-General.
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: NINE
 Part: PART 4 - OTHER OFFICES
 Article Length: 1129 characters
@@ -2426,7 +2426,7 @@ MATCH #157
 Header: Director of Public Prosecutions.
 Number: 157
 Sentence: 157. (1) There is established the ofﬁce of Director of Public Prosecutions.
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: NINE
 Part: PART 4 - OTHER OFFICES
 Article Length: 2585 characters
@@ -2461,7 +2461,7 @@ MATCH #158
 Header: Removal and resignation of Director of Public Prosecutions.
 Number: 158
 Sentence: 158. (1) The Director of Public Prosecutions may be removed from ofﬁce only
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: NINE
 Part: PART 4 - OTHER OFFICES
 Article Length: 2054 characters
@@ -2490,7 +2490,7 @@ MATCH #159
 Header: Judicial authority.
 Number: 159
 Sentence: 159. (1) Judicial authority is derived from the people and vests in, and shall be
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: TEN
 Part: PART 1 - JUDICIAL AUTHORITY AND LEGAL SYSTEM
 Article Length: 1005 characters
@@ -2513,7 +2513,7 @@ MATCH #160
 Header: Independence of the Judiciary.
 Number: 160
 Sentence: 160. (1) In the exercise of judicial authority, the Judiciary, as constituted by
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: TEN
 Part: PART 1 - JUDICIAL AUTHORITY AND LEGAL SYSTEM
 Article Length: 970 characters
@@ -2524,7 +2524,7 @@ MATCH #161
 Header: Judicial ofﬁces and ofﬁcers.
 Number: 161
 Sentence: 161. (1) The Judiciary consists of the judges of the superior courts, magistrates,
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: TEN
 Part: PART 1 - JUDICIAL AUTHORITY AND LEGAL SYSTEM
 Article Length: 509 characters
@@ -2535,7 +2535,7 @@ MATCH #162
 Header: System of courts.
 Number: 162
 Sentence: 162. (1) The superior courts are the Supreme Court, the Court of Appeal, the
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: TEN
 Part: PART 1 - JUDICIAL AUTHORITY AND LEGAL SYSTEM
 Article Length: 576 characters
@@ -2546,7 +2546,7 @@ MATCH #163
 Header: Supreme Court.
 Number: 163
 Sentence: 163. (1) There is established the Supreme Court, which shall consist of—
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: TEN
 Part: PART 2 - SUPERIOR COURTS
 Article Length: 1693 characters
@@ -2575,7 +2575,7 @@ MATCH #164
 Header: Court of Appeal.
 Number: 164
 Sentence: 164. (1) There is established the Court of Appeal, which—
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: TEN
 Part: PART 2 - SUPERIOR COURTS
 Article Length: 558 characters
@@ -2586,7 +2586,7 @@ MATCH #165
 Header: High Court.
 Number: 165
 Sentence: 165. (1) There is established the High Court, which—
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: TEN
 Part: PART 2 - SUPERIOR COURTS
 Article Length: 2540 characters
@@ -2621,7 +2621,7 @@ MATCH #166
 Header: Appointment of Chief Justice, Deputy Chief Justice and other judges.
 Number: 166
 Sentence: 166. (1) The President shall appoint—
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: TEN
 Part: PART 2 - SUPERIOR COURTS
 Article Length: 2109 characters
@@ -2652,7 +2652,7 @@ MATCH #167
 Header: Tenure of ofﬁce of the Chief Justice and other judges.
 Number: 167
 Sentence: 167. (1) A judge shall retire from ofﬁce on attaining the age of seventy years,
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: TEN
 Part: PART 2 - SUPERIOR COURTS
 Article Length: 954 characters
@@ -2663,7 +2663,7 @@ MATCH #168
 Header: Removal from ofﬁce.
 Number: 168
 Sentence: 168. (1) A judge of a superior court may be removed from ofﬁce only on the
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: TEN
 Part: PART 2 - SUPERIOR COURTS
 Article Length: 3058 characters
@@ -2702,7 +2702,7 @@ MATCH #169
 Header: Subordinate courts.
 Number: 169
 Sentence: 169. (1) The subordinate courts are—
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: TEN
 Part: PART 3 - SUBORDINATE COURTS
 Article Length: 396 characters
@@ -2713,7 +2713,7 @@ MATCH #170
 Header: Kadhis’ courts.
 Number: 170
 Sentence: 170. (1) There shall be a Chief Kadhi and such number, being not fewer than
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: TEN
 Part: PART 3 - SUBORDINATE COURTS
 Article Length: 1171 characters
@@ -2736,7 +2736,7 @@ MATCH #171
 Header: Establishment of the Judicial Service Commission.
 Number: 171
 Sentence: 171. (1) There is established the Judicial Service Commission.
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: TEN
 Part: PART 4 - JUDICIAL SERVICE COMMISSION
 Article Length: 1225 characters
@@ -2759,7 +2759,7 @@ MATCH #172
 Header: Functions of the Judicial Service Commission.
 Number: 172
 Sentence: 172. (1) The Judicial Service Commission shall promote and facilitate the
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: TEN
 Part: PART 4 - JUDICIAL SERVICE COMMISSION
 Article Length: 1112 characters
@@ -2782,7 +2782,7 @@ MATCH #173
 Header: Judiciary Fund.
 Number: 173
 Sentence: 173. (1) There is established a fund to be known as the Judiciary Fund which
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: TEN
 Part: PART 4 - JUDICIAL SERVICE COMMISSION
 Article Length: 734 characters
@@ -2793,7 +2793,7 @@ MATCH #174
 Header: Objects of devolution.
 Number: 174
 Sentence: 174. The objects of the devolution of government are—
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: ELEVEN
 Part: PART 1 - OBJECTS AND PRINCIPLES OF DEVOLVED GOVERNMENT
 Article Length: 935 characters
@@ -2804,7 +2804,7 @@ MATCH #175
 Header: Principles of devolved government.
 Number: 175
 Sentence: 175. County governments established under this Constitution shall reﬂect the
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: ELEVEN
 Part: PART 1 - OBJECTS AND PRINCIPLES OF DEVOLVED GOVERNMENT
 Article Length: 427 characters
@@ -2815,7 +2815,7 @@ MATCH #176
 Header: County governments.
 Number: 176
 Sentence: 176. (1) There shall be a county government for each county, consisting of a
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: ELEVEN
 Part: PART 2 - COUNTY GOVERNMENTS
 Article Length: 302 characters
@@ -2826,7 +2826,7 @@ MATCH #177
 Header: Membership of county assembly.
 Number: 177
 Sentence: 177. (1) A county assembly consists of—
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: ELEVEN
 Part: PART 2 - COUNTY GOVERNMENTS
 Article Length: 1052 characters
@@ -2849,7 +2849,7 @@ MATCH #178
 Header: Speaker of a county assembly.
 Number: 178
 Sentence: 178. (1) Each county assembly shall have a speaker elected by the county
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: ELEVEN
 Part: PART 2 - COUNTY GOVERNMENTS
 Article Length: 476 characters
@@ -2860,7 +2860,7 @@ MATCH #179
 Header: County executive committees.
 Number: 179
 Sentence: 179. (1) The executive authority of the county is vested in, and exercised by, a
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: ELEVEN
 Part: PART 2 - COUNTY GOVERNMENTS
 Article Length: 1178 characters
@@ -2884,7 +2884,7 @@ MATCH #180
 Header: Election of county governor and deputy county governor.
 Number: 180
 Sentence: 180. (1) The county governor shall be directly elected by the voters registered in
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: ELEVEN
 Part: PART 2 - COUNTY GOVERNMENTS
 Article Length: 1375 characters
@@ -2906,7 +2906,7 @@ MATCH #181
 Header: Removal of a county governor.
 Number: 181
 Sentence: 181. (1) A county governor may be removed from ofﬁce on any of the following
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: ELEVEN
 Part: PART 2 - COUNTY GOVERNMENTS
 Article Length: 579 characters
@@ -2917,7 +2917,7 @@ MATCH #182
 Header: Vacancy in the ofﬁce of county governor.
 Number: 182
 Sentence: 182. (1) The ofﬁce of the county governor shall become vacant if the holder of
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: ELEVEN
 Part: PART 2 - COUNTY GOVERNMENTS
 Article Length: 1684 characters
@@ -2946,7 +2946,7 @@ MATCH #183
 Header: Functions of county executive committees.
 Number: 183
 Sentence: 183. (1) A county executive committee shall—
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: ELEVEN
 Part: PART 2 - COUNTY GOVERNMENTS
 Article Length: 619 characters
@@ -2957,7 +2957,7 @@ MATCH #184
 Header: Urban areas and cities.
 Number: 184
 Sentence: 184. (1) National legislation shall provide for the governance and management
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: ELEVEN
 Part: PART 2 - COUNTY GOVERNMENTS
 Article Length: 575 characters
@@ -2968,7 +2968,7 @@ MATCH #185
 Header: Legislative authority of county assemblies.
 Number: 185
 Sentence: 185. (1) The legislative authority of a county is vested in, and exercised by, its
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: ELEVEN
 Part: PART 2 - COUNTY GOVERNMENTS
 Article Length: 688 characters
@@ -2979,7 +2979,7 @@ MATCH #186
 Header: Respective functions and powers of national and county governments.
 Number: 186
 Sentence: 186. (1) Except as otherwise provided by this Constitution, the functions and
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: ELEVEN
 Part: PART 3 - FUNCTIONS AND POWERS OF COUNTY GOVERNMENTS
 Article Length: 660 characters
@@ -2990,7 +2990,7 @@ MATCH #187
 Header: Transfer of functions and powers between levels of government.
 Number: 187
 Sentence: 187. (1) A function or power of government at one level may be transferred to
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: ELEVEN
 Part: PART 3 - FUNCTIONS AND POWERS OF COUNTY GOVERNMENTS
 Article Length: 814 characters
@@ -3001,7 +3001,7 @@ MATCH #188
 Header: Boundaries of counties.
 Number: 188
 Sentence: 188. (1) The boundaries of a county may be altered only by a resolution—
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: ELEVEN
 Part: PART 4 - THE BOUNDARIES OF COUNTIES
 Article Length: 675 characters
@@ -3012,7 +3012,7 @@ MATCH #189
 Header: Cooperation between national and county governments.
 Number: 189
 Sentence: 189. (1) Government at either level shall—
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: ELEVEN
 Part: PART 5 - RELATIONSHIP BETWEEN GOVERNMENTS
 Article Length: 1235 characters
@@ -3035,7 +3035,7 @@ MATCH #190
 Header: Support for county governments.
 Number: 190
 Sentence: 190. (1) Parliament shall by legislation ensure that county governments have
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: ELEVEN
 Part: PART 5 - RELATIONSHIP BETWEEN GOVERNMENTS
 Article Length: 1403 characters
@@ -3061,7 +3061,7 @@ MATCH #191
 Header: Conﬂict of laws.
 Number: 191
 Sentence: 191. (1) This Article applies to conﬂicts between national and county legislation
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: ELEVEN
 Part: PART 5 - RELATIONSHIP BETWEEN GOVERNMENTS
 Article Length: 2103 characters
@@ -3093,7 +3093,7 @@ MATCH #192
 Header: Suspension of a county government.
 Number: 192
 Sentence: 192. (1) The President may suspend a county government—
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: ELEVEN
 Part: PART 6 - SUSPENSION OF COUNTY GOVERNMENTS
 Article Length: 868 characters
@@ -3104,7 +3104,7 @@ MATCH #193
 Header: Qualiﬁcations for election as member of county assembly.
 Number: 193
 Sentence: 193. (1) Unless disqualiﬁed under clause (2), a person is eligible for election as
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: ELEVEN
 Part: PART 7 - GENERAL
 Article Length: 1308 characters
@@ -3128,7 +3128,7 @@ MATCH #194
 Header: Vacation of ofﬁce of member of county assembly.
 Number: 194
 Sentence: 194. (1) The ofﬁce of a member of a county assembly becomes vacant—
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: ELEVEN
 Part: PART 7 - GENERAL
 Article Length: 1128 characters
@@ -3151,7 +3151,7 @@ MATCH #195
 Header: County assembly power to summon witnesses.
 Number: 195
 Sentence: 195. (1) A county assembly or any of its committees has power to summon
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: ELEVEN
 Part: PART 7 - GENERAL
 Article Length: 517 characters
@@ -3162,7 +3162,7 @@ MATCH #196
 Header: Public participation and county assembly powers, privileges and immunities.
 Number: 196
 Sentence: 196. (1) A county assembly shall—
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: ELEVEN
 Part: PART 7 - GENERAL
 Article Length: 642 characters
@@ -3173,7 +3173,7 @@ MATCH #197
 Header: County assembly gender balance and diversity.
 Number: 197
 Sentence: 197. (1) Not more than two-thirds of the members of any county assembly or
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: ELEVEN
 Part: PART 7 - GENERAL
 Article Length: 402 characters
@@ -3184,7 +3184,7 @@ MATCH #198
 Header: County government during transition.
 Number: 198
 Sentence: 198. While an election is being held to constitute a county assembly under
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: ELEVEN
 Part: PART 7 - GENERAL
 Article Length: 303 characters
@@ -3195,7 +3195,7 @@ MATCH #199
 Header: Publication of county legislation.
 Number: 199
 Sentence: 199. (1) County legislation does not take effect unless published in the Gazette.
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: ELEVEN
 Part: PART 7 - GENERAL
 Article Length: 232 characters
@@ -3206,7 +3206,7 @@ MATCH #200
 Header: Legislation on Chapter.
 Number: 200
 Sentence: 200. (1) Parliament shall enact legislation providing for all matters necessary
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: ELEVEN
 Part: PART 7 - GENERAL
 Article Length: 765 characters
@@ -3217,7 +3217,7 @@ MATCH #201
 Header: Principles of public ﬁnance.
 Number: 201
 Sentence: 201. The following principles shall guide all aspects of public ﬁnance in the
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: TWELVE
 Part: [Not within a PART]
 Article Length: 873 characters
@@ -3228,7 +3228,7 @@ MATCH #202
 Header: Equitable sharing of national revenue.
 Number: 202
 Sentence: 202. (1) Revenue raised nationally shall be shared equitably among the national
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: TWELVE
 Part: [Not within a PART]
 Article Length: 297 characters
@@ -3239,7 +3239,7 @@ MATCH #203
 Header: Equitable share and other ﬁnancial laws.
 Number: 203
 Sentence: 203. (1) The following criteria shall be taken into account in determining
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: TWELVE
 Part: [Not within a PART]
 Article Length: 1483 characters
@@ -3267,7 +3267,7 @@ MATCH #204
 Header: Equalisation Fund.
 Number: 204
 Sentence: 204. (1) There is established an Equalisation Fund into which shall be paid
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: TWELVE
 Part: [Not within a PART]
 Article Length: 1855 characters
@@ -3294,7 +3294,7 @@ MATCH #205
 Header: Consultation on ﬁnancial legislation affecting counties.
 Number: 205
 Sentence: 205. (1) When a Bill that includes provisions dealing with the sharing of
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: TWELVE
 Part: [Not within a PART]
 Article Length: 443 characters
@@ -3305,7 +3305,7 @@ MATCH #206
 Header: Consolidated Fund and other public funds.
 Number: 206
 Sentence: 206. (1) There is established the Consolidated Fund into which shall be paid all
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: TWELVE
 Part: PART 2 - OTHER PUBLIC FUNDS
 Article Length: 1035 characters
@@ -3327,7 +3327,7 @@ MATCH #207
 Header: Revenue Funds for county governments.
 Number: 207
 Sentence: 207. (1) There shall be established a Revenue Fund for each county government,
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: TWELVE
 Part: PART 2 - OTHER PUBLIC FUNDS
 Article Length: 831 characters
@@ -3338,7 +3338,7 @@ MATCH #208
 Header: Contingencies Fund.
 Number: 208
 Sentence: 208. (1) There is established a Contingencies Fund, the operation of which shall
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: TWELVE
 Part: PART 2 - OTHER PUBLIC FUNDS
 Article Length: 363 characters
@@ -3349,7 +3349,7 @@ MATCH #209
 Header: Power to impose taxes and charges.
 Number: 209
 Sentence: 209. (1) Only the national government may impose—
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: TWELVE
 Part: PART 3 - REVENUE-RAISING AND THE PUBLIC DEBT
 Article Length: 773 characters
@@ -3360,7 +3360,7 @@ MATCH #210
 Header: Imposition of tax.
 Number: 210
 Sentence: 210. (1) No tax or licensing fee may be imposed, waived or varied except as
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: TWELVE
 Part: PART 3 - REVENUE-RAISING AND THE PUBLIC DEBT
 Article Length: 562 characters
@@ -3371,7 +3371,7 @@ MATCH #211
 Header: Borrowing by national government.
 Number: 211
 Sentence: 211. (1) Parliament may, by legislation—
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: TWELVE
 Part: PART 3 - REVENUE-RAISING AND THE PUBLIC DEBT
 Article Length: 683 characters
@@ -3382,7 +3382,7 @@ MATCH #212
 Header: Borrowing by counties.
 Number: 212
 Sentence: 212. A county government may borrow only—
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: TWELVE
 Part: PART 3 - REVENUE-RAISING AND THE PUBLIC DEBT
 Article Length: 188 characters
@@ -3393,7 +3393,7 @@ MATCH #213
 Header: Loan guarantees by national government.
 Number: 213
 Sentence: 213. (1) An Act of Parliament shall prescribe terms and conditions under which
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: TWELVE
 Part: PART 3 - REVENUE-RAISING AND THE PUBLIC DEBT
 Article Length: 291 characters
@@ -3404,7 +3404,7 @@ MATCH #214
 Header: Public debt.
 Number: 214
 Sentence: 214. (1) The public debt is a charge on the Consolidated Fund, but an Act of
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: TWELVE
 Part: PART 3 - REVENUE-RAISING AND THE PUBLIC DEBT
 Article Length: 357 characters
@@ -3415,7 +3415,7 @@ MATCH #215
 Header: Commission on Revenue Allocation.
 Number: 215
 Sentence: 215. (1) There is established the Commission on Revenue Allocation.
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: TWELVE
 Part: PART 4 - REVENUE ALLOCATION
 Article Length: 889 characters
@@ -3426,7 +3426,7 @@ MATCH #216
 Header: Functions of the Commission on Revenue Allocation.
 Number: 216
 Sentence: 216. (1) The principal function of the Commission on Revenue Allocation is to
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: TWELVE
 Part: PART 4 - REVENUE ALLOCATION
 Article Length: 1104 characters
@@ -3449,7 +3449,7 @@ MATCH #217
 Header: Division of revenue.
 Number: 217
 Sentence: 217. (1) Once every ﬁve years, the Senate shall, by resolution, determine the
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: TWELVE
 Part: PART 4 - REVENUE ALLOCATION
 Article Length: 2416 characters
@@ -3485,7 +3485,7 @@ MATCH #218
 Header: Annual Division and Allocation of Revenue Bills.
 Number: 218
 Sentence: 218. (1) At least two months before the end of each ﬁnancial year, there shall
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: TWELVE
 Part: PART 4 - REVENUE ALLOCATION
 Article Length: 913 characters
@@ -3496,7 +3496,7 @@ MATCH #219
 Header: Transfer of equitable share.
 Number: 219
 Sentence: 219. A county’s share of revenue raised by the national government shall be
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: TWELVE
 Part: PART 4 - REVENUE ALLOCATION
 Article Length: 205 characters
@@ -3507,7 +3507,7 @@ MATCH #220
 Header: Form, content and timing of budgets.
 Number: 220
 Sentence: 220. (1) Budgets of the national and county governments shall contain—
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: TWELVE
 Part: PART 5 - BUDGETS AND SPENDING
 Article Length: 762 characters
@@ -3518,7 +3518,7 @@ MATCH #221
 Header: Budget estimates and annual Appropriation Bill.
 Number: 221
 Sentence: 221. (1) At least two months before the end of each ﬁnancial year, the Cabinet
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: TWELVE
 Part: PART 5 - BUDGETS AND SPENDING
 Article Length: 1809 characters
@@ -3545,7 +3545,7 @@ MATCH #222
 Header: Expenditure before annual budget is passed.
 Number: 222
 Sentence: 222. (1) If the Appropriation Act for a ﬁnancial year has not been assented to,
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: TWELVE
 Part: PART 5 - BUDGETS AND SPENDING
 Article Length: 770 characters
@@ -3556,7 +3556,7 @@ MATCH #223
 Header: Supplementary appropriation.
 Number: 223
 Sentence: 223. (1) Subject to clauses (2) to (4), the national government may spend money
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: TWELVE
 Part: PART 5 - BUDGETS AND SPENDING
 Article Length: 1171 characters
@@ -3579,7 +3579,7 @@ MATCH #224
 Header: County appropriation Bills.
 Number: 224
 Sentence: 224. On the basis of the Division of Revenue Bill passed by Parliament under
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: TWELVE
 Part: PART 5 - BUDGETS AND SPENDING
 Article Length: 262 characters
@@ -3590,7 +3590,7 @@ MATCH #225
 Header: Financial control.
 Number: 225
 Sentence: 225. (1) An Act of Parliament shall provide for the establishment, functions and
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: TWELVE
 Part: PART 6 - CONTROL OF PUBLIC MONEY
 Article Length: 1577 characters
@@ -3618,7 +3618,7 @@ MATCH #226
 Header: Accounts and audit of public entities.
 Number: 226
 Sentence: 226. (1) An Act of Parliament shall provide for—
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: TWELVE
 Part: PART 6 - CONTROL OF PUBLIC MONEY
 Article Length: 1206 characters
@@ -3641,7 +3641,7 @@ MATCH #227
 Header: Procurement of public goods and services.
 Number: 227
 Sentence: 227. (1) When a State organ or any other public entity contracts for goods or
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: TWELVE
 Part: PART 6 - CONTROL OF PUBLIC MONEY
 Article Length: 905 characters
@@ -3652,7 +3652,7 @@ MATCH #228
 Header: Controller of Budget.
 Number: 228
 Sentence: 228. (1) There shall be a Controller of Budget who shall be nominated by
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: TWELVE
 Part: PART 7 - FINANCIAL OFFICERS AND INSTITUTIONS
 Article Length: 971 characters
@@ -3663,7 +3663,7 @@ MATCH #229
 Header: Auditor-General.
 Number: 229
 Sentence: 229. (1) There shall be an Auditor-General who shall be nominated by
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: TWELVE
 Part: PART 7 - FINANCIAL OFFICERS AND INSTITUTIONS
 Article Length: 1610 characters
@@ -3694,7 +3694,7 @@ MATCH #230
 Header: Salaries and Remuneration Commission.
 Number: 230
 Sentence: 230. (1) There is established the Salaries and Remuneration Commission.
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: TWELVE
 Part: PART 7 - FINANCIAL OFFICERS AND INSTITUTIONS
 Article Length: 1801 characters
@@ -3724,7 +3724,7 @@ MATCH #231
 Header: Central Bank of Kenya.
 Number: 231
 Sentence: 231. (1) There is established the Central Bank of Kenya.
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: TWELVE
 Part: PART 7 - FINANCIAL OFFICERS AND INSTITUTIONS
 Article Length: 726 characters
@@ -3735,7 +3735,7 @@ MATCH #232
 Header: Values and principles of public service.
 Number: 232
 Sentence: 232. (1) The values and principles of public service include—
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: THIRTEEN
 Part: PART 1 - VALUES AND PRINCIPLES OF PUBLIC SERVICE
 Article Length: 1005 characters
@@ -3761,7 +3761,7 @@ MATCH #233
 Header: The Public Service Commission.
 Number: 233
 Sentence: 233. (1) There is established the Public Service Commission.
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: THIRTEEN
 Part: PART 2 - THE PUBLIC SERVICE COMMISSION
 Article Length: 1376 characters
@@ -3784,7 +3784,7 @@ MATCH #234
 Header: Functions and powers of the Public Service Commission.
 Number: 234
 Sentence: 234. (1) The functions and powers of the Commission are as set out in this
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: THIRTEEN
 Part: PART 2 - THE PUBLIC SERVICE COMMISSION
 Article Length: 2180 characters
@@ -3822,7 +3822,7 @@ MATCH #235
 Header: Stafﬁng of county governments.
 Number: 235
 Sentence: 235. (1) A county government is responsible, within a framework of uniform
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: THIRTEEN
 Part: PART 2 - THE PUBLIC SERVICE COMMISSION
 Article Length: 499 characters
@@ -3833,7 +3833,7 @@ MATCH #236
 Header: Protection of public ofﬁcers.
 Number: 236
 Sentence: 236. A public ofﬁcer shall not be—
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: THIRTEEN
 Part: PART 2 - THE PUBLIC SERVICE COMMISSION
 Article Length: 293 characters
@@ -3844,7 +3844,7 @@ MATCH #237
 Header: Teachers Service Commission.
 Number: 237
 Sentence: 237. (1) There is established the Teachers Service Commission.
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: THIRTEEN
 Part: PART 3 - TEACHERS SERVICE COMMISSION
 Article Length: 646 characters
@@ -3855,7 +3855,7 @@ MATCH #238
 Header: Principles of national security.
 Number: 238
 Sentence: 238. (1) National security is the protection against internal and external threats
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: FOURTEEN
 Part: PART 1 - NATIONAL SECURITY ORGANS
 Article Length: 897 characters
@@ -3866,7 +3866,7 @@ MATCH #239
 Header: National security organs.
 Number: 239
 Sentence: 239. (1) The national security organs are—
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: FOURTEEN
 Part: PART 1 - NATIONAL SECURITY ORGANS
 Article Length: 1111 characters
@@ -3891,7 +3891,7 @@ MATCH #240
 Header: Establishment of the National Security Council.
 Number: 240
 Sentence: 240. (1) There is established a National Security Council.
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: FOURTEEN
 Part: PART 1 - NATIONAL SECURITY ORGANS
 Article Length: 1380 characters
@@ -3917,7 +3917,7 @@ MATCH #241
 Header: Establishment of Kenya Defence Forces and Defence Council.
 Number: 241
 Sentence: 241. (1) There are established the Kenya Defence Forces.
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: FOURTEEN
 Part: PART 2 - THE KENYA DEFENCE FORCES
 Article Length: 1215 characters
@@ -3943,7 +3943,7 @@ MATCH #242
 Header: Establishment of National Intelligence Service.
 Number: 242
 Sentence: 242. (1) There is established the National Intelligence Service.
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: FOURTEEN
 Part: PART 3 - THE NATIONAL INTELLIGENCE SERVICE
 Article Length: 305 characters
@@ -3954,7 +3954,7 @@ MATCH #243
 Header: Establishment of the National Police Service.
 Number: 243
 Sentence: 243. (1) There is established the National Police Service.
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: FOURTEEN
 Part: PART 4 - THE NATIONAL POLICE SERVICE
 Article Length: 389 characters
@@ -3965,7 +3965,7 @@ MATCH #244
 Header: Objects and functions of the National Police Service.
 Number: 244
 Sentence: 244. The National Police Service shall—
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: FOURTEEN
 Part: PART 4 - THE NATIONAL POLICE SERVICE
 Article Length: 524 characters
@@ -3976,7 +3976,7 @@ MATCH #245
 Header: Command of the National Police Service.
 Number: 245
 Sentence: 245. (1) There is established the ofﬁce of the Inspector-General of the National
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: FOURTEEN
 Part: PART 4 - THE NATIONAL POLICE SERVICE
 Article Length: 1929 characters
@@ -4007,7 +4007,7 @@ MATCH #246
 Header: National Police Service Commission.
 Number: 246
 Sentence: 246. (1) There is established the National Police Service Commission.
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: FOURTEEN
 Part: PART 4 - THE NATIONAL POLICE SERVICE
 Article Length: 993 characters
@@ -4018,7 +4018,7 @@ MATCH #247
 Header: Other police services.
 Number: 247
 Sentence: 247. Parliament may enact legislation establishing other police services under
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: FOURTEEN
 Part: PART 4 - THE NATIONAL POLICE SERVICE
 Article Length: 183 characters
@@ -4029,7 +4029,7 @@ MATCH #248
 Header: Application of Chapter.
 Number: 248
 Sentence: 248. (1) This Chapter applies to the commissions speciﬁed in clause (2) and the
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: FIFTEEN
 Part: [Not within a PART]
 Article Length: 763 characters
@@ -4040,7 +4040,7 @@ MATCH #249
 Header: Objects, authority and funding of commissions and independent ofﬁces.
 Number: 249
 Sentence: 249. (1) The objects of the commissions and the independent ofﬁces are to—
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: FIFTEEN
 Part: [Not within a PART]
 Article Length: 666 characters
@@ -4051,7 +4051,7 @@ MATCH #250
 Header: Composition, appointment and terms of ofﬁce.
 Number: 250
 Sentence: 250. (1) Each commission shall consist of at least three, but not more than nine,
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: FIFTEEN
 Part: [Not within a PART]
 Article Length: 2120 characters
@@ -4084,7 +4084,7 @@ MATCH #251
 Header: Removal from ofﬁce.
 Number: 251
 Sentence: 251. (1) A member of a commission (other than an ex ofﬁcio member), or the
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: FIFTEEN
 Part: [Not within a PART]
 Article Length: 1742 characters
@@ -4111,7 +4111,7 @@ MATCH #252
 Header: General functions and powers.
 Number: 252
 Sentence: 252. (1) Each commission, and each holder of an independent ofﬁce—
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: FIFTEEN
 Part: [Not within a PART]
 Article Length: 923 characters
@@ -4122,7 +4122,7 @@ MATCH #253
 Header: Incorporation of commissions and independent ofﬁces.
 Number: 253
 Sentence: 253. Each commission and each independent ofﬁce—
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: FIFTEEN
 Part: [Not within a PART]
 Article Length: 217 characters
@@ -4133,7 +4133,7 @@ MATCH #254
 Header: Reporting by commissions and independent ofﬁces.
 Number: 254
 Sentence: 254. (1) As soon as practicable after the end of each ﬁnancial year, each
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: FIFTEEN
 Part: [Not within a PART]
 Article Length: 485 characters
@@ -4144,7 +4144,7 @@ MATCH #255
 Header: Amendment of this Constitution.
 Number: 255
 Sentence: 255. (1) A proposed amendment to this Constitution shall be enacted in
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: SIXTEEN
 Part: [Not within a PART]
 Article Length: 1256 characters
@@ -4167,7 +4167,7 @@ MATCH #256
 Header: Amendment by parliamentary initiative.
 Number: 256
 Sentence: 256. (1) A Bill to amend this Constitution—
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: SIXTEEN
 Part: [Not within a PART]
 Article Length: 1669 characters
@@ -4196,7 +4196,7 @@ MATCH #257
 Header: Amendment by popular initiative.
 Number: 257
 Sentence: 257. (1) An amendment to this Constitution may be proposed by a popular
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: SIXTEEN
 Part: [Not within a PART]
 Article Length: 1921 characters
@@ -4224,7 +4224,7 @@ MATCH #258
 Header: Enforcement of this Constitution.
 Number: 258
 Sentence: 258. (1) Every person has the right to institute court proceedings, claiming that
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: SEVENTEEN
 Part: [Not within a PART]
 Article Length: 577 characters
@@ -4235,7 +4235,7 @@ MATCH #259
 Header: Construing this Constitution.
 Number: 259
 Sentence: 259. (1) This Constitution shall be interpreted in a manner that—
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: SEVENTEEN
 Part: [Not within a PART]
 Article Length: 3905 characters
@@ -4281,7 +4281,7 @@ MATCH #260
 Header: Interpretation.
 Number: 260
 Sentence: 260. In this Constitution, unless the context requires otherwise—
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: SEVENTEEN
 Part: [Not within a PART]
 Article Length: 6602 characters
@@ -4349,7 +4349,7 @@ MATCH #261
 Header: Consequential legislation.
 Number: 261
 Sentence: 261. (1) Parliament shall enact any legislation required by this Constitution
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: EIGHTEEN
 Part: [Not within a PART]
 Article Length: 2134 characters
@@ -4381,7 +4381,7 @@ MATCH #262
 Header: Transitional and consequential provisions.
 Number: 262
 Sentence: 262. The transitional and consequential provisions set out in the Sixth Schedule
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: EIGHTEEN
 Part: [Not within a PART]
 Article Length: 137 characters
@@ -4392,7 +4392,7 @@ MATCH #263
 Header: Effective Date.
 Number: 263
 Sentence: 263. This Constitution shall come into force on its promulgation by the President
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: EIGHTEEN
 Part: [Not within a PART]
 Article Length: 300 characters
@@ -4403,7 +4403,7 @@ MATCH #264
 Header: Repeal of previous Constitution.
 Number: 264
 Sentence: 264. Subject to the Sixth Schedule, for the avoidance of doubt, the Constitution
-Legal Domain: Not classified (beyond limit)
+Legal Domain: Not classified (outside range)
 Chapter: EIGHTEEN
 Part: [Not within a PART]
 Article Length: 208 characters
