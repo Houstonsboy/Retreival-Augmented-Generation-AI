@@ -89,12 +89,12 @@ def extract_query_params(classifier_output: Dict) -> Dict[str, Any]:
     }
 
 
-def calculate_domain_boost(chunk_metadata: Dict, legal_domains: List[Dict]) -> float:
+def calculate_domain_boost(chunk_metadata: dict, legal_domains: list[dict]) -> float:
     """
     Calculate domain matching boost score.
-    
-    Checks if chunk's legal_domain matches any of the query's legal domains,
-    weighted by confidence score.
+
+    Direct matches dominate over partial matches. 
+    Boost is capped at 1.0.
     """
     chunk_domain = chunk_metadata.get('legal_domain', '').lower()
     if not chunk_domain:
@@ -105,11 +105,20 @@ def calculate_domain_boost(chunk_metadata: Dict, legal_domains: List[Dict]) -> f
         query_domain = domain_info.get('domain', '').lower()
         confidence = domain_info.get('confidence_score', 0.5)
         
-        # Check if domains match (allow partial match for compound domains)
-        if query_domain in chunk_domain or chunk_domain in query_domain:
+        if chunk_domain == query_domain:
+            # Exact match dominates: count full confidence
             boost += confidence
-    
-    return boost
+        elif query_domain in chunk_domain or chunk_domain in query_domain:
+            # Partial match contributes less (weighted by half)
+            boost += confidence * 0.5
+
+        # Stop early if we already reach the cap
+        if boost >= 1.0:
+            boost = 1.0
+            break
+
+    return min(boost, 1.0)
+
 
 
 def calculate_chunk_score(distance: float, chunk_metadata: Dict, 
@@ -133,11 +142,21 @@ def calculate_chunk_score(distance: float, chunk_metadata: Dict,
     chunk_component = chunk_metadata.get('firac_component', '').upper()
     component_match = chunk_component in [c.upper() for c in target_components]
     
-    # Calculate domain boost
+    # NEW LOGIC: Separate Procedural vs. Substantive
+    # Boost "Land/Civil/Criminal" (Substance) higher than "Constitutional" (Instrument)
+    substantive_domains = ['property law', 'land law', 'criminal law', 'civil law', 'family law']
+    
     domain_boost = calculate_domain_boost(chunk_metadata, legal_domains)
     
-    # Calculate final score
-    final_score = base_similarity + (0.3 * domain_boost)
+    chunk_domain = chunk_metadata.get('legal_domain', '').lower()
+    
+    # Boost substances over instruments
+    if any(sd in chunk_domain for sd in substantive_domains):
+        multiplier = 0.5 # Give more weight to the facts
+    else:
+        multiplier = 0.2 # Give less weight to the filing type
+        
+    final_score = base_similarity + (multiplier * domain_boost)
     
     # Build match reasons
     match_reasons = []
