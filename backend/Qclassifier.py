@@ -3,6 +3,7 @@ import json
 import requests
 from typing import Dict, Any, Optional
 from dotenv import load_dotenv
+from Retriever import retrieve_relevant_cases, display_results
 
 # Load environment variables
 load_dotenv()
@@ -27,6 +28,7 @@ Before generating any JSON, you must process the input through these three inter
 ---
 
 ### 2. STRATEGIC AUDIT & CRITIQUE DEFINITIONS
+The strategy_critique MUST NOT express likelihood of success or failure, only identify doctrinal, procedural, spatial, or temporal risks.
 Populate the `strategy_critique` field by evaluating:
 - **Spatial (Jurisdiction):** Flag if specialized matters (ELC, ELRC, TAT) are directed to the wrong court or if pecuniary limits are breached.
 - **Doctrinal (Theory):** Ensure Latin maxims match the domain. Flag "Legal Noise" (e.g., using 'Beyond Reasonable Doubt' in a Civil case).
@@ -36,11 +38,11 @@ Populate the `strategy_critique` field by evaluating:
 ### 3. FIELD DEFINITIONS & SANITIZATION RULES
 1. "intents": (SCENARIO_MATCH, RULE_SEARCH, OUTCOME_ANALYSIS, PROCEDURAL_GUIDANCE).
 2. "target_components": (List of strings) FIRAC parts: FACTS, ISSUES, RULES, APPLICATION, CONCLUSION.
-3. "legal_domains": Identify Primary/Secondary domains (e.g., Land/ELC, Criminal, Family).
-4. "entities": **[SANITIZED]** Only include valid, domain-appropriate Statutes, Cases, and Judges. If a statute mentioned by the user was flagged as 'Noise' in the Audit, DO NOT include it here.
+3.legal_domains": Identify all legal domains implicated either directly, by invocation, or through factual subtext. For each domain, specify its mode of presence, procedural scope (in-scope, contextual, non-determinative, or out-of-scope), and a confidence score reflecting its legal relevance. Domains that are weak, decorative, or likely to be rejected by the court MUST still be included but marked accordingly.
+4. "entities": **[SANITIZED]** Only include valid, domain-appropriate Statutes, Cases(famous casesthat are relevant to the query either in crime or isssue/application), and Judges. If a statute mentioned by the user was flagged as 'Noise' in the Audit, DO NOT include it here.
 5. "vector_query": [SURGICAL SIGNAL] A dense keyword cluster optimized for Kenyan legal retrieval. You MUST adhere to this sanitization logic:
 
-BLACKLIST: Strictly exclude any term, statute, or doctrine flagged as "Noise" or an "Error" in the strategy_critique. You are prohibited from searching for the user's mistakes.
+BLACKLIST includes: incorrect statutes, misapplied doctrines, wrong court references, foreign jurisprudence unless expressly applicable, and incorrect burden-of-proof standards.
 
 TRANSLATE: Convert all user misconceptions into their authoritative Kenyan legal equivalents (e.g., replace a misplaced maxim with the correct statutory signal or judicial doctrine).
 
@@ -71,6 +73,8 @@ FORMAT: Comma-separated keywords only; zero narrative, zero filler, and zero sen
     "cases": ["string"],
     "judges": ["string"]
   },
+  "adverse_retrieval_signals": ["string"]
+
   "vector_query": "string",
   "reasoning_summary": "string"
 }"""
@@ -278,6 +282,26 @@ def print_classification(classification: Dict[str, Any]) -> None:
     print("="*60 + "\n")
 
 
+def normalize_for_retriever(classification: Dict[str, Any]) -> Dict[str, Any]:
+    """
+    Ensure classifier output matches Retriever expectations.
+
+    - legal_domains: convert string entries to dicts with a default confidence.
+    """
+    legal_domains = classification.get("legal_domains", [])
+    normalized_domains = []
+    for domain in legal_domains:
+        if isinstance(domain, dict):
+            normalized_domains.append(domain)
+        else:
+            normalized_domains.append({
+                "domain": str(domain),
+                "confidence_score": 0.5
+            })
+
+    return {**classification, "legal_domains": normalized_domains}
+
+
 def main():
     """Main function to demonstrate the classifier."""
     
@@ -302,14 +326,15 @@ def main():
     
     if result:
         print_classification(result)
-        
-        # Optionally save to file
-        save_to_file = input("Save result to file? (y/n): ").strip().lower()
-        if save_to_file == 'y':
-            filename = "classification_result.json"
-            with open(filename, 'w', encoding='utf-8') as f:
-                json.dump(result, f, indent=2, ensure_ascii=False)
-            print(f"✅ Result saved to {filename}")
+        print("🔄 Running retrieval with classifier output...\n")
+        try:
+            normalized = normalize_for_retriever(result)
+            retrieval_output = retrieve_relevant_cases(normalized, verbose=True)
+            display_results(retrieval_output)
+        except Exception as e:
+            print(f"❌ Retrieval failed: {e}")
+            import traceback
+            traceback.print_exc()
     else:
         print("❌ Classification failed.")
         print("\n💡 Suggestions:")
