@@ -11,6 +11,7 @@ from digester import digest_repo
 from pixe import run_rag_pipeline
 from CaseLaw.firac import run_firac, run_firac_from_file
 from CaseLaw.ingester import ingest_firac_data
+from Qclassifier import Qclassifier
 from constitutionlogic.constitutionbreaker import extract_constitution_articles, OUTPUT_DIR as CONST_OUTPUT_DIR, flatten_articles_to_embeddable_chunks, CHUNK_SIZE, CHUNK_OVERLAP
 from constitutionlogic.constitution_digester import ConstitutionDigester, EMBEDDABLE_CHUNKS_JSON
 app = Flask(__name__)
@@ -911,6 +912,29 @@ def reset_constitution():
             'error': f'Reset failed: {str(e)}',
             'status': 'error'
         }), 500        
+
+
+@app.route('/api/qretrieve', methods=['POST'])
+def QRetriever():
+    """
+    Executes the legal query classification + retrieval pipeline.
+    """
+
+    data = request.get_json(silent=True)
+
+    if not data or "query" not in data:
+        return jsonify({
+            "success": False,
+            "error": "Missing 'query' in request body"
+        }), 400
+
+    user_query = data["query"]
+
+    result = Qclassifier(user_query)
+
+    status_code = 200 if result.get("success") else 500
+    return jsonify(result), status_code
+      
 if __name__ == '__main__':
     app.run(debug=True, port=5000, host='0.0.0.0')
 

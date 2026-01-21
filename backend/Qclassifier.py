@@ -302,45 +302,78 @@ def normalize_for_retriever(classification: Dict[str, Any]) -> Dict[str, Any]:
     return {**classification, "legal_domains": normalized_domains}
 
 
-def main():
-    """Main function to demonstrate the classifier."""
-    
-    print("\n" + "="*60)
+def Qclassifier(userQuery: str):
+    """
+    Classifies a Kenyan legal query and runs retrieval.
+    Prints progress for CLI debugging and returns structured output for API usage.
+    """
+
+    print("\n" + "=" * 60)
     print("KENYAN LEGAL QUERY CLASSIFIER")
-    print("="*60)
-    print("\nEnter your legal query below:")
-    print("(Type your query and press Enter when done)\n")
-    
-    # Simple single-line input
-    user_query = input("Query: ").strip()
-    
-    if not user_query:
-        print("\n❌ No query entered. Exiting.")
-        return
-    
-    print(f"\n📋 You entered:\n{user_query}\n")
-    
-    # Classify the query
-    print("🔄 Processing your query...\n")
-    result = classify_legal_query(user_query)
-    
-    if result:
-        print_classification(result)
-        print("🔄 Running retrieval with classifier output...\n")
-        try:
-            normalized = normalize_for_retriever(result)
-            retrieval_output = retrieve_relevant_cases(normalized, verbose=True)
-            display_results(retrieval_output)
-        except Exception as e:
-            print(f"❌ Retrieval failed: {e}")
-            import traceback
-            traceback.print_exc()
-    else:
-        print("❌ Classification failed.")
-        print("\n💡 Suggestions:")
-        print("  - Run with a test query: 'What is adverse possession?'")
-        print("  - Check your .env file contains valid GROQ_API_KEY")
-        print("  - Verify internet connectivity")
+    print("=" * 60)
+
+    if not userQuery or not userQuery.strip():
+        print("\n❌ No query provided.")
+        return {
+            "success": False,
+            "error": "No query provided"
+        }
+
+    print(f"\n📋 User Query:\n{userQuery}\n")
+    print("🔄 Starting classification...\n")
+
+    try:
+        # Step 1: Classify query
+        classification = classify_legal_query(userQuery)
+
+        if not classification:
+            print("❌ Classification failed.")
+            return {
+                "success": False,
+                "error": "Classification failed"
+            }
+
+        print("✅ Classification Result:")
+        print(classification)
+        print("\n🔄 Normalizing for retriever...\n")
+
+        # Step 2: Normalize for retriever
+        normalized = normalize_for_retriever(classification)
+
+        print("✅ Normalized Query:")
+        print(normalized)
+        print("\n🔄 Retrieving relevant cases...\n")
+
+        # Step 3: Retrieve relevant cases
+        retrieval_output = retrieve_relevant_cases(
+            normalized,
+            verbose=True  # keep verbose for CLI
+        )
+
+        print("\n✅ Retrieval completed.")
+        print("📚 Retrieved Results:")
+        print(retrieval_output)
+
+        return {
+            "success": True,
+            "query": userQuery,
+            "classification": classification,
+            "retrieval": retrieval_output
+        }
+
+    except Exception as e:
+        import traceback
+
+        print("\n❌ ERROR DURING QCLASSIFIER EXECUTION")
+        print(str(e))
+        traceback.print_exc()
+
+        return {
+            "success": False,
+            "error": str(e),
+            "trace": traceback.format_exc()
+        }
+
 
 
 if __name__ == "__main__":

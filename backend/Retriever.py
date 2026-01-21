@@ -1,8 +1,8 @@
 """
-Basic RAG Retrieval Script for Legal Summaries Database
+Enhanced RAG Retrieval Script for Legal Summaries Database
 
 Receives query classifier JSON and retrieves top 3 relevant parent documents
-with supporting evidence from target FIRAC components.
+with LLM-generated case summaries based on FIRAC components.
 """
 
 import json
@@ -11,7 +11,12 @@ from pathlib import Path
 from sentence_transformers import SentenceTransformer
 from typing import Dict, List, Any, Optional
 import sys
+import os
+import requests
+from dotenv import load_dotenv
 
+# Load environment variables
+load_dotenv()
 
 # ============================================================================
 # CONFIGURATION
@@ -21,6 +26,14 @@ BASE_DIR = Path(__file__).resolve().parent
 CHROMA_DB_DIR = BASE_DIR / "LegalSummariesDB"
 CHROMA_COLLECTION_NAME = "legal_summaries"
 EMBEDDING_MODEL_NAME = "intfloat/e5-base-v2"
+
+# Groq API Configuration
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+if not GROQ_API_KEY:
+    raise ValueError("GROQ_API_KEY not found in environment variables. Please set it in your .env file.")
+
+MODEL_NAME = "llama-3.3-70b-versatile"
+GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
 
 # How many parent documents to return
 TOP_N_PARENTS = 3
@@ -33,32 +46,137 @@ LOW_CONFIDENCE_THRESHOLD = 0.5
 
 
 # ============================================================================
-# HELPER FUNCTIONS
+# LLM SUMMARY GENERATION
+# ============================================================================
+
+def generate_case_summary(case_data: Dict, query_info: Dict, verbose: bool = True) -> Dict:
+    """
+    Generate an LLM-powered summary of a case based on its FIRAC components.
+    
+    Args:
+        case_data: Dictionary containing case metadata and chunks
+        query_info: Dictionary containing query details
+        verbose: Print progress messages
+    
+    Returns:
+        Dictionary with 'summary' and 'relevance_explanation' fields
+    """
+    if verbose:
+        print(f"  🤖 Generating AI summary for: {case_data['parent_document']}")
+    
+    # Prepare FIRAC components text
+    components_text = ""
+    for chunk in case_data['chunks']:
+        component = chunk['component']
+        text = chunk['text']
+        components_text += f"\n\n[{component}]\n{text}"
+    
+    # Construct prompt
+    prompt = f"""You are a legal research assistant analyzing a court case for relevance to a user's query.
+
+USER'S QUERY:
+{query_info['vector_query']}
+
+TARGET LEGAL AREAS:
+{', '.join([f"{d.get('domain', 'Unknown')} ({d.get('confidence_score', 0):.1f})" for d in query_info['legal_domains'][:3]])}
+
+CASE TO ANALYZE:
+Case Name: {case_data['parent_document']}
+Court: {case_data['metadata']['court_level']}
+Judge: {case_data['metadata']['judge']}
+Year: {case_data['metadata']['year']}
+Legal Domain: {case_data['metadata']['legal_domain']}
+Winning Party: {case_data['metadata']['winning_party']}
+
+CASE FIRAC COMPONENTS:
+{components_text}
+
+TASK:
+Provide a comprehensive analysis in exactly this format:
+
+**CASE OVERVIEW:**
+[2-3 sentences summarizing what this case is about - the parties, the dispute, and the outcome]
+
+**KEY LEGAL PRINCIPLES:**
+[2-3 sentences explaining the main legal rules or doctrines established or applied in this case]
+
+**RELEVANCE TO YOUR QUERY:**
+[3-4 sentences explaining specifically how this case relates to the user's query. Be concrete about which aspects are most relevant and why this case matters for their situation]
+
+**CRITICAL FACTS:**
+[2-3 sentences highlighting the most important factual elements that influenced the court's decision]
+
+Keep your response clear, professional, and focused on practical legal insights. Use plain language while maintaining legal accuracy."""
+
+    # Make API call
+    try:
+        headers = {
+            "Authorization": f"Bearer {GROQ_API_KEY}",
+            "Content-Type": "application/json"
+        }
+        
+        payload = {
+            "model": MODEL_NAME,
+            "messages": [
+                {
+                    "role": "system",
+                    "content": "You are an expert Kenyan legal analyst who provides clear, insightful case summaries for lawyers and legal researchers."
+                },
+                {
+                    "role": "user",
+                    "content": prompt
+                }
+            ],
+            "temperature": 0.3,
+            "max_tokens": 1000
+        }
+        
+        response = requests.post(GROQ_API_URL, headers=headers, json=payload, timeout=30)
+        response.raise_for_status()
+        
+        result = response.json()
+        summary = result['choices'][0]['message']['content'].strip()
+        
+        if verbose:
+            print(f"    ✓ Summary generated ({len(summary)} characters)")
+        
+        return {
+            'summary': summary,
+            'generated': True
+        }
+        
+    except requests.exceptions.RequestException as e:
+        if verbose:
+            print(f"    ⚠️  API call failed: {str(e)}")
+        
+        # Fallback to simple concatenation
+        fallback = f"**Case:** {case_data['parent_document']}\n\n"
+        fallback += f"**Domain:** {case_data['metadata']['legal_domain']}\n\n"
+        fallback += "**Key Components:**\n"
+        for chunk in case_data['chunks'][:3]:
+            fallback += f"\n[{chunk['component']}] {chunk['text'][:200]}...\n"
+        
+        return {
+            'summary': fallback,
+            'generated': False,
+            'error': str(e)
+        }
+
+
+# ============================================================================
+# HELPER FUNCTIONS (keeping existing ones)
 # ============================================================================
 
 def load_classifier_output(input_data: Any) -> Dict:
-    """
-    Load and parse query classifier output.
-    
-    Accepts:
-    - Dict (already parsed JSON)
-    - JSON string
-    - File path to JSON file
-    
-    Returns parsed dictionary.
-    """
-    # If already a dict, return as-is
+    """Load and parse query classifier output."""
     if isinstance(input_data, dict):
         return input_data
     
-    # If string, try parsing as JSON first
     if isinstance(input_data, str):
-        # Check if it's a file path
         if Path(input_data).exists() and Path(input_data).suffix == '.json':
             with open(input_data, 'r') as f:
                 return json.load(f)
         else:
-            # Try parsing as JSON string
             try:
                 return json.loads(input_data)
             except json.JSONDecodeError as e:
@@ -68,18 +186,7 @@ def load_classifier_output(input_data: Any) -> Dict:
 
 
 def extract_query_params(classifier_output: Dict) -> Dict[str, Any]:
-    """
-    Extract key parameters from classifier output.
-    
-    Returns:
-    {
-        'vector_query': str,
-        'target_components': List[str],
-        'legal_domains': List[Dict],
-        'entities': Dict,
-        'adverse_signals': List[str]
-    }
-    """
+    """Extract key parameters from classifier output."""
     return {
         'vector_query': classifier_output.get('vector_query', ''),
         'target_components': classifier_output.get('target_components', []),
@@ -90,12 +197,7 @@ def extract_query_params(classifier_output: Dict) -> Dict[str, Any]:
 
 
 def calculate_domain_boost(chunk_metadata: dict, legal_domains: list[dict]) -> float:
-    """
-    Calculate domain matching boost score.
-
-    Direct matches dominate over partial matches. 
-    Boost is capped at 1.0.
-    """
+    """Calculate domain matching boost score."""
     chunk_domain = chunk_metadata.get('legal_domain', '').lower()
     if not chunk_domain:
         return 0.0
@@ -106,13 +208,10 @@ def calculate_domain_boost(chunk_metadata: dict, legal_domains: list[dict]) -> f
         confidence = domain_info.get('confidence_score', 0.5)
         
         if chunk_domain == query_domain:
-            # Exact match dominates: count full confidence
             boost += confidence
         elif query_domain in chunk_domain or chunk_domain in query_domain:
-            # Partial match contributes less (weighted by half)
             boost += confidence * 0.5
 
-        # Stop early if we already reach the cap
         if boost >= 1.0:
             boost = 1.0
             break
@@ -120,45 +219,25 @@ def calculate_domain_boost(chunk_metadata: dict, legal_domains: list[dict]) -> f
     return min(boost, 1.0)
 
 
-
 def calculate_chunk_score(distance: float, chunk_metadata: Dict, 
                          target_components: List[str], legal_domains: List[Dict]) -> Dict:
-    """
-    Calculate comprehensive score for a chunk.
-    
-    Returns:
-    {
-        'final_score': float,
-        'base_similarity': float,
-        'component_match': bool,
-        'domain_boost': float,
-        'match_reasons': List[str]
-    }
-    """
-    # Convert ChromaDB distance to similarity (lower distance = higher similarity)
+    """Calculate comprehensive score for a chunk."""
     base_similarity = 1 / (1 + distance)
     
-    # Check component match
     chunk_component = chunk_metadata.get('firac_component', '').upper()
     component_match = chunk_component in [c.upper() for c in target_components]
     
-    # NEW LOGIC: Separate Procedural vs. Substantive
-    # Boost "Land/Civil/Criminal" (Substance) higher than "Constitutional" (Instrument)
     substantive_domains = ['property law', 'land law', 'criminal law', 'civil law', 'family law']
-    
     domain_boost = calculate_domain_boost(chunk_metadata, legal_domains)
-    
     chunk_domain = chunk_metadata.get('legal_domain', '').lower()
     
-    # Boost substances over instruments
     if any(sd in chunk_domain for sd in substantive_domains):
-        multiplier = 0.5 # Give more weight to the facts
+        multiplier = 0.5
     else:
-        multiplier = 0.2 # Give less weight to the filing type
+        multiplier = 0.2
         
     final_score = base_similarity + (multiplier * domain_boost)
     
-    # Build match reasons
     match_reasons = []
     if base_similarity > 0.7:
         match_reasons.append("High semantic similarity")
@@ -181,19 +260,7 @@ def calculate_chunk_score(distance: float, chunk_metadata: Dict,
 
 
 def group_by_parent(results: Dict, scores: List[Dict], target_components: List[str]) -> Dict:
-    """
-    Group chunks by parent document (case_identifier).
-    
-    Returns:
-    {
-        'parent_case_name': {
-            'chunks': [...],
-            'best_score': float,
-            'evidence_count': int,
-            'metadata': {...}
-        }
-    }
-    """
+    """Group chunks by parent document (case_identifier)."""
     parents = {}
     
     for idx, chunk_id in enumerate(results['ids']):
@@ -203,7 +270,6 @@ def group_by_parent(results: Dict, scores: List[Dict], target_components: List[s
         
         parent_id = metadata.get('case_identifier', 'Unknown Case')
         
-        # Initialize parent if first time seeing it
         if parent_id not in parents:
             parents[parent_id] = {
                 'chunks': [],
@@ -220,7 +286,6 @@ def group_by_parent(results: Dict, scores: List[Dict], target_components: List[s
                 }
             }
         
-        # Add chunk
         chunk_data = {
             'chunk_id': chunk_id,
             'component': metadata.get('firac_component', 'N/A').upper(),
@@ -233,11 +298,9 @@ def group_by_parent(results: Dict, scores: List[Dict], target_components: List[s
         
         parents[parent_id]['chunks'].append(chunk_data)
         
-        # Update best score
         if score_info['final_score'] > parents[parent_id]['best_score']:
             parents[parent_id]['best_score'] = score_info['final_score']
         
-        # Count evidence from target components
         if score_info['component_match']:
             parents[parent_id]['evidence_count'] += 1
     
@@ -245,28 +308,20 @@ def group_by_parent(results: Dict, scores: List[Dict], target_components: List[s
 
 
 def select_best_chunks_per_parent(parent_data: Dict, target_components: List[str]) -> List[Dict]:
-    """
-    Select the best chunk(s) per component for a parent document.
-    
-    Returns max MAX_CHUNKS_PER_COMPONENT chunks per component type.
-    """
+    """Select the best chunk(s) per component for a parent document."""
     chunks_by_component = {}
     
-    # Group chunks by component
     for chunk in parent_data['chunks']:
         component = chunk['component']
         if component not in chunks_by_component:
             chunks_by_component[component] = []
         chunks_by_component[component].append(chunk)
     
-    # Select best chunks per component (prioritize target components)
     selected_chunks = []
     
-    # First, get chunks from target components
     for component in target_components:
         comp_upper = component.upper()
         if comp_upper in chunks_by_component:
-            # Sort by score and take top N
             sorted_chunks = sorted(chunks_by_component[comp_upper], 
                                   key=lambda x: x['score'], 
                                   reverse=True)
@@ -275,46 +330,91 @@ def select_best_chunks_per_parent(parent_data: Dict, target_components: List[str
     return selected_chunks
 
 
-def format_output(top_parents: List[tuple], query_params: Dict, stats: Dict) -> Dict:
+def format_output(top_parents: List[tuple], query_params: Dict, stats: Dict, verbose: bool = True) -> Dict:
     """
-    Format final output in structured JSON.
+    Format final output with LLM-generated summaries in frontend-compatible structure.
+    
+    Returns structure matching: data.retrieval.results[0].ai_summary
     """
     results = []
     
+    if verbose:
+        print("\n" + "="*80)
+        print("🤖 GENERATING AI CASE SUMMARIES")
+        print("="*80)
+    
     for rank, (parent_id, parent_data) in enumerate(top_parents, 1):
-        # Select best chunks to display
-        evidence = select_best_chunks_per_parent(parent_data, query_params['target_components'])
+        # Prepare case data for LLM
+        case_info = {
+            'parent_document': parent_id,
+            'metadata': parent_data['metadata'],
+            'chunks': parent_data['chunks']
+        }
         
+        # Generate LLM summary
+        summary_result = generate_case_summary(case_info, query_params, verbose)
+        
+        # Select best chunks for evidence
+        evidence_chunks = select_best_chunks_per_parent(parent_data, query_params['target_components'])
+        
+        # Format result in FRONTEND-COMPATIBLE STRUCTURE
         results.append({
             'rank': rank,
+            'case_name': parent_id,  # Frontend expects 'case_name'
             'parent_document': parent_id,
-            'relevance_score': round(parent_data['best_score'], 3),
-            'metadata': parent_data['metadata'],
-            'supporting_evidence': [
+            'score': round(parent_data['best_score'], 3),  # Frontend expects 'score'
+            
+            # PRIMARY FIELD FOR AI RESPONSE WIDGET
+            'ai_summary': summary_result['summary'],
+            
+            # METADATA FOR CLASSIFICATION WIDGET
+            'metadata': {
+                'file_name': parent_data['metadata']['file_name'],
+                'parties': parent_data['metadata']['parties'],
+                'court_level': parent_data['metadata']['court_level'],
+                'judge': parent_data['metadata']['judge'],
+                'year': parent_data['metadata']['year'],
+                'legal_domain': parent_data['metadata']['legal_domain'],
+                'winning_party': parent_data['metadata']['winning_party']
+            },
+            
+            # MATCHED COMPONENTS FOR EVIDENCE WIDGET
+            'matched_components': list(set([chunk['component'] for chunk in evidence_chunks])),
+            
+            # BEST CHUNK TEXT FOR EVIDENCE WIDGET PREVIEW
+            'best_chunk': evidence_chunks[0]['text'] if evidence_chunks else '',
+            
+            # DETAILED CHUNKS FOR EVIDENCE WIDGET
+            'chunks': [
                 {
                     'component': chunk['component'],
+                    'text': chunk['text'],
                     'score': round(chunk['score'], 3),
                     'base_similarity': round(chunk['base_similarity'], 3),
                     'domain_boost': round(chunk['domain_boost'], 3),
-                    'text_preview': chunk['text'][:200] + '...' if len(chunk['text']) > 200 else chunk['text'],
                     'match_reasons': ', '.join(chunk['match_reasons']),
                     'chunk_id': chunk['chunk_id']
                 }
-                for chunk in evidence
+                for chunk in evidence_chunks
             ],
-            'evidence_count': parent_data['evidence_count']
+            
+            # ADDITIONAL METADATA
+            'evidence_count': parent_data['evidence_count'],
+            'summary_generated': summary_result.get('generated', False),
+            'relevance_score': round(parent_data['best_score'], 3)
         })
     
+    # Return structure that frontend expects: data.retrieval.results
     return {
+        'results': results,  # THIS IS THE KEY FIELD FRONTEND USES
         'query_summary': {
             'vector_query': query_params['vector_query'],
             'target_components': query_params['target_components'],
             'primary_domains': [
                 f"{d.get('domain', 'Unknown')} ({d.get('confidence_score', 0):.1f})"
-                for d in query_params['legal_domains'][:2]  # Show top 2
+                for d in query_params['legal_domains'][:2]
             ]
         },
-        'results': results,
         'retrieval_stats': stats
     }
 
@@ -325,14 +425,8 @@ def format_output(top_parents: List[tuple], query_params: Dict, stats: Dict) -> 
 
 def retrieve_relevant_cases(classifier_output: Any, verbose: bool = True) -> Dict:
     """
-    Main retrieval function.
-    
-    Args:
-        classifier_output: Query classifier JSON (dict, string, or file path)
-        verbose: If True, print progress messages
-    
-    Returns:
-        Structured dict with top 3 parent documents and supporting evidence
+    Main retrieval function with LLM-enhanced summaries.
+    Returns data in frontend-compatible format.
     """
     
     if verbose:
@@ -391,14 +485,12 @@ def retrieve_relevant_cases(classifier_output: Any, verbose: bool = True) -> Dic
     if verbose:
         print("\n[5/7] Performing semantic search...")
     
-    # Query for top 50 candidates (broad net)
     search_results = collection.query(
         query_embeddings=[query_embedding],
         n_results=50,
         include=['documents', 'metadatas', 'distances']
     )
     
-    # Flatten results (ChromaDB returns nested lists)
     results = {
         'ids': search_results['ids'][0],
         'documents': search_results['documents'][0],
@@ -413,7 +505,6 @@ def retrieve_relevant_cases(classifier_output: Any, verbose: bool = True) -> Dic
     if verbose:
         print("\n[6/7] Filtering by target components and scoring...")
     
-    # Calculate scores for all chunks
     all_scores = []
     for idx in range(len(results['ids'])):
         score_info = calculate_chunk_score(
@@ -424,7 +515,6 @@ def retrieve_relevant_cases(classifier_output: Any, verbose: bool = True) -> Dic
         )
         all_scores.append(score_info)
     
-    # Filter to only target components
     filtered_results = {'ids': [], 'documents': [], 'metadatas': [], 'distances': []}
     filtered_scores = []
     
@@ -439,30 +529,24 @@ def retrieve_relevant_cases(classifier_output: Any, verbose: bool = True) -> Dic
     if verbose:
         print(f"  ✓ After component filter: {len(filtered_results['ids'])} chunks")
     
-    # Handle edge case: no matches
     if len(filtered_results['ids']) == 0:
         if verbose:
             print("\n  ⚠️  WARNING: No chunks found in target components!")
             print("  Falling back to top overall matches...")
-        # Use all results instead
         filtered_results = results
         filtered_scores = all_scores
     
-    # Group by parent document
     parents = group_by_parent(filtered_results, filtered_scores, query_params['target_components'])
     
     if verbose:
         print(f"  ✓ Grouped into {len(parents)} unique parent documents")
     
-    # Sort parents by best score
     sorted_parents = sorted(parents.items(), key=lambda x: x[1]['best_score'], reverse=True)
-    
-    # Take top N
     top_parents = sorted_parents[:TOP_N_PARENTS]
     
-    # ---- STEP 7: Format Output ----
+    # ---- STEP 7: Format Output with LLM Summaries (FRONTEND-COMPATIBLE) ----
     if verbose:
-        print(f"\n[7/7] Formatting results...")
+        print(f"\n[7/7] Formatting results with AI summaries...")
     
     stats = {
         'total_candidates': len(results['ids']),
@@ -471,14 +555,13 @@ def retrieve_relevant_cases(classifier_output: Any, verbose: bool = True) -> Dic
         'returned_parents': len(top_parents)
     }
     
-    output = format_output(top_parents, query_params, stats)
+    output = format_output(top_parents, query_params, stats, verbose)
     
-    # Check for low confidence
     if top_parents and top_parents[0][1]['best_score'] < LOW_CONFIDENCE_THRESHOLD:
         output['warning'] = "Low confidence results - consider refining query"
     
     if verbose:
-        print(f"  ✓ Returning top {len(top_parents)} parent documents")
+        print(f"\n  ✓ Generated summaries for {len(top_parents)} cases")
         print("\n" + "="*80)
         print("✅ RETRIEVAL COMPLETE")
         print("="*80 + "\n")
@@ -487,13 +570,11 @@ def retrieve_relevant_cases(classifier_output: Any, verbose: bool = True) -> Dic
 
 
 # ============================================================================
-# DISPLAY FUNCTION
+# DISPLAY FUNCTION (Updated for new structure)
 # ============================================================================
 
 def display_results(output: Dict):
-    """
-    Pretty-print retrieval results to console.
-    """
+    """Pretty-print retrieval results with AI summaries and detailed chunk information."""
     print("\n" + "="*80)
     print("📊 RETRIEVAL RESULTS")
     print("="*80)
@@ -504,7 +585,6 @@ def display_results(output: Dict):
     print(f"  Target Components: {', '.join(output['query_summary']['target_components'])}")
     print(f"  Primary Domains: {', '.join(output['query_summary']['primary_domains'])}")
     
-    # Warning if present
     if 'warning' in output:
         print(f"\n⚠️  {output['warning']}")
     
@@ -515,20 +595,34 @@ def display_results(output: Dict):
     
     for result in output['results']:
         print(f"\n{'─'*80}")
-        print(f"#{result['rank']} | {result['parent_document']}")
+        print(f"#{result['rank']} | {result['case_name']}")
         print(f"{'─'*80}")
-        print(f"📈 Relevance Score: {result['relevance_score']:.3f}")
+        print(f"📈 Relevance Score: {result['score']:.3f}")
         print(f"📋 Court: {result['metadata']['court_level']} | Judge: {result['metadata']['judge']}")
         print(f"📅 Year: {result['metadata']['year']} | Domain: {result['metadata']['legal_domain']}")
         print(f"⚖️  Winning Party: {result['metadata']['winning_party']}")
-        print(f"📊 Evidence Chunks: {result['evidence_count']} from target components")
         
-        print(f"\n  🔍 Supporting Evidence:")
-        for evidence in result['supporting_evidence']:
-            print(f"\n    [{evidence['component']}] Score: {evidence['score']:.3f}")
-            print(f"    Match: {evidence['match_reasons']}")
-            print(f"    Text: {evidence['text_preview']}")
-            print(f"    (Chunk ID: {evidence['chunk_id']})")
+        print(f"\n{'─'*80}")
+        print("🤖 AI-GENERATED CASE ANALYSIS")
+        print(f"{'─'*80}")
+        print(result['ai_summary'])
+        
+        if not result.get('summary_generated', False):
+            print("\n⚠️  Note: AI summary generation failed")
+        
+        print(f"\n{'─'*80}")
+        print(f"📊 SUPPORTING EVIDENCE ({result['evidence_count']} chunks from target components)")
+        print(f"{'─'*80}")
+        
+        # Display detailed chunk information
+        for chunk in result['chunks']:
+            print(f"\n  🔍 [{chunk['component']}] Score: {chunk['score']:.3f}")
+            print(f"     Match Reasons: {chunk.get('match_reasons', 'N/A')}")
+            print(f"     Base Similarity: {chunk.get('base_similarity', 'N/A'):.3f}")
+            print(f"     Domain Boost: {chunk.get('domain_boost', 'N/A'):.3f}")
+            preview = chunk['text'][:200] + '...' if len(chunk['text']) > 200 else chunk['text']
+            print(f"     Text Preview: {preview}")
+            print(f"     Chunk ID: {chunk['chunk_id']}")
     
     # Stats
     print("\n" + "="*80)
@@ -547,11 +641,6 @@ def display_results(output: Dict):
 # ============================================================================
 
 if __name__ == "__main__":
-    # Example usage - replace with actual classifier output
-    
-    # You can pass classifier output in several ways:
-    
-    # Option 1: As a dictionary
     sample_classifier_output = {
         "intents": ["OUTCOME_ANALYSIS", "RULE_SEARCH"],
         "target_components": ["RULES", "APPLICATION", "CONCLUSION"],
@@ -566,14 +655,8 @@ if __name__ == "__main__":
         },
         "adverse_retrieval_signals": ["circumstantial evidence"],
         "vector_query": "murder, circumstantial evidence, Section 204 Penal Code, mandatory death sentence",
-        "reasoning_summary": "Testing basic retrieval..."
+        "reasoning_summary": "Testing enhanced retrieval with LLM summaries..."
     }
-    
-    # Option 2: As a JSON file path
-    # sample_classifier_output = "path/to/classifier_output.json"
-    
-    # Option 3: As a JSON string
-    # sample_classifier_output = '{"target_components": ["RULES"], ...}'
     
     try:
         # Run retrieval
@@ -582,10 +665,10 @@ if __name__ == "__main__":
         # Display results
         display_results(results)
         
-        # Optionally save to file
+        # Save to file
         save_option = input("\nSave results to JSON file? (y/n): ").strip().lower()
         if save_option == 'y':
-            output_file = BASE_DIR / "retrieval_results.json"
+            output_file = BASE_DIR / "retrieval_results_with_summaries.json"
             with open(output_file, 'w') as f:
                 json.dump(results, f, indent=2)
             print(f"✅ Results saved to: {output_file}")
