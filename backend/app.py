@@ -914,27 +914,27 @@ def reset_constitution():
         }), 500        
 
 
-@app.route('/api/qretrieve', methods=['POST'])
-def QRetriever():
-    """
-    Executes the legal query classification + retrieval pipeline.
-    """
+    @app.route('/api/qretrieve', methods=['POST'])
+    def QRetriever():
+        """
+        Executes the legal query classification + retrieval pipeline.
+        """
 
-    data = request.get_json(silent=True)
+        data = request.get_json(silent=True)
 
-    if not data or "query" not in data:
-        return jsonify({
-            "success": False,
-            "error": "Missing 'query' in request body"
-        }), 400
+        if not data or "query" not in data:
+            return jsonify({
+                "success": False,
+                "error": "Missing 'query' in request body"
+            }), 400
 
-    user_query = data["query"]
+        user_query = data["query"]
 
-    result = Qclassifier(user_query)
+        result = Qclassifier(user_query)
 
-    status_code = 200 if result.get("success") else 500
-    return jsonify(result), status_code
-      
+        status_code = 200 if result.get("success") else 500
+        return jsonify(result), status_code
+        
 if __name__ == '__main__':
     app.run(debug=True, port=5000, host='0.0.0.0')
 

@@ -1,0 +1,1608 @@
+{
+  "metadata": {
+    "total_chapters": 8,
+    "total_parts": 26,
+    "total_articles": 183,
+    "total_sub_articles": 16,
+    "source_document": "Evidence Act.pdf",
+    "description": "Chapters, parts, articles, and sub-articles extracted from Evidence Act PDF. Articles are listed within their respective parts (if in a part) or directly under the chapter (if not in a part). Sub-articles (e.g., 63A after 63) are nested within their parent article. Parts, articles, and sub-articles use 'none' if empty."
+  },
+  "chapters": [
+    {
+      "chapter_number": "I",
+      "chapter_title": "PRELIMINARY",
+      "parts": "none",
+      "articles": [
+        {
+          "article_number": "1",
+          "article_header": "Short title.",
+          "article_body": "This Act may be cited as the Evidence Act.",
+          "article_length": 42,
+          "sub_articles": "none"
+        },
+        {
+          "article_number": "2",
+          "article_header": "Application.",
+          "article_body": "(1)\nThis Act shall apply to all judicial proceedings in or before any court other than a Kadhi’s court, but\nnot to proceedings before an arbitrator.\n(2)\nSubject to the provisions of any other Act or of any rules of court, this Act shall apply to afﬁdavits\npresented to any court.\n[Act No. 17 of 1967, 1st Sch., Act No. 10 of 1969, Sch.]\nEvidence Act (Cap. 80)\nKenya",
+          "article_length": 365,
+          "sub_articles": "none"
+        },
+        {
+          "article_number": "3",
+          "article_header": "Interpretation.",
+          "article_body": "(1)\nIn this Act, unless the context otherwise requires—\n\"admissible\" means admissible in evidence;\n\"advocate\" has the meaning ascribed to that expression in the Advocates Act (Cap. 16), and includes\nany person entitled, pursuant to section 9 of that Act, to act as an advocate, whilst so acting in\nconnection with the duties of his ofﬁce;\n\"bank\" means a person or company or other body of persons carrying on, whether on his or their\nown behalf or as agent for another, any banking business (as deﬁned in section 2 of the Banking Act\n(Cap. 488), and includes—\n(a)\na ﬁnancial institution within the meaning of section 2 of the Banking Act (Cap. 488);\n(b)\nthe Kenya Post Ofﬁce Savings Bank established by the Kenya Post Ofﬁce Savings Bank Act\n(Cap. 493B);\n(c)\nthe Co-operative Bank of Kenya Limited; and\n(d)\nfor the purposes of subsections 176 and 177, any person or company or other body of persons\ncarrying on banking business in Tanzania or Uganda;\n\"banker’s book\" includes a ledger, day book, cash book, account book, and any other book used in\nthe ordinary business of the bank, whether in written form or micro-ﬁlm, magnetic tape or any\nother form of mechanical or electronic data retrieval mechanism whether kept in written form or\nprintouts or electronic form;\n\"computer\" means any device that receives, stores and processes data, or information applying\nstipulated processes to the data and supplying results of that data or information; and any\nreference to information being derived from other information shall be construed to include a\nreference to its being derived therefrom by calculation, comparison or any other process;\n\"court\" includes all judges and magistrates, and persons, except arbitrators, legally authorized to\ntake evidence;\n\"evidence\" denotes the means by which an alleged matter of fact, the truth of which is submitted to\ninvestigation, is proved or disproved; and, without prejudice to the foregoing generality, includes\nstatements by accused persons, admissions, and observation by the court in its judicial capacity;\n\"fact\" includes—\n(a)\nany thing, state of things, or relation of things, capable of being perceived by the senses; and\n(b)\nany mental condition of which any person is conscious;\n\"fact in issue\" means any fact from which, either by itself or in connection with other facts, the\nexistence, non-existence, nature or extent of any right, liability or disability, asserted or denied in\nany suit or proceeding, necessarily follows;\n\"Gazette and Government Printer\" respectively include the Gazette and the Organization Printer\nas deﬁned in the Interpretation Act of the High Commission, and the High Commission Printer as\nformerly so deﬁned;\n\"photograph” means an image created by light falling on a light sensitive surface, either\nphotographic ﬁlm or an electronic medium and made visible and permanent by chemical treatment\nor stored digitally;\n\"public ofﬁcer\" except in section 80 of this Act, includes an ofﬁcer in the service of the\nOrganization.\nEvidence Act (Cap. 80)\nKenya\n(2)\nA fact is proved when, after considering the matters before it, the court either believes it to exist, or\nconsiders its existence so probable that a prudent man ought, in the circumstances of the particular\ncase, to act upon the supposition that it exists.\n(3)\nA fact is disproved when, after considering the matters before it, the court either believes that\nit does not exist, or considers its non-existence so probable that a prudent man ought, in the\ncircumstances of the particular case, to act upon the supposition that it does not exist.\n(4)\nA fact is not proved when it is neither proved nor disproved.\n[LN 22 of 1965, Act No. 19 of 1985, Sch., Act No. 7 of 1990, Sch., Act\nNo. 9 of 2000, s. 64, Act No. 1 of 2009, s. 36, Act No. 19 of 2023, Sch.]",
+          "article_length": 3782,
+          "sub_articles": "none"
+        },
+        {
+          "article_number": "4",
+          "article_header": "Presumptions of fact.",
+          "article_body": "(1)\nWhenever it is provided by law that the court may presume a fact, it may either regard such fact as\nproved, unless and until it is disproved, or may call for proof of it.\n(2)\nWhenever it is directed by law that the court shall presume a fact, it shall regard such fact as\nproved, unless and until it is disproved.\n(3)\nWhen one fact is declared by law to be conclusive proof of another, the court shall, on proof of the\none fact, regard the other as proved, and shall not allow evidence to be given for the purpose of\ndisproving it.",
+          "article_length": 535,
+          "sub_articles": "none"
+        }
+      ]
+    },
+    {
+      "chapter_number": "II",
+      "chapter_title": "ADMISSIBILITY AND RELEVANCY",
+      "parts": [
+        {
+          "part_number": "I",
+          "part_title": "GENERAL",
+          "articles": [
+            {
+              "article_number": "5",
+              "article_header": "General restriction of admissibility of evidence.",
+              "article_body": "Subject to the provisions of this Act and of any other law, no evidence shall be given in any suit or\nproceeding except evidence of the existence or non-existence of a fact in issue, and of any other fact\ndeclared by any provision of this Act to be relevant.",
+              "article_length": 258,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "6",
+              "article_header": "Facts forming part of the same transaction.",
+              "article_body": "Facts which, though not in issue, are so connected with a fact in issue as to form part of the same\ntransaction are relevant whether they occurred at the same time and place or at different times and places.",
+              "article_length": 207,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "7",
+              "article_header": "Facts causing or caused by other facts.",
+              "article_body": "Facts which are the occasion, cause or effect, immediate or otherwise, of relevant facts or facts in issue, or\nwhich constitute the state of things under which they happened or which afforded an opportunity for their\noccurrence or transaction are relevant.",
+              "article_length": 256,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "8",
+              "article_header": "Facts relating to motive, preparation and conduct.",
+              "article_body": "(1)\nAny fact is relevant which shows or constitutes a motive or preparation for any fact in issue or\nrelevant fact.\n(2)\nThe conduct of any party, or of any agent of a party, to any suit or proceeding, in reference to such\nsuit or proceeding or in reference to any fact in issue therein or relevant thereto, and the conduct\nof any person an offence against whom is the subject of any proceeding, is relevant, if such conduct\ninﬂuences or is inﬂuenced by any fact in issue or relevant fact, and whether it was previous or\nsubsequent thereto.\nEvidence Act (Cap. 80)\nKenya\n(3)\nWhen evidence of the conduct of a person is relevant any statement made to him, or in his presence\nand hearing, which affects such conduct, is relevant.\n(4)\nThe word \"conduct\" in this section does not include statements, unless those statements\naccompany and explain acts other than statements.",
+              "article_length": 867,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "9",
+              "article_header": "Explanatory or introductory facts, etc.",
+              "article_body": "Facts necessary to explain or introduce a fact in issue or relevant fact, or which support or rebut an\ninference suggested by such a fact, or which establish the identity of any thing or person whose identity\nis relevant, or ﬁx the time or place at which any fact in issue or relevant fact happened, or which show the\nrelation of parties by whom any such fact was transacted, are relevant in so far as they are necessary for\nthat purpose.",
+              "article_length": 438,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "10",
+              "article_header": "Statements and actions referring to common intention.",
+              "article_body": "Where there is reasonable ground to believe that two or more persons have conspired together to commit\nan offence or an actionable wrong, anything said, done or written by any one of such persons in reference\nto their common intention, after the time when such intention was ﬁrst entertained by any one of them,\nis a relevant fact as against each of the persons believed to be so conspiring, as well for the purpose of\nproving the existence of the conspiracy as for the purpose of showing that any such person was a party to\nit.",
+              "article_length": 528,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "11",
+              "article_header": "Facts inconsistent with, or affecting probability of, other facts.",
+              "article_body": "Facts not otherwise relevant are relevant—\n(a)\nif they are inconsistent with any fact in issue or relevant fact; or\n(b)\nif by themselves or in connection with other facts they make the existence or non-existence of any\nfact in issue or relevant fact highly probable or improbable.",
+              "article_length": 280,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "12",
+              "article_header": "Facts affecting quantum of damages.",
+              "article_body": "In suits in which damages are claimed, any fact which will enable the court to determine the amount of\ndamages which ought to be awarded is relevant.",
+              "article_length": 149,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "13",
+              "article_header": "Facts affecting existence of right or custom.",
+              "article_body": "Where the existence of any right or custom is in question, the following facts are relevant—\n(a)\nany transaction by which the right or custom in question was created, claimed, modiﬁed,\nrecognized, asserted or denied, or which was inconsistent with its existence; or\n(b)\nparticular instances in which the right or custom was claimed, recognized or exercised, or in which\nits exercise was disputed, asserted or departed from.",
+              "article_length": 423,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "14",
+              "article_header": "Facts showing state of mind or feeling.",
+              "article_body": "(1)\nFacts showing the existence of any state of mind, such as intention, knowledge, good faith,\nnegligence, rashness, ill-will or good-will towards any particular person, or showing the existence\nof any state of body or bodily feeling, are relevant, when the existence of any such state of mind or\nbody or bodily feeling is in issue or relevant.\n(2)\nA fact relevant within the meaning of subsection (1) of this section as showing the existence of\na state of mind must show that the state of mind exists, not generally, but in reference to the\nparticular matter in question.\nEvidence Act (Cap. 80)\nKenya\n(3)\nWhere, upon the trial of a person accused of an offence, the previous commission by the accused of\nan offence is relevant within the meaning of subsection (1) of this section, the previous conviction\nof such person is also relevant.",
+              "article_length": 839,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "15",
+              "article_header": "Facts showing system.",
+              "article_body": "When there is a question whether an act was accidental or intentional, or done with a particular\nknowledge or intention, the fact that such act formed part of a series of similar occurrences, in each of\nwhich the person doing the act was concerned, is relevant.",
+              "article_length": 261,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "16",
+              "article_header": "Facts showing course of business.",
+              "article_body": "When there is a question whether a particular act was done, the existence of any course of business,\naccording to which it naturally would have been done, is relevant.",
+              "article_length": 167,
+              "sub_articles": "none"
+            }
+          ]
+        },
+        {
+          "part_number": "II",
+          "part_title": "ADMISSIONS",
+          "articles": [
+            {
+              "article_number": "17",
+              "article_header": "Admissions deﬁned generally.",
+              "article_body": "An admission is a statement, oral or documentary, which suggests any inference as to a fact in issue or\nrelevant fact, and which is made by any of the persons and in the circumstances hereinafter mentioned.",
+              "article_length": 206,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "18",
+              "article_header": "Statements by party to suit or agent or interested person.",
+              "article_body": "(1)\nStatements made by a party to the proceeding, or by an agent to any such party, whom the court\nregards in the circumstances of the case as expressly or impliedly authorized by him to make them,\nare admissions.\n(2)\nStatements made by parties to suits, suing or sued in a representative character, are not admissions\nunless they were made while the party making them held that character.\n(3)\nStatements made by—\n(a)\npersons who have any proprietary or pecuniary interest in the subject- matter of the\nproceeding, and who make the statement in the character of persons so interested; or\n(b)\npersons from whom the parties to a suit have derived their interest in the subject-matter of\nthe suit,\nare admissions if they are made during the continuance of interest of the persons making the\nstatements.",
+              "article_length": 799,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "19",
+              "article_header": "Statements by persons whose position or liability must be proved as against party to",
+              "article_body": "suit.\nStatements made by persons whose position or liability it is necessary to prove as against any party to a\nsuit, are admissions if such statements would be admissible as against such persons in relation to such\nposition or liability in a suit brought by or against them, and if they are made whilst the person making\nthem occupies such position or is subject to such liability.",
+              "article_length": 382,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "20",
+              "article_header": "Statements by persons expressly referred to by party to suit.",
+              "article_body": "Statements made by persons to whom a party to the suit has expressly referred for information in\nreference to a matter in dispute are admissions.\nEvidence Act (Cap. 80)\nKenya",
+              "article_length": 174,
+              "sub_articles": [
+                {
+                  "article_number": "20A",
+                  "article_header": "Proof of written statement by consent.",
+                  "article_body": "(1)\nIf the person who makes a statement cannot read it, the statement shall be read to him by an ofﬁcer\nof or above the rank of a Chief Inspector or a magistrate before he signs it, and an endorsement\nshall be made thereof by the person who so read the statement to the effect that it was so read.\n(2)\nA copy of the statement, together with a copy of any document referred to in the statement as an\nexhibit, or with such information as may be necessary in order to enable the party on whom it is\nserved to inspect such document or a copy thereof, shall, before the date on which the document is\nto be tendered in evidence, be served on each of the other parties to the proceedings, and any such\nparty may, at least two days before the commencement of the proceedings, object to the statement\nbeing tendered in evidence under this section.\n(3)\nIf a party objects under subsection (2) that the statement in question be tendered in evidence, the\nstatement shall not, but subject to the provisions of subsection (4), be admissible as evidence under\nthis section.\n(4)\nIf a party does not object under subsection (2) or if the parties agree before or during the\nproceedings in question that the statement may be so tendered in evidence, the statement may,\nupon the mere production thereof at such proceedings, be admitted as evidence in the proceedings.\n(5)\nWhen the documents referred to in subsection (3) are served on an accused person, the documents\nshall be accompanied by a written notiﬁcation in which the accused person is informed that the\nstatement in question shall be tendered in evidence at his trial in lieu of the State calling as a\nwitness the person who made the statement, but that such statement shall not without the consent\nof the accused person be so tendered in evidence if he notiﬁes the prosecutor concerned, at least\ntwo days before the commencement of the proceedings, that he objects to the statement so being\ntendered in evidence.\n(6)\nThe parties to criminal proceedings may, before or during such proceedings, agree that any written\nstatement referred to in subsections (1) which has not been served in terms of subsection (2)\nbe tendered in evidence at such proceedings, whereupon such statement may, upon the mere\nproduction thereof at such proceedings, be admitted as evidence in the proceedings.\n(7)\nNotwithstanding that a written statement made by any person may be admissible as evidence under\nthis section—\n(a)\na party by whom or on whose behalf a copy of the statement was served, may call such\nperson to give oral evidence;\n(b)\nthe court may, of its own motion, and shall, upon the application of any party to the\nproceedings in question, cause the person giving oral evidence to be summoned before\nthe court, or the court may, where the person concerned is resident outside the court's\njurisdiction, issue summons to be effected through the diplomatic channel.\n(8)\nAny document or object referred to as an exhibit and identiﬁed in a written statement tendered in\nevidence under this section, shall be treated as if it had been produced as an exhibit and identiﬁed\nin court by the person who made the statement.\n(9)\nAny person who makes a statement which is admitted as evidence under this section and who\nin such statement willfully and falsely states anything which, if sworn, would have amounted to\nthe offence of perjury, shall be deemed to have committed the offence of perjury and shall, upon\nconviction, be liable to the punishment prescribed therefor.\n[Act No. 19 of 2014, s. 26.]\nEvidence Act (Cap. 80)\nKenya",
+                  "article_length": 3550
+                }
+              ]
+            },
+            {
+              "article_number": "21",
+              "article_header": "Proof of admissions against persons making them, and by or on their behalf.",
+              "article_body": "Subject to the provisions of this Act, an admission may be proved as against the person who makes it or his\nrepresentative in interest; but an admission cannot be proved by or on behalf of the person who makes it\nor by his representative in interest, except in the following cases—\n(a)\nwhen it is of such a nature that, if the person making it were dead, it would be admissible as\nbetween third persons under section 33 of this Act;\n(b)\nwhen it consists of a statement of the existence of any state of mind or body, relevant or in issue,\nmade at or about the time when such state of mind or body existed, and is accompanied by conduct\nrendering its falsehood improbable;\n(c)\nif it is relevant otherwise than as an admission.",
+              "article_length": 724,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "22",
+              "article_header": "Oral admissions as to contents of documents.",
+              "article_body": "Oral admissions as to the contents of a document may not be proved unless and until the party proposing\nto prove them shows that he is entitled to give secondary evidence of the contents of such document under\nthe provisions of this Act or unless the genuineness of a document produced is in question.",
+              "article_length": 301,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "23",
+              "article_header": "Admissions made without prejudice in civil cases.",
+              "article_body": "(1)\nIn civil cases no admission may be proved if it is made either upon an express condition that\nevidence of it is not to be given or in circumstances from which the court can infer that the parties\nagreed together that evidence of it should not be given.\n(2)\nNothing in subsection (1) of this section shall be taken to exempt any advocate from giving\nevidence of any matter of which he may be compelled to give evidence under section 134 of this Act.",
+              "article_length": 452,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "24",
+              "article_header": "Effect of admissions.",
+              "article_body": "Admissions are not conclusive proof of the matters admitted, but they may operate as estoppels under the\nprovisions hereinafter contained.",
+              "article_length": 138,
+              "sub_articles": "none"
+            }
+          ]
+        },
+        {
+          "part_number": "III",
+          "part_title": "CONFESSIONS",
+          "articles": [
+            {
+              "article_number": "25",
+              "article_header": "Confession deﬁned.",
+              "article_body": "A confession comprises words or conduct, or a combination of words and conduct, from which, whether\ntaken alone or in conjunction with other facts proved, an inference may reasonably be drawn that the\nperson making it has committed an offence.",
+              "article_length": 243,
+              "sub_articles": [
+                {
+                  "article_number": "25A",
+                  "article_header": "Confessions generally inadmissible.",
+                  "article_body": "(1)\nA confession or any admission of a fact tending to the proof of guilt made by an accused person is\nnot admissible and shall not be proved as against such person unless it is made in court before a\njudge, a magistrate or before a police ofﬁcer (other than the investigating ofﬁcer), being an ofﬁcer\nnot below the rank of Inspector of Police, and a third party of the person’s choice.\n(2)\nThe Attorney-General shall in consultation with the Law Society of Kenya, Kenya National\nCommission on Human Rights and other suitable bodies make rules governing the making of a\nconfession in all instances where the confession is not made in court.\n[Act No. 5 of 2003, s. 99, Act No. 7 of 2007, Sch., Act No. 19 of 2014, s. 28.]\nEvidence Act (Cap. 80)\nKenya",
+                  "article_length": 749
+                }
+              ]
+            },
+            {
+              "article_number": "26",
+              "article_header": "Confessions and admissions caused by inducement, threat or promise.",
+              "article_body": "A confession or any admission of a fact tending to the proof of guilt made by an accused person is not\nadmissible in a criminal proceeding if the making of the confession or admission appears to the court\nto have been caused by any inducement, threat or promise having reference to the charge against the\naccused person, proceeding from a person in authority and sufﬁcient, in the opinion of the court, to give\nthe accused person grounds which would appear to him reasonable for supposing that by making it he\nwould gain any advantage or avoid any evil of a temporal nature in reference to the proceedings against\nhim.",
+              "article_length": 618,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "27",
+              "article_header": "Confession made after removal of impression caused by inducement, threat or",
+              "article_body": "promise.\nIf such a confession as is referred to in section 26 of this Act is made after the impression caused by any\nsuch inducement, threat or promise has, in the opinion of the court, been fully removed, it is admissible.",
+              "article_length": 223,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "28",
+              "article_header": "[Repealed by Act No. 5 of 2003, s. 100.]",
+              "article_body": "",
+              "article_length": 0,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "29",
+              "article_header": "Confessions to police ofﬁcers.",
+              "article_body": "No confession made to a police ofﬁcer shall be proved against a person accused of any offence unless such\npolice ofﬁcer is—\n(a)\nof or above the rank of, or a rank equivalent to, Inspector; or\n(b)\nan administrative ofﬁcer holding ﬁrst or second class magisterial powers and acting in the capacity\nof a police ofﬁcer.\n[Act No. 10 of 1969, Sch.]",
+              "article_length": 342,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "30",
+              "article_header": "[Repealed by Act No. 5 of 2003, s. 101.]",
+              "article_body": "",
+              "article_length": 0,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "31",
+              "article_header": "[Repealed by Act No. 5 of 2003, s. 102.]",
+              "article_body": "",
+              "article_length": 0,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "32",
+              "article_header": "Confession implicating co-accused.",
+              "article_body": "(1)\nWhen more persons than one are being tried jointly for the same offence, and a confession made by\none of such persons affecting himself and some other of such persons is proved, the court may take\nthe confession into consideration as against such other person as well as against the person who\nmade the confession.\n(2)\nIn this section \"confession\" means any words or conduct, or combination of words and conduct,\nwhich has the effect of admitting in terms either an offence or substantially all the facts which\nconstitute an offence—\n\"offence\" includes the abetment of, or an attempt to commit, the offence.",
+              "article_length": 611,
+              "sub_articles": "none"
+            }
+          ]
+        },
+        {
+          "part_number": "IV",
+          "part_title": "STATEMENTS BY PERSONS WHO CANNOT BE CALLED AS WITNESSES",
+          "articles": [
+            {
+              "article_number": "33",
+              "article_header": "Statement by deceased person, etc., when.",
+              "article_body": "Statements, written or oral or electronically recorded, of admissible facts made by a person who is dead,\nor who cannot be found, or who has become incapable of giving evidence or whose attendance cannot be\nprocured, or whose attendance cannot be procured, without an amount of delay or expense which in the\nEvidence Act (Cap. 80)\nKenya\ncircumstances of the case appears to the court unreasonable, are themselves admissible in the following\ncases—\n(a)\nrelating to cause of death\nwhen the statement is made by a person as to the cause of his death, or as to any of the\ncircumstances of the transaction which resulted in his death, in cases in which the cause of that\nperson’s death comes into question. Such statements are admissible whether the person who made\nthem was or was not, at the time when they were made, under expectation of death, and whatever\nmay be the nature of the proceeding in which the cause of his death comes into question;\n(b)\nmade in the course of business\nwhen the statement was made by such person in the ordinary course of business, and in particular\nwhen it consists of an entry or memorandum made by him in books or records kept in the ordinary\ncourse of business or in the discharge of professional duty; or of an acknowledgement written or\nsigned by him of the receipt of money, goods, securities or property of any kind; or of a document\nused in commerce, written or signed by him, or of the date of a letter or other document usually\ndated, written or signed by him;\n(c)\nagainst the interest of maker\nwhen the statement is against the pecuniary or proprietary interest of the person making it, or\nwhen, if true, it would expose him or would have exposed him to a criminal prosecution or to a suit\nfor damages;\n(d)\nan opinion as to public right or custom\nwhen the statement gives the opinion of any such person as to the existence of any public right or\ncustom or matter of public or general interest, of the existence of which, if it existed, he would have\nbeen likely to be aware, and when such statement was made before any controversy as to such right,\ncustom or matter had arisen;\n(e)\nrelating to existence of relationship\nwhen the statement relates to the existence of any relationship by blood, marriage, or adoption\nbetween persons at whose relationship by blood, marriage or adoption the person making the\nstatement had special means of knowledge, and when the statement was made before the question\nin dispute was raised;\n(f)\nrelating to family affairs\nwhen the statement relates to the existence of any relationship by blood, marriage or adoption\nbetween persons deceased, and is made in any will or deed relating to the affairs of the family to\nwhich any such deceased person belonged, or in any family pedigree or upon any tombstone, family\nportrait or other thing on which such statements are usually made, and when such statement was\nmade before the question in dispute was raised;\n(g)\nrelating to a transaction creating or asserting, etc., a custom\nwhen the statement is contained in any deed or other document which relates to any such\ntransaction as is mentioned in section 13(a);\n(h)\nmade by several persons and expressing feelings\nwhen the statement was made by a number of persons, and expressed feelings or impressions on\ntheir part relevant to the matter in question.\n[Act No. 8 of 1968, Sch., Act No. 19 of 2014, s. 27.]\nEvidence Act (Cap. 80)\nKenya",
+              "article_length": 3404,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "34",
+              "article_header": "Admissibility of evidence given in previous proceedings.",
+              "article_body": "(1)\nEvidence given by a witness in a judicial proceeding is admissible in a subsequent judicial\nproceeding or at a later stage in the same proceeding, for the purpose of proving the facts which it\nstates, in the following circumstances—\n(a)\nwhere the witness is dead, or cannot be found, or is incapable of giving evidence, or is kept\nout of the way by the adverse party, or where his presence cannot be obtained without an\namount of delay or expense which in the circumstances of the case the court considers\nunreasonable;\nand where, in the case of a subsequent proceeding—\n(b)\nthe proceeding is between the same parties or their representatives in interest; and\n(c)\nthe adverse party in the ﬁrst proceeding had the right and opportunity to cross-examine; and\n(d)\nthe questions in issue were substantially the same in the ﬁrst as in the second proceeding.\n(2)\nFor the purposes of this section—\n(a)\nthe expression \"judicial proceeding\" shall be deemed to include any proceeding in which\nevidence is taken by a person authorized by law to take that evidence on oath; and\n(b)\na criminal trial or inquiry shall be deemed to be a proceeding between the prosecutor and the\naccused.",
+              "article_length": 1176,
+              "sub_articles": "none"
+            }
+          ]
+        },
+        {
+          "part_number": "V",
+          "part_title": "STATEMENTS IN DOCUMENTS PRODUCED IN CIVIL PROCEEDINGS",
+          "articles": [
+            {
+              "article_number": "35",
+              "article_header": "Admissibility of documentary evidence as to facts in issue.",
+              "article_body": "(1)\nIn any civil proceedings where direct oral evidence of a fact would be admissible, any statement\nmade by a person in a document and tending to establish that fact shall, on production of the\noriginal document, be admissible as evidence of that fact if the following conditions are satisﬁed,\nthat is to say—\n(a)\nif the maker of the statement either—\n(i)\nhad personal knowledge of the matters dealt with by the statement; or\n(ii)\nwhere the document in question is or forms part of a record purporting to be a\ncontinuous record, made the statement (in so far as the matters dealt with thereby are\nnot within his personal knowledge) in the performance of a duty to record information\nsupplied to him by a person who had, or might reasonably be supposed to have,\npersonal knowledge of those matters; and\n(b)\nif the maker of the statement is called as a witness in the proceedings:\nProvided that the condition that the maker of the statement shall be called as a witness need not\nbe satisﬁed if he is dead, or cannot be found, or is incapable of giving evidence, or if his attendance\ncannot be procured without an amount of delay or expense which in the circumstances of the case\nappears to the court unreasonable.\n(2)\nIn any civil proceedings, the court may at any stage of the proceedings, if having regard to all the\ncircumstances of the case it is satisﬁed that undue delay or expense would otherwise be caused,\norder that such a statement as is mentioned in subsection (1) of this section shall be admissible or\nmay, without any such order having been made, admit such a statement in evidence—\n(a)\nnotwithstanding that the maker of the statement is available but is not called as a witness;\nEvidence Act (Cap. 80)\nKenya\n(b)\nnotwithstanding that the original document is not produced, if in lieu thereof there is\nproduced a copy of the original document or of the material part thereof certiﬁed to be a true\ncopy in such manner as may be speciﬁed in the order or the court may approve, as the case\nmay be.\n(3)\nNothing in this section shall render admissible any statement made by a person interested at a\ntime when proceedings were pending or anticipated involving a dispute as to any fact which the\nstatement might tend to establish.\n(4)\nFor the purposes of this section, a statement in a document shall not be deemed to have been made\nby a person unless the document or the material part thereof was written, made or produced by him\nwith his own hand, or was signed or initialled by him or otherwise recognized by him in writing as\none for the accuracy of which he is responsible.\n(5)\nFor the purpose of deciding whether or not a statement is admissible by virtue of this section, the\ncourt may draw any reasonable inference from the form or contents of the document in which the\nstatement is contained, or from any other circumstances, and may, in deciding whether or not a\nperson is ﬁt to attend as a witness, act on a certiﬁcate purporting to be the certiﬁcate of a medical\npractitioner.",
+              "article_length": 2994,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "36",
+              "article_header": "Weight to be attached to statement admissible under section 35.",
+              "article_body": "(1)\nIn estimating the weight, if any, to be attached to a statement rendered admissible by section 35 of\nthis Act, regard shall be had to all the circumstances from which any inference can reasonably be\ndrawn as to the accuracy or otherwise of the statement, and in particular to the question whether\nor not the statement was made contemporaneously with the occurrence or existence of the facts\nstated, and to the question whether or not the maker of the statement had any incentive to conceal\nor misrepresent facts.\n(2)\nFor the purpose of any rule of law or practice requiring evidence to be corroborated or regulating\nthe manner in which uncorroborated evidence is to be treated, a statement rendered admissible by\nsection 35 of this Act shall not be treated as corroboration of evidence given by the maker of the\nstatement.",
+              "article_length": 826,
+              "sub_articles": "none"
+            }
+          ]
+        },
+        {
+          "part_number": "VI",
+          "part_title": "STATEMENTS UNDER SPECIAL CIRCUMSTANCES",
+          "articles": [
+            {
+              "article_number": "37",
+              "article_header": "Entries in books of account.",
+              "article_body": "Entries in books of account regularly kept in the course of business are admissible whenever they refer to\na matter into which the court has to inquire, but such statements shall not alone be sufﬁcient evidence to\ncharge any person with liability.",
+              "article_length": 247,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "38",
+              "article_header": "Entries in public records.",
+              "article_body": "An entry in any public or other ofﬁcial book, register or record, stating a fact in issue or a relevant fact,\nand made by a public servant in the discharge of his ofﬁcial duty, or by any other person in performance of\na duty specially enjoined by the law of the country in which such book, register or record is kept, is itself\nadmissible.",
+              "article_length": 339,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "39",
+              "article_header": "Statements, etc., in maps, charts and plans.",
+              "article_body": "Statements and representations of facts in issue or relevant facts made in published maps or charts\ngenerally offered for public sale, or in maps or plans made under the authority of any Government in the\nCommonwealth, as to matters usually stated or represented in such maps, charts or plans, are themselves\nadmissible.\nEvidence Act (Cap. 80)\nKenya",
+              "article_length": 349,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "40",
+              "article_header": "Statements of fact contained in laws and ofﬁcial gazettes, etc.",
+              "article_body": "When the court has to form an opinion as to the existence of any fact of a public nature, any statement of\nit shall be admissible which is made—\n(a)\nin any written law of Kenya, or in any notice purporting to be made in pursuance of any such\nwritten law, where the law or notice (as the case may be) purports to be printed by the Government\nPrinter; or\n(b)\nin any written law in force in any country in the Commonwealth, or in any notice purporting to be\nmade in pursuance of any such written law, where the law or notice (as the case may be) purports to\nbe printed or published by or under the authority of the Government of that country.",
+              "article_length": 639,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "41",
+              "article_header": "Statements as to law contained in books.",
+              "article_body": "When the court has to form an opinion as to a law of any country, any statement of such law contained\nin a book purporting to be printed or published under the authority of the Government of such country\nand to contain any such law, and any report of a ruling of the courts of such country contained in a book\npurporting to be a report of such rulings, is admissible.",
+              "article_length": 367,
+              "sub_articles": "none"
+            }
+          ]
+        },
+        {
+          "part_number": "VII",
+          "part_title": "EXTENT TO WHICH STATEMENT IS ADMISSIBLE",
+          "articles": [
+            {
+              "article_number": "42",
+              "article_header": "Extent of admissibility.",
+              "article_body": "When any statement of which evidence is given forms part of a longer statement, or of a conversation, or\nof an isolated document, or is contained in a document which forms part of a book or of a connected series\nof letters or papers, evidence shall be given of so much and no more of such longer statement, or of such\nconversation, document, book or series, as the court considers necessary in the particular case to a full\nunderstanding of the nature and effect of the statement, and of the circumstances in which it was made.",
+              "article_length": 527,
+              "sub_articles": "none"
+            }
+          ]
+        },
+        {
+          "part_number": "VIII",
+          "part_title": "JUDGMENTS",
+          "articles": [
+            {
+              "article_number": "43",
+              "article_header": "Judgments, etc., excluding jurisdiction.",
+              "article_body": "The existence of any judgment, order or decree which by law prevents any court from taking cognizance of\na suit or holding a trial, may be proved when the question is whether such court ought to take cognizance\nof such suit or to hold such trial.",
+              "article_length": 246,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "44",
+              "article_header": "Judgments in rem.",
+              "article_body": "(1)\nA ﬁnal judgment, order or decree of a competent court which confers upon or takes away from any\nperson any legal character, or which declares any person to be entitled to any such character, or to\nbe entitled to any speciﬁc thing, not as against any speciﬁed person but absolutely, is admissible\nwhen the existence of any such legal character, or the title of any such person to any such thing, is\nadmissible.\n(2)\nSuch judgment, order or decree is conclusive proof—\n(a)\nthat any legal character which it confers accrued at the time when such judgment, order or\ndecree came into operation;\n(b)\nthat any legal character to which it declares any such person to be entitled accrued to that\nperson at the time when such judgment, order or decree declares it to have accrued to that\nperson;\n(c)\nthat any legal character which it takes away from any such person ceased at the time from\nwhich such judgment, order or decree declared that it had ceased or should cease;\nEvidence Act (Cap. 80)\nKenya\n(d)\nthat anything to which it declares any person to be so entitled was the property of that\nperson at the time from which such judgment, order or decree declares that it had been or\nshould be his property.",
+              "article_length": 1200,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "45",
+              "article_header": "Other judgments of a public nature.",
+              "article_body": "Judgments, orders or decrees, other than those mentioned in section 44 of this Act, are admissible if they\nrelate to matters of a public nature relevant to the inquiry, but such judgments, orders or decrees are not\nconclusive proof of that which they state.",
+              "article_length": 257,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "46",
+              "article_header": "Inadmissible judgments.",
+              "article_body": "Judgments, orders or decrees other than those mentioned in sections 43, 44 and 45 of this Act are\ninadmissible except where the existence of such judgment, order or decree is a fact in issue or is relevant\nunder some other provision of this Act.",
+              "article_length": 245,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "47",
+              "article_header": "Proof that judgment was incompetent or obtained by fraud or collusion.",
+              "article_body": "Any party to a suit or other proceeding may show that any judgment, order or decree which is admissible\nunder the provisions of this Act and which has been proved by the adverse party, was delivered by a court\nnot competent to deliver it, or was obtained by fraud or collusion.",
+              "article_length": 277,
+              "sub_articles": [
+                {
+                  "article_number": "47A",
+                  "article_header": "Proof of guilt.",
+                  "article_body": "A ﬁnal judgment of a competent court in any criminal proceedings which declares any person to be guilty\nof a criminal offence shall, after the expiry of the time limited for an appeal against such judgment or after\nthe date of the decision of any appeal therein, whichever is the latest, be taken as conclusive evidence that\nthe person so convicted was guilty of that offence as charged.\n[Act No. 10 of 1969, Sch.]",
+                  "article_length": 414
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "part_number": "IX",
+          "part_title": "OPINIONS",
+          "articles": [
+            {
+              "article_number": "48",
+              "article_header": "Opinions of experts.",
+              "article_body": "(1)\nWhen the court has to form an opinion upon a point of foreign law, or of science or art, or as to\nidentity or genuineness of handwriting or ﬁnger or other impressions, opinions upon that point are\nadmissible if made by persons specially skilled in such foreign law, science or art, or in questions as\nto identity, or genuineness of handwriting or ﬁngerprint or other impressions.\n(2)\nSuch persons are called experts.",
+              "article_length": 420,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "49",
+              "article_header": "Facts bearing upon opinions of experts.",
+              "article_body": "Facts not otherwise admissible are admissible if they support or are inconsistent with the opinions of\nexperts, when such opinions are admissible.",
+              "article_length": 146,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "50",
+              "article_header": "Opinion as to handwriting.",
+              "article_body": "(1)\nWhen the court has to form an opinion as to the person by whom any document was written\nor signed, the opinion of any person acquainted with the handwriting of the person by whom\nit is supposed to be written or signed that it was or was not written or signed by that person, is\nadmissible.\n(2)\nFor the purposes of subsection (1) of this section, and without prejudice to any other means of\ndetermining the question, a person is said to be acquainted with the handwriting of another person\nwhen he has seen that person write, or when he has received documents purporting to be written\nEvidence Act (Cap. 80)\nKenya\nby that person in answer to documents written by himself or under his authority and addressed to\nthat person, or when in the ordinary course of business documents purporting to be written by that\nperson have been habitually submitted to him.",
+              "article_length": 858,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "51",
+              "article_header": "Opinion relating to customs and rights.",
+              "article_body": "(1)\nWhen the court has to form an opinion as to the existence of any general custom or right, the\nopinions as to the existence of such custom or right of persons who would be likely to know of its\nexistence if it existed are admissible.\n(2)\nFor the purposes of subsection (1) of this section the expression \"general custom or right\" includes\ncustoms or rights common to any considerable class of persons.",
+              "article_length": 404,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "52",
+              "article_header": "Opinions of persons with special knowledge.",
+              "article_body": "When the court has to form an opinion as to—\n(a)\nthe usages and tenets of any association, body of men or family; or\n(b)\nthe constitution and government of any religious or charitable foundation; or\n(c)\nthe meaning of words or terms used in particular districts or by particular classes of people,\nthe opinions of persons having special means of knowledge thereon are admissible.",
+              "article_length": 379,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "53",
+              "article_header": "Opinion on relationship.",
+              "article_body": "When the court has to form an opinion as to the relationship of one person to another, the opinion,\nexpressed by conduct, as to the existence of such relationship of any person who, as a member of the\nfamily or otherwise, has special means of knowledge on the subject, is admissible:\nProvided that such an opinion shall not be sufﬁcient to prove a marriage in a prosecution for bigamy or in\nproceedings for a divorce, or in any proceedings for damages against an adulterer.",
+              "article_length": 473,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "54",
+              "article_header": "Grounds of opinion.",
+              "article_body": "Whenever the opinion of any living person is admissible, the grounds on which such opinion is based are\nalso admissible.",
+              "article_length": 120,
+              "sub_articles": "none"
+            }
+          ]
+        },
+        {
+          "part_number": "X",
+          "part_title": "CHARACTER",
+          "articles": [
+            {
+              "article_number": "55",
+              "article_header": "Character in civil cases.",
+              "article_body": "(1)\nIn civil cases, the fact that the character of any person concerned is such as to render probable or\nimprobable any conduct imputed to him is inadmissible except in so far as such character appears\nfrom facts otherwise admissible.\n(2)\nIn civil cases, the fact that the character of any person is such as to affect the amount of damages, is\nadmissible.",
+              "article_length": 355,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "56",
+              "article_header": "Good character in criminal cases.",
+              "article_body": "In criminal proceedings, the fact that the person accused is of a good character is admissible.\nEvidence Act (Cap. 80)\nKenya",
+              "article_length": 124,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "57",
+              "article_header": "Bad character in criminal cases.",
+              "article_body": "(1)\nIn criminal proceedings the fact that the accused person has committed or been convicted of or\ncharged with any offence other than that with which he is then charged, or is of bad character, is\ninadmissible unless—\n(aa)\nsuch evidence is otherwise admissible as evidence of a fact in issue or is directly relevant to a\nfact in issue; or\n(a)\nthe proof that he has committed or been convicted of such other offence is admissible under\nsection 14 or section 15 of this Act to show that he is guilty of the offence with which he is\nthen charged; or\n(b)\nhe has personally or by his advocate asked questions of a witness for the prosecution with a\nview to establishing his own character, or has given evidence of his own good character; or\n(c)\nthe nature or conduct of the defence is such as to involve imputations on the character of the\ncomplainant or of a witness for the prosecution; or\n(d)\nhe has given evidence against any other person charged with the same offence:\nProvided that the court may, in its discretion, direct that speciﬁc evidence on the ground of the\nexception referred to in paragraph (c) of this subsection shall not be led if, in the opinion of the\ncourt, the prejudicial effect of such evidence upon the person accused will so outweigh the damage\ndone by imputations on the character of the complainant or of any witness for the prosecution as to\nprevent a fair trial.\n(2)\nNotwithstanding the provisions of subsection (1) of this section, evidence of previous conviction for\nan offence may be given in a criminal trial after conviction of the accused person, for the purpose of\naffecting the sentence to be awarded by the court.\n[Act No. 10 of 1969, Sch.]",
+              "article_length": 1676,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "58",
+              "article_header": "Deﬁnition of \"character\".",
+              "article_body": "In sections 55, 56 and 57 of this Act the word \"character\" includes both reputation and disposition;\nbut, except as provided in section 57, evidence may be given only of general reputation and general\ndisposition, and not of particular acts by which reputation or disposition were shown.",
+              "article_length": 287,
+              "sub_articles": "none"
+            }
+          ]
+        }
+      ],
+      "articles": "none"
+    },
+    {
+      "chapter_number": "III",
+      "chapter_title": "PROOF",
+      "parts": [
+        {
+          "part_number": "I",
+          "part_title": "FACTS REQUIRING NO PROOF",
+          "articles": [
+            {
+              "article_number": "59",
+              "article_header": "Facts judicially noticed.",
+              "article_body": "No fact of which the court shall take judicial notice need be proved.",
+              "article_length": 69,
+              "sub_articles": [
+                {
+                  "article_number": "59A",
+                  "article_header": "Agreement on facts not in issue.",
+                  "article_body": "(1)\nIf an accused person has appointed an advocate and, at any stage during the proceedings, it\nappears to a prosecutor that a particular fact or facts which must be proved in a charge against an\naccused person is or are not in issue or shall not be placed in issue in criminal proceedings against\nthe accused person, the prosecutor may, forward or hand a notice to the accused person and his\nadvocate setting out that fact or those facts and stating that such fact or facts shall be deemed to\nhave been proved at the proceedings unless notice is given that any such fact shall be placed in\nissue.\nEvidence Act (Cap. 80)\nKenya\n(2)\nThe notice by the prosecutor under subsection (1) shall be sent by registered mail or handed\nto the accused and his advocate personally at least fourteen days before the commencement\nof the criminal proceedings or the date set for the continuation of such proceedings, or within\nsuch shorter period as may be approved by the court or agreed upon by the accused person or his\nadvocate and the prosecutor.\n(3)\nIf any fact mentioned in the notice under subsection (2) is intended to be placed in issue at the\nproceedings, the accused person and his advocate shall at least ﬁve days before the commencement\nor the date set for the continuation of the proceedings, or within such shorter period as may be\napproved by the court or agreed upon with the prosecutor, deliver a notice in writing to that effect\nto the registrar or the clerk of the court, as the case may be, or orally notify the registrar or the\nclerk of the court to that effect, in which case the registrar or the clerk of the court shall record such\nnotice.\n(4)\nIf, after receipt of the notice from the prosecutor under subsection (1), any fact mentioned in that\nnotice is not placed in issue as under subsection (3), the court may deem such fact or facts, subject\nto subsections (5) and (6), to have been sufﬁciently proved at the proceedings concerned.\n(5)\nIf a notice was forwarded or handed over by a prosecutor under subsection (1), the prosecutor\nshall notify the court at the commencement of the proceedings of such fact and of the response\nthereto, if any, and the court shall thereupon institute an investigation into those facts which are\nnot disputed and enquire from the accused person whether he conﬁrms the information given by\nthe prosecutor, and whether he understands his rights and the implications of the procedure and\nwhere the advocate of the accused person replies to any question by the court under this section,\nthe accused person shall be required by the court to declare whether he conﬁrms such reply or not.\n(6)\nThe court may on its own motion or at the request of the accused person order oral evidence to be\nadduced regarding any fact contemplated in subsection (4).\n[Act No. 19 of 2014, s. 29.]",
+                  "article_length": 2815
+                }
+              ]
+            },
+            {
+              "article_number": "60",
+              "article_header": "Facts of which court shall take judicial notice.",
+              "article_body": "(1)\nThe courts shall take judicial notice of the following facts—\n(a)\nall written laws, and all laws, rules and principles, written or unwritten, having the force of\nlaw, whether in force or having such force as aforesaid before, at or after the commencement\nof this Act, in any part of Kenya;\n(b)\nthe general course of proceedings and privileges of Parliament, but not the transactions in\ntheir journals;\n(c)\nArticles of War for the Kenya Military Forces;\n(d)\ndeleted by L.N. 22 of 1965;\n(e)\nthe public seal of Kenya; the seals of all the courts of Kenya; and all seals which any person is\nauthorized by any written law to use;\n(f)\nthe accession to ofﬁce, names, titles, functions and signatures of public ofﬁcers, if the fact of\ntheir appointment is notiﬁed in the Gazette;\n(g)\nthe existence, title and national ﬂag of every State and Sovereign recognized by the\nGovernment;\n(h)\nnatural and artiﬁcial divisions of time, and geographical divisions of the world, and public\nholidays;\n(i)\nthe extent of the territories comprised in the Commonwealth;\n(j)\nthe commencement, continuance and termination of hostilities between Kenya and any\nother State or body of persons;\nEvidence Act (Cap. 80)\nKenya\n(k)\nthe names of the members and ofﬁcers of the court and of their deputies, subordinate\nofﬁcers and assistants, and of all ofﬁcers acting in execution of its process, and also of all\nadvocates and other persons authorized by law to appear or act before it;\n(l)\nthe rule of the road on land or at sea or in the air;\n(m)\nthe ordinary course of nature;\n(n)\nthe meaning of English words;\n(o)\nall matters of general or local notoriety;\n(p)\nall other matters of which it is directed by any written law to take judicial notice.\n(2)\nIn all cases within subsection (1) of this section, and also on all matters of public history, literature,\nscience or art, the court may resort for its aid to appropriate books or documents of reference.\n(3)\nIf the court is called upon by any person to take judicial notice of any fact, it may refuse to do so\nunless and until such person produces any such book or document as it considers necessary to\nenable it to do so.\n[L.N. 22 of 1965.]",
+              "article_length": 2164,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "61",
+              "article_header": "Facts admitted in civil proceedings.",
+              "article_body": "No fact need be proved in any civil proceeding which the parties thereto or their agents agree to admit at\nthe hearing, or which before the hearing they agree, by writing under their hands, to admit, or which by\nany rule of pleading in force at the time they are deemed to have admitted by their pleadings:\nProvided that the court may in its discretion require the facts admitted to be proved otherwise than by\nsuch admissions.",
+              "article_length": 427,
+              "sub_articles": "none"
+            }
+          ]
+        },
+        {
+          "part_number": "II",
+          "part_title": "ORAL EVIDENCE",
+          "articles": [
+            {
+              "article_number": "62",
+              "article_header": "Oral evidence.",
+              "article_body": "All facts, except the contents of documents, may be proved by oral evidence.",
+              "article_length": 76,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "63",
+              "article_header": "Oral evidence must be direct.",
+              "article_body": "(1)\nOral evidence must in all cases be direct evidence.\n(2)\nFor the purposes of subsection (1) of this section, \"direct evidence\" means—\n(a)\nwith reference to a fact which could be seen, the evidence of a witness who says he saw it;\n(b)\nwith reference to a fact which could be heard, the evidence of a witness who says he heard it;\n(c)\nwith reference to a fact which could be perceived by any other sense or in any other manner,\nthe evidence of a witness who says he perceived it by that sense or in that manner;\n(d)\nwith reference to an opinion or to the grounds on which that opinion is held, the evidence of\nthe person who holds that opinion or, as the case maybe, who holds it on those grounds:\nProvided that the opinion of an expert expressed in any treatise commonly offered for sale, and\nthe grounds on which such opinion is held, may be proved by the production of such treatise if the\nauthor is dead or cannot be found, or has become incapable of giving evidence, or cannot be called\nas a witness without an amount of delay or expense which the court regards as unreasonable.\n(3)\nIf oral evidence refers to the existence or condition of any material thing, other than a document,\nthe court may, if it thinks ﬁt, require the production of such material thing for its inspection.\nEvidence Act (Cap. 80)\nKenya",
+              "article_length": 1315,
+              "sub_articles": [
+                {
+                  "article_number": "63A",
+                  "article_header": "Teleconferencing and video conferencing",
+                  "article_body": "(1)\nA court may receive oral evidence through teleconferencing and video conferencing.\n(2)\nThe Chief Justice may develop regulations to govern the use of teleconferencing and video\nconferencing.\n[Act No. 19 of 2014, s. 30.]",
+                  "article_length": 223
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "part_number": "III",
+          "part_title": "DOCUMENTARY EVIDENCE",
+          "articles": [
+            {
+              "article_number": "64",
+              "article_header": "Proof of contents of documents.",
+              "article_body": "The contents of documents may be proved either by primary or by secondary evidence.",
+              "article_length": 83,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "65",
+              "article_header": "Primary evidence.",
+              "article_body": "(1)\nPrimary evidence means the document itself produced for the inspection of the court.\n(2)\nWhere a document is executed in several parts, each part is primary evidence of the document.\n(3)\nWhere a document is executed in counterpart each counterpart being executed by one or some of\nthe parties only, each counterpart is primary evidence as against the parties executing it.\n(4)\nWhere a number of documents are all made by one uniform process, as in the case of printing,\nlithography or photography, each is primary evidence of the contents of the rest; but where they are\nall copies of a common original they are not primary evidence of the contents of the original.\n(5)\nNotwithstanding anything contained in any other law for the time being in force—\n(a)\na micro-ﬁlm of a document or the reproduction of the image or images embodied in such\nmicro-ﬁlm; or\n(b)\na facsimile copy of a document or an image of a document derived or captured from the\noriginal document; or\n(c)\na statement contained in a document and included in printed material produced by a\ncomputer (hereinafter referred to as a \"computer print-out\"),\nshall, if the conditions stipulated in subsection (6) of this section are satisﬁed, be deemed to also be\na document for the purposes of this Act and shall be admissible in any proceedings without further\nproof of production of the original, as evidence of any contents of the original or of any fact stated\ntherein of which direct evidence would be admissible.\n(6)\nThe conditions referred to in subsection (5) in respect of a computer print- out shall be the\nfollowing, namely—\n(a)\nthe computer print-out containing the statement must have been produced by the computer\nduring the period in which the computer was regularly used to store or process information\nfor the purposes of any activities regularly carried on over that period by a person having\nlawful control over the use of the computer;\n(b)\nthe computer was, during the period to which the proceedings relate, used in the ordinary\ncourse of business regularly and was supplied with information of the kind contained in the\ndocument or of the kind from which the information so contained is derived;\n(c)\nthe computer was operating properly or, if not, that any respect in which it was not operating\nproperly was not such as to affect the production of the document or the accuracy of its\ncontent;\nEvidence Act (Cap. 80)\nKenya\n(d)\nthe information contained in the statement reproduces or is derived from information\nsupplied to the computer in the ordinary course of business.\n(7)\nWhere, over any period, the function of storing or processing information for the purposes of any\nactivities regularly carried on over that period mentioned in paragraph (a) of subsection (6) was\nregularly performed by computers, whether—\n(a)\nby a combination of computers operating over that period; or\n(b)\nby different computers operating in succession over that period; or\n(c)\nby different combinations of computers operating in succession over that period; or\n(d)\nin any other manner involving the successive operation over that period, in whatever order,\nof one or more computers and one or more combination of computers,\nall computers used for that purpose during that period shall be treated for the purposes of this\nsection as constituting a single computer; and references in this section to a computer shall be\nconstrued accordingly.\n(8)\nIn any proceedings under this Act where it is desired to give a computer print-out or statement in\nevidence by virtue of this section, a certiﬁcate doing any of the following things, that is to say—\n(a)\nidentifying a document containing a print-out or statement and describing the manner in\nwhich it was produced;\n(b)\ngiving such particulars of any device involved in the production of that document as may be\nappropriate for the purpose of showing that the document was produced by a computer;\n(c)\ndealing with any of the matters to which conditions mentioned in the subsection (6) relate,\nwhich is certiﬁed by a person holding a responsible position in relation to the operation of the\nrelevant device or the management of the activities to which the document relates in the ordinary\ncourse of business shall be admissible in evidence.\n(9)\nFor the purposes of this section—\n(a)\ninformation shall be deemed to be supplied to a computer if it is supplied in any appropriate\nform and whether it is so supplied directly or (with or without human intervention) by means\nof any appropriate equipment;\n(b)\ninformation shall be deemed to be supplied in the ordinary course of business if the\ninformation was obtained, received or supplied with a view to it being processed, stored or\nretrieved in the ordinary course of business; and\n(c)\na document shall be deemed to have been produced by a computer whether it was produced\nby it directly or (with or without human intervention) by means of any other appropriate\nequipment connected to such computer.\n[Act No. 9 of 2000, s. 65.]",
+              "article_length": 4981,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "66",
+              "article_header": "Secondary evidence.",
+              "article_body": "Secondary evidence includes—\n(a)\ncertiﬁed copies given under the provisions hereinafter contained;\n(b)\ncopies made from the original by mechanical processes which in themselves ensure the accuracy of\nthe copy, and copies compared with such copies;\n(c)\ncopies made from or compared with the original;\n(d)\ncounterparts of documents as against the parties who did not execute them;\nEvidence Act (Cap. 80)\nKenya\n(e)\noral accounts of the contents of a document given by some person who has himself seen it.",
+              "article_length": 501,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "67",
+              "article_header": "Proof of documents by primary evidence.",
+              "article_body": "Documents must be proved by primary evidence except in the cases hereinafter mentioned.",
+              "article_length": 87,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "68",
+              "article_header": "Proof of documents by secondary evidence.",
+              "article_body": "(1)\nSecondary evidence may be given of the existence, condition or contents of a document in the\nfollowing cases—\n(a)\nwhen the original is shown or appears to be in the possession or power of—\n(i)\nthe person against whom the document is sought to be proved; or\n(ii)\na person out of reach of, or not subject to, the process of the court; or\n(iii)\nany person legally bound to produce it, and when, after the notice required by section\n69 of this Act has been given, such person refuses or fails to produce it;\n(b)\nwhen the existence, condition or contents of the original are proved to be admitted in writing\nby the person against whom it is proved, or by his representative in interest;\n(c)\nwhen the original has been destroyed or lost, or when the party offering evidence of its\ncontents cannot, for any other reason not arising from his own default or neglect, produce it\nin a reasonable time;\n(d)\nwhen the original is of such a nature as not to be easily movable;\n(e)\nwhen the original is a public document within the meaning of section 79 of this Act;\n(f)\nwhen the original is a document of which a certiﬁed copy is permitted by this Act or by any\nwritten law to be given in evidence;\n(g)\nwhen the original consists of numerous accounts or other documents which cannot\nconveniently be examined in court, and the fact to be proved is the general result of the\nwhole collection.\n(2)\n(a)\nIn the cases mentioned in paragraphs (a), (c) and (d) of subsection (1), any secondary\nevidence of the contents of the document is admissible.\n(b)\nIn the case mentioned in paragraph (b) of subsection (1) of this section, the written\nadmission is admissible.\n(c)\nIn the cases mentioned in paragraphs (e) and (f) of subsection (1) of this section, a certiﬁed\ncopy of the document, but no other kind of secondary evidence, is admissible.\n(d)\nIn the case mentioned in paragraph (g) of subsection (1) of this section, evidence may be\ngiven as to the general result of the accounts or documents by any person who has examined\nthem, and who is skilled in the examination of such accounts or documents.",
+              "article_length": 2082,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "69",
+              "article_header": "Notice to produce a document.",
+              "article_body": "Secondary evidence of the contents of the documents referred to in section 68(1)(a) of this Act shall not\nbe given unless the party proposing to give such secondary evidence has previously given to the party in\nwhose possession or power the document is, or to his advocate, such a notice to produce it as is required\nby law or such notice as the court considers reasonable in the circumstances of the case:\nProvided that such notice shall not be required in order to render secondary evidence admissible in any of\nthe following cases—\n(i)\nwhen the document to be proved is itself a notice;\nEvidence Act (Cap. 80)\nKenya\n(ii)\nwhen from the nature of the case, the adverse party must know that he will be required to produce\nit;\n(iii)\nwhen it appears or is proved that the adverse party has obtained possession of the original by fraud\nor force;\n(iv)\nwhen the adverse party or his agent has the original in court;\n(v)\nwhen the adverse party or his agent has admitted the loss of the document;\n(vi)\nwhen the person in possession of the document is out of reach of, or not subject to, the process of\nthe court;\n(vii)\nin any other case in which the court thinks ﬁt to dispense with the requirement.",
+              "article_length": 1192,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "70",
+              "article_header": "Proof of allegation that persons signed or wrote a document.",
+              "article_body": "If a document is alleged to be signed or to have been written wholly or in part by any person, the signature\nor the handwriting of so much of the document as is alleged to be in that person’s handwriting must be\nproved to be in his handwriting.",
+              "article_length": 244,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "71",
+              "article_header": "Proof of execution of document required by law to be attested.",
+              "article_body": "If a document is required by law to be attested it shall not be used as evidence until one attesting witness\nat least has been called for the purpose of proving its execution, if there is an attesting witness alive and\nsubject to the process of the court and capable of giving evidence:\nProvided that it shall not be necessary to call an attesting witness in proof of the execution of any\ndocument which has been registered in accordance with the provisions of any written law, unless its\nexecution by the person by whom it purports to have been executed is speciﬁcally denied.",
+              "article_length": 577,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "72",
+              "article_header": "Proof where no attesting witness found.",
+              "article_body": "Where evidence is required of a document which is required by law to be attested, and none of the\nattesting witnesses can be found, or where such witness is incapable of giving evidence or cannot be called\nas a witness without an amount of delay or expense which the court regards as unreasonable, it must be\nproved that the attestation of one attesting witness at least is in his handwriting, and that the signature of\nthe person executing the document is in the handwriting of that person.",
+              "article_length": 491,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "73",
+              "article_header": "Admission of execution of attested document.",
+              "article_body": "The admission of a party to an attested document, of its execution by himself, shall be sufﬁcient proof of\nits execution as against him though it be a document required by law to be attested.",
+              "article_length": 191,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "74",
+              "article_header": "Proof where attesting witness denies execution.",
+              "article_body": "If the attesting witness denies or does not recollect the execution of a document, its execution may be\nproved by other evidence.",
+              "article_length": 129,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "75",
+              "article_header": "Proof of document not required to be attested.",
+              "article_body": "An attested document not required by law to be attested may be proved as if it was unattested.",
+              "article_length": 94,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "76",
+              "article_header": "Comparison of signatures, seals, etc.",
+              "article_body": "(1)\nIn order to ascertain whether a signature, writing or seal is that of the person by whom it purports\nto have been written or made, any signature, writing or seal, admitted or proved to the satisfaction\nof the court to have been written or made by that person, may be compared by a witness or by the\nEvidence Act (Cap. 80)\nKenya\ncourt with the one which is to be proved, although that signature, writing or seal has not been\nproduced or proved for any other purpose.\n(2)\nThe court may direct any person present in court to write any words or ﬁgures for the purpose of\nenabling the court to compare the words or ﬁgures so written with any words or ﬁgures alleged to\nhave been written by such person.\n(3)\nThis section applies with necessary modiﬁcations to ﬁnger impressions.",
+              "article_length": 776,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "77",
+              "article_header": "Reports by Government analysts and geologists.",
+              "article_body": "(1)\nIn criminal proceedings any document purporting to be a report under the hand of a Government\nanalyst, medical practitioner or of any ballistics expert, document examiner or geologist upon any\nperson, matter or thing submitted to him for examination or analysis may be used in evidence.\n(2)\nThe court may presume that the signature to any such document is genuine and that the person\nsigning it held the ofﬁce and qualiﬁcations which he professed to hold at the time when he signed\nit.\n(3)\nWhen any report is so used the court may, if it thinks ﬁt, summon the analyst, ballistics expert,\ndocument examiner, medical practitioner, or geologist, as the case may be, and examine him as to\nthe subject matter thereof.\n[Act No. 14 of 1991, Sch.]",
+              "article_length": 743,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "78",
+              "article_header": "Photographic evidence—admissibility of certiﬁcate.",
+              "article_body": "(1)\nIn criminal proceedings a certiﬁcate in the form in the First Schedule to this Act, given under\nthe hand of an ofﬁcer appointed by order of the Director of Public Prosecutions for the purpose,\nwho shall have prepared a photographic print or a photographic enlargement from exposed ﬁlm\nor an electronic and digital medium submitted to him, shall be admissible, together with any\nphotographic prints, photographic enlargements and any other annex referred to therein, and shall\nbe evidence of all facts stated therein.\n(2)\nThe court may presume that the signature to any such certiﬁcate is genuine.\n(3)\nWhen a certiﬁcate is received in evidence under this section the court may, if it thinks ﬁt, summon\nand examine the person who gave it.\n[LN 22 of 1965, Act No. 12 of 2012, Sch., Act No. 19 of 2023, Sch.]",
+              "article_length": 808,
+              "sub_articles": [
+                {
+                  "article_number": "78A",
+                  "article_header": "Admissibility of electronic and digital evidence.",
+                  "article_body": "(1)\nIn any legal proceedings, electronic messages and digital material shall be admissible as evidence.\n(2)\nThe court shall not deny admissibility of evidence under subsection (1) only on the ground that it is\nnot in its original form.\n(3)\nIn estimating the weight, if any, to be attached to electronic and digital evidence, under subsection\n(1), regard shall be had to—\n(a)\nthe reliability of the manner in which the electronic and digital evidence was generated,\nstored or communicated;\n(b)\nthe reliability of the manner in which the integrity of the electronic and digital evidence was\nmaintained;\n(c)\nthe manner in which the originator of the electronic and digital evidence was identiﬁed; and\n(d)\nany other relevant factor.\n(4)\nElectronic and digital evidence generated by a person in the ordinary course of business, or a copy\nor printout of or an extract from the electronic and digital evidence certiﬁed to be correct by a\nEvidence Act (Cap. 80)\nKenya\nperson in the service of such person, is on its mere production in any civil, criminal, administrative\nor disciplinary proceedings under any law, the rules of a self-regulatory organization or any other\nlaw or the common law, admissible in evidence against any person and rebuttable proof of the facts\ncontained in such record, copy, printout or extract.\n[Act No. 19 of 2014, s. 31.]",
+                  "article_length": 1343
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "part_number": "IV",
+          "part_title": "PUBLIC DOCUMENTS",
+          "articles": [
+            {
+              "article_number": "79",
+              "article_header": "Distinction between public and private documents.",
+              "article_body": "(1)\nThe following documents are public documents—\n(a)\ndocuments forming the acts or records of the acts—\n(i)\nof the sovereign authority; or\n(ii)\nof ofﬁcial bodies and tribunals; or\n(iii)\nof public ofﬁcers, legislative, judicial or executive, whether of Kenya or of any other\ncountry;\n(b)\npublic records kept in Kenya of private documents.\n(2)\nAll documents other than public documents are private.",
+              "article_length": 397,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "80",
+              "article_header": "Certiﬁed copies of public documents.",
+              "article_body": "(1)\nEvery public ofﬁcer having the custody of a public document which any person has a right to\ninspect shall give that person on demand a copy of it on payment of the legal fees therefor, together\nwith a certiﬁcate written at the foot of such copy that it is a true copy of such document or part\nthereof, as the case may be, and such certiﬁcate shall be dated and subscribed by such ofﬁcer with\nhis name and his ofﬁcial title, and shall be sealed whenever such ofﬁcer is authorized by law to\nmake use of a seal, and such copies so certiﬁed shall be called certiﬁed copies.\n(2)\nAny ofﬁcer who by the ordinary course of ofﬁcial duty is authorized to deliver copies of public\ndocuments shall be deemed to have the custody of such documents within the meaning of this\nsection.",
+              "article_length": 773,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "81",
+              "article_header": "Proof by certiﬁed copies.",
+              "article_body": "Certiﬁed copies of public documents may be produced in proof of the contents of the documents or parts\nof the documents of which they purport to be copies.",
+              "article_length": 155,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "82",
+              "article_header": "Proof of certain public documents.",
+              "article_body": "Without prejudice to any other mode of proof, prima facie evidence of the following public documents may\nbe given in the manner hereinafter shown, that is to say—\n(a)\ndeleted by L.N. 22 of 1965;\n(b)\ndeleted by L.N. 22 of 1965;\n(c)\nproceedings of the East Africa Central Legislative Assembly, or of the legislature of any country\nin the Commonwealth, by the journals thereof, or, in the case of such Assembly or legislature\nas aforesaid, by copies of such journals purporting to be printed or published by or under the\nauthority of such Assembly or legislature, or by or under the authority of the government of any\nsuch country;\nEvidence Act (Cap. 80)\nKenya\n(d)\nacts, orders or notiﬁcations of the executive Government of Kenya, the High Commission or the\nOrganization or any service, thereof, or any local authority, or of a ministry or department of any of\nthe foregoing—\n(i)\nby the records of the service, ministry or department certiﬁed by the head of the service or\ndepartment, or, in the case of a ministry, by the permanent secretary thereof; or\n(ii)\nby any document purporting to be printed or published by the Government Printer;\n(e)\nproceedings of any local authority, or of any corporate body created by Act or Ordinance, by a copy\nof the proceedings certiﬁed by the person having the lawful custody of the original thereof, or by a\npublic document purporting to be printed or published by or by the authority of such authority or\ncorporate body;\n(f)\nproclamations, treaties and other acts of State of any foreign country or of any part of the\nCommonwealth, and judgments, decrees, orders and other judicial proceedings of any court of\njustice in such country or part, and all afﬁdavits, pleadings and other legal documents ﬁled or\ndeposited in any such court, by the procedure required by section 7 of the Evidence Act, 1851, of the\nUnited Kingdom;\n(g)\npublic documents of any other class in a foreign country, by the original, or by a copy thereof\nbearing a certiﬁcate under the seal of a notary public or of a Kenya consular ofﬁcer or diplomatic\nagent that the copy is duly certiﬁed by the ofﬁcer having the lawful custody of the original thereof,\nand upon proof of the character of the document according to the law of the foreign country.\n[L.N. 22 of 1965.]",
+              "article_length": 2273,
+              "sub_articles": "none"
+            }
+          ]
+        },
+        {
+          "part_number": "V",
+          "part_title": "PRESUMPTIONS AS TO DOCUMENTS",
+          "articles": [
+            {
+              "article_number": "83",
+              "article_header": "Certiﬁed documents.",
+              "article_body": "(1)\nThe court shall presume to be genuine every document purporting to be a certiﬁcate, certiﬁed copy\nor other document which is—\n(a)\ndeclared by law to be admissible as evidence of any particular fact; and\n(b)\nsubstantially in the form, and purporting to be executed in the manner, directed by law in\nthat behalf; and\n(c)\npurporting to be duly certiﬁed by a public ofﬁcer.\n(2)\nThe court shall also presume that any ofﬁcer by whom any such document purports to be signed or\ncertiﬁed held, when he signed it, the ofﬁcial character which he claims in such document.",
+              "article_length": 563,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "84",
+              "article_header": "Records of evidence.",
+              "article_body": "Whenever any document is produced before any court, purporting to be a record or memorandum of any\nevidence given in a judicial proceeding or before any ofﬁcer authorized by law to take such evidence, and\npurporting to be signed by a judge or magistrate or any such ofﬁcer as aforesaid, the court shall presume—\n(a)\nthat the document is genuine;\n(b)\nthat any statements as to the circumstances in which it was taken, purporting to be made by the\nperson signing it, are true; and\n(c)\nthat such evidence was duly taken.",
+              "article_length": 517,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "85",
+              "article_header": "Gazette, etc., to be prima facie evidence.",
+              "article_body": "The production of a copy of any written law, or of a copy of the Gazette containing any written law or any\nnotice purporting to be made in pursuance of a written law, where such law or notice (as the case may be)\nEvidence Act (Cap. 80)\nKenya\npurports to be printed by the Government Printer, shall be prima facie evidence in all courts and for all\npurposes whatsoever of the due making and tenor of such written law or notice.",
+              "article_length": 426,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "86",
+              "article_header": "Gazettes, newspapers and documents produced from proper custody.",
+              "article_body": "(1)\nThe court shall presume the genuineness of every document purporting to be—\n(a)\nthe London Gazette, the Edinburgh Gazette, or the ofﬁcial Gazette of any country in the\nCommonwealth;\n(b)\na newspaper or journal;\n(c)\na document directed by any law to be kept by any person, if such document is kept\nsubstantially in the form required by law and is produced from proper custody.\n(2)\nDocuments are said to be in proper custody if they are in the place in which and under the care of\nthe person with whom they would naturally be; but no custody is improper if it is proved to have\nhad a legitimate origin, or if the circumstances of the particular case are such as to render such an\norigin probable.",
+              "article_length": 697,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "87",
+              "article_header": "Publications generally.",
+              "article_body": "Where any publication or part thereof indicates or purports to indicate the name of any person by or\non behalf or under the sponsorship of whom, or the place at which or date on which, such publication\nor any part thereof was edited, printed or published or any part thereof was contributed, it shall, in any\nproceedings for an offence under any written law or for contempt of any court, be presumed, until the\ncontrary is proved, that such publication or part thereof was edited, printed or published, or that such part\nthereof was contributed, by or on behalf or under the sponsorship of such person, or at such place or on\nsuch date, as the case may be.",
+              "article_length": 656,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "88",
+              "article_header": "Documents admissible in England.",
+              "article_body": "When any document is produced before any court, purporting to be a document which, by the law in force\nfor the time being in England, would be admissible in proof of any particular in any Court of Justice in\nEngland, without proof of the seal or stamp or signature authenticating it, or of the judicial or ofﬁcial\ncharacter claimed by the person by whom it purports to be signed—\n(a)\nthe court shall presume that such seal, stamp or signature is genuine, and that the person signing\nit held, at the time when he signed it, the judicial or ofﬁcial character which he claims in such\ndocument; and\n(b)\nthe document shall be admissible for the same purpose for which it would be admissible in England.",
+              "article_length": 697,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "89",
+              "article_header": "Maps or plans.",
+              "article_body": "(1)\nThe court shall presume that maps or plans purporting to be made or published by the authority of\nthe Government, or any department of the Government, of any country in the Commonwealth were\nso made or published and are accurate.\n(2)\nMaps or plans specially made for the purposes of any cause or other proceeding, civil or criminal,\nmust be proved to be accurate.",
+              "article_length": 367,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "90",
+              "article_header": "Law and judicial reports.",
+              "article_body": "The court shall presume the genuineness of every book purporting to be printed or published under the\nauthority of the Government of any country and to contain any of the laws of that country, and of every\nbook purporting to contain reports of decisions of the courts of any country.\nEvidence Act (Cap. 80)\nKenya",
+              "article_length": 312,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "91",
+              "article_header": "Powers of attorney.",
+              "article_body": "The court shall presume that every document purporting to be a power of attorney, and to have been\nexecuted before and authenticated by a notary public or commissioner for oaths or any court, judge,\nmagistrate, or Kenya consular ofﬁcer or diplomatic agent, was so executed and authenticated.\n[L.N. 22 of 1965.]",
+              "article_length": 310,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "92",
+              "article_header": "Certiﬁed copies of foreign judicial records.",
+              "article_body": "The court may presume that any document purporting to be a copy of a judgment or judicial record of any\ncountry not forming part of the Commonwealth is genuine and accurate, and that such judgment or record\nwas pronounced or recorded by a court of competent jurisdiction, if the document purports to be certiﬁed\nin any manner which is certiﬁed by a Kenya consular ofﬁcer or diplomatic representative in or for such\ncountry to be the manner commonly in use in that country for the certiﬁcation of copies of judgments or\njudicial records.\n[L.N. 22 of 1965.]",
+              "article_length": 555,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "93",
+              "article_header": "Books, maps and charts.",
+              "article_body": "The court may presume that any book, to which it may refer for information on matters of public or\ngeneral interest, and that any published map or chart, the statements of which are admissible facts and\nwhich is produced for its inspection, was written and published by the person and at the time and place by\nwhom or at which it purports to have been written or published.",
+              "article_length": 373,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "94",
+              "article_header": "Telegraphic messages.",
+              "article_body": "The court may presume that a message forwarded from a telegraph ofﬁce to the person to whom such\nmessage purports to be addressed, corresponds with a message delivered for transmission at the ofﬁce\nfrom which the message purports to be sent; but the court shall not make any presumption as to the\nperson by whom such message was delivered for transmission.",
+              "article_length": 356,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "95",
+              "article_header": "Presumption as to due execution, etc.",
+              "article_body": "The court shall presume that every document called for and not produced after notice to produce was\nattested, stamped and executed in the manner required by the law.",
+              "article_length": 165,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "96",
+              "article_header": "Documents twenty years old.",
+              "article_body": "(1)\nWhere any document purporting or proved to be not less than twenty years old is produced from\nany custody which the court in the particular case considers proper, the court may presume that\nthe signature and every other part of such document, which purports to be in the handwriting of\nany particular person, is in that person’s handwriting, and, in the case of a document executed or\nattested, that it was duly executed and attested by the persons by whom it purports to be executed\nand attested.\n(2)\nDocuments are said to be in proper custody if they are in the place in which and under the care of\nthe person with whom they would naturally be; but no custody is improper if it is proved to have\nhad a legitimate origin, or if the circumstances of the particular case are such as to render such an\norigin probable.\nEvidence Act (Cap. 80)\nKenya",
+              "article_length": 849,
+              "sub_articles": "none"
+            }
+          ]
+        },
+        {
+          "part_number": "VI",
+          "part_title": "EXCLUSION OF ORAL BY DOCUMENTARY EVIDENCE",
+          "articles": [
+            {
+              "article_number": "97",
+              "article_header": "Written contracts and grants.",
+              "article_body": "(1)\nWhen the terms of a contract, or of a grant, or of any other disposition of property, have been\nreduced to the form of a document, and in all cases in which any matter is required by law to\nbe reduced to the form of a document, no evidence shall be given in proof of the terms of such\ncontract, grant or other disposition of property, or of such matter, except the document itself, or\nsecondary evidence of its contents in cases in which secondary evidence is admissible under the\nprovisions of this Act.\n(2)\nNotwithstanding the provisions of subsection (1) of this section—\n(a)\nwills admitted to probate in Kenya may be proved by the probate;\n(b)\nwhen a public ofﬁcer is required by law to be appointed in writing, and when it is shown that\nany particular person has acted as such ofﬁcer, the writing by which he is appointed need not\nbe proved.\n(3)\nSubsection (1) of this section applies equally to cases in which contracts, grants or dispositions of\nproperty referred to are contained in one document, and to cases in which they are contained in\nmore documents than one.\n(4)\nWhere there are more originals than one, one original only need be proved.\n(5)\nThe statement, in any document whatever, of a fact other than the facts referred to in subsection (1)\nof this section, shall not preclude the admission of oral evidence as to the same fact.",
+              "article_length": 1350,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "98",
+              "article_header": "Evidence of oral agreement.",
+              "article_body": "When the terms of any contract or grant or other disposition of property, or any matter required by law to\nbe reduced to the form of a document, have been proved according to section 97 of this Act, no evidence\nof any oral agreement or statement shall be admitted as between the parties to any such instrument or\ntheir representatives in interest for the purpose of contradicting, varying, adding to or subtracting from its\nterms:\nProvided that—\n(i)\nany fact may be proved which would invalidate any document, or which would entitle any person to\nany decree or order relating thereto; such as fraud, intimidation, illegality, want of due execution,\nwant of capacity in any contracting party, want or failure of consideration, or mistake in fact or law;\n(ii)\nthe existence of any separate oral agreement as to any matter on which a document is silent, and\nwhich is not inconsistent with its terms, may be proved, and in considering whether or not this\nparagraph of this proviso applies, the court shall have regard to the degree of formality of the\ndocument;\n(iii)\nthe existence of any separate oral agreement constituting a condition precedent to the attaching of\nany obligation under any such contract, grant or disposition of property may be proved;\n(iv)\nthe existence of any distinct subsequent oral agreement to rescind or modify any such contract,\ngrant or disposition of property may be proved, except in cases in which such contract, grant or\ndisposition of property is by law required to be in writing, or has been registered according to the\nlaw in force for the time being as to the registration of such documents;\n(v)\nany usage or custom by which incidents not expressly mentioned in any contract are usually\nannexed to contracts of that description may be proved, if the annexing of such incident would not\nbe repugnant to, or inconsistent with, the express terms of the contract;\nEvidence Act (Cap. 80)\nKenya\n(vi)\nany fact may be proved which shows in what manner the language of a document is related to\nexisting facts.",
+              "article_length": 2033,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "99",
+              "article_header": "Evidence to explain a patent ambiguity.",
+              "article_body": "When the language used in a document is on the face of it ambiguous or defective, evidence may not be\ngiven of facts which would show its meaning or supply its defects.",
+              "article_length": 168,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "100",
+              "article_header": "Evidence to show inapplicability.",
+              "article_body": "When language used in a document is plain, and it applies accurately to existing facts, evidence may not\nbe given to show that it was not meant to apply to such facts.",
+              "article_length": 167,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "101",
+              "article_header": "Evidence to explain a latent ambiguity.",
+              "article_body": "When language used in a document is plain, but is unmeaning in reference to existing facts, evidence may\nbe given to show that it was used in a peculiar sense.",
+              "article_length": 159,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "102",
+              "article_header": "Evidence of application to one of several subjects.",
+              "article_body": "When the facts are such that the language used in a document might have been meant to apply to any one,\nand could not have been meant to apply to more than one of several persons or things, evidence may be\ngiven of facts which show to which of those persons or things it was intended to apply.",
+              "article_length": 293,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "103",
+              "article_header": "Evidence of application to one of several sets of facts.",
+              "article_body": "When the language used in a document applies partly to one set of existing facts, and partly to another,\nbut the whole of it does not apply correctly to either, evidence may be given to show to which of the two it\nwas meant to apply.",
+              "article_length": 233,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "104",
+              "article_header": "Evidence to explain special words.",
+              "article_body": "Evidence may be given to show the meaning of illegible or not commonly intelligible characters, of\nforeign, obsolete, technical, local and, provincial expressions, of abbreviations and of words used in a\npeculiar sense.",
+              "article_length": 219,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "105",
+              "article_header": "Evidence of variation given by third parties.",
+              "article_body": "Persons who are not parties to a document, or their representatives in interest, may give evidence of any\nfacts tending to show a contemporaneous agreement varying the terms of the document.",
+              "article_length": 190,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "106",
+              "article_header": "Wills.",
+              "article_body": "Nothing in this Part shall affect the law relating to the interpretation and construction of wills or other\ntestamentary dispositions.",
+              "article_length": 134,
+              "sub_articles": [
+                {
+                  "article_number": "106A",
+                  "article_header": "Section 106B to apply in proof of electronic records.",
+                  "article_body": "The contents of electronic records may be proved in accordance with the provisions of section 106B.\n[Act No. 1 of 2009, s. 36.]\nEvidence Act (Cap. 80)\nKenya",
+                  "article_length": 156
+                },
+                {
+                  "article_number": "106B",
+                  "article_header": "Admissibility of electronic records.",
+                  "article_body": "(1)\nNotwithstanding anything contained in this Act, any information contained in an electronic record\nwhich is printed on a paper, stored, recorded or copied on optical or electro-magnetic media\nproduced by a computer (herein referred to as \"computer output\") shall be deemed to be also a\ndocument, if the conditions mentioned in this section are satisﬁed in relation to the information\nand computer in question and shall be admissible in any proceedings, without further proof or\nproduction of the original, as evidence of any contents of the original or of any fact stated therein\nwhere direct evidence would be admissible.\n(2)\nThe conditions mentioned in subsection (1), in respect of a computer output, are the following—\n(a)\nthe computer output containing the information was produced by the computer during the\nperiod over which the computer was used to store or process information for any activities\nregularly carried out over that period by a person having lawful control over the use of the\ncomputer;\n(b)\nduring the said period, information of the kind contained in the electronic record or of the\nkind from which the information so contained is derived was regularly fed into the computer\nin the ordinary course of the said activities;\n(c)\nthroughout the material part of the said period, the computer was operating properly or,\nif not, then in respect of any period in which it was not operating properly or was out of\noperation during that part of the period, was not such as to affect the electronic record or the\naccuracy of its content; and\n(d)\nthe information contained in the electronic record reproduces or is derived from such\ninformation fed into the computer in the ordinary course of the said activities.\n(3)\nWhere over any period, the function of storing or processing information for the purposes of any\nactivities regularly carried on over that period as mentioned in paragraph (a) of subsection (2) was\nregularly performed by computers, whether—\n(a)\nby combination of computers operating in succession over that period; or\n(b)\nby different computers operating in succession over that period; or\n(c)\nin any manner involving the successive operation over that period, in whatever order, of one\nor more computers and one or more combinations of computers,\nthen all computers used for that purpose during that period shall be treated for the purposes of\nthis section to constitute a single computer and references in this sections to a computer shall be\nconstrued accordingly.\n(4)\nIn any proceedings where it is desired to give a statement in evidence by virtue of this section, a\ncertiﬁcate doing any of the following—\n(a)\nidentifying the electronic record containing the statement and describing the manner in\nwhich it was produced;\n(b)\ngiving such particulars of any device involved in the production of that electronic record as\nmay be appropriate for the purpose of showing that the electronic record was produced by a\ncomputer;\n(c)\ndealing with any matters to which conditions mentioned in subsection (2) relate; and\n(d)\npurporting to be signed by a person occupying a responsible position in relation to the\noperation of the relevant device or the management of the relevant activities (whichever is\nappropriate),\nshall be evidence of any matter stated in the certiﬁcate and for the purpose of this subsection it\nshall be sufﬁcient for a matter to be stated to be the best of the knowledge of the person stating it.\nEvidence Act (Cap. 80)\nKenya\n(5)\nFor the purpose of this section, information is supplied to a computer if it is supplied thereto in any\nappropriate form and whether it is so supplied directly or (with or without human intervention)\nby means of an appropriate equipment, whether in the course of activities carried on by any\nofﬁcial, information is supplied with a view to its being stored or processed for the purpose of those\nactivities, that information, if duly supplied to that computer, shall be taken to be supplied to it in\nthe course of those activities.\n[Act No. 1 of 2009, s. 36.]",
+                  "article_length": 4037
+                },
+                {
+                  "article_number": "106C",
+                  "article_header": "Proof as to a electronic signature.",
+                  "article_body": "Except in the case of a secure signature, if the electronic signature of any subscriber is alleged to have\nbeen afﬁxed to an electronic record, then the fact that such an electronic signature is the electronic\nsignature of the subscriber must be proved.\n[Act No. 1 of 2009, s. 36.]",
+                  "article_length": 281
+                },
+                {
+                  "article_number": "106D",
+                  "article_header": "Proof as to the veriﬁcation of electronic signature.",
+                  "article_body": "In order to ascertain whether an electronic signature is that of a person by whom it purports to have been\nafﬁxed, the court may direct—\n(a)\nthat person or the certiﬁcation service provider to produce the electronic signature certiﬁcate; or\n(b)\nany other person to apply the procedure listed on the electronic signature certiﬁcate and verify the\nelectronic signature purported to have been afﬁxed by that person.\n[Act No. 1 of 2009, s. 36.]",
+                  "article_length": 440
+                },
+                {
+                  "article_number": "106E",
+                  "article_header": "Presumption as to Gazette in electronic form.",
+                  "article_body": "A court shall take recognizance of every electronic record purporting to be the ofﬁcial Gazette, or\npurporting to be electronic record directed by any law to be kept by any person, if such electronic record is\nkept substantially in the form required by law and is produced from its proper custody.\n[Act No. 1 of 2009, s. 36.]",
+                  "article_length": 325
+                },
+                {
+                  "article_number": "106F",
+                  "article_header": "Presumption as to electronic agreements",
+                  "article_body": "A court shall presume that every electronic record purporting to be an agreement containing the\nelectronic signatures of the parties was concluded by afﬁxing the digital signature of the parties.\n[Act No. 1 of 2009, s. 36.]",
+                  "article_length": 223
+                },
+                {
+                  "article_number": "106G",
+                  "article_header": "Presumption as to electronic records and electronic signatures.",
+                  "article_body": "(1)\nIn any proceedings involving a secure electronic record, the court shall presume, unless the\ncontrary is proved, that the secure electronic record has not been altered since the speciﬁc point of\ntime the secure electronic signature was afﬁxed.\n(2)\nIn any proceedings involving secure electronic signature, the court shall presume, unless the\ncontrary is proved, that the secure signature is afﬁxed by the subscriber with the intention of\nsigning or approving the electronic record.\n(3)\nExcept in the case of a secure electronic or secure digital signature, nothing in this section shall\ncreate any presumption relating to authenticity and integrity of the electronic record or any digital\nsignature.\n[Act No. 1 of 2009, s. 36.]\nEvidence Act (Cap. 80)\nKenya",
+                  "article_length": 760
+                },
+                {
+                  "article_number": "106H",
+                  "article_header": "Presumption as to electronic signature certiﬁcates.",
+                  "article_body": "A court shall presume, unless the contrary is proved, that the information listed in an electronic signature\ncertiﬁcate is correct, except for information, which has not been veriﬁed, if the certiﬁcate was accepted by\nthe subscriber.\n[Act No. 1 of 2009, s. 36.]",
+                  "article_length": 261
+                },
+                {
+                  "article_number": "106I",
+                  "article_header": "Presumption as to electronic messages.",
+                  "article_body": "A court may presume that an electronic message forwarded by the originator through an electronic mail\nserver to the addressee to whom the message purports to be addressed corresponds with the message as\nfed into his computer for transmission, but the court shall not make any presumption as to the person by\nwhom such a message was sent.\n[Act No. 1 of 2009, s. 36.]",
+                  "article_length": 365
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "part_number": "VII",
+          "part_title": "ELECTRONIC RECORDS",
+          "articles": "none"
+        }
+      ],
+      "articles": "none"
+    },
+    {
+      "chapter_number": "IV",
+      "chapter_title": "PRODUCTION AND EFFECT OF EVIDENCE",
+      "parts": [
+        {
+          "part_number": "I",
+          "part_title": "BURDEN OF PROOF",
+          "articles": [
+            {
+              "article_number": "107",
+              "article_header": "Burden of proof.",
+              "article_body": "(1)\nWhoever desires any court to give judgment as to any legal right or liability dependent on the\nexistence of facts which he asserts must prove that those facts exist.\n(2)\nWhen a person is bound to prove the existence of any fact it is said that the burden of proof lies on\nthat person.",
+              "article_length": 288,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "108",
+              "article_header": "Incidence of burden.",
+              "article_body": "The burden of proof in a suit or proceeding lies on that person who would fail if no evidence at all were\ngiven on either side.",
+              "article_length": 127,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "109",
+              "article_header": "Proof of particular fact.",
+              "article_body": "The burden of proof as to any particular fact lies on the person who wishes the court to believe in its\nexistence, unless it is provided by any law that the proof of that fact shall lie on any particular person.",
+              "article_length": 211,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "110",
+              "article_header": "Proof of admissibility.",
+              "article_body": "The burden of proving any fact necessary to be proved in order to enable any person to give evidence of\nany other fact is on the person who wishes to give such evidence.",
+              "article_length": 169,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "111",
+              "article_header": "Burden on accused in certain cases.",
+              "article_body": "(1)\nWhen a person is accused of any offence, the burden of proving the existence of circumstances\nbringing the case within any exception or exemption from, or qualiﬁcation to, the operation of the\nlaw creating the offence with which he is charged and the burden of proving any fact especially\nwithin the knowledge of such person is upon him:\nProvided that such burden shall be deemed to be discharged if the court is satisﬁed by evidence\ngiven by the prosecution, whether in cross-examination or otherwise, that such circumstances or\nfacts exist:\nEvidence Act (Cap. 80)\nKenya\nProvided further that the person accused shall be entitled to be acquitted of the offence with\nwhich he is charged if the court is satisﬁed that the evidence given by either the prosecution or the\ndefense creates a reasonable doubt as to the guilt of the accused person in respect of that offence.\n(2)\nNothing in this section shall—\n(a)\nprejudice or diminish in any respect the obligation to establish by evidence according to law\nany acts, omissions or intentions which are legally necessary to constitute the offence with\nwhich the person accused is charged; or\n(b)\nimpose on the prosecution the burden of proving that the circumstances or facts described in\nsubsection (1) of this section do not exist; or\n(c)\naffect the burden placed upon an accused person to prove a defence of intoxication or\ninsanity.",
+              "article_length": 1384,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "112",
+              "article_header": "Proof of special knowledge in civil proceedings.",
+              "article_body": "In civil proceedings, when any fact is especially within the knowledge of any party to those proceedings,\nthe burden of proving or disproving that fact is upon him.",
+              "article_length": 164,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "113",
+              "article_header": "[Repealed by Act No. 14 of 1972, Ninth Sch.]",
+              "article_body": "",
+              "article_length": 0,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "114",
+              "article_header": "[Repealed by Act No. 14 of 1972, Ninth Sch.]",
+              "article_body": "",
+              "article_length": 0,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "115",
+              "article_header": "Disproving apparent special relationship.",
+              "article_body": "When the question is whether persons are partners, landlord and tenant, or principal and agent, and it\nhas been shown that they have been acting as such, the burden of proving that they do not stand, or have\nceased to stand, to each other in those relationships respectively, is on the person who afﬁrms it.",
+              "article_length": 307,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "116",
+              "article_header": "Disproving ownership.",
+              "article_body": "When the question is whether any person is owner of anything of which he is shown to be in possession,\nthe burden of proving that he is not the owner is on the person who afﬁrms that he is not the owner.",
+              "article_length": 203,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "117",
+              "article_header": "Proof of good faith.",
+              "article_body": "Where there is a question as to the good faith of a transaction between parties, one of whom stands to the\nother in a position of active conﬁdence, the burden of proving the good faith of the transaction is on the\nparty who is in a position of active conﬁdence.",
+              "article_length": 261,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "118",
+              "article_header": "Conclusive proof of legitimacy.",
+              "article_body": "The fact that any person was born during the continuance of a valid marriage between his mother and any\nman, or within two hundred and eighty days after its dissolution, the mother remaining unmarried, shall\nbe conclusive proof that he is the legitimate son of that man, unless it can be shown that the parties to the\nmarriage had no access to each other at any time when he could have been begotten.",
+              "article_length": 400,
+              "sub_articles": [
+                {
+                  "article_number": "118A",
+                  "article_header": "Presumption of death.",
+                  "article_body": "Where it is proved that a person has not been heard of for seven years by those who might be expected to\nhave heard of him if he were alive, there shall be a rebuttable presumption that he is dead.\n[Act No. 14 of 1972, Ninth Sch.]\nEvidence Act (Cap. 80)\nKenya",
+                  "article_length": 259
+                }
+              ]
+            },
+            {
+              "article_number": "119",
+              "article_header": "Presumption of likely facts.",
+              "article_body": "The court may presume the existence of any fact which it thinks likely to have happened, regard being had\nto the common course of natural events, human conduct and public and private business, in their relation\nto the facts of the particular case.",
+              "article_length": 247,
+              "sub_articles": "none"
+            }
+          ]
+        },
+        {
+          "part_number": "II",
+          "part_title": "ESTOPPEL",
+          "articles": [
+            {
+              "article_number": "120",
+              "article_header": "General estoppel.",
+              "article_body": "When one person has, by his declaration, act or omission, intentionally caused or permitted another\nperson to believe a thing to be true and to act upon such belief, neither he nor his representative shall\nbe allowed, in any suit or proceeding between himself and such person or his representative, to deny the\ntruth of that thing.",
+              "article_length": 331,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "121",
+              "article_header": "Estoppel of tenant or licensee.",
+              "article_body": "No tenant of immovable property, or person claiming through such tenant, shall, during the continuance\nof the tenancy, be permitted to deny that the landlord of such tenant had at the beginning of the tenancy\na title to such immovable property; and no person who came upon any immovable property by the licence\nof the person in possession thereof shall be permitted to deny that such person had a right to such\npossession at the time when the license was given.",
+              "article_length": 461,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "122",
+              "article_header": "Estoppel of acceptor of a bill of exchange.",
+              "article_body": "No acceptor of a bill of exchange shall be permitted to deny that the drawer had authority to draw such bill\nor to endorse it:\nProvided that the acceptor of a bill of exchange may deny that the bill was in fact drawn or endorsed by the\nperson by whom it purports to have been drawn or endorsed.",
+              "article_length": 294,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "123",
+              "article_header": "Estoppel of a bailee, licensee or agent.",
+              "article_body": "No bailee, agent or licensee shall be permitted to deny that the bailor, principal or licensor, by whom any\ngoods were entrusted to any of them respectively, was entitled to those goods at the time when they were\nso entrusted:\nProvided that any such bailee, agent or licensee may show that he was compelled to deliver up any such\ngoods to some person, who had a right to them as against his bailor, principal or licensor, wrongfully, and\nwithout notice to the bailee, agent or licensee, obtained the goods from a third person who has claimed\nthem from such bailee, agent or licensee.",
+              "article_length": 583,
+              "sub_articles": "none"
+            }
+          ]
+        },
+        {
+          "part_number": "III",
+          "part_title": "EVIDENCE OF CHILDREN",
+          "articles": [
+            {
+              "article_number": "124",
+              "article_header": "Corroboration required in criminal cases.",
+              "article_body": "Notwithstanding the provisions of section 19 of the Oaths and Statutory Declarations Act (Cap. 15), where\nthe evidence of the alleged victim is admitted in accordance with that section on behalf of the prosecution\nin proceedings against any person for an offence, the accused shall not be liable to be convicted on such\nevidence unless it is corroborated by other material evidence in support thereof implicating him:\nProvided that where in a criminal case involving a sexual offence the only evidence is that of the alleged\nvictim of the offence, the court shall receive the evidence of the alleged victim and proceed to convict\nEvidence Act (Cap. 80)\nKenya\nthe accused person if, for reasons to be recorded in the proceedings, the court is satisﬁed that the alleged\nvictim is telling the truth.\n[Act No. 5 of 2003, s. 103, Act No. 3 of 2006, Second Sch.]",
+              "article_length": 856,
+              "sub_articles": "none"
+            }
+          ]
+        }
+      ],
+      "articles": "none"
+    },
+    {
+      "chapter_number": "V",
+      "chapter_title": "WITNESSES",
+      "parts": [
+        {
+          "part_number": "I",
+          "part_title": "COMPETENCY OF WITNESSES",
+          "articles": [
+            {
+              "article_number": "125",
+              "article_header": "Competency generally.",
+              "article_body": "(1)\nAll persons shall be competent to testify unless the court considers that they are prevented from\nunderstanding the questions put to them, or from giving rational answers to those questions, by\ntender years, extreme old age, disease (whether of body or mind) or any similar cause.\n(2)\nA person suffering from a mental illness is not incompetent to testify unless he is prevented by his\ncondition from understanding the questions put to him and giving rational answers to them.\n[Act No. 19 of 2023, Sch.]",
+              "article_length": 507,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "126",
+              "article_header": "Dumb witnesses.",
+              "article_body": "(1)\nA witness who is unable to speak may give his evidence in any other manner in which he can make\nit intelligible, as, for example, by writing or by signs; but such writing must be written, and the\nsigns made, in open court.\n(2)\nEvidence so given shall be deemed to be oral evidence.",
+              "article_length": 285,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "127",
+              "article_header": "Competency of parties and spouses.",
+              "article_body": "(1)\nIn civil proceedings the parties to the suit, and the husband or wife of any party to the suit, shall be\ncompetent witnesses.\n(2)\nIn criminal proceedings every person charged with an offence, and the wife or husband of the\nperson charged, shall be a competent witness for the defence at every stage of the proceedings,\nwhether such person is charged alone or jointly with any other person:\nProvided that—\n(i)\nthe person charged shall not be called as a witness except upon his own application;\n(ii)\nsave as provided in subsection (3) of this section, the wife or husband of the person charged\nshall not be called as a witness except upon the application of the person charged;\n(iii)\nthe failure of the person charged (or of the wife or husband of that person) to give evidence\nshall not be made the subject of any comment by the prosecution.\n(3)\nIn criminal proceedings the wife or husband of the person charged shall be a competent and\ncompellable witness for the prosecution or defence without the consent of such person, in any case\nwhere such person is charged—\n(a)\nwith the offence of bigamy; or\n(b)\nwith offences under the Sexual Offences Act (Cap. 63A);\n(c)\nin respect of an act or omission affecting the person or property of the wife or husband of\nsuch person or the children of either of them, and not otherwise.\nEvidence Act (Cap. 80)\nKenya\n(4)\nIn this section \"husband\" and \"wife\" mean respectively the husband and wife of a marriage, whether\nor not monogamous, which is by law binding during the lifetime of both parties unless dissolved\naccording to law, and includes a marriage under native or tribal custom.\n[Act No. 3 of 2006, Second Sch.]",
+              "article_length": 1660,
+              "sub_articles": "none"
+            }
+          ]
+        },
+        {
+          "part_number": "II",
+          "part_title": "COMPELLABILITY AND PRIVILEGES OF WITNESSES",
+          "articles": [
+            {
+              "article_number": "128",
+              "article_header": "Compellability of ordinary witnesses.",
+              "article_body": "A witness shall not be excused from answering any question as to any matter relevant to the matter in\nissue in any suit or in any civil or criminal proceeding, upon the ground that the answer to such question\nwill incriminate, or may tend directly or indirectly to incriminate, such witness, or that it will expose,\nor tend directly or indirectly to expose, such witness to a penalty or forfeiture of any kind, but no such\nanswer which a witness is compelled to give shall subject him to any arrest or prosecution, or be proved\nagainst him in any criminal proceeding, except a prosecution for giving false evidence by such answer.",
+              "article_length": 630,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "129",
+              "article_header": "Privilege of court.",
+              "article_body": "No judge or magistrate shall, except upon the special order of some court to which he is subordinate, be\ncompelled to answer any questions as to his own conduct in court as such judge or magistrate, or as to\nanything which came to his knowledge in court as such judge or magistrate, but he may be examined as to\nother matters which occurred in his presence whilst he was so acting.",
+              "article_length": 381,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "130",
+              "article_header": "Communications during marriage.",
+              "article_body": "(1)\nNo person shall be compelled to disclose any communication made to him or her during marriage,\nby the other spouse; nor shall a person be permitted to disclose such communication without\nthe consent of the person who made it, or of his or her representative in interest, except in suits\nbetween the parties to the marriage or in any of the cases referred to in paragraphs (a), (b) and (c) of\nsection 127(3) of this Act.\n(2)\nIn this section \"marriage\" means a marriage, whether or not monogamous, which is by law binding\nduring the lifetime of the parties thereto unless dissolved according to law, and includes a marriage\nunder native or tribal custom.",
+              "article_length": 656,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "131",
+              "article_header": "Privilege relating to ofﬁcial records.",
+              "article_body": "Whenever it is stated on oath (whether by afﬁdavit or otherwise) by a Minister that he has examined\nthe contents of any document forming part of any unpublished ofﬁcial records, the production of which\ndocument has been called for in any proceedings and that he is of the opinion that such production would\nbe prejudicial to the public service, either by reason of the content thereof or of the fact that it belongs to\na class which, on grounds of public policy, should be withheld from such production, the document shall\nnot be admissible.\n[Act No. 10 of 1969, Sch., Act No. 7 of 1990, Sch.]",
+              "article_length": 593,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "132",
+              "article_header": "Privilege of ofﬁcial communications.",
+              "article_body": "No public ofﬁcer shall be compelled to disclose communications made by any person to him in the course\nof his duty, when he considers that the public interest would suffer by the disclosure.\n[Act No. 13 of 1972, Sch.]\nEvidence Act (Cap. 80)\nKenya",
+              "article_length": 246,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "133",
+              "article_header": "Privilege relating to information of commission of offences.",
+              "article_body": "(1)\nNo judge, magistrate or police ofﬁcer shall be compelled to say whence he got any information as to\nthe commission of any offence, and no revenue ofﬁcer shall be compelled to say whence he got any\ninformation as to the commission of any offence against the law relating to the public revenue or\nthe laws speciﬁed in the First Schedule to the Kenya Revenue Authority Act (Cap. 469).\n(2)\nFor the purposes of this section, “revenue ofﬁcer” means any ofﬁcer employed in or about the\nbusiness of any public ofﬁce for the collection of public revenue.\n[Act No. 22 of 2022, s. 52.]",
+              "article_length": 578,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "134",
+              "article_header": "Privilege of advocates.",
+              "article_body": "(1)\nNo advocate shall at any time be permitted unless with his client’s express consent, to disclose\nany communication made to him in the course and for the purpose of his employment as such\nadvocate, by or on behalf of his client, or to state the contents or condition of any document with\nwhich he has become acquainted in the course and for the purpose of his professional employment,\nor to disclose any advice given by him to his client in the course and for the purpose of such\nemployment:\nProvided that nothing in this section shall protect from disclosure—\n(a)\nany communication made in furtherance of any illegal purpose;\n(b)\nany fact observed by any advocate in the course of his employment as such, showing that any\ncrime or fraud has been committed since the commencement of his employment, whether\nthe attention of such advocate was or was not directed to the fact by or on behalf of his\nclient.\n(2)\nThe protection given by subsection (1) of this section shall continue after the employment of the\nadvocate has ceased.",
+              "article_length": 1030,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "135",
+              "article_header": "Privilege of interpreters, and advocates’ clerks and servants.",
+              "article_body": "The provisions of section 134 of this Act shall apply to interpreters, and the clerks or servants of\nadvocates.",
+              "article_length": 111,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "136",
+              "article_header": "Waiving of privilege of advocates, etc.",
+              "article_body": "(1)\nIf any party to a suit or proceeding gives evidence therein at his own instance or otherwise, he shall\nnot be deemed to have consented thereby to such disclosure as is mentioned in section 134(1) of\nthis Act.\n(2)\nIf any party to a suit or proceeding calls any advocate, interpreter, clerk or servant as a witness, he\nshall be deemed to have consented to such disclosure as is mentioned in section 134(1) of this Act\nonly if he questions such witness on matters which, but for such question, the witness would not be\nat liberty to disclose.",
+              "article_length": 543,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "137",
+              "article_header": "Communications with an advocate.",
+              "article_body": "No one shall be compelled to disclose to the court any conﬁdential communication which has taken place\nbetween him and his advocate unless he offers himself as a witness, in which case he may be compelled to\ndisclose any such communications as may appear to the court necessary to be known in order to explain\nany evidence which he has given, but no others.\nEvidence Act (Cap. 80)\nKenya",
+              "article_length": 386,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "138",
+              "article_header": "Title deeds and incriminating documents in hands of third party.",
+              "article_body": "No witness who is not a party to the suit shall be compelled to produce his title deeds to any property,\nor any document in virtue of which he holds any property as pledgee or mortgagee, or any document\nthe production of which might tend to incriminate him, unless he has agreed in writing with the person\nseeking the production of such deeds or document, or with some person through whom he claims, to\nproduce them.",
+              "article_length": 416,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "139",
+              "article_header": "Privileged document in possession of another.",
+              "article_body": "No one shall be compelled to produce documents in his possession, which any other person would be\nentitled to refuse to produce if they were in his possession, unless such other person consents to their\nproduction.",
+              "article_length": 214,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "140",
+              "article_header": "Bankers’ books.",
+              "article_body": "(1)\nA bank, or ofﬁcer of a bank, shall not, in any legal proceedings to which the bank is not a party, be\ncompelled to produce any banker’s book the contents of which can be proved under the provisions\nof Chapter VII.\n(2)\nNo bank or ofﬁcer of a bank shall be summoned or called as a witness to prove any matters,\ntransactions or accounts recorded in a banker’s book except by order of a judge or magistrate made\nfor special cause.",
+              "article_length": 430,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "141",
+              "article_header": "Accomplices.",
+              "article_body": "An accomplice shall be a competent witness against an accused person; and a conviction shall not be\nillegal merely because it proceeds upon the uncorroborated evidence of an accomplice.",
+              "article_length": 185,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "142",
+              "article_header": "Privileges to exclude oral evidence of documents.",
+              "article_body": "No person who is entitled to refuse to produce a document shall be compelled to give oral evidence of its\ncontents.",
+              "article_length": 115,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "143",
+              "article_header": "Number of witnesses.",
+              "article_body": "No particular number of witnesses shall, in the absence of any provision of law to the contrary, be required\nfor the proof of any fact.",
+              "article_length": 135,
+              "sub_articles": "none"
+            }
+          ]
+        },
+        {
+          "part_number": "III",
+          "part_title": "EXAMINATION OF WITNESSES",
+          "articles": [
+            {
+              "article_number": "144",
+              "article_header": "Court to decide as to the admissibility of evidence.",
+              "article_body": "(1)\nWhen either party proposes to give evidence of any fact, the court may ask the party proposing to\ngive the evidence in what manner the alleged fact, if proved, would be admissible.\n(2)\nThe court shall admit the evidence of any fact if it thinks that the fact, if proved, would be\nadmissible and not otherwise.\n(3)\nIf the fact proposed to be proved is one of which evidence is admissible only upon proof of some\nother fact, such last mentioned fact must be proved before evidence is given of the fact ﬁrst\nmentioned, unless the party undertakes to give proof of such fact and the court is satisﬁed with\nsuch undertaking.\n(4)\nIf the admissibility of one alleged fact depends upon another alleged fact being ﬁrst proved, the\ncourt may, in its discretion, either permit evidence of the ﬁrst fact to be given before the second fact\nis proved, or require evidence to be given of the second fact before evidence is given of the ﬁrst fact.\nEvidence Act (Cap. 80)\nKenya",
+              "article_length": 964,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "145",
+              "article_header": "Type of examination of witnesses.",
+              "article_body": "(1)\nThe examination of a witness by the party who calls him shall be called his examination-in-chief.\n(2)\nThe examination of a witness by the adverse party shall be called his cross- examination.\n(3)\nWhere a witness has been cross-examined and is then examined by the party who called him, such\nexamination shall be called his re-examination.",
+              "article_length": 342,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "146",
+              "article_header": "Order and direction of examinations.",
+              "article_body": "(1)\nWitnesses shall ﬁrst be examined-in-chief, then, if the adverse party so desires, cross-examined,\nthen, if the party calling them so desires, re-examined.\n(2)\nSubject to the following provisions of this Act, the examination-in-chief and cross-examination\nmust relate to relevant facts, but the cross-examination need not be conﬁned to the facts to which\nthe witness testiﬁed in his examination-in-chief.\n(3)\nThe re-examination shall be directed to the explanation of matters referred to in cross-\nexamination; and, if new matter is, by permission of the court, introduced in re-examination, the\nadverse party may further cross-examine upon that matter.\n(4)\nThe court may in all cases permit a witness to be recalled either for further examination-in-chief\nor for further cross-examination, and if it does so, the parties have the right of further cross-\nexamination and re-examination respectively.",
+              "article_length": 902,
+              "sub_articles": "none"
+            }
+          ]
+        },
+        {
+          "part_number": "IV",
+          "part_title": "QUESTIONING OF WITNESSES",
+          "articles": [
+            {
+              "article_number": "147",
+              "article_header": "Person called to produce a document.",
+              "article_body": "A person called to produce a document does not become a witness by the mere fact that he produces it,\nand cannot be cross-examined unless and until he is called as a witness.",
+              "article_length": 174,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "148",
+              "article_header": "Witness to character.",
+              "article_body": "A witness to character may be cross-examined and re-examined.",
+              "article_length": 61,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "149",
+              "article_header": "Meaning of leading question.",
+              "article_body": "Any question suggesting the answer which the person putting it wishes or expects to receive, or suggesting\na disputed fact as to which the witness is to testify, is a leading question.",
+              "article_length": 184,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "150",
+              "article_header": "Leading questions in examination-in-chief and re-examination.",
+              "article_body": "(1)\nLeading questions must not, if objected to by the adverse party, be asked in an examination-in-chief\nor in a re-examination, except with the permission of the court.\n(2)\nThe court shall permit leading questions as to matters which are introductory or undisputed, or\nwhich have in its opinion been already sufﬁciently proved.",
+              "article_length": 328,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "151",
+              "article_header": "Leading questions in cross-examination.",
+              "article_body": "Leading questions may be asked in cross-examination.",
+              "article_length": 52,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "152",
+              "article_header": "Examination as to whether certain formal matters are contained in writing.",
+              "article_body": "Any witness may be asked, whilst under examination, whether any contract or grant or other disposition\nof property as to which he is giving evidence was not contained in a document, but if he says that it was,\nEvidence Act (Cap. 80)\nKenya\nor if he is about to make any statement as to the contents of any document which, in the opinion of\nthe court, ought to be produced, the adverse party may object to such evidence being given until such\ndocument is produced, or until facts have been proved which entitle the party who called the witness to\ngive secondary evidence of it.",
+              "article_length": 575,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "153",
+              "article_header": "Cross-examination as to previous written statements.",
+              "article_body": "A witness may be cross-examined as to previous statements made by him in writing or reduced into\nwriting, and relevant to matters in question, without such writing being shown to him or being proved,\nbut if it is intended to contradict a witness by a previous written statement, his attention must, before the\nwriting can be proved, be called to those parts of it which are to be used for the purpose of contradicting\nhim.",
+              "article_length": 422,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "154",
+              "article_header": "Cross-examination as to credibility.",
+              "article_body": "When a witness is cross-examined he may, in addition to the questions hereinbefore referred to, be asked\nany questions which tend—\n(a)\nto test his accuracy, veracity or credibility;\n(b)\nto discover who he is and what is his position in life;\n(c)\nto shake his credit, by injuring his character, although the answer to such questions might tend\ndirectly or indirectly to incriminate him or might expose or tend directly or indirectly to expose him\nto a penalty or forfeiture.",
+              "article_length": 473,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "155",
+              "article_header": "Compulsion to answer questions as to credit.",
+              "article_body": "If any question asked under section 154(c) for the purpose of affecting the credit of the witness relates to a\nmatter relevant to the suit or proceeding, the provisions of section 128 of this Act shall apply thereto.",
+              "article_length": 216,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "156",
+              "article_header": "Cross-examination of accused person.",
+              "article_body": "A person charged with an offence and called as a witness for the defence may be asked any question\nin cross-examination notwithstanding that the answer may tend to incriminate him as to the offence\ncharged.",
+              "article_length": 206,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "157",
+              "article_header": "Discretion of court to compel witness to answer question as to credit.",
+              "article_body": "(1)\nIf any question asked relates to a matter not relevant to the suit or proceeding except in so far as\nit affects the credit of the witness by injuring his character, the court shall decide whether or not\nthe witness shall be compelled to answer it, and may, if it does not so compel him, warn the witness\nthat he is not obliged to answer.\n(2)\nIn exercising its discretion under this section, the court shall have regard to the following\nconsiderations—\n(a)\nsuch questions are proper if they are of such a nature that the truth of the imputation\nconveyed by them would seriously affect the opinion of the court as to the credibility of the\nwitness on the matter to which he testiﬁes;\n(b)\nsuch questions are improper if the imputation which they convey relates to matters so\nremote in time, or of such a character, that the truth of the imputation would not affect, or\nwould affect in a slight degree, the opinion of the court as to the credibility of the witness on\nthe matter to which he testiﬁes;\n(c)\nsuch questions are improper if there is a great disproportion between the importance of the\nimputation made against the witness’s character and the importance of his evidence.\nEvidence Act (Cap. 80)\nKenya\n(3)\nThe court may, if it sees ﬁt, draw from the witness’s refusal to answer, the inference that the\nanswer, if given, would be unfavourable to the witness.",
+              "article_length": 1365,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "158",
+              "article_header": "Necessity for grounds before attacking character.",
+              "article_body": "No such question as is referred to in section 157 of this Act ought to be asked unless the person asking it\nhas reasonable grounds for thinking that the imputation which it conveys is well founded.",
+              "article_length": 197,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "159",
+              "article_header": "Indecent or scandalous questions.",
+              "article_body": "The court may forbid any questions or inquiries which it regards as indecent or scandalous, although such\nquestions or inquiries may have some bearing on the questions before the court, unless they relate to\nfacts in issue or to matters necessary to be known in order to determine whether or not the facts in issue\nexisted.",
+              "article_length": 323,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "160",
+              "article_header": "Insulting or annoying questions.",
+              "article_body": "The court shall forbid any question which appears to it to be intended to insult or annoy, or which, though\nproper in itself, appears to the court needlessly offensive in form.",
+              "article_length": 176,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "161",
+              "article_header": "Discretion to allow cross-examination of own witness.",
+              "article_body": "The court may, in its discretion, permit the person who calls a witness to put any questions to him which\nmight be put in cross-examination by the adverse party.",
+              "article_length": 161,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "162",
+              "article_header": "Exclusion of evidence to contradict a witness.",
+              "article_body": "When a witness has been asked and has answered any question which is relevant to the proceedings only\nin so far as it tends to shake his credit by injuring his character, no evidence shall be given to contradict\nhim but if he answers falsely he may afterwards be charged with giving false evidence:\nProvided that—\n(i)\nif a witness is asked whether he has been previously convicted of any crime and denies it, evidence\nmay be given of his previous conviction;\n(ii)\nif a witness is asked any question tending to impeach his impartiality and answers it by denying the\nfacts suggested, evidence may be given of the facts.",
+              "article_length": 617,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "163",
+              "article_header": "Evidence to impeach the credit of a witness.",
+              "article_body": "(1)\nThe credit of a witness may be impeached in the following ways by the adverse party, or, with the\nconsent of the court, by the party who calls him—\n(a)\nby the evidence of persons who testify that they, from their knowledge of the witness, believe\nhim to be unworthy of credit;\n(b)\nby proof that the witness has been bribed, or has accepted the offer of a bribe, or has received\nany other corrupt inducement to give his evidence;\n(c)\nby proof of former statements, whether written or oral, inconsistent with any part of his\nevidence which is liable to be contradicted;\n(d)\nwhen a man is prosecuted for rape or an attempt to commit rape, it may be shown that the\nprosecutrix was of generally immoral character.\n(2)\nA person who, called as a witness pursuant to paragraph (a) of subsection (1) of this section,\ndeclares another witness to be unworthy of credit may not, upon his examination-in-chief, give\nreasons for his belief, but he may be asked his reasons in cross-examination and the answers which\nEvidence Act (Cap. 80)\nKenya\nhe gives cannot be contradicted, though, if they are false, he may afterwards be charged with giving\nfalse evidence.",
+              "article_length": 1151,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "164",
+              "article_header": "Circumstantial questions to conﬁrm evidence.",
+              "article_body": "When a witness the truthfulness of whose evidence it is intended to conﬁrm gives evidence of any fact, he\nmay be questioned as to any other circumstances which he observed at or near the time or place at which\nthe fact occurred, if the court is of opinion that such circumstances, if proved, would tend to conﬁrm the\ntestimony of the witness as to the fact to which he testiﬁes.",
+              "article_length": 378,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "165",
+              "article_header": "Proof of consistency by former statements.",
+              "article_body": "In order to show that the testimony of a witness is consistent any former statement made by such witness,\nwhether written or oral, relating to the same fact at or about the time when the fact took place, or before\nany authority legally competent to investigate the fact, may be proved.",
+              "article_length": 285,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "166",
+              "article_header": "Evidence to test statement of person not available as witness.",
+              "article_body": "Whenever any statement admissible under section 33 or section 34 of this Act is proved, all matters\nwhich might have been proved if that person had been called as a witness and had denied upon cross-\nexamination the truth of the matter suggested, may be proved either to contradict or to show consistency,\nor in order to impeach or conﬁrm the credit of the person by whom it was made.",
+              "article_length": 384,
+              "sub_articles": "none"
+            }
+          ]
+        },
+        {
+          "part_number": "V",
+          "part_title": "REFRESHING OF MEMORY AND PRODUCTION OF DOCUMENTS",
+          "articles": [
+            {
+              "article_number": "167",
+              "article_header": "Refreshing memory by reference to contemporaneous writing.",
+              "article_body": "(1)\nA witness may, while under examination, refresh his memory by referring to any writing made\nby himself at the time of the transaction concerning which he is questioned, or made so soon\nafterwards that the court considers it likely that the transaction was at that time fresh in his\nmemory.\n(2)\nA witness may, while under examination, refresh his memory by referring to any writing made\nby any other person and read by the witness within the time mentioned in subsection (1) of this\nsection, if when he read it he knew it to be correct.\n(3)\nWhenever a witness may refresh his memory by reference to any writing, he may, with the\npermission of the court, refer to a copy of such writing, if the court is satisﬁed that there is\nsufﬁcient reason for the non-production of the original.\n(4)\nAn expert may refresh his memory by reference to professional treatises.",
+              "article_length": 862,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "168",
+              "article_header": "Reference to accurate contemporaneous record though facts themselves not",
+              "article_body": "speciﬁcally recalled.\nA witness may testify to facts mentioned in any such writing as is referred to in section 167 of this Act\nalthough he has no speciﬁc recollection of the facts themselves, if he is sure that the facts were correctly\nrecorded in the document.",
+              "article_length": 262,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "169",
+              "article_header": "Rights of adverse party as to contemporaneous writing.",
+              "article_body": "Any writing referred to in section 167 or section 168 of this Act shall be produced and shown to the\nadverse party if he requires it, and such party may, if he pleases, cross-examine the witness thereupon.\nEvidence Act (Cap. 80)\nKenya",
+              "article_length": 234,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "170",
+              "article_header": "Production of documents of doubtful admissibility.",
+              "article_body": "(1)\nA witness summoned to produce a document shall, if it is in his possession or power, bring it to\ncourt notwithstanding any objection which there may be to its production or to its admissibility,\nbut the validity of any such objection shall be tried by the court.\n(2)\n(a)\nThe court, if it sees ﬁt, may inspect the document, unless it is a document to which the\nprovisions of section 131 of this Act are applied, or take other evidence to enable it to\ndetermine on its admissibility.\n(b)\nIf for such purpose it is necessary to cause any document to be translated, the court may, if\nit thinks ﬁt, direct the translator to keep the contents secret, unless the document is to be\ngiven in evidence.",
+              "article_length": 696,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "171",
+              "article_header": "Document produced in answer to notice to be given as evidence if required.",
+              "article_body": "When a party calls for a document which he has given the other party notice to produce, and such\ndocument is produced and inspected by the party calling for its production, he is bound to give it as\nevidence if the party producing it requires him to do so and if it is admissible.",
+              "article_length": 280,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "172",
+              "article_header": "Consequence of refusal to produce document in answer to notice.",
+              "article_body": "When a party refuses to produce a document for which he has had notice to produce, he cannot afterwards\nuse the document as evidence without the consent of the other party or the order of the court.",
+              "article_length": 198,
+              "sub_articles": "none"
+            },
+            {
+              "article_number": "173",
+              "article_header": "Extended powers of court for purpose of obtaining proper evidence.",
+              "article_body": "(1)\nA judge or magistrate may, in order to discover or to obtain proper evidence, ask any question he\npleases, in any form, at any time, of any witness, or of the parties about any fact whether or not it\nis otherwise admissible; and may order the production of any document or thing; and neither the\nparties nor their agents shall be entitled to object to any such question or order, nor, without leave\nof the court, to cross-examine the witness upon any answer given in reply to any such question:\nProvided that judgment shall be based only upon facts which are otherwise admissible and which\nhave been duly proved.\n(2)\nSubsection (1) of this section shall not authorize a judge or magistrate—\n(a)\nto compel a witness to answer any question or to produce any document which such witness\nwould be entitled to refuse to answer or produce under the provisions of Part II of this\nChapter, if the question were asked or the document was called for by the adverse party; nor\n(b)\nto ask any question which it would be improper for any other person to ask under section 157\nor 158 of this Act; nor\n(c)\nto dispense with the primary evidence of any document, except in the cases excepted by the\nprovisions of this Act.",
+              "article_length": 1209,
+              "sub_articles": "none"
+            }
+          ]
+        },
+        {
+          "part_number": "VI",
+          "part_title": "QUESTIONS BY ASSESSORS",
+          "articles": [
+            {
+              "article_number": "174",
+              "article_header": "[Deleted by Act No. 7 of 2007, Sch.]",
+              "article_body": "Evidence Act (Cap. 80)\nKenya",
+              "article_length": 28,
+              "sub_articles": "none"
+            }
+          ]
+        }
+      ],
+      "articles": "none"
+    },
+    {
+      "chapter_number": "VI",
+      "chapter_title": "IMPROPER ADMISSION AND REJECTION OF EVIDENCE",
+      "parts": "none",
+      "articles": [
+        {
+          "article_number": "175",
+          "article_header": "Effect of improper admission or rejection.",
+          "article_body": "The improper admission or rejection of evidence shall not of itself be ground for a new trial or for\nreversal of any decision in a case if it shall appear to the court before which the objection is taken that,\nindependently of the evidence objected to and admitted, there was sufﬁcient evidence to justify the\ndecision, or that if the rejected evidence had been received it ought not to have varied the decision.",
+          "article_length": 412,
+          "sub_articles": "none"
+        }
+      ]
+    },
+    {
+      "chapter_number": "VII",
+      "chapter_title": "BANKERS’ BOOKS",
+      "parts": "none",
+      "articles": [
+        {
+          "article_number": "176",
+          "article_header": "Mode of proof of entries in bankers’ books.",
+          "article_body": "Subject to the provisions of this Chapter of this Act, a copy of any entry in a banker’s book shall in all legal\nproceedings be received as prima facie evidence of such entry, and of the matters, transaction and accounts\ntherein recorded.",
+          "article_length": 238,
+          "sub_articles": "none"
+        },
+        {
+          "article_number": "177",
+          "article_header": "Proof and veriﬁcation of copy.",
+          "article_body": "(1)\nA copy of an entry in a banker’s book shall not be received in evidence under section 176 of this Act\nunless it be ﬁrst proved that—\n(a)\nthe book was, at the time of making the entry, one of the ordinary books of the bank; and\n(b)\nthe book is in the custody and control of the bank; and\n(c)\nthe entry was made in the usual and ordinary course of banking business; and\n(d)\nthe copy has been examined with the original entry, and is correct.\n(2)\nSuch proof may be given by an ofﬁcer of the bank, or, in the case of the proof required under\nparagraph (d) of subsection (1), by the person who has performed the examination, and may be\ngiven either orally or by an afﬁdavit sworn before a commissioner for oaths or a person authorised\nto take afﬁdavits.",
+          "article_length": 752,
+          "sub_articles": "none"
+        },
+        {
+          "article_number": "178",
+          "article_header": "Restriction on compelling production of banker’s book.",
+          "article_body": "A banker or ofﬁcer of a bank shall not, in any proceedings to which the bank is not a party, be compellable\nto produce any banker’s book the contents of which can be proved under this Chapter of this Act, or to\nappear as a witness to prove the matters, transactions and accounts therein recorded, unless by order of\nthe court made for special cause.",
+          "article_length": 349,
+          "sub_articles": "none"
+        },
+        {
+          "article_number": "179",
+          "article_header": "Inspection of bankers’ books.",
+          "article_body": "(1)\nOn the application of any party to proceedings a court may order that such party be at liberty\nto inspect and take copies of any entries in a banker’s book for any of the purposes, of such\nproceedings.\n(2)\nAn order made under this section may be made either with or without summoning the bank or any\nother party, and shall be served on the bank three clear days before it is to be obeyed, unless the\ncourt otherwise directs.\n(3)\nFor the purposes of subsection (1), \"proceedings\" includes any proceedings in Tanzania or Uganda.\n[L.N. 22 of 1965.]\nEvidence Act (Cap. 80)\nKenya",
+          "article_length": 578,
+          "sub_articles": "none"
+        },
+        {
+          "article_number": "180",
+          "article_header": "Warrant to investigate.",
+          "article_body": "(1)\nWhere it is proved on oath to a judge or magistrate that in fact, or according to reasonable\nsuspicion, the inspection of any banker’s book is necessary or desirable for the purpose of any\ninvestigation into the commission of an offence, the judge or magistrate may by warrant authorize\na police ofﬁcer or other person named therein to investigate the account of any speciﬁed person\nin any banker’s book, and such warrant shall be sufﬁcient authority for the production of any such\nbanker’s book as may be required for scrutiny by the ofﬁcer or person named in the warrant, and\nsuch ofﬁcer or person may take copies of any relevant entry or matter in such banker’s book.\n(2)\nAny person who fails to produce any such banker’s book to the police ofﬁcer or other person\nexecuting a warrant issued under this section or to permit such ofﬁcer or person to scrutinize the\nbook or to take copies of any relevant entry or matter therein shall be guilty of an offence and liable\nto imprisonment for a term not exceeding one year or to a ﬁne not exceeding two thousand shillings\nor to both such imprisonment and ﬁne.",
+          "article_length": 1110,
+          "sub_articles": "none"
+        },
+        {
+          "article_number": "181",
+          "article_header": "Costs.",
+          "article_body": "(1)\nThe costs of any application to a court under or for the purposes of this Chapter of this Act and the\ncosts of anything done or to be done under an order of a court made under or for the purposes of\nthis Chapter, shall be in the discretion of the court, which may order them, or any part thereof, to\nbe paid to any party by the bank where the costs were occasioned by any default or delay on the part\nof the bank.\n(2)\nAn order under subsection (1) of this section may be enforced as if the bank was a party to the\nproceedings.",
+          "article_length": 530,
+          "sub_articles": "none"
+        }
+      ]
+    },
+    {
+      "chapter_number": "VIII",
+      "chapter_title": "MISCELLANEOUS PROVISIONS",
+      "parts": "none",
+      "articles": [
+        {
+          "article_number": "182",
+          "article_header": "Saving for other laws.",
+          "article_body": "Save as otherwise expressly provided in this Act, nothing in this Act shall be deemed to derogate from the\nprovisions of any other written law which relate to matters of evidence.",
+          "article_length": 179,
+          "sub_articles": "none"
+        },
+        {
+          "article_number": "183",
+          "article_header": "Cessation of application of Indian Evidence Act.",
+          "article_body": "(1)\nFrom and after the commencement of this Act the Evidence Act, 1872 (No. 1 of 1872) of India shall\ncease to extend or apply to Kenya.\n(2)\nFor the purposes of sections 21 and 23 of the Interpretation and General Provisions Act (Cap. 2), the\nEvidence Act, 1872, of India, as it applied to Kenya prior to the commencement of this Act, shall be\ndeemed to be a written law which has been repealed by, and re-enacted in, this Act.\nEvidence Act (Cap. 80)\nKenya\nSCHEDULE [s. 78]\nCERTIFICATE AS TO PHOTOGRAPHIC PRINT OR ENLARGEMENT\nI, .................................... of .................. being an ofﬁcer appointed by the ............................\nunder ..................... (Gazette Notice No. ............ of .........................) hereby certify as follows—\n(1)\nOn the ........... day of ............. 20 ........ at .................\nI received in a sealed packet numbered ..................... purporting to be signed by ...............................\nexposed photographic ﬁlm (s) under cover of a letter, No. .............. dated ..................... purporting to be\nsent by ....................................., requesting that I should process the said ﬁlm(s) and prepare therefrom\nphotographic print(s) and/or enlargement(s).\n(2)\nThe said letter and packet were each signed and dated by me and are attached hereto as annexes 1 and 2,\nrespectively.\n(3)\nIn pursuance of the said request (I processed) the said ﬁlm(s) were processed under my supervision and\n(prepared) therefrom photographic print(s) and/or enlargement(s) (each of) were prepared which I have\nsigned and now attach hereto as annex(es) ...........................\n(4)\nThe photographic print(s) and/or enlargement(s) attached hereto as annex(es) .............................. is/are\nas nearly as may be (an) exact reproduction(s) from the exposed ﬁlm(s) submitted to me as aforesaid and\nhave in no way been retouched, altered or otherwise interfered with in the process of their preparation.\nGiven at .............. under my hand this ............ day of ............, 20 ............\n.............................................\n(Signed)",
+          "article_length": 2122,
+          "sub_articles": "none"
+        }
+      ]
+    }
+  ]
+}
