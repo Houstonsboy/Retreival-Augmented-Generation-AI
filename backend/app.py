@@ -12,6 +12,7 @@ from pixe import run_rag_pipeline
 from CaseLaw.firac import run_firac, run_firac_from_file
 from CaseLaw.ingester import ingest_firac_data
 from Qclassifier import Qclassifier
+from RulesRetriever import retrieve_relevant_rules
 from constitutionlogic.constitutionbreaker import extract_constitution_articles, OUTPUT_DIR as CONST_OUTPUT_DIR, flatten_articles_to_embeddable_chunks, CHUNK_SIZE, CHUNK_OVERLAP
 from constitutionlogic.constitution_digester import ConstitutionDigester, EMBEDDABLE_CHUNKS_JSON
 app = Flask(__name__)
@@ -1011,10 +1012,66 @@ def serve_case_pdf():
         return jsonify({'error': f'Failed to serve PDF: {str(e)}'}), 500
 
 
+@app.route('/api/rule-pdf', methods=['GET'])
+def serve_rule_pdf():
+    """
+    Serve statutory document PDFs (Constitution or Evidence Act).
+    Query: ?doc_type=constitution&source=TheConstitutionOfKenya.pdf
+    
+    Opens in browser (Content-Disposition: inline) so it displays in a new tab.
+    """
+    import urllib.parse
+    
+    doc_type = request.args.get('doc_type')
+    source = request.args.get('source')
+    
+    if not doc_type or not source:
+        return jsonify({'error': 'Missing doc_type or source parameter'}), 400
+    
+    # Decode URL-encoded source
+    source = urllib.parse.unquote(source)
+    
+    try:
+        # Rules PDFs are in MasterRules directory
+        rules_dir = Path(__file__).resolve().parent / "MasterRules"
+        
+        # Map to actual PDF files
+        pdf_path = rules_dir / source
+        
+        if not pdf_path.exists():
+            return jsonify({
+                'error': f'PDF file not found: {source}',
+                'tried_path': str(pdf_path)
+            }), 404
+        
+        # Security: Ensure resolved path is under rules_dir
+        try:
+            pdf_path_resolved = pdf_path.resolve()
+            allowed_root = rules_dir.resolve()
+            
+            if not str(pdf_path_resolved).startswith(str(allowed_root)):
+                return jsonify({'error': 'Access denied: path outside allowed directory'}), 403
+        except Exception as e:
+            return jsonify({'error': f'Path resolution error: {str(e)}'}), 500
+        
+        # Stream the PDF file
+        return send_file(
+            pdf_path_resolved,
+            mimetype='application/pdf',
+            as_attachment=False,  # inline (open in browser)
+            download_name=pdf_path_resolved.name
+        )
+        
+    except Exception as e:
+        print(f"Error serving rule PDF doc_type={doc_type}, source={source}: {e}")
+        return jsonify({'error': f'Failed to serve PDF: {str(e)}'}), 500
+
+
 @app.route('/api/qretrieve', methods=['POST'])
 def QRetriever():
         """
         Executes the legal query classification + retrieval pipeline.
+        Supports parallel dual retrieval: case law + statutory rules.
         """
 
         data = request.get_json(silent=True)
@@ -1027,7 +1084,47 @@ def QRetriever():
 
         user_query = data["query"]
 
+        # Step 1: Run Qclassifier (includes case law retrieval)
         result = Qclassifier(user_query)
+        
+        if not result.get("success"):
+            status_code = 500
+            return jsonify(result), status_code
+        
+        # Step 2: Check if rules retrieval is needed
+        classification = result.get("classification", {})
+        target_components = classification.get("target_components", [])
+        
+        # If "RULES" is in target_components, fetch statutory provisions
+        if "RULES" in target_components:
+            print(f"\n[INFO] 'RULES' detected in target_components - fetching statutory provisions...")
+            
+            try:
+                # Call rules retriever with classification data
+                rules_result = retrieve_relevant_rules(classification, verbose=False)
+                
+                # Add rules to the retrieval section
+                if "retrieval" not in result:
+                    result["retrieval"] = {}
+                
+                result["retrieval"]["rules"] = rules_result.get("results", [])
+                result["retrieval"]["rules_count"] = rules_result.get("count", 0)
+                result["retrieval"]["rules_query_summary"] = rules_result.get("query_summary", {})
+                
+                print(f"[INFO] Retrieved {result['retrieval']['rules_count']} statutory provisions")
+                
+            except Exception as e:
+                print(f"[WARNING] Failed to retrieve rules: {e}")
+                # Don't fail the whole request, just log the error
+                result["retrieval"]["rules"] = []
+                result["retrieval"]["rules_count"] = 0
+                result["retrieval"]["rules_error"] = str(e)
+        else:
+            print(f"[INFO] 'RULES' not in target_components - skipping statutory retrieval")
+            if "retrieval" not in result:
+                result["retrieval"] = {}
+            result["retrieval"]["rules"] = []
+            result["retrieval"]["rules_count"] = 0
 
         status_code = 200 if result.get("success") else 500
         return jsonify(result), status_code

@@ -11,6 +11,7 @@ interface Message {
   classification?: any;
   aiResponse?: string;
   evidence?: any[];
+  rules?: any[];  // NEW: Statutory provisions
 }
 
 export default function Home() {
@@ -68,6 +69,7 @@ export default function Home() {
         classification: data.classification,
         aiResponse: data.retrieval?.results?.[0]?.ai_summary || "No relevant legal information found.",
         evidence: data.retrieval?.results || [],
+        rules: data.retrieval?.rules || [],  // NEW: Statutory provisions
         timestamp: new Date(),
       };
 
@@ -226,7 +228,12 @@ function AssistantResponse({ message }: { message: Message }) {
         <AIResponseWidget response={message.aiResponse} />
       )}
 
-      {/* Evidence Chunks Widget */}
+      {/* Statutory Rules Widget */}
+      {message.rules && message.rules.length > 0 && (
+        <RulesWidget rules={message.rules} />
+      )}
+
+      {/* Evidence Chunks Widget (Case Law) */}
       {message.evidence && message.evidence.length > 0 && (
         <EvidenceWidget evidence={message.evidence} />
       )}
@@ -555,6 +562,101 @@ function EvidenceWidget({ evidence }: { evidence: any[] }) {
                   </p>
                   <p className="text-sm text-gray-700 dark:text-gray-300 italic leading-relaxed">
                     "{item.best_chunk.substring(0, 300)}{item.best_chunk.length > 300 ? '...' : ''}"
+                  </p>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function RulesWidget({ rules }: { rules: any[] }) {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  return (
+    <div className="rounded-xl bg-white dark:bg-gray-800 shadow-md border border-slate-200 dark:border-gray-700 overflow-hidden">
+      <div
+        className="flex items-center justify-between px-5 py-3 bg-gradient-to-r from-purple-50 to-indigo-100 dark:from-purple-900/20 dark:to-indigo-800/20 cursor-pointer"
+        onClick={() => setIsExpanded(!isExpanded)}
+      >
+        <div className="flex items-center gap-3">
+          <Scale className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+          <h3 className="font-semibold text-gray-900 dark:text-gray-100">
+            Statutory Provisions ({rules.length})
+          </h3>
+        </div>
+        {isExpanded ? (
+          <ChevronUp className="h-5 w-5 text-gray-600 dark:text-gray-400" />
+        ) : (
+          <ChevronDown className="h-5 w-5 text-gray-600 dark:text-gray-400" />
+        )}
+      </div>
+      {isExpanded && (
+        <div className="px-5 py-4 space-y-4 max-h-96 overflow-y-auto">
+          {rules.map((rule, idx) => (
+            <div
+              key={idx}
+              className="p-4 bg-slate-50 dark:bg-gray-900 rounded-lg border border-slate-200 dark:border-gray-700"
+            >
+              <div className="flex items-start justify-between mb-3">
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="px-2 py-0.5 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded text-xs font-bold">
+                      #{rule.rank || idx + 1}
+                    </span>
+                    <span className="px-2 py-0.5 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 rounded text-xs font-semibold">
+                      {rule.document_label || rule.document_type}
+                    </span>
+                    <span className="font-semibold text-gray-900 dark:text-gray-100 text-sm">
+                      Article {rule.article_number}
+                    </span>
+                  </div>
+                  <h4 className="font-medium text-gray-800 dark:text-gray-200 mb-2 text-base">
+                    {rule.article_header}
+                  </h4>
+                  <div className="text-xs text-gray-500 dark:text-gray-400 space-y-0.5">
+                    <div>
+                      <span className="font-medium">Chapter:</span> {rule.chapter} - {rule.chapter_title}
+                    </div>
+                    {rule.part && (
+                      <div>
+                        <span className="font-medium">Part:</span> {rule.part} - {rule.part_title}
+                      </div>
+                    )}
+                    {rule.chunk_count && (
+                      <div>
+                        <span className="font-medium">Chunks:</span> {rule.chunk_count}
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <div className="flex flex-col items-end gap-2 ml-2">
+                  <span className="px-3 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded-full text-xs font-bold">
+                    {(rule.score * 100)?.toFixed(1)}%
+                  </span>
+                  {rule.pdf_url && (
+                    <button
+                      onClick={() => window.open(`http://localhost:5000${rule.pdf_url}`, '_blank')}
+                      className="flex items-center gap-1.5 px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-xs font-medium transition-colors"
+                      title="Open PDF in new tab"
+                    >
+                      <ExternalLink className="h-3.5 w-3.5" />
+                      View PDF
+                    </button>
+                  )}
+                </div>
+              </div>
+              
+              {rule.text_preview && (
+                <div className="mt-3 p-3 bg-white dark:bg-gray-800 rounded border border-slate-200 dark:border-gray-700">
+                  <p className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
+                    Article Text:
+                  </p>
+                  <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                    {rule.text_preview}
                   </p>
                 </div>
               )}
