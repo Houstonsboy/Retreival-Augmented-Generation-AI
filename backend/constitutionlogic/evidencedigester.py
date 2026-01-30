@@ -17,6 +17,10 @@ SCRIPT_DIR = Path(__file__).parent
 OUTPUT_DIR = SCRIPT_DIR / "EvidenceSection"
 EVIDENCE_PDF_PATH = SCRIPT_DIR.parent / "MasterRules" / "Evidence Act.pdf"
 
+# Chunking configuration (same as constitutionbreaker.py)
+CHUNK_SIZE = 1000
+CHUNK_OVERLAP = 300
+
 # Create output directory if it doesn't exist
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -116,26 +120,75 @@ def clean_text(text: str) -> str:
     return cleaned_text.strip()
 
 
+def chunk_article_text(article_text: str, chunk_size: int = CHUNK_SIZE,
+                       overlap: int = CHUNK_OVERLAP) -> List[str]:
+    """
+    Chunk article text with overlap (same as constitutionbreaker.py).
+    
+    Args:
+        article_text: Full article body text
+        chunk_size: Maximum size of each chunk in characters
+        overlap: Number of characters to overlap between chunks
+        
+    Returns:
+        List of text chunks
+    """
+    if len(article_text) <= chunk_size:
+        return [article_text]
+    
+    chunks = []
+    start = 0
+    
+    while start < len(article_text):
+        end = start + chunk_size
+        if end < len(article_text):
+            # Try to break at a space to avoid cutting words
+            last_space = article_text.rfind(' ', start, end)
+            if last_space != -1 and last_space > start:
+                end = last_space
+        
+        chunk = article_text[start:end].strip()
+        chunks.append(chunk)
+        start = end - overlap
+        
+        # Avoid infinite loop
+        if start <= chunks[-1].find(' ') + len(chunks) - 1:
+            start = end
+    
+    return chunks
+
+
 def finalize_article_body(article_ref, body_lines: List[str]):
     """
-    Finalize an article by adding its collected body text.
+    Finalize an article by adding its collected body text and chunking it.
     
     Args:
         article_ref: Reference to the article dictionary
         body_lines: List of body text lines collected
     """
     if article_ref is not None and body_lines:
-        article_body = "\n".join(body_lines).strip()
-        article_ref["article_body"] = article_body
-        article_ref["article_length"] = len(article_body)
+        article_body_text = "\n".join(body_lines).strip()
+        article_ref["article_length"] = len(article_body_text)
+        
+        # Chunk the article body
+        chunks = chunk_article_text(article_body_text)
+        
+        # Store as numbered chunks in a dictionary
+        chunked_body = {}
+        for idx, chunk in enumerate(chunks, 1):
+            chunked_body[f"chunk_{idx}"] = chunk
+        
+        article_ref["article_body"] = chunked_body
+        article_ref["total_chunks"] = len(chunks)
 
 
 def extract_chapters_only(text: str) -> List[Dict]:
     """
-    Extract chapters, parts, articles (with bodies), and sub-articles from the Evidence Act text.
+    Extract chapters, parts, articles (with chunked bodies), and sub-articles from the Evidence Act text.
     - Parts are identified as "Part [ROMAN] - TITLE" or "Part [ROMAN] – TITLE"
     - Articles are identified as "NUMBER." or "NUMBERLETTER." (e.g., "37.", "63A.")
     - Article bodies: Text between article header and next structural element (article/part/chapter)
+    - Bodies are chunked using CHUNK_SIZE (1000) with CHUNK_OVERLAP (300) for large articles
     - Sub-articles: Articles with same base number + letter (e.g., "63A" after "63") are nested as sub-articles
     - Articles are assigned to the current part if in a part, otherwise to the chapter
     
@@ -143,7 +196,7 @@ def extract_chapters_only(text: str) -> List[Dict]:
         List of chapter dictionaries with chapter number, title, parts (with articles and sub-articles), and articles
     """
     print(f"\n{'='*80}")
-    print("EXTRACTING CHAPTERS, PARTS, ARTICLES (WITH BODIES) FROM EVIDENCE ACT")
+    print("EXTRACTING CHAPTERS, PARTS, ARTICLES (WITH CHUNKED BODIES) FROM EVIDENCE ACT")
     print(f"{'='*80}\n")
     
     lines = text.split("\n")
@@ -293,9 +346,11 @@ def extract_chapters_only(text: str) -> List[Dict]:
                 article_data = {
                     "article_number": article_number,
                     "article_header": article_header,
-                    "article_body": "",
+                    "article_body": {},
                     "article_length": 0,
-                    "sub_articles": "none"
+                    "total_chunks": 0,
+                    "sub_articles": "none",
+                    "source_document": EVIDENCE_PDF_PATH.name
                 }
                 
                 # Handle sub-article
@@ -304,8 +359,10 @@ def extract_chapters_only(text: str) -> List[Dict]:
                     sub_article_data = {
                         "article_number": article_number,
                         "article_header": article_header,
-                        "article_body": "",
-                        "article_length": 0
+                        "article_body": {},
+                        "article_length": 0,
+                        "total_chunks": 0,
+                        "source_document": EVIDENCE_PDF_PATH.name
                     }
                     
                     # Add as sub-article to the previous article
@@ -624,13 +681,160 @@ def create_embeddable_chunks(articles: List[Dict], chunk_size: int = 1000, chunk
     return output
 
 
+def create_flat_embeddable_chunks(chapters: List[Dict]) -> Dict:
+    """
+    Convert the chapter-based structure to flat embeddable chunks.
+    Each chunk becomes a top-level item with metadata about its source.
+    
+    Output format matches constitution_embeddable_chunks.json:
+    {
+        "article_number": "...",
+        "article_header": "...",
+        "chapter": "...",
+        "chapter_title": "...",
+        "part": "..." or null,
+        "part_title": "..." or null,
+        "source_document": "Evidence Act.pdf",
+        "article_length": ...,
+        "total_chunks": ...,
+        "chunk_index": ...,
+        "chunk_text": "...",
+        "chunk_length": ...,
+        "is_complete_article": true/false
+    }
+    
+    Args:
+        chapters: List of chapter dictionaries from extract_chapters_only()
+        
+    Returns:
+        Dictionary with metadata and embeddable_chunks list
+    """
+    print(f"\n{'='*80}")
+    print("CREATING FLAT EMBEDDABLE CHUNKS")
+    print(f"{'='*80}\n")
+    
+    embeddable_chunks = []
+    
+    def process_article(article: Dict, chapter_number: str, chapter_title: str, 
+                        part_number: str = None, part_title: str = None):
+        """Process a single article and its sub-articles into flat chunks."""
+        chunks_created = []
+        
+        article_number = article.get('article_number', '')
+        article_header = article.get('article_header', '')
+        article_body = article.get('article_body', {})
+        article_length = article.get('article_length', 0)
+        total_chunks = article.get('total_chunks', 0)
+        source_document = article.get('source_document', 'Evidence Act.pdf')
+        
+        # Process each chunk in the article body
+        if isinstance(article_body, dict) and article_body:
+            for chunk_key in sorted(article_body.keys(), key=lambda x: int(x.split('_')[1]) if '_' in x else 0):
+                chunk_text = article_body[chunk_key]
+                # Extract chunk index from key (e.g., "chunk_1" -> 1)
+                chunk_index = int(chunk_key.split('_')[1]) if '_' in chunk_key else 1
+                
+                chunk_data = {
+                    "article_number": article_number,
+                    "article_header": article_header,
+                    "chapter": chapter_number,
+                    "chapter_title": chapter_title,
+                    "part": part_number,
+                    "part_title": part_title,
+                    "source_document": source_document,
+                    "article_length": article_length,
+                    "total_chunks": total_chunks,
+                    "chunk_index": chunk_index,
+                    "chunk_text": chunk_text,
+                    "chunk_length": len(chunk_text),
+                    "is_complete_article": total_chunks == 1
+                }
+                chunks_created.append(chunk_data)
+        
+        # Process sub-articles recursively
+        sub_articles = article.get('sub_articles', 'none')
+        if isinstance(sub_articles, list):
+            for sub_article in sub_articles:
+                sub_chunks = process_article(
+                    sub_article, 
+                    chapter_number, 
+                    chapter_title, 
+                    part_number, 
+                    part_title
+                )
+                chunks_created.extend(sub_chunks)
+        
+        return chunks_created
+    
+    # Process all chapters
+    for chapter in chapters:
+        chapter_number = chapter.get('chapter_number', '')
+        chapter_title = chapter.get('chapter_title', '')
+        
+        # Process articles in parts
+        parts = chapter.get('parts', 'none')
+        if isinstance(parts, list):
+            for part in parts:
+                part_number = part.get('part_number', '')
+                part_title = part.get('part_title', '')
+                
+                articles = part.get('articles', 'none')
+                if isinstance(articles, list):
+                    for article in articles:
+                        chunks = process_article(
+                            article, 
+                            chapter_number, 
+                            chapter_title, 
+                            part_number, 
+                            part_title
+                        )
+                        embeddable_chunks.extend(chunks)
+                        if chunks:
+                            print(f"  ✓ Article {article.get('article_number', '?')}: {len(chunks)} chunks → Part {part_number}")
+        
+        # Process direct chapter articles (not in any part)
+        direct_articles = chapter.get('articles', 'none')
+        if isinstance(direct_articles, list):
+            for article in direct_articles:
+                chunks = process_article(
+                    article, 
+                    chapter_number, 
+                    chapter_title, 
+                    None,  # No part
+                    None   # No part title
+                )
+                embeddable_chunks.extend(chunks)
+                if chunks:
+                    print(f"  ✓ Article {article.get('article_number', '?')}: {len(chunks)} chunks → Chapter {chapter_number} (direct)")
+    
+    # Count totals for metadata
+    total_articles = len(set((c['article_number'], c['chapter']) for c in embeddable_chunks))
+    
+    # Create final output structure (matching constitution_embeddable_chunks.json format)
+    output = {
+        "metadata": {
+            "total_articles": total_articles,
+            "total_embeddable_chunks": len(embeddable_chunks),
+            "chunk_size": CHUNK_SIZE,
+            "chunk_overlap": CHUNK_OVERLAP,
+            "source_document": "Evidence Act.pdf",
+            "description": "Each chunk is an individual embeddable unit. 'chunk_text' contains either the full article (for short articles) or the specific chunk (for long articles). Embed 'chunk_text' and store all metadata."
+        },
+        "embeddable_chunks": embeddable_chunks
+    }
+    
+    print(f"\n✓ Created {len(embeddable_chunks)} flat embeddable chunks from {total_articles} articles")
+    return output
+
+
 def main():
     """Main execution function."""
     print(f"\n{'='*80}")
-    print("EVIDENCE ACT EXTRACTOR (CHAPTERS, PARTS, ARTICLES WITH BODIES, SUB-ARTICLES)")
+    print("EVIDENCE ACT EXTRACTOR (CHAPTERS, PARTS, ARTICLES WITH CHUNKED BODIES, SUB-ARTICLES)")
     print(f"{'='*80}\n")
     print(f"Input: {EVIDENCE_PDF_PATH}")
     print(f"Output: {OUTPUT_DIR / 'evidence_chapters.json'}\n")
+    print(f"Output (flat chunks): {OUTPUT_DIR / 'evidence_chapter3.json'}\n")
     
     # Step 1: Extract text from PDF
     if not EVIDENCE_PDF_PATH.exists():
@@ -660,32 +864,41 @@ def main():
     
     # Step 4: Prepare output data
     total_parts = sum(len(ch['parts']) if isinstance(ch['parts'], list) else 0 for ch in chapters)
-    # Count articles and sub-articles: from parts and direct chapter articles
+    # Count articles, sub-articles, and chunks: from parts and direct chapter articles
     total_articles = 0
     total_sub_articles = 0
+    total_chunks = 0
     
-    def count_articles_and_subs(articles_list):
-        """Helper to count articles and their sub-articles"""
+    def count_articles_subs_and_chunks(articles_list):
+        """Helper to count articles, their sub-articles, and total chunks"""
         article_count = len(articles_list)
         sub_count = 0
+        chunk_count = 0
         for article in articles_list:
+            # Count chunks for main article
+            chunk_count += article.get('total_chunks', 0)
+            # Count sub-articles and their chunks
             if isinstance(article.get('sub_articles'), list):
                 sub_count += len(article['sub_articles'])
-        return article_count, sub_count
+                for sub_article in article['sub_articles']:
+                    chunk_count += sub_article.get('total_chunks', 0)
+        return article_count, sub_count, chunk_count
     
     for ch in chapters:
         # Articles in parts
         if isinstance(ch['parts'], list):
             for part in ch['parts']:
                 if isinstance(part.get('articles'), list):
-                    art_count, sub_count = count_articles_and_subs(part['articles'])
+                    art_count, sub_count, chunk_count = count_articles_subs_and_chunks(part['articles'])
                     total_articles += art_count
                     total_sub_articles += sub_count
+                    total_chunks += chunk_count
         # Direct chapter articles
         if isinstance(ch.get('articles'), list):
-            art_count, sub_count = count_articles_and_subs(ch['articles'])
+            art_count, sub_count, chunk_count = count_articles_subs_and_chunks(ch['articles'])
             total_articles += art_count
             total_sub_articles += sub_count
+            total_chunks += chunk_count
     
     output_data = {
         "metadata": {
@@ -693,8 +906,11 @@ def main():
             "total_parts": total_parts,
             "total_articles": total_articles,
             "total_sub_articles": total_sub_articles,
+            "total_chunks": total_chunks,
+            "chunk_size": CHUNK_SIZE,
+            "chunk_overlap": CHUNK_OVERLAP,
             "source_document": "Evidence Act.pdf",
-            "description": "Chapters, parts, articles, and sub-articles extracted from Evidence Act PDF. Articles are listed within their respective parts (if in a part) or directly under the chapter (if not in a part). Sub-articles (e.g., 63A after 63) are nested within their parent article. Parts, articles, and sub-articles use 'none' if empty."
+            "description": f"Chapters, parts, articles (with chunked bodies), and sub-articles extracted from Evidence Act PDF. Article bodies are chunked using size={CHUNK_SIZE} chars with overlap={CHUNK_OVERLAP} chars. Articles are listed within their respective parts (if in a part) or directly under the chapter (if not in a part). Sub-articles (e.g., 63A after 63) are nested within their parent article. Parts, articles, and sub-articles use 'none' if empty."
         },
         "chapters": chapters
     }
@@ -716,6 +932,9 @@ def main():
     print(f"  Total parts: {output_data['metadata']['total_parts']}")
     print(f"  Total articles: {output_data['metadata']['total_articles']}")
     print(f"  Total sub-articles: {output_data['metadata']['total_sub_articles']}")
+    print(f"  Total chunks: {output_data['metadata']['total_chunks']}")
+    print(f"  Chunk size: {output_data['metadata']['chunk_size']} chars")
+    print(f"  Chunk overlap: {output_data['metadata']['chunk_overlap']} chars")
     print(f"  Output file: {chapters_output}")
     print(f"{'='*80}\n")
     
@@ -748,6 +967,31 @@ def main():
             print(f"       - Direct articles: {len(chapter['articles'])}")
     
     print("\n✅ Chapter, part, article, and sub-article extraction complete!")
+    
+    # Step 6: Create flat embeddable chunks (like constitution_embeddable_chunks.json)
+    flat_chunks_data = create_flat_embeddable_chunks(chapters)
+    
+    # Step 7: Save flat chunks to evidence_chapter3.json
+    flat_chunks_output = OUTPUT_DIR / "evidence_chapter3.json"
+    print(f"\n{'='*80}")
+    print("SAVING FLAT EMBEDDABLE CHUNKS")
+    print(f"{'='*80}\n")
+    
+    with open(flat_chunks_output, 'w', encoding='utf-8') as f:
+        json.dump(flat_chunks_data, f, indent=2, ensure_ascii=False)
+    
+    print(f"✓ Saved flat chunks to: {flat_chunks_output}")
+    print(f"\n{'='*80}")
+    print("FLAT CHUNKS SUMMARY")
+    print(f"{'='*80}")
+    print(f"  Total articles: {flat_chunks_data['metadata']['total_articles']}")
+    print(f"  Total embeddable chunks: {flat_chunks_data['metadata']['total_embeddable_chunks']}")
+    print(f"  Chunk size: {flat_chunks_data['metadata']['chunk_size']} chars")
+    print(f"  Chunk overlap: {flat_chunks_data['metadata']['chunk_overlap']} chars")
+    print(f"  Output file: {flat_chunks_output}")
+    print(f"{'='*80}\n")
+    
+    print("\n✅ All extraction complete! Both hierarchical and flat chunk formats generated.")
 
 
 if __name__ == "__main__":
