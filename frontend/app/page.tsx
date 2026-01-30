@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { FileText, Scale, Search, ChevronDown, ChevronUp, AlertCircle } from "lucide-react";
+import { FileText, Scale, Search, ChevronDown, ChevronUp, AlertCircle, ExternalLink } from "lucide-react";
 
 interface Message {
   id: string;
@@ -513,9 +513,21 @@ function EvidenceWidget({ evidence }: { evidence: any[] }) {
                     </div>
                   )}
                 </div>
-                <span className="px-3 py-1 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 rounded-full text-xs font-bold ml-2">
-                  {(item.score * 100)?.toFixed(1)}%
-                </span>
+                <div className="flex flex-col items-end gap-2 ml-2">
+                  <span className="px-3 py-1 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 rounded-full text-xs font-bold">
+                    {(item.score * 100)?.toFixed(1)}%
+                  </span>
+                  {item.pdf_url && (
+                    <button
+                      onClick={() => window.open(`http://localhost:5000${item.pdf_url}`, '_blank')}
+                      className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-medium transition-colors"
+                      title="Open PDF in new tab"
+                    >
+                      <ExternalLink className="h-3.5 w-3.5" />
+                      View PDF
+                    </button>
+                  )}
+                </div>
               </div>
               
               {item.matched_components && item.matched_components.length > 0 && (

@@ -13,6 +13,7 @@ from typing import Dict, List, Any, Optional
 import sys
 import os
 import requests
+import urllib.parse
 from dotenv import load_dotenv
 
 # Load environment variables
@@ -282,7 +283,8 @@ def group_by_parent(results: Dict, scores: List[Dict], target_components: List[s
                     'judge': metadata.get('judge', 'N/A'),
                     'year': metadata.get('year', 'N/A'),
                     'legal_domain': metadata.get('legal_domain', 'N/A'),
-                    'winning_party': metadata.get('winning_party', 'N/A')
+                    'winning_party': metadata.get('winning_party', 'N/A'),
+                    'source_file_path': metadata.get('source_file_path', '')  # For PDF URL
                 }
             }
         
@@ -377,6 +379,9 @@ def format_output(top_parents: List[tuple], query_params: Dict, stats: Dict, ver
                 'legal_domain': parent_data['metadata']['legal_domain'],
                 'winning_party': parent_data['metadata']['winning_party']
             },
+            
+            # PDF URL FOR FRONTEND TO OPEN IN NEW TAB
+            'pdf_url': f"/api/case-pdf?case_id={urllib.parse.quote(parent_id)}",
             
             # MATCHED COMPONENTS FOR EVIDENCE WIDGET
             'matched_components': list(set([chunk['component'] for chunk in evidence_chunks])),

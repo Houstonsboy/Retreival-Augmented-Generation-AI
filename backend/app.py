@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, send_from_directory
+from flask import Flask, request, jsonify, send_from_directory, send_file
 from flask_cors import CORS
 import time
 import os
@@ -914,8 +914,105 @@ def reset_constitution():
         }), 500        
 
 
-    @app.route('/api/qretrieve', methods=['POST'])
-    def QRetriever():
+@app.route('/api/case-pdf', methods=['GET'])
+def serve_case_pdf():
+    """
+    Serve a case PDF by case_identifier.
+    Query: ?case_id=<case_identifier>
+    
+    Resolves the PDF path from ChromaDB metadata and streams the file.
+    Opens in browser (Content-Disposition: inline) so it displays in a new tab.
+    """
+    import chromadb
+    import urllib.parse
+    
+    case_id = request.args.get('case_id')
+    
+    if not case_id:
+        return jsonify({'error': 'Missing case_id parameter'}), 400
+    
+    # Decode URL-encoded case_id
+    case_id = urllib.parse.unquote(case_id)
+    
+    try:
+        # Connect to ChromaDB to get source_file_path
+        chroma_db_dir = Path(__file__).resolve().parent / "LegalSummariesDB"
+        
+        if not chroma_db_dir.exists():
+            return jsonify({'error': 'Database not found'}), 404
+        
+        client = chromadb.PersistentClient(path=str(chroma_db_dir))
+        collection = client.get_collection(name="legal_summaries")
+        
+        # Get one chunk with this case_identifier
+        results = collection.get(
+            where={"case_identifier": case_id},
+            limit=1,
+            include=["metadatas"]
+        )
+        
+        if not results['ids'] or not results['metadatas']:
+            return jsonify({'error': f'Case not found: {case_id}'}), 404
+        
+        metadata = results['metadatas'][0]
+        source_file_path = metadata.get('source_file_path', '')
+        file_name = metadata.get('file_name', '')
+        
+        # Try to resolve PDF file
+        pdf_path = None
+        
+        # Option 1: Use source_file_path if available
+        if source_file_path:
+            candidate = Path(source_file_path)
+            if candidate.exists() and candidate.is_file():
+                pdf_path = candidate
+        
+        # Option 2: Fallback to RES_IPSA_LOQUITUR_DIR + file_name.pdf
+        if not pdf_path and file_name:
+            # Try with .pdf extension
+            candidate = RES_IPSA_LOQUITUR_DIR / f"{file_name}.pdf"
+            if candidate.exists():
+                pdf_path = candidate
+            else:
+                # Try without adding .pdf (in case file_name already has it)
+                candidate = RES_IPSA_LOQUITUR_DIR / file_name
+                if candidate.exists():
+                    pdf_path = candidate
+        
+        if not pdf_path:
+            return jsonify({
+                'error': f'PDF file not found for case: {case_id}',
+                'tried_paths': [source_file_path, str(RES_IPSA_LOQUITUR_DIR / f"{file_name}.pdf")]
+            }), 404
+        
+        # Security: Ensure resolved path is under RES_IPSA_LOQUITUR_DIR
+        # (Prevent path traversal attacks)
+        try:
+            pdf_path_resolved = pdf_path.resolve()
+            allowed_root = RES_IPSA_LOQUITUR_DIR.resolve()
+            
+            # Check if pdf_path is under allowed_root
+            if not str(pdf_path_resolved).startswith(str(allowed_root)):
+                return jsonify({'error': 'Access denied: path outside allowed directory'}), 403
+        except Exception as e:
+            return jsonify({'error': f'Path resolution error: {str(e)}'}), 500
+        
+        # Stream the PDF file
+        # Use Content-Disposition: inline so browser opens it in a tab (not download)
+        return send_file(
+            pdf_path_resolved,
+            mimetype='application/pdf',
+            as_attachment=False,  # inline (open in browser)
+            download_name=pdf_path_resolved.name
+        )
+        
+    except Exception as e:
+        print(f"Error serving PDF for case_id={case_id}: {e}")
+        return jsonify({'error': f'Failed to serve PDF: {str(e)}'}), 500
+
+
+@app.route('/api/qretrieve', methods=['POST'])
+def QRetriever():
         """
         Executes the legal query classification + retrieval pipeline.
         """
