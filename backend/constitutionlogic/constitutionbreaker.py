@@ -19,6 +19,7 @@ CONSTITUTION_DIR = SCRIPT_DIR / "../MasterRules/TheConstitutionOfKenya.pdf"
 # 3. Chunking configuration
 CHUNK_SIZE = 1000
 CHUNK_OVERLAP = 300
+MIN_CHUNK_SIZE = 150  # Minimum chunk size to prevent noise chunks
 
 
 def extract_text_from_pdf(file_path: Path, use_ocr_threshold: int = 50) -> str:
@@ -254,8 +255,24 @@ def find_numbered_sections_with_headers(text: str, max_matches: int = 264) -> Li
 
 
 def chunk_article_text(article_text: str, chunk_size: int = CHUNK_SIZE,
-                       overlap: int = CHUNK_OVERLAP) -> List[str]:
-    """Chunk article text with overlap."""
+                       overlap: int = CHUNK_OVERLAP,
+                       min_chunk_size: int = MIN_CHUNK_SIZE) -> List[str]:
+    """
+    Chunk article text with overlap, preventing short tail chunks.
+    
+    Uses hybrid approach:
+    1. Predictive: Extends current chunk if remainder would be too small
+    2. Post-processing: Merges any lingering short chunks with previous chunk
+    
+    Args:
+        article_text: Text to chunk
+        chunk_size: Target chunk size (default 1000)
+        overlap: Overlap between chunks (default 300)
+        min_chunk_size: Minimum acceptable chunk size (default 150)
+    
+    Returns:
+        List of chunks, with no chunk smaller than min_chunk_size
+    """
     if len(article_text) <= chunk_size:
         return [article_text]
     
@@ -264,6 +281,14 @@ def chunk_article_text(article_text: str, chunk_size: int = CHUNK_SIZE,
     
     while start < len(article_text):
         end = start + chunk_size
+        
+        # DEFENSE 1: Predictive - Check if remainder would be too small
+        remaining = len(article_text) - end
+        if 0 < remaining < min_chunk_size:
+            # Extend current chunk to include the small remainder
+            end = len(article_text)
+        
+        # Word boundary detection (only if not at end)
         if end < len(article_text):
             last_space = article_text.rfind(' ', start, end)
             if last_space != -1 and last_space > start:
@@ -271,10 +296,21 @@ def chunk_article_text(article_text: str, chunk_size: int = CHUNK_SIZE,
         
         chunk = article_text[start:end].strip()
         chunks.append(chunk)
+        
+        # Exit if we've consumed all text
+        if end >= len(article_text):
+            break
+        
         start = end - overlap
         
+        # Ensure we're making progress
         if start <= chunks[-1].find(' ') + len(chunks) - 1:
             start = end
+    
+    # DEFENSE 2: Post-processing safety net - Merge any lingering short chunks
+    if len(chunks) > 1 and len(chunks[-1]) < min_chunk_size:
+        chunks[-2] = chunks[-2] + " " + chunks[-1]
+        chunks.pop()
     
     return chunks
 

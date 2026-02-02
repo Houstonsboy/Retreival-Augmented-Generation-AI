@@ -69,10 +69,11 @@ def extract_query_params(classifier_output: Dict) -> Dict[str, Any]:
 
 def build_where_filter(query_params: Dict) -> Dict:
     """Build ChromaDB where filter based on query parameters."""
-    where_filter = {}
+    # Build list of conditions to combine with $and
+    conditions = []
     
     # Always filter for both constitution and evidence_act
-    where_filter["document_type"] = {"$in": ["constitution", "evidence_act"]}
+    conditions.append({"document_type": {"$in": ["constitution", "evidence_act"]}})
     
     # Optional: Filter by specific statute if mentioned
     entities = query_params.get('entities', {})
@@ -87,9 +88,13 @@ def build_where_filter(query_params: Dict) -> Dict:
                 source_docs.append(mapped_doc)
         
         if source_docs:
-            where_filter["source_document"] = {"$in": source_docs}
+            conditions.append({"source_document": {"$in": source_docs}})
     
-    return where_filter
+    # Return single condition or $and combination
+    if len(conditions) == 1:
+        return conditions[0]
+    else:
+        return {"$and": conditions}
 
 
 def calculate_rule_score(distance: float, chunk_metadata: Dict, legal_domains: List[Dict]) -> float:

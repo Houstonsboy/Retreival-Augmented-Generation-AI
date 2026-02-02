@@ -4,8 +4,8 @@ CONSTITUTION ARTICLE EXTRACTION REPORT
 Total Articles: 264
 Chunk Size: 1000 characters
 Chunk Overlap: 300 characters
-Total Chunks: 427
-Articles with multiple chunks: 86
+Total Chunks: 374
+Articles with multiple chunks: 70
 Source Document: TheConstitutionOfKenya.pdf
 ================================================================================
 
@@ -444,7 +444,7 @@ Chapter: THREE - CITIZENSHIP
 Part: [Not within a PART]
 
 Article Length: 1003 characters
-Number of Chunks: 2
+Number of Chunks: 1
 
 --------------------------------------------------------------------------------
 FULL ARTICLE TEXT:
@@ -460,37 +460,6 @@ application to be registered as a citizen.
 (4) Parliament shall enact legislation establishing conditions on which
 citizenship may be granted to individuals who are citizens of other countries.
 (5) This Article applies to a person as from the effective date, but any
-requirements that must be satisﬁed before the person is entitled to be registered as a
-citizen shall be regarded as having been satisﬁed irrespective of whether the person
-satisﬁed them before or after the effective date, or partially before, and partially
-after, the effective date.
-Dual citizenship.
-
---------------------------------------------------------------------------------
-CHUNK BREAKDOWN:
---------------------------------------------------------------------------------
-
---- Chunk 1/2 (990 chars) ---
-
-15. (1) A person who has been married to a citizen for a period of at least seven
-years is entitled on application to be registered as a citizen.
-(2) A person who has been lawfully resident in Kenya for a continuous period
-of at least seven years, and who satisﬁes the conditions prescribed by an Act of
-Parliament, may apply to be registered as a citizen.
-(3) A child who is not a citizen, but is adopted by a citizen, is entitled on
-application to be registered as a citizen.
-(4) Parliament shall enact legislation establishing conditions on which
-citizenship may be granted to individuals who are citizens of other countries.
-(5) This Article applies to a person as from the effective date, but any
-requirements that must be satisﬁed before the person is entitled to be registered as a
-citizen shall be regarded as having been satisﬁed irrespective of whether the person
-satisﬁed them before or after the effective date, or partially before, and partially
-after, the effective date.
-Dual
-
---- Chunk 2/2 (313 chars) ---
-
-te, but any
 requirements that must be satisﬁed before the person is entitled to be registered as a
 citizen shall be regarded as having been satisﬁed irrespective of whether the person
 satisﬁed them before or after the effective date, or partially before, and partially
@@ -688,7 +657,7 @@ Chapter: FOUR - THE BILL OF RIGHTS
 Part: PART 1 - GENERAL PROVISIONS TO THE BILL OF RIGHTS
 
 Article Length: 1579 characters
-Number of Chunks: 3
+Number of Chunks: 2
 
 --------------------------------------------------------------------------------
 FULL ARTICLE TEXT:
@@ -727,7 +696,7 @@ Implementation of rights and fundamental freedoms.
 CHUNK BREAKDOWN:
 --------------------------------------------------------------------------------
 
---- Chunk 1/3 (998 chars) ---
+--- Chunk 1/2 (998 chars) ---
 
 20. (1) The Bill of Rights applies to all law and binds all State organs and all
 persons.
@@ -749,7 +718,7 @@ the resources to implement the right, a court, tribunal or other authority shall
 guided by the following principles—
 it is the
 
---- Chunk 2/3 (881 chars) ---
+--- Chunk 2/2 (881 chars) ---
 
 lity, equity and freedom; and
 the spirit, purport and objects of the Bill of Rights.
@@ -764,12 +733,6 @@ regard to prevailing circumstances, including the vulnerability of
 particular groups or individuals; and
 the court, tribunal or other authority may not interfere with a decision
 by a State organ concerning the allocation of available resources, solely
-on the basis that it would have reached a different conclusion.
-Implementation of rights and fundamental freedoms.
-
---- Chunk 3/3 (181 chars) ---
-
-ate organ concerning the allocation of available resources, solely
 on the basis that it would have reached a different conclusion.
 Implementation of rights and fundamental freedoms.
 
@@ -821,7 +784,7 @@ Chapter: FOUR - THE BILL OF RIGHTS
 Part: PART 1 - GENERAL PROVISIONS TO THE BILL OF RIGHTS
 
 Article Length: 1584 characters
-Number of Chunks: 3
+Number of Chunks: 2
 
 --------------------------------------------------------------------------------
 FULL ARTICLE TEXT:
@@ -859,7 +822,7 @@ Authority of courts to uphold and enforce the Bill of Rights.
 CHUNK BREAKDOWN:
 --------------------------------------------------------------------------------
 
---- Chunk 1/3 (996 chars) ---
+--- Chunk 1/2 (996 chars) ---
 
 22. (1) Every person has the right to institute court proceedings claiming that
 a right or fundamental freedom in the Bill of Rights has been denied, violated or
@@ -879,7 +842,7 @@ formalities relating to the proceedings, including commencement of
 the proceedings, are kept to the minimum, and in particular that the
 court shall, if necessary, entertain proceedings on the basis of
 
---- Chunk 2/3 (888 chars) ---
+--- Chunk 2/2 (888 chars) ---
 
 satisfy the criteria that—
 the rights of standing provided for in clause (2) are fully facilitated;
@@ -893,13 +856,6 @@ unreasonably restricted by procedural technicalities; and
 an organisation or individual with particular expertise may, with the
 leave of the court, appear as a friend of the court.
 (4) The absence of rules contemplated in clause (3) does not limit the right of any
-person to commence court proceedings under this Article, and to have the matter
-heard and determined by a court.
-Authority of courts to uphold and enforce the Bill of Rights.
-
---- Chunk 3/3 (187 chars) ---
-
-right of any
 person to commence court proceedings under this Article, and to have the matter
 heard and determined by a court.
 Authority of courts to uphold and enforce the Bill of Rights.
@@ -957,7 +913,7 @@ Chapter: FOUR - THE BILL OF RIGHTS
 Part: PART 1 - GENERAL PROVISIONS TO THE BILL OF RIGHTS
 
 Article Length: 2354 characters
-Number of Chunks: 4
+Number of Chunks: 3
 
 --------------------------------------------------------------------------------
 FULL ARTICLE TEXT:
@@ -1008,7 +964,7 @@ Fundamental Rights and freedoms that may not be limited.
 CHUNK BREAKDOWN:
 --------------------------------------------------------------------------------
 
---- Chunk 1/4 (991 chars) ---
+--- Chunk 1/3 (991 chars) ---
 
 24. (1) A right or fundamental freedom in the Bill of Rights shall not be limited
 except by law, and then only to the extent that the limitation is reasonable and
@@ -1028,7 +984,7 @@ in the case of a provision enacted or amended on or after the effective
 date, is not valid unless the legislation speciﬁcally expresses the
 intention to limit that right or
 
---- Chunk 2/4 (999 chars) ---
+--- Chunk 2/3 (999 chars) ---
 
 ctive means to achieve the purpose.
 (2) Despite clause (1), a provision in legislation limiting a right or fundamental
@@ -1048,7 +1004,7 @@ Article have been satisﬁed.
 (4) The provisions of this Chapter on equality shall be qualiﬁed to the extent
 strictly necessary for the application of Muslim law before
 
---- Chunk 3/4 (963 chars) ---
+--- Chunk 3/3 (963 chars) ---
 
 seeking to justify a particular limitation shall
 demonstrate to the court, tribunal or other authority that the requirements of this
@@ -1062,15 +1018,6 @@ of the rights or fundamental freedoms in the following provisions to persons ser
 in the Kenya Defence Forces or the National Police Service—
 Article 31 — Privacy;
 Article 36 — Freedom of association;
-Article 37 — Assembly, demonstration, picketing and petition;
-Article 41 — Labour relations;
-Article 43 — Economic and social rights; and
-Article 49 — Rights of arrested persons.
-Fundamental Rights and freedoms that may not be limited.
-
---- Chunk 4/4 (264 chars) ---
-
-36 — Freedom of association;
 Article 37 — Assembly, demonstration, picketing and petition;
 Article 41 — Labour relations;
 Article 43 — Economic and social rights; and
@@ -1148,7 +1095,7 @@ Chapter: FOUR - THE BILL OF RIGHTS
 Part: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
 
 Article Length: 1441 characters
-Number of Chunks: 3
+Number of Chunks: 2
 
 --------------------------------------------------------------------------------
 FULL ARTICLE TEXT:
@@ -1181,7 +1128,7 @@ Human dignity.
 CHUNK BREAKDOWN:
 --------------------------------------------------------------------------------
 
---- Chunk 1/3 (997 chars) ---
+--- Chunk 1/2 (997 chars) ---
 
 27. (1) Every person is equal before the law and has the right to equal protection
 and equal beneﬁt of the law.
@@ -1199,7 +1146,7 @@ on any of the grounds speciﬁed or contemplated in clause (4).
 Article, the State shall take legislative and other measures, including afﬁrmative
 action programmes and policies designed to redress any disadvantage
 
---- Chunk 2/3 (744 chars) ---
+--- Chunk 2/2 (744 chars) ---
 
 r person
 on any of the grounds speciﬁed or contemplated in clause (4).
@@ -1212,11 +1159,6 @@ to be on the basis of genuine need.
 (8) In addition to the measures contemplated in clause (6), the State shall take
 legislative and other measures to implement the principle that not more than two-
 thirds of the members of elective or appointive bodies shall be of the same gender.
-Human dignity.
-
---- Chunk 3/3 (43 chars) ---
-
-shall be of the same gender.
 Human dignity.
 
 
@@ -1650,7 +1592,7 @@ Chapter: FOUR - THE BILL OF RIGHTS
 Part: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
 
 Article Length: 1587 characters
-Number of Chunks: 3
+Number of Chunks: 2
 
 --------------------------------------------------------------------------------
 FULL ARTICLE TEXT:
@@ -1690,7 +1632,7 @@ Labour relations.
 CHUNK BREAKDOWN:
 --------------------------------------------------------------------------------
 
---- Chunk 1/3 (991 chars) ---
+--- Chunk 1/2 (991 chars) ---
 
 40. (1) Subject to Article 65, every person has the right, either individually or
 in association with others, to acquire and own property—
@@ -1710,7 +1652,7 @@ or
 is for a public purpose or in the public interest and is carried out in
 accordance with this Constitution and any Act of
 
---- Chunk 2/3 (896 chars) ---
+--- Chunk 2/2 (896 chars) ---
 
 n, unless the deprivation—
 results from an acquisition of land or an interest in land or a conversion
@@ -1726,14 +1668,6 @@ property a right of access to a court of law.
 (4) Provision may be made for compensation to be paid to occupants in good
 faith of land acquired under clause (3) who may not hold title to the land.
 (5) The State shall support, promote and protect the intellectual property rights
-of the people of Kenya.
-(6) The rights under this Article do not extend to any property that has been
-found to have been unlawfully acquired.
-Labour relations.
-
---- Chunk 3/3 (196 chars) ---
-
-ect the intellectual property rights
 of the people of Kenya.
 (6) The rights under this Article do not extend to any property that has been
 found to have been unlawfully acquired.
@@ -2104,7 +2038,7 @@ Chapter: FOUR - THE BILL OF RIGHTS
 Part: PART 2 - RIGHTS AND FUNDAMENTAL FREEDOMS
 
 Article Length: 3708 characters
-Number of Chunks: 6
+Number of Chunks: 5
 
 --------------------------------------------------------------------------------
 FULL ARTICLE TEXT:
@@ -2179,7 +2113,7 @@ Rights of persons detained, held in custody or imprisoned.
 CHUNK BREAKDOWN:
 --------------------------------------------------------------------------------
 
---- Chunk 1/6 (998 chars) ---
+--- Chunk 1/5 (998 chars) ---
 
 50. (1) Every person has the right to have any dispute that can be resolved
 by the application of law decided in a fair and public hearing before a court or, if
@@ -2198,7 +2132,7 @@ to have an advocate assigned to the accused person by the State and at
 State expense, if substantial injustice would otherwise result, and to be
 informed of this right
 
---- Chunk 2/6 (990 chars) ---
+--- Chunk 2/5 (990 chars) ---
 
 es it impossible for the trial to proceed;
 to choose, and be represented by, an advocate, and to be informed of
@@ -2221,7 +2155,7 @@ a crime under international law;
 not to be tried for an offence in respect of an act or omission for which
 the accused person has previously been either
 
---- Chunk 3/6 (998 chars) ---
+--- Chunk 3/5 (998 chars) ---
 
 ge used at the trial;
 not to be convicted for an act or omission that at the time it was
@@ -2243,7 +2177,7 @@ shall be given in a language that the person understands.
 freedom in the Bill of Rights shall be excluded if the admission of that evidence would
 render the trial unfair, or would otherwise be detrimental to
 
---- Chunk 4/6 (996 chars) ---
+--- Chunk 4/5 (996 chars) ---
 
 on, the information
 shall be given in a language that the person understands.
@@ -2265,7 +2199,7 @@ which the person is entitled to appeal, or the person did not appeal
 within the time allowed for appeal; and
 new
 
---- Chunk 5/6 (926 chars) ---
+--- Chunk 5/5 (926 chars) ---
 
 scribed by law.
 (6) A person who is convicted of a criminal offence may petition the High Court
@@ -2279,14 +2213,6 @@ complainant or an accused person to communicate with the court.
 (8) This Article does not prevent the exclusion of the press or other members
 of the public from any proceedings if the exclusion is necessary, in a free and
 democratic society, to protect witnesses or vulnerable persons, morality, public
-order or national security.
-(9) Parliament shall enact legislation providing for the protection, rights and
-welfare of victims of offences.
-Rights of persons detained, held in custody or imprisoned.
-
---- Chunk 6/6 (226 chars) ---
-
-e persons, morality, public
 order or national security.
 (9) Parliament shall enact legislation providing for the protection, rights and
 welfare of victims of offences.
@@ -2651,7 +2577,7 @@ Chapter: FOUR - THE BILL OF RIGHTS
 Part: PART 5 - KENYA NATIONAL HUMAN RIGHTS AND EQUALITY COMMISSION
 
 Article Length: 2464 characters
-Number of Chunks: 4
+Number of Chunks: 3
 
 --------------------------------------------------------------------------------
 FULL ARTICLE TEXT:
@@ -2705,7 +2631,7 @@ commission under that Chapter.
 CHUNK BREAKDOWN:
 --------------------------------------------------------------------------------
 
---- Chunk 1/4 (992 chars) ---
+--- Chunk 1/3 (992 chars) ---
 
 59. (1) There is established the Kenya National Human Rights and Equality
 Commission.
@@ -2727,7 +2653,7 @@ or research a matter in respect of human rights, and make
 recommendations to improve the functioning of State organs;
 to act as the principal organ of the State in
 
---- Chunk 2/4 (993 chars) ---
+--- Chunk 2/3 (993 chars) ---
 
 to secure appropriate redress where human rights
 have been violated;
@@ -2748,7 +2674,7 @@ take remedial action; and
 to perform any other functions prescribed by legislation.
 (3) Every person has the right to complain to the Commission, alleging
 
---- Chunk 3/4 (996 chars) ---
+--- Chunk 3/3 (1078 chars) ---
 
 injustice or unlawful, oppressive, unfair or unresponsive ofﬁcial
 conduct;
@@ -2762,15 +2688,6 @@ infringed, or is threatened.
 legislation may restructure the Commission into two or more separate commissions.
 (5) If Parliament enacts legislation restructuring the Commission under clause
 that legislation shall assign each function of the Commission speciﬁed
-in this Article to one or the other of the successor commissions;
-each of the successor commissions shall have powers equivalent to the
-powers of the Commission under this Article; and
-each successor commission shall be a commission within the meaning
-of Chapter
-
---- Chunk 4/4 (382 chars) ---
-
-h function of the Commission speciﬁed
 in this Article to one or the other of the successor commissions;
 each of the successor commissions shall have powers equivalent to the
 powers of the Commission under this Article; and
@@ -3156,7 +3073,7 @@ Chapter: FIVE - LAND AND ENVIRONMENT
 Part: PART 1 - LAND
 
 Article Length: 1039 characters
-Number of Chunks: 2
+Number of Chunks: 1
 
 --------------------------------------------------------------------------------
 FULL ARTICLE TEXT:
@@ -3175,45 +3092,6 @@ to initiate investigations, on its own initiative or on a complaint,
 into present or historical land injustices, and recommend appropriate
 redress;
 to encourage the application of traditional dispute resolution
-mechanisms in land conﬂicts;
-to assess tax on land and premiums on immovable property in any area
-designated by law; and
-to monitor and have oversight responsibilities over land use planning
-throughout the country.
-(3) The National Land Commission may perform any other functions prescribed
-by national legislation.
-Legislation on land.
-
---------------------------------------------------------------------------------
-CHUNK BREAKDOWN:
---------------------------------------------------------------------------------
-
---- Chunk 1/2 (996 chars) ---
-
-67. (1) There is established the National Land Commission.
-(2) The functions of the National Land Commission are—
-to manage public land on behalf of the national and county
-governments;
-to recommend a national land policy to the national government;
-to advise the national government on a comprehensive programme for
-the registration of title in land throughout Kenya;
-to conduct research related to land and the use of natural resources,
-and make recommendations to appropriate authorities;
-to initiate investigations, on its own initiative or on a complaint,
-into present or historical land injustices, and recommend appropriate
-redress;
-to encourage the application of traditional dispute resolution
-mechanisms in land conﬂicts;
-to assess tax on land and premiums on immovable property in any area
-designated by law; and
-to monitor and have oversight responsibilities over land use planning
-throughout the country.
-(3) The National Land Commission may perform any other functions prescribed
-by
-
---- Chunk 2/2 (343 chars) ---
-
-lution
 mechanisms in land conﬂicts;
 to assess tax on land and premiums on immovable property in any area
 designated by law; and
@@ -3283,7 +3161,7 @@ Chapter: FIVE - LAND AND ENVIRONMENT
 Part: PART 2 - ENVIRONMENT AND NATURAL RESOURCES
 
 Article Length: 1086 characters
-Number of Chunks: 2
+Number of Chunks: 1
 
 --------------------------------------------------------------------------------
 FULL ARTICLE TEXT:
@@ -3304,44 +3182,6 @@ protect genetic resources and biological diversity;
 establish systems of environmental impact assessment, environmental
 audit and monitoring of the environment;
 eliminate processes and activities that are likely to endanger the
-environment; and
-utilise the environment and natural resources for the beneﬁt of the
-people of Kenya.
-(2) Every person has a duty to cooperate with State organs and other persons
-to protect and conserve the environment and ensure ecologically sustainable
-development and use of natural resources.
-Enforcement of environmental rights.
-
---------------------------------------------------------------------------------
-CHUNK BREAKDOWN:
---------------------------------------------------------------------------------
-
---- Chunk 1/2 (995 chars) ---
-
-69. (1) The State shall—
-ensure sustainable exploitation, utilisation, management and
-conservation of the environment and natural resources, and ensure the
-equitable sharing of the accruing beneﬁts;
-work to achieve and maintain a tree cover of at least ten per cent of the
-land area of Kenya;
-protect and enhance intellectual property in, and indigenous
-knowledge of, biodiversity and the genetic resources of the
-communities;
-encourage public participation in the management, protection and
-conservation of the environment;
-protect genetic resources and biological diversity;
-establish systems of environmental impact assessment, environmental
-audit and monitoring of the environment;
-eliminate processes and activities that are likely to endanger the
-environment; and
-utilise the environment and natural resources for the beneﬁt of the
-people of Kenya.
-(2) Every person has a duty to cooperate with State organs and other persons
-to protect and conserve the environment and ensure ecologically
-
---- Chunk 2/2 (390 chars) ---
-
-processes and activities that are likely to endanger the
 environment; and
 utilise the environment and natural resources for the beneﬁt of the
 people of Kenya.
@@ -3452,7 +3292,7 @@ Chapter: SIX - LEADERSHIP AND INTEGRITY
 Part: [Not within a PART]
 
 Article Length: 1129 characters
-Number of Chunks: 2
+Number of Chunks: 1
 
 --------------------------------------------------------------------------------
 FULL ARTICLE TEXT:
@@ -3473,49 +3313,6 @@ than the power to rule them.
 selection on the basis of personal integrity, competence and suitability,
 or election in free and fair elections;
 objectivity and impartiality in decision making, and in ensuring that
-decisions are not inﬂuenced by nepotism, favouritism, other improper
-motives or corrupt practices;
-selﬂess service based solely on the public interest, demonstrated by —
-honesty in the execution of public duties; and
-(ii)
-the declaration of any personal interest that may conﬂict with
-public duties;
-accountability to the public for decisions and actions; and
-discipline and commitment in service to the people.
-Oath of ofﬁce of State ofﬁcers.
-
---------------------------------------------------------------------------------
-CHUNK BREAKDOWN:
---------------------------------------------------------------------------------
-
---- Chunk 1/2 (977 chars) ---
-
-73. (1) Authority assigned to a State ofﬁcer—
-is a public trust to be exercised in a manner that—
-is consistent with the purposes and objects of this Constitution;
-(ii)
-demonstrates respect for the people;
-(iii)
-brings honour to the nation and dignity to the ofﬁce; and
-(iv)
-promotes public conﬁdence in the integrity of the ofﬁce; and
-vests in the State ofﬁcer the responsibility to serve the people, rather
-than the power to rule them.
-(2) The guiding principles of leadership and integrity include—
-selection on the basis of personal integrity, competence and suitability,
-or election in free and fair elections;
-objectivity and impartiality in decision making, and in ensuring that
-decisions are not inﬂuenced by nepotism, favouritism, other improper
-motives or corrupt practices;
-selﬂess service based solely on the public interest, demonstrated by —
-honesty in the execution of public duties; and
-(ii)
-the declaration of any personal interest that may conﬂict with
-public
-
---- Chunk 2/2 (452 chars) ---
-
-ing that
 decisions are not inﬂuenced by nepotism, favouritism, other improper
 motives or corrupt practices;
 selﬂess service based solely on the public interest, demonstrated by —
@@ -3991,7 +3788,7 @@ Chapter: SEVEN - REPRESENTATION OF THE PEOPLE
 Part: PART 2 - INDEPENDENT ELECTORAL AND BOUNDARIES
 
 Article Length: 1763 characters
-Number of Chunks: 3
+Number of Chunks: 2
 
 --------------------------------------------------------------------------------
 FULL ARTICLE TEXT:
@@ -4037,7 +3834,7 @@ Delimitation of electoral units.
 CHUNK BREAKDOWN:
 --------------------------------------------------------------------------------
 
---- Chunk 1/3 (990 chars) ---
+--- Chunk 1/2 (990 chars) ---
 
 88. (1) There is established the Independent Electoral and Boundaries
 Commission.
@@ -4060,7 +3857,7 @@ the regulation of the process by which parties nominate candidates for
 elections;
 the settlement of electoral disputes, including disputes relating to
 
---- Chunk 2/3 (996 chars) ---
+--- Chunk 2/2 (1073 chars) ---
 
 ular, for—
 the continuous registration of citizens as voters;
@@ -4078,15 +3875,6 @@ elections;
 the regulation of the amount of money that may be spent by or on behalf
 of a candidate or party in respect of any election;
 the development of a code of conduct for candidates and parties
-contesting elections; and
-the monitoring of compliance with the legislation required by Article
-82(1)(b) relating to nomination of candidates by parties.
-(5) The Commission shall exercise its powers and perform its functions in
-accordance with
-
---- Chunk 3/3 (377 chars) ---
-
-elopment of a code of conduct for candidates and parties
 contesting elections; and
 the monitoring of compliance with the legislation required by Article
 82(1)(b) relating to nomination of candidates by parties.
@@ -4687,7 +4475,7 @@ Chapter: EIGHT - THE LEGISLATURE
 Part: PART 2 - COMPOSITION AND MEMBERSHIP OF PARLIAMENT
 
 Article Length: 1563 characters
-Number of Chunks: 3
+Number of Chunks: 2
 
 --------------------------------------------------------------------------------
 FULL ARTICLE TEXT:
@@ -4729,7 +4517,7 @@ Promotion of representation of marginalised groups.
 CHUNK BREAKDOWN:
 --------------------------------------------------------------------------------
 
---- Chunk 1/3 (998 chars) ---
+--- Chunk 1/2 (998 chars) ---
 
 99. (1) Unless disqualiﬁed under clause (2), a person is eligible for election as
 a member of Parliament if the person—
@@ -4754,7 +4542,7 @@ has not been a citizen of Kenya for at least the ten years immediately
 preceding the date of election;
 is
 
---- Chunk 2/3 (865 chars) ---
+--- Chunk 2/2 (865 chars) ---
 
 ther than a member of
 Parliament;
@@ -4771,12 +4559,6 @@ the date of registration as a candidate, or at the date of election; or
 is found, in accordance with any law, to have misused or abused a State
 ofﬁce or public ofﬁce or in any way to have contravened Chapter Six.
 (3) A person is not disqualiﬁed under clause (2) unless all possibility of appeal
-or review of the relevant sentence or decision has been exhausted.
-Promotion of representation of marginalised groups.
-
---- Chunk 3/3 (165 chars) ---
-
-er clause (2) unless all possibility of appeal
 or review of the relevant sentence or decision has been exhausted.
 Promotion of representation of marginalised groups.
 
@@ -5389,7 +5171,7 @@ Chapter: EIGHT - THE LEGISLATURE
 Part: PART 4 - PROCEDURES FOR ENACTING LEGISLATION
 
 Article Length: 1034 characters
-Number of Chunks: 2
+Number of Chunks: 1
 
 --------------------------------------------------------------------------------
 FULL ARTICLE TEXT:
@@ -5407,42 +5189,6 @@ in Article 218, that contains provisions dealing with—
 taxes;
 the imposition of charges on a public fund or the variation or repeal of
 any of those charges;
-the appropriation, receipt, custody, investment or issue of public
-money;
-the raising or guaranteeing of any loan or its repayment; or
-matters incidental to any of those matters.
-(4) In clause (3), "tax", "public money", and "loan" do not include any tax, public
-money or loan raised by a county.
-Presidential assent and referral.
-
---------------------------------------------------------------------------------
-CHUNK BREAKDOWN:
---------------------------------------------------------------------------------
-
---- Chunk 1/2 (992 chars) ---
-
-114. (1) A money Bill may not deal with any matter other than those listed in
-the deﬁnition of "a money Bill" in clause (3).
-(2) If, in the opinion of the Speaker of the National Assembly, a motion makes
-provision for a matter listed in the deﬁnition of "a money Bill", the Assembly may
-proceed only in accordance with the recommendation of the relevant Committee
-of the Assembly after taking into account the views of the Cabinet Secretary
-responsible for ﬁnance.
-(3) In this Constitution, "a money Bill" means a Bill, other than a Bill speciﬁed
-in Article 218, that contains provisions dealing with—
-taxes;
-the imposition of charges on a public fund or the variation or repeal of
-any of those charges;
-the appropriation, receipt, custody, investment or issue of public
-money;
-the raising or guaranteeing of any loan or its repayment; or
-matters incidental to any of those matters.
-(4) In clause (3), "tax", "public money", and "loan" do not include any tax, public
-money or loan raised by a
-
---- Chunk 2/2 (342 chars) ---
-
-se charges;
 the appropriation, receipt, custody, investment or issue of public
 money;
 the raising or guaranteeing of any loan or its repayment; or
@@ -5465,7 +5211,7 @@ Chapter: EIGHT - THE LEGISLATURE
 Part: PART 4 - PROCEDURES FOR ENACTING LEGISLATION
 
 Article Length: 1449 characters
-Number of Chunks: 3
+Number of Chunks: 2
 
 --------------------------------------------------------------------------------
 FULL ARTICLE TEXT:
@@ -5500,7 +5246,7 @@ Coming into force of laws.
 CHUNK BREAKDOWN:
 --------------------------------------------------------------------------------
 
---- Chunk 1/3 (995 chars) ---
+--- Chunk 1/2 (995 chars) ---
 
 115. (1) Within fourteen days after receipt of a Bill, the President shall—
 assent to the Bill; or
@@ -5519,7 +5265,7 @@ by two-thirds of members of the National Assembly; and
 two-thirds of the delegations in the Senate, if it is a Bill that requires
 the approval of the
 
---- Chunk 2/3 (754 chars) ---
+--- Chunk 2/2 (754 chars) ---
 
 ay pass the
 Bill a second time, without amendment, or with amendments that do not fully
@@ -5534,11 +5280,6 @@ the President shall within seven days assent to the Bill.
 (6) If the President does not assent to a Bill or refer it back within the period
 prescribed in clause (1), or assent to it under clause (5)(b), the Bill shall be taken to
 have been assented to on the expiry of that period.
-Coming into force of laws.
-
---- Chunk 3/3 (53 chars) ---
-
-the expiry of that period.
 Coming into force of laws.
 
 
@@ -5924,7 +5665,7 @@ Chapter: EIGHT - THE LEGISLATURE
 Part: PART 6 - MISCELLANEOUS
 
 Article Length: 2135 characters
-Number of Chunks: 4
+Number of Chunks: 3
 
 --------------------------------------------------------------------------------
 FULL ARTICLE TEXT:
@@ -5980,7 +5721,7 @@ Clerks and staff of Parliament.
 CHUNK BREAKDOWN:
 --------------------------------------------------------------------------------
 
---- Chunk 1/4 (998 chars) ---
+--- Chunk 1/3 (998 chars) ---
 
 127. (1) There is established the Parliamentary Service Commission.
 (2) The Commission consists of—
@@ -6004,7 +5745,7 @@ Parliament.
 if the person is a member of Parliament—
 at the end of the term of the House
 
---- Chunk 2/4 (997 chars) ---
+--- Chunk 2/3 (997 chars) ---
 
 arliament from among
 persons who are experienced in public affairs, but are not members of
@@ -6028,7 +5769,7 @@ constituting ofﬁces in the parliamentary service, and appointing and
 supervising ofﬁce holders;
 preparing annual estimates of expenditure of
 
---- Chunk 3/4 (740 chars) ---
+--- Chunk 3/3 (740 chars) ---
 
 ace by the next House.
 (6) The Commission is responsible for—
@@ -6046,11 +5787,6 @@ necessary for the well-being of the members and staff of
 Parliament; or
 (ii)
 prescribed by national legislation.
-Clerks and staff of Parliament.
-
---- Chunk 4/4 (40 chars) ---
-
-slation.
 Clerks and staff of Parliament.
 
 
@@ -6181,7 +5917,7 @@ Chapter: NINE - THE EXECUTIVE
 Part: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
 
 Article Length: 2198 characters
-Number of Chunks: 4
+Number of Chunks: 3
 
 --------------------------------------------------------------------------------
 FULL ARTICLE TEXT:
@@ -6238,7 +5974,7 @@ Power of mercy.
 CHUNK BREAKDOWN:
 --------------------------------------------------------------------------------
 
---- Chunk 1/4 (987 chars) ---
+--- Chunk 1/3 (987 chars) ---
 
 132. (1) The President shall—
 address the opening of each newly elected Parliament;
@@ -6263,7 +5999,7 @@ the Secretary to the Cabinet in accordance with Article 154;
 Principal Secretaries in accordance with Article 155;
 high commissioners, ambassadors and diplomatic and
 
---- Chunk 2/4 (988 chars) ---
+--- Chunk 2/3 (988 chars) ---
 
 point, and may dismiss—
 the Cabinet Secretaries, in accordance with Article 152;
@@ -6287,7 +6023,7 @@ Parliament.
 perform any other executive function provided for in this Constitution
 or in national legislation and, except as otherwise provided for in
 
---- Chunk 3/4 (823 chars) ---
+--- Chunk 3/3 (823 chars) ---
 
 lementation and administration of any Act of Parliament to a
 Cabinet Secretary, to the extent not inconsistent with any Act of
@@ -6302,12 +6038,6 @@ confer honours in the name of the people and the Republic;
 subject to Article 58, declare a state of emergency; and
 with the approval of Parliament, declare war.
 (5) The President shall ensure that the international obligations of the Republic
-are fulﬁlled through the actions of the relevant Cabinet Secretaries.
-Power of mercy.
-
---- Chunk 4/4 (123 chars) ---
-
-rnational obligations of the Republic
 are fulﬁlled through the actions of the relevant Cabinet Secretaries.
 Power of mercy.
 
@@ -6409,7 +6139,7 @@ Chapter: NINE - THE EXECUTIVE
 Part: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
 
 Article Length: 1051 characters
-Number of Chunks: 2
+Number of Chunks: 1
 
 --------------------------------------------------------------------------------
 FULL ARTICLE TEXT:
@@ -6427,43 +6157,6 @@ may not exercise the powers of the President speciﬁed in clause (2).
 the nomination or appointment of the judges of the superior courts;
 the nomination or appointment of any other public ofﬁcer whom this
 Constitution or legislation requires the President to appoint;
-the nomination or appointment or dismissal of Cabinet Secretaries and
-other State or Public ofﬁcers;
-the nomination or appointment or dismissal of a high commissioner,
-ambassador, or diplomatic or consular representative;
-the power of mercy; and
-the authority to confer honours in the name of the people and the
-Republic.
-Decisions of the President.
-
---------------------------------------------------------------------------------
-CHUNK BREAKDOWN:
---------------------------------------------------------------------------------
-
---- Chunk 1/2 (998 chars) ---
-
-134. (1) A person who holds the ofﬁce of President or who is authorised in terms
-of this Constitution to exercise the powers of the President—
-during the period commencing on the date of the ﬁrst vote in a
-presidential election, and ending when the newly elected President
-assumes ofﬁce; or
-while the President is absent or incapacitated, or at other times
-contemplated in Article 147(3),
-may not exercise the powers of the President speciﬁed in clause (2).
-(2) The powers referred to in clause (1) are—
-the nomination or appointment of the judges of the superior courts;
-the nomination or appointment of any other public ofﬁcer whom this
-Constitution or legislation requires the President to appoint;
-the nomination or appointment or dismissal of Cabinet Secretaries and
-other State or Public ofﬁcers;
-the nomination or appointment or dismissal of a high commissioner,
-ambassador, or diplomatic or consular representative;
-the power of mercy; and
-the authority to confer honours in the name of the
-
---- Chunk 2/2 (353 chars) ---
-
-nt;
 the nomination or appointment or dismissal of Cabinet Secretaries and
 other State or Public ofﬁcers;
 the nomination or appointment or dismissal of a high commissioner,
@@ -6578,7 +6271,7 @@ Chapter: NINE - THE EXECUTIVE
 Part: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
 
 Article Length: 2386 characters
-Number of Chunks: 4
+Number of Chunks: 3
 
 --------------------------------------------------------------------------------
 FULL ARTICLE TEXT:
@@ -6632,7 +6325,7 @@ Death before assuming ofﬁce.
 CHUNK BREAKDOWN:
 --------------------------------------------------------------------------------
 
---- Chunk 1/4 (995 chars) ---
+--- Chunk 1/3 (995 chars) ---
 
 138. (1) If only one candidate for President is nominated, that candidate shall
 be declared elected.
@@ -6654,7 +6347,7 @@ of the counties.
 (5) If no candidate is elected, a fresh election shall be held within thirty days
 after the previous
 
---- Chunk 2/4 (994 chars) ---
+--- Chunk 2/3 (994 chars) ---
 
 red elected as President if the candidate receives—
 more than half of all the votes cast in the election; and
@@ -6675,7 +6368,7 @@ declared elected as President.
 no person has been nominated as a candidate before the expiry of the
 period set for the
 
---- Chunk 3/4 (997 chars) ---
+--- Chunk 3/3 (997 chars) ---
 
 ontemplated in clause (5)(a).
 (7) The candidate who receives the most votes in the fresh election shall be
@@ -6689,15 +6382,6 @@ a candidate who would have been entitled to be declared elected as
 President, dies before being declared elected as President.
 (9) A new presidential election under clause (8) shall be held within sixty days
 after the date set for the previous presidential election.
-(10) Within seven days after the presidential election, the chairperson of the
-Independent Electoral and Boundaries Commission shall—
-declare the result of the election; and
-deliver a written notiﬁcation of the result to the Chief Justice and the
-incumbent President.
-Death before assuming ofﬁce.
-
---- Chunk 4/4 (296 chars) ---
-
 (10) Within seven days after the presidential election, the chairperson of the
 Independent Electoral and Boundaries Commission shall—
 declare the result of the election; and
@@ -6848,7 +6532,7 @@ Chapter: NINE - THE EXECUTIVE
 Part: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
 
 Article Length: 1017 characters
-Number of Chunks: 2
+Number of Chunks: 1
 
 --------------------------------------------------------------------------------
 FULL ARTICLE TEXT:
@@ -6865,36 +6549,6 @@ Constitution.
 under clause (1) or (2) may be brought against a person, a period of time during
 which the person holds or performs the functions of the ofﬁce of the President shall
 not be taken into account in calculating the period of time prescribed by that law.
-(4) The immunity of the President under this Article shall not extend to a crime
-for which the President may be prosecuted under any treaty to which Kenya is party
-and which prohibits such immunity.
-Removal of President on grounds of incapacity.
-
---------------------------------------------------------------------------------
-CHUNK BREAKDOWN:
---------------------------------------------------------------------------------
-
---- Chunk 1/2 (994 chars) ---
-
-143. (1) Criminal proceedings shall not be instituted or continued in any court
-against the President or a person performing the functions of that ofﬁce, during their
-tenure of ofﬁce.
-(2) Civil proceedings shall not be instituted in any court against the President
-or the person performing the functions of that ofﬁce during their tenure of ofﬁce
-in respect of anything done or not done in the exercise of their powers under this
-Constitution.
-(3) Where provision is made in law limiting the time within which proceedings
-under clause (1) or (2) may be brought against a person, a period of time during
-which the person holds or performs the functions of the ofﬁce of the President shall
-not be taken into account in calculating the period of time prescribed by that law.
-(4) The immunity of the President under this Article shall not extend to a crime
-for which the President may be prosecuted under any treaty to which Kenya is party
-and which prohibits such immunity.
-Removal of President on
-
---- Chunk 2/2 (322 chars) ---
-
-taken into account in calculating the period of time prescribed by that law.
 (4) The immunity of the President under this Article shall not extend to a crime
 for which the President may be prosecuted under any treaty to which Kenya is party
 and which prohibits such immunity.
@@ -6914,7 +6568,7 @@ Chapter: NINE - THE EXECUTIVE
 Part: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
 
 Article Length: 2349 characters
-Number of Chunks: 4
+Number of Chunks: 3
 
 --------------------------------------------------------------------------------
 FULL ARTICLE TEXT:
@@ -6964,7 +6618,7 @@ Removal of President by impeachment.
 CHUNK BREAKDOWN:
 --------------------------------------------------------------------------------
 
---- Chunk 1/4 (993 chars) ---
+--- Chunk 1/3 (993 chars) ---
 
 144. (1) A member of the National Assembly, supported by at least a quarter of
 all the members, may move a motion for the investigation of the President’s physical
@@ -6983,7 +6637,7 @@ regulating the professional practice of medicine;
 one advocate of the High Court nominated by the body which by law is
 responsible for regulating the professional practice of advocates;
 
---- Chunk 2/4 (995 chars) ---
+--- Chunk 2/3 (995 chars) ---
 
 o are qualiﬁed to practise medicine under the laws
 of Kenya, nominated by the body which by law is responsible for
@@ -7003,7 +6657,7 @@ the appointment, report to the Chief Justice and to the Speaker of the National
 Assembly.
 (7) The Speaker shall cause the report of the tribunal to be tabled before
 
---- Chunk 3/4 (961 chars) ---
+--- Chunk 3/3 (961 chars) ---
 
 ke the nomination, by a close
 relative of the President.
@@ -7018,14 +6672,6 @@ the ofﬁce, the Speaker of the National Assembly shall so announce in the Natio
 Assembly.
 (9) If the tribunal reports that the President is incapable of performing the
 functions of the ofﬁce, the National Assembly shall vote on whether to ratify the
-report.
-(10) If a majority of all the members of the National Assembly vote in favour of
-ratifying the report, the President shall cease to hold ofﬁce.
-Removal of President by impeachment.
-
---- Chunk 4/4 (260 chars) ---
-
-of the ofﬁce, the National Assembly shall vote on whether to ratify the
 report.
 (10) If a majority of all the members of the National Assembly vote in favour of
 ratifying the report, the President shall cease to hold ofﬁce.
@@ -7159,7 +6805,7 @@ Chapter: NINE - THE EXECUTIVE
 Part: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
 
 Article Length: 1600 characters
-Number of Chunks: 3
+Number of Chunks: 2
 
 --------------------------------------------------------------------------------
 FULL ARTICLE TEXT:
@@ -7196,7 +6842,7 @@ Functions of the Deputy President.
 CHUNK BREAKDOWN:
 --------------------------------------------------------------------------------
 
---- Chunk 1/3 (995 chars) ---
+--- Chunk 1/2 (995 chars) ---
 
 146. (1) The ofﬁce of President shall become vacant if the holder of the ofﬁce —
 dies;
@@ -7217,7 +6863,7 @@ an election required by clause (2)(b), shall, unless otherwise removed from of�
 under this Constitution, hold ofﬁce until a newly elected President is sworn in
 following the next regularly
 
---- Chunk 2/3 (904 chars) ---
+--- Chunk 2/2 (904 chars) ---
 
 in the ofﬁce of
 President.
@@ -7230,13 +6876,6 @@ person is elected to the ofﬁce of President under clause (2) (b), the Deputy P
 or the person elected, shall be deemed for the purposes of Article 142(2)—
 to have served a full term as President if, at the date on which the person
 assumed ofﬁce, more than two and a half years remain before the date
-of the next regularly scheduled election under Article 136(2)(a); or
-not to have served a term of ofﬁce as President, in any other case.
-Functions of the Deputy President.
-
---- Chunk 3/3 (205 chars) ---
-
-half years remain before the date
 of the next regularly scheduled election under Article 136(2)(a); or
 not to have served a term of ofﬁce as President, in any other case.
 Functions of the Deputy President.
@@ -7285,7 +6924,7 @@ Chapter: NINE - THE EXECUTIVE
 Part: PART 2 - THE PRESIDENT AND DEPUTY PRESIDENT
 
 Article Length: 1674 characters
-Number of Chunks: 3
+Number of Chunks: 2
 
 --------------------------------------------------------------------------------
 FULL ARTICLE TEXT:
@@ -7323,7 +6962,7 @@ Vacancy in the ofﬁce of Deputy President.
 CHUNK BREAKDOWN:
 --------------------------------------------------------------------------------
 
---- Chunk 1/3 (990 chars) ---
+--- Chunk 1/2 (990 chars) ---
 
 148. (1) Each candidate in a presidential election shall nominate a person
 who is qualiﬁed for nomination for election as President, as a candidate for Deputy
@@ -7342,7 +6981,7 @@ the oath or afﬁrmation for the execution of the functions of ofﬁce, as
 prescribed in the Third Schedule.
 (6) The term of ofﬁce of the Deputy President shall run from the date of
 
---- Chunk 2/3 (984 chars) ---
+--- Chunk 2/2 (984 chars) ---
 
 blic.
 (5) The Deputy President-elect assumes ofﬁce by taking and subscribing to—
@@ -7357,14 +6996,6 @@ on the Deputy President assuming the ofﬁce of President; or
 on resignation, death or removal from ofﬁce of the Deputy President.
 (7) The Deputy President may resign from ofﬁce at any time by notice, in writing,
 addressed to the President and the resignation shall take effect on the date and at
-the time speciﬁed in the notice, if any, or if a date is not speciﬁed, at noon on the
-day after the notice is delivered.
-(8) A person shall not hold ofﬁce as Deputy President for more than two terms.
-Vacancy in the ofﬁce of Deputy President.
-
---- Chunk 3/3 (284 chars) ---
-
-ation shall take effect on the date and at
 the time speciﬁed in the notice, if any, or if a date is not speciﬁed, at noon on the
 day after the notice is delivered.
 (8) A person shall not hold ofﬁce as Deputy President for more than two terms.
@@ -7482,7 +7113,7 @@ Chapter: NINE - THE EXECUTIVE
 Part: PART 3 - THE CABINET
 
 Article Length: 2466 characters
-Number of Chunks: 4
+Number of Chunks: 3
 
 --------------------------------------------------------------------------------
 FULL ARTICLE TEXT:
@@ -7543,7 +7174,7 @@ Decisions, responsibility and accountability of the Cabinet.
 CHUNK BREAKDOWN:
 --------------------------------------------------------------------------------
 
---- Chunk 1/4 (992 chars) ---
+--- Chunk 1/3 (992 chars) ---
 
 152. (1) The Cabinet consists of—
 the President;
@@ -7568,7 +7199,7 @@ adopted under clauses (6) to (10).
 (6) A member of the National Assembly, supported by at least one-quarter of
 all the members of the Assembly, may propose a motion
 
---- Chunk 2/4 (991 chars) ---
+--- Chunk 2/3 (991 chars) ---
 
 assign a Cabinet Secretary;
 may dismiss a Cabinet Secretary; and
@@ -7591,7 +7222,7 @@ whether it ﬁnds the allegations against the Cabinet Secretary to be
 substantiated.
 (8) The Cabinet
 
---- Chunk 3/4 (998 chars) ---
+--- Chunk 3/3 (1082 chars) ---
 
 the National Assembly—
 the Assembly shall appoint a select committee comprising eleven of its
@@ -7607,16 +7238,6 @@ substantiated, the National Assembly shall—
 afford the Cabinet Secretary an opportunity to be heard; and
 (ii)
 vote whether to approve the resolution requiring the Cabinet
-Secretary to be dismissed.
-(10) If a resolution under clause (9)(b)(ii) requiring the President to dismiss
-a Cabinet Secretary is supported by a majority of the members of the National
-Assembly—
-the Speaker shall promptly deliver the resolution to the President; and
-the President shall dismiss
-
---- Chunk 4/4 (384 chars) ---
-
-binet
 Secretary to be dismissed.
 (10) If a resolution under clause (9)(b)(ii) requiring the President to dismiss
 a Cabinet Secretary is supported by a majority of the members of the National
@@ -7741,7 +7362,7 @@ Chapter: NINE - THE EXECUTIVE
 Part: PART 4 - OTHER OFFICES
 
 Article Length: 1129 characters
-Number of Chunks: 2
+Number of Chunks: 1
 
 --------------------------------------------------------------------------------
 FULL ARTICLE TEXT:
@@ -7760,42 +7381,6 @@ criminal proceedings; and
 shall perform any other functions conferred on the ofﬁce by an Act of
 Parliament or by the President.
 (5) The Attorney-General shall have authority, with the leave of the court, to
-appear as a friend of the court in any civil proceedings to which the Government is
-not a party.
-(6) The Attorney-General shall promote, protect and uphold the rule of law and
-defend the public interest.
-(7) The powers of the Attorney-General may be exercised in person or by
-subordinate ofﬁcers acting in accordance with general or special instructions.
-Director of Public Prosecutions.
-
---------------------------------------------------------------------------------
-CHUNK BREAKDOWN:
---------------------------------------------------------------------------------
-
---- Chunk 1/2 (991 chars) ---
-
-156. (1) There is established the ofﬁce of Attorney-General.
-(2) The Attorney-General shall be nominated by the President and, with the
-approval of the National Assembly, appointed by the President.
-(3) The qualiﬁcations for appointment as Attorney-General are the same as for
-appointment to the ofﬁce of Chief Justice.
-(4) The Attorney-General—
-is the principal legal adviser to the Government;
-shall represent the national government in court or in any other legal
-proceedings to which the national government is a party, other than
-criminal proceedings; and
-shall perform any other functions conferred on the ofﬁce by an Act of
-Parliament or by the President.
-(5) The Attorney-General shall have authority, with the leave of the court, to
-appear as a friend of the court in any civil proceedings to which the Government is
-not a party.
-(6) The Attorney-General shall promote, protect and uphold the rule of law and
-defend the public interest.
-(7) The powers of the Attorney-General may be
-
---- Chunk 2/2 (438 chars) ---
-
-ll have authority, with the leave of the court, to
 appear as a friend of the court in any civil proceedings to which the Government is
 not a party.
 (6) The Attorney-General shall promote, protect and uphold the rule of law and
@@ -8072,7 +7657,7 @@ Chapter: TEN - JUDICIARY
 Part: PART 1 - JUDICIAL AUTHORITY AND LEGAL SYSTEM
 
 Article Length: 1005 characters
-Number of Chunks: 2
+Number of Chunks: 1
 
 --------------------------------------------------------------------------------
 FULL ARTICLE TEXT:
@@ -8091,42 +7676,6 @@ justice shall be administered without undue regard to procedural
 technicalities; and
 the purpose and principles of this Constitution shall be protected and
 promoted.
-(3) Traditional dispute resolution mechanisms shall not be used in a way that—
-contravenes the Bill of Rights;
-is repugnant to justice and morality or results in outcomes that are
-repugnant to justice or morality; or
-is inconsistent with this Constitution or any written law.
-Independence of the Judiciary.
-
---------------------------------------------------------------------------------
-CHUNK BREAKDOWN:
---------------------------------------------------------------------------------
-
---- Chunk 1/2 (994 chars) ---
-
-159. (1) Judicial authority is derived from the people and vests in, and shall be
-exercised by, the courts and tribunals established by or under this Constitution.
-(2) In exercising judicial authority, the courts and tribunals shall be guided by
-the following principles—
-justice shall be done to all, irrespective of status;
-justice shall not be delayed;
-alternative forms of dispute resolution including reconciliation,
-mediation, arbitration and traditional dispute resolution mechanisms
-shall be promoted, subject to clause (3);
-justice shall be administered without undue regard to procedural
-technicalities; and
-the purpose and principles of this Constitution shall be protected and
-promoted.
-(3) Traditional dispute resolution mechanisms shall not be used in a way that—
-contravenes the Bill of Rights;
-is repugnant to justice and morality or results in outcomes that are
-repugnant to justice or morality; or
-is inconsistent with this Constitution or any written law.
-Independence of the
-
---- Chunk 2/2 (311 chars) ---
-
-ted.
 (3) Traditional dispute resolution mechanisms shall not be used in a way that—
 contravenes the Bill of Rights;
 is repugnant to justice and morality or results in outcomes that are
@@ -8246,7 +7795,7 @@ Chapter: TEN - JUDICIARY
 Part: PART 2 - SUPERIOR COURTS
 
 Article Length: 1693 characters
-Number of Chunks: 3
+Number of Chunks: 2
 
 --------------------------------------------------------------------------------
 FULL ARTICLE TEXT:
@@ -8291,7 +7840,7 @@ Court of Appeal.
 CHUNK BREAKDOWN:
 --------------------------------------------------------------------------------
 
---- Chunk 1/3 (998 chars) ---
+--- Chunk 1/2 (998 chars) ---
 
 163. (1) There is established the Supreme Court, which shall consist of—
 the Chief Justice, who shall be the president of the court;
@@ -8316,7 +7865,7 @@ Constitution; and
 in any other case in which the Supreme Court, or the Court of Appeal,
 certiﬁes
 
---- Chunk 2/3 (995 chars) ---
+--- Chunk 2/2 (995 chars) ---
 
 r court or tribunal as prescribed by national legislation.
 (4) Appeals shall lie from the Court of Appeal to the Supreme Court—
@@ -8330,16 +7879,6 @@ the Supreme Court, and either afﬁrmed, varied or overturned.
 (6) The Supreme Court may give an advisory opinion at the request of the
 national government, any State organ, or any county government with respect to
 any matter concerning county government.
-(7) All courts, other than the Supreme Court, are bound by the decisions of the
-Supreme Court.
-(8) The Supreme Court shall make rules for the exercise of its jurisdiction.
-(9) An Act of Parliament may make further provision for the operation of the
-Supreme Court.
-Court of Appeal.
-
---- Chunk 3/3 (295 chars) ---
-
-ty government.
 (7) All courts, other than the Supreme Court, are bound by the decisions of the
 Supreme Court.
 (8) The Supreme Court shall make rules for the exercise of its jurisdiction.
@@ -8393,7 +7932,7 @@ Chapter: TEN - JUDICIARY
 Part: PART 2 - SUPERIOR COURTS
 
 Article Length: 2540 characters
-Number of Chunks: 4
+Number of Chunks: 3
 
 --------------------------------------------------------------------------------
 FULL ARTICLE TEXT:
@@ -8452,7 +7991,7 @@ Appointment of Chief Justice, Deputy Chief Justice and other judges.
 CHUNK BREAKDOWN:
 --------------------------------------------------------------------------------
 
---- Chunk 1/4 (998 chars) ---
+--- Chunk 1/3 (998 chars) ---
 
 165. (1) There is established the High Court, which—
 shall consist of the number of judges prescribed by an Act of
@@ -8474,7 +8013,7 @@ Constitution including the determination of—
 the question whether any law is inconsistent with or in
 contravention
 
---- Chunk 2/4 (997 chars) ---
+--- Chunk 2/3 (997 chars) ---
 
 s Constitution to consider the removal of a person from ofﬁce,
 other than a tribunal appointed under Article 144;
@@ -8498,7 +8037,7 @@ legislation.
 (4) Any matter certiﬁed by the court as raising a substantial question of law under
 clause (3)(b) or (d) shall be heard by an uneven number of judges, being not
 
---- Chunk 3/4 (994 chars) ---
+--- Chunk 3/3 (1144 chars) ---
 
 question relating to conﬂict of laws under Article 191; and
 any other jurisdiction, original or appellate, conferred on it by
@@ -8513,14 +8052,6 @@ falling within the jurisdiction of the courts contemplated in Article
 162(2).
 (6) The High Court has supervisory jurisdiction over the subordinate courts and
 over any person, body or authority exercising a judicial or quasi-judicial function,
-but not over a superior court.
-(7) For the purposes of clause (6), the High Court may call for the record of any
-proceedings before any subordinate court or person, body or authority referred to in
-clause (6), and may make any order or give any
-
---- Chunk 4/4 (450 chars) ---
-
-ority exercising a judicial or quasi-judicial function,
 but not over a superior court.
 (7) For the purposes of clause (6), the High Court may call for the record of any
 proceedings before any subordinate court or person, body or authority referred to in
@@ -8542,7 +8073,7 @@ Chapter: TEN - JUDICIARY
 Part: PART 2 - SUPERIOR COURTS
 
 Article Length: 2109 characters
-Number of Chunks: 4
+Number of Chunks: 3
 
 --------------------------------------------------------------------------------
 FULL ARTICLE TEXT:
@@ -8591,7 +8122,7 @@ Tenure of ofﬁce of the Chief Justice and other judges.
 CHUNK BREAKDOWN:
 --------------------------------------------------------------------------------
 
---- Chunk 1/4 (998 chars) ---
+--- Chunk 1/3 (998 chars) ---
 
 166. (1) The President shall appoint—
 the Chief Justice and the Deputy Chief Justice, in accordance with the
@@ -8612,7 +8143,7 @@ from among persons who have—
 at least ﬁfteen years’ experience as a superior court judge; or
 at least ﬁfteen years’ experience
 
---- Chunk 2/4 (992 chars) ---
+--- Chunk 2/3 (992 chars) ---
 
 onwealth common-law jurisdiction; and
 have a high moral character, integrity and impartiality.
@@ -8633,7 +8164,7 @@ held the qualiﬁcations mentioned in paragraphs (a) and (b) for a period
 amounting, in the aggregate, to ten years.
 (5) Each judge of the High Court shall be appointed from among
 
---- Chunk 3/4 (719 chars) ---
+--- Chunk 3/3 (719 chars) ---
 
 en years’ experience as a distinguished academic or legal
 practitioner or such experience in other relevant legal ﬁeld; or
@@ -8648,10 +8179,6 @@ practitioner or such experience in other relevant legal ﬁeld; or
 held the qualiﬁcations speciﬁed in paragraphs (a) and (b) for a period
 amounting, in the aggregate, to ten years.
 Tenure of ofﬁce of the Chief Justice and other judges.
-
---- Chunk 4/4 (19 chars) ---
-
-e and other judges.
 
 
 ================================================================================
@@ -8703,7 +8230,7 @@ Chapter: TEN - JUDICIARY
 Part: PART 2 - SUPERIOR COURTS
 
 Article Length: 3058 characters
-Number of Chunks: 5
+Number of Chunks: 4
 
 --------------------------------------------------------------------------------
 FULL ARTICLE TEXT:
@@ -8774,7 +8301,7 @@ appointed under this Article.
 CHUNK BREAKDOWN:
 --------------------------------------------------------------------------------
 
---- Chunk 1/5 (996 chars) ---
+--- Chunk 1/4 (996 chars) ---
 
 168. (1) A judge of a superior court may be removed from ofﬁce only on the
 grounds of—
@@ -8797,7 +8324,7 @@ petition to the President.
 (5) The President shall, within fourteen days after receiving the petition, suspend
 the judge from ofﬁce and,
 
---- Chunk 2/5 (995 chars) ---
+--- Chunk 2/4 (995 chars) ---
 
 (4) The Judicial Service Commission shall consider the petition and, if it is
 satisﬁed that the petition discloses a ground for removal under clause (1), send the
@@ -8820,7 +8347,7 @@ hold or have held ofﬁce as a judge of a superior court, or who are
 qualiﬁed to be appointed as such but who, in either case, have
 not been members of the Judicial Service
 
---- Chunk 3/5 (993 chars) ---
+--- Chunk 3/4 (993 chars) ---
 
 udge other than the Chief Justice, appoint a tribunal
 consisting of—
@@ -8843,7 +8370,7 @@ inquire into the matter expeditiously and report on the facts and make
 binding recommendations to the President.
 (8) A judge who is
 
---- Chunk 4/5 (973 chars) ---
+--- Chunk 4/4 (973 chars) ---
 
 fﬁce.
 (7) A tribunal appointed under clause (5) shall—
@@ -8859,14 +8386,6 @@ tribunal on the later of—
 the expiry of the time allowed for an appeal under clause (8), if no such
 appeal is taken; or
 the completion of all rights of appeal in any proceedings allowed for
-under clause (8), if such an appeal is taken and the ﬁnal order in the
-matter afﬁrms the tribunal’s recommendations.
-(10) Parliament shall enact legislation providing for the procedure of a tribunal
-appointed under this Article.
-
---- Chunk 5/5 (273 chars) ---
-
-hts of appeal in any proceedings allowed for
 under clause (8), if such an appeal is taken and the ﬁnal order in the
 matter afﬁrms the tribunal’s recommendations.
 (10) Parliament shall enact legislation providing for the procedure of a tribunal
@@ -9064,7 +8583,7 @@ Chapter: TEN - JUDICIARY
 Part: PART 4 - JUDICIAL SERVICE COMMISSION
 
 Article Length: 1112 characters
-Number of Chunks: 2
+Number of Chunks: 1
 
 --------------------------------------------------------------------------------
 FULL ARTICLE TEXT:
@@ -9083,45 +8602,6 @@ or otherwise discipline registrars, magistrates, other judicial ofﬁcers
 and other staff of the Judiciary, in the manner prescribed by an Act of
 Parliament;
 prepare and implement programmes for the continuing education and
-training of judges and judicial ofﬁcers; and
-advise the national government on improving the efﬁciency of the
-administration of justice.
-(2) In the performance of its functions, the Commission shall be guided by the
-following—
-competitiveness and transparent processes of appointment of judicial
-ofﬁcers and other staff of the judiciary; and
-the promotion of gender equality.
-Judiciary Fund.
-
---------------------------------------------------------------------------------
-CHUNK BREAKDOWN:
---------------------------------------------------------------------------------
-
---- Chunk 1/2 (992 chars) ---
-
-172. (1) The Judicial Service Commission shall promote and facilitate the
-independence and accountability of the judiciary and the efﬁcient, effective and
-transparent administration of justice and shall—
-recommend to the President persons for appointment as judges;
-review and make recommendations on the conditions of service of—
-judges and judicial ofﬁcers, other than their remuneration; and
-(ii)
-the staff of the Judiciary;
-appoint, receive complaints against, investigate and remove from ofﬁce
-or otherwise discipline registrars, magistrates, other judicial ofﬁcers
-and other staff of the Judiciary, in the manner prescribed by an Act of
-Parliament;
-prepare and implement programmes for the continuing education and
-training of judges and judicial ofﬁcers; and
-advise the national government on improving the efﬁciency of the
-administration of justice.
-(2) In the performance of its functions, the Commission shall be guided by the
-following—
-competitiveness and transparent processes of
-
---- Chunk 2/2 (420 chars) ---
-
-the continuing education and
 training of judges and judicial ofﬁcers; and
 advise the national government on improving the efﬁciency of the
 administration of justice.
@@ -9272,7 +8752,7 @@ Chapter: ELEVEN - DEVOLVED GOVERNMENT
 Part: PART 2 - COUNTY GOVERNMENTS
 
 Article Length: 1052 characters
-Number of Chunks: 2
+Number of Chunks: 1
 
 --------------------------------------------------------------------------------
 FULL ARTICLE TEXT:
@@ -9291,39 +8771,6 @@ disabilities and the youth, prescribed by an Act of Parliament; and
 the Speaker, who is an ex ofﬁcio member.
 (2) The members contemplated in clause (1)(b) and (c) shall, in each case, be
 nominated by political parties in proportion to the seats received in that election in
-that county by each political party under paragraph (a) in accordance with Article 90.
-(3) The ﬁlling of special seats under clause (1)(b) shall be determined after
-declaration of elected members from each ward.
-(4) A county assembly is elected for a term of ﬁve years.
-Speaker of a county assembly.
-
---------------------------------------------------------------------------------
-CHUNK BREAKDOWN:
---------------------------------------------------------------------------------
-
---- Chunk 1/2 (997 chars) ---
-
-177. (1) A county assembly consists of—
-members elected by the registered voters of the wards, each ward
-constituting a single member constituency, on the same day as a
-general election of Members of Parliament, being the second Tuesday
-in August, in every ﬁfth year;
-the number of special seat members necessary to ensure that no more
-than two-thirds of the membership of the assembly are of the same
-gender;
-the number of members of marginalised groups, including persons with
-disabilities and the youth, prescribed by an Act of Parliament; and
-the Speaker, who is an ex ofﬁcio member.
-(2) The members contemplated in clause (1)(b) and (c) shall, in each case, be
-nominated by political parties in proportion to the seats received in that election in
-that county by each political party under paragraph (a) in accordance with Article 90.
-(3) The ﬁlling of special seats under clause (1)(b) shall be determined after
-declaration of elected members from each ward.
-(4) A county assembly is elected
-
---- Chunk 2/2 (355 chars) ---
-
-in proportion to the seats received in that election in
 that county by each political party under paragraph (a) in accordance with Article 90.
 (3) The ﬁlling of special seats under clause (1)(b) shall be determined after
 declaration of elected members from each ward.
@@ -9563,7 +9010,7 @@ Chapter: ELEVEN - DEVOLVED GOVERNMENT
 Part: PART 2 - COUNTY GOVERNMENTS
 
 Article Length: 1684 characters
-Number of Chunks: 3
+Number of Chunks: 2
 
 --------------------------------------------------------------------------------
 FULL ARTICLE TEXT:
@@ -9603,7 +9050,7 @@ Functions of county executive committees.
 CHUNK BREAKDOWN:
 --------------------------------------------------------------------------------
 
---- Chunk 1/3 (999 chars) ---
+--- Chunk 1/2 (999 chars) ---
 
 182. (1) The ofﬁce of the county governor shall become vacant if the holder of
 the ofﬁce—
@@ -9625,7 +9072,7 @@ or
 not to have served a term of ofﬁce as county governor, in any other case.
 (4) If a vacancy occurs in the
 
---- Chunk 2/3 (984 chars) ---
+--- Chunk 2/2 (984 chars) ---
 
 term as county governor if, at the date on which the
 person assumed ofﬁce, more than two and a half years remain before
@@ -9639,14 +9086,6 @@ assembly shall act as county governor.
 election to the ofﬁce of county governor shall be held within sixty days after the
 speaker assumes the ofﬁce of county governor.
 (6) A person who assumes the ofﬁce of county governor under this Article shall,
-unless otherwise removed from ofﬁce under this Constitution, hold ofﬁce until the
-newly elected county governor assumes ofﬁce following the next election held under
-Article 180(1).
-Functions of county executive committees.
-
---- Chunk 3/3 (285 chars) ---
-
-assumes the ofﬁce of county governor under this Article shall,
 unless otherwise removed from ofﬁce under this Constitution, hold ofﬁce until the
 newly elected county governor assumes ofﬁce following the next election held under
 Article 180(1).
@@ -9946,7 +9385,7 @@ Chapter: ELEVEN - DEVOLVED GOVERNMENT
 Part: PART 5 - RELATIONSHIP BETWEEN GOVERNMENTS
 
 Article Length: 1403 characters
-Number of Chunks: 3
+Number of Chunks: 2
 
 --------------------------------------------------------------------------------
 FULL ARTICLE TEXT:
@@ -9983,7 +9422,7 @@ Conﬂict of laws.
 CHUNK BREAKDOWN:
 --------------------------------------------------------------------------------
 
---- Chunk 1/3 (998 chars) ---
+--- Chunk 1/2 (998 chars) ---
 
 190. (1) Parliament shall by legislation ensure that county governments have
 adequate support to enable them to perform their functions.
@@ -10003,7 +9442,7 @@ if necessary, to assume responsibility for the relevant functions.
 (5) The legislation under clause (3) shall—
 require notice to be given to a county government of any measures
 
---- Chunk 2/3 (705 chars) ---
+--- Chunk 2/2 (705 chars) ---
 
 nctions are performed and that it operates a ﬁnancial management
 system that complies with the prescribed requirements; and
@@ -10020,10 +9459,6 @@ provide for a process by which the Senate may bring the intervention
 by the national government to an end.
 Conﬂict of laws.
 
---- Chunk 3/3 (5 chars) ---
-
-laws.
-
 
 ================================================================================
 
@@ -10038,7 +9473,7 @@ Chapter: ELEVEN - DEVOLVED GOVERNMENT
 Part: PART 5 - RELATIONSHIP BETWEEN GOVERNMENTS
 
 Article Length: 2103 characters
-Number of Chunks: 4
+Number of Chunks: 3
 
 --------------------------------------------------------------------------------
 FULL ARTICLE TEXT:
@@ -10092,7 +9527,7 @@ of the inconsistency.
 CHUNK BREAKDOWN:
 --------------------------------------------------------------------------------
 
---- Chunk 1/4 (983 chars) ---
+--- Chunk 1/3 (983 chars) ---
 
 191. (1) This Article applies to conﬂicts between national and county legislation
 in respect of matters falling within the concurrent jurisdiction of both levels of
@@ -10113,7 +9548,7 @@ the national legislation provides for a matter that, to be dealt with
 effectively, requires uniformity across the nation, and the national
 legislation provides that uniformity by
 
---- Chunk 2/4 (999 chars) ---
+--- Chunk 2/3 (999 chars) ---
 
 legislation provides for a matter that cannot be regulated
 effectively by legislation enacted by the individual counties;
@@ -10141,7 +9576,7 @@ circumstances contemplated in clause (2) apply.
 (5) In considering an apparent conﬂict between legislation of different levels of
 government,
 
---- Chunk 3/4 (721 chars) ---
+--- Chunk 3/3 (721 chars) ---
 
 or equal access to
 government services; or
@@ -10155,10 +9590,6 @@ avoids a conﬂict to an alternative interpretation that results in conﬂict.
 (6) A decision by a court that a provision of legislation of one level of government
 prevails over a provision of legislation of another level of government does not
 invalidate the other provision, but the other provision is inoperative to the extent
-of the inconsistency.
-
---- Chunk 4/4 (21 chars) ---
-
 of the inconsistency.
 
 
@@ -10304,7 +9735,7 @@ Chapter: ELEVEN - DEVOLVED GOVERNMENT
 Part: PART 7 - GENERAL
 
 Article Length: 1128 characters
-Number of Chunks: 2
+Number of Chunks: 1
 
 --------------------------------------------------------------------------------
 FULL ARTICLE TEXT:
@@ -10325,44 +9756,6 @@ party, or is deemed to have resigned from the party as determined
 in accordance with the legislation contemplated in clause (2); or
 (ii)
 as an independent candidate, the member joins a political party;
-at the end of the term of the assembly; or
-if the member becomes disqualiﬁed for election on grounds speciﬁed
-in Article 193(2).
-(2) Parliament shall enact legislation providing for the circumstances under
-which a member of a political party shall be deemed, for the purposes of clause (1)
-(e), to have resigned from the party.
-County assembly power to summon witnesses.
-
---------------------------------------------------------------------------------
-CHUNK BREAKDOWN:
---------------------------------------------------------------------------------
-
---- Chunk 1/2 (999 chars) ---
-
-194. (1) The ofﬁce of a member of a county assembly becomes vacant—
-if the member dies;
-if the member is absent from eight sittings of the assembly without
-permission, in writing, of the speaker of the assembly, and is unable to
-offer satisfactory explanation for the absence;
-if the member is removed from ofﬁce under this Constitution or
-legislation enacted under Article 80;
-if the member resigns in writing addressed to the speaker of the
-assembly;
-if, having been elected to the assembly—
-as a member of a political party, the member resigns from the
-party, or is deemed to have resigned from the party as determined
-in accordance with the legislation contemplated in clause (2); or
-(ii)
-as an independent candidate, the member joins a political party;
-at the end of the term of the assembly; or
-if the member becomes disqualiﬁed for election on grounds speciﬁed
-in Article 193(2).
-(2) Parliament shall enact legislation providing for the circumstances under
-which a member of a political party
-
---- Chunk 2/2 (429 chars) ---
-
-independent candidate, the member joins a political party;
 at the end of the term of the assembly; or
 if the member becomes disqualiﬁed for election on grounds speciﬁed
 in Article 193(2).
@@ -10628,7 +10021,7 @@ Chapter: TWELVE - PUBLIC FINANCE
 Part: [Not within a PART]
 
 Article Length: 1483 characters
-Number of Chunks: 3
+Number of Chunks: 2
 
 --------------------------------------------------------------------------------
 FULL ARTICLE TEXT:
@@ -10666,7 +10059,7 @@ Equalisation Fund.
 CHUNK BREAKDOWN:
 --------------------------------------------------------------------------------
 
---- Chunk 1/3 (991 chars) ---
+--- Chunk 1/2 (991 chars) ---
 
 203. (1) The following criteria shall be taken into account in determining
 the equitable shares provided for under Article 202 and in all national legislation
@@ -10688,7 +10081,7 @@ incentives for each county to optimise its capacity to raise revenue;
 the desirability of stable and predictable allocations of revenue; and
 the need for ﬂexibility in
 
---- Chunk 2/3 (792 chars) ---
+--- Chunk 2/2 (792 chars) ---
 
 for afﬁrmative action in respect of disadvantaged areas and
 groups;
@@ -10702,12 +10095,6 @@ that is allocated to county governments shall be not less than ﬁfteen per cent
 revenue collected by the national government.
 (3) The amount referred to in clause (2) shall be calculated on the basis of
 the most recent audited accounts of revenue received, as approved by the National
-Assembly.
-Equalisation Fund.
-
---- Chunk 3/3 (92 chars) ---
-
-dited accounts of revenue received, as approved by the National
 Assembly.
 Equalisation Fund.
 
@@ -10855,7 +10242,7 @@ Chapter: TWELVE - PUBLIC FINANCE
 Part: PART 2 - OTHER PUBLIC FUNDS
 
 Article Length: 1035 characters
-Number of Chunks: 2
+Number of Chunks: 1
 
 --------------------------------------------------------------------------------
 FULL ARTICLE TEXT:
@@ -10873,40 +10260,6 @@ in accordance with an appropriation by an Act of Parliament;
 in accordance with Article 222 or 223; or
 as a charge against the Fund as authorised by this Constitution or an
 Act of Parliament.
-(3) Money shall not be withdrawn from any national public fund other than the
-Consolidated Fund, unless the withdrawal of the money has been authorised by an
-Act of Parliament.
-(4) Money shall not be withdrawn from the Consolidated Fund unless the
-Controller of Budget has approved the withdrawal.
-Revenue Funds for county governments.
-
---------------------------------------------------------------------------------
-CHUNK BREAKDOWN:
---------------------------------------------------------------------------------
-
---- Chunk 1/2 (985 chars) ---
-
-206. (1) There is established the Consolidated Fund into which shall be paid all
-money raised or received by or on behalf of the national government, except money
-that—
-is reasonably excluded from the Fund by an Act of Parliament and
-payable into another public fund established for a speciﬁc purpose; or
-may, under an Act of Parliament, be retained by the State organ that
-received it for the purpose of defraying the expenses of the State organ.
-(2) Money may be withdrawn from the Consolidated Fund only—
-in accordance with an appropriation by an Act of Parliament;
-in accordance with Article 222 or 223; or
-as a charge against the Fund as authorised by this Constitution or an
-Act of Parliament.
-(3) Money shall not be withdrawn from any national public fund other than the
-Consolidated Fund, unless the withdrawal of the money has been authorised by an
-Act of Parliament.
-(4) Money shall not be withdrawn from the Consolidated Fund unless the
-Controller of Budget has approved the
-
---- Chunk 2/2 (350 chars) ---
-
-of Parliament.
 (3) Money shall not be withdrawn from any national public fund other than the
 Consolidated Fund, unless the withdrawal of the money has been authorised by an
 Act of Parliament.
@@ -11211,7 +10564,7 @@ Chapter: TWELVE - PUBLIC FINANCE
 Part: PART 4 - REVENUE ALLOCATION
 
 Article Length: 1104 characters
-Number of Chunks: 2
+Number of Chunks: 1
 
 --------------------------------------------------------------------------------
 FULL ARTICLE TEXT:
@@ -11238,43 +10591,6 @@ the National Assembly, the national executive, county assemblies and county
 executives.
 Division of revenue.
 
---------------------------------------------------------------------------------
-CHUNK BREAKDOWN:
---------------------------------------------------------------------------------
-
---- Chunk 1/2 (999 chars) ---
-
-216. (1) The principal function of the Commission on Revenue Allocation is to
-make recommendations concerning the basis for the equitable sharing of revenue
-raised by the national government—
-between the national and county governments; and
-among the county governments.
-(2) The Commission shall also make recommendations on other matters
-concerning the ﬁnancing of, and ﬁnancial management by, county governments, as
-required by this Constitution and national legislation.
-(3) In formulating recommendations, the Commission shall seek—
-to promote and give effect to the criteria set out in Article 203(1);
-when appropriate, to deﬁne and enhance the revenue sources of the
-national and county governments; and
-to encourage ﬁscal responsibility.
-(4) The Commission shall determine, publish and regularly review a policy in
-which it sets out the criteria by which to identify the marginalised areas for purposes
-of Article 204(2).
-(5) The Commission shall submit its recommendations to the Senate,
-the
-
---- Chunk 2/2 (405 chars) ---
-
-ments; and
-to encourage ﬁscal responsibility.
-(4) The Commission shall determine, publish and regularly review a policy in
-which it sets out the criteria by which to identify the marginalised areas for purposes
-of Article 204(2).
-(5) The Commission shall submit its recommendations to the Senate,
-the National Assembly, the national executive, county assemblies and county
-executives.
-Division of revenue.
-
 
 ================================================================================
 
@@ -11289,7 +10605,7 @@ Chapter: TWELVE - PUBLIC FINANCE
 Part: PART 4 - REVENUE ALLOCATION
 
 Article Length: 2416 characters
-Number of Chunks: 4
+Number of Chunks: 3
 
 --------------------------------------------------------------------------------
 FULL ARTICLE TEXT:
@@ -11345,7 +10661,7 @@ Annual Division and Allocation of Revenue Bills.
 CHUNK BREAKDOWN:
 --------------------------------------------------------------------------------
 
---- Chunk 1/4 (997 chars) ---
+--- Chunk 1/3 (997 chars) ---
 
 217. (1) Once every ﬁve years, the Senate shall, by resolution, determine the
 basis for allocating among the counties the share of national revenue that is annually
@@ -11366,7 +10682,7 @@ Assembly.
 the National Assembly may consider the resolution, and vote to approve it, with or
 without amendments, or to
 
---- Chunk 2/4 (998 chars) ---
+--- Chunk 2/3 (998 chars) ---
 
 der clause (1), the
 Speaker of the Senate shall refer the resolution to the Speaker of the National
@@ -11391,7 +10707,7 @@ approved, in any other case.
 rejects the resolution, the Senate, at its option, may either—
 adopt a new
 
---- Chunk 3/4 (991 chars) ---
+--- Chunk 3/3 (1020 chars) ---
 
 the members of the
 Assembly vote against it, irrespective whether it has ﬁrst been
@@ -11407,15 +10723,6 @@ Houses of Parliament for mediation under Article 113, applied with the
 necessary modiﬁcations.
 (7) A resolution under this Article that is approved under clause (5) shall be
 binding until a subsequent resolution has been approved.
-(8) Despite clause (1), the Senate may, by resolution supported by at least two-
-thirds of its members, amend a resolution at any time after it has been approved.
-(9) Clause (2) to (8), with the necessary modiﬁcations, apply to a resolution under
-clause (8).
-Annual Division and
-
---- Chunk 4/4 (329 chars) ---
-
-on has been approved.
 (8) Despite clause (1), the Senate may, by resolution supported by at least two-
 thirds of its members, amend a resolution at any time after it has been approved.
 (9) Clause (2) to (8), with the necessary modiﬁcations, apply to a resolution under
@@ -11534,7 +10841,7 @@ Chapter: TWELVE - PUBLIC FINANCE
 Part: PART 5 - BUDGETS AND SPENDING
 
 Article Length: 1809 characters
-Number of Chunks: 3
+Number of Chunks: 2
 
 --------------------------------------------------------------------------------
 FULL ARTICLE TEXT:
@@ -11572,7 +10879,7 @@ Expenditure before annual budget is passed.
 CHUNK BREAKDOWN:
 --------------------------------------------------------------------------------
 
---- Chunk 1/3 (987 chars) ---
+--- Chunk 1/2 (987 chars) ---
 
 221. (1) At least two months before the end of each ﬁnancial year, the Cabinet
 Secretary responsible for ﬁnance shall submit to the National Assembly estimates of
@@ -11590,7 +10897,7 @@ expenditure, a committee of the Assembly shall discuss and review the estimates
 and make recommendations to the Assembly.
 (5) In discussing and reviewing the estimates, the committee shall
 
---- Chunk 2/3 (999 chars) ---
+--- Chunk 2/2 (1122 chars) ---
 
 nder Articles 127 and 173 respectively.
 (4) Before the National Assembly considers the estimates of revenue and
@@ -11602,15 +10909,6 @@ account when the committee makes its recommendations to the National Assembly.
 (6) When the estimates of national government expenditure, and the estimates
 of expenditure for the Judiciary and Parliament have been approved by the National
 Assembly, they shall be included in an Appropriation Bill, which shall be introduced
-into the National Assembly to authorise the withdrawal from the Consolidated Fund
-of the money needed for the expenditure, and for the appropriation of that money
-for the purposes mentioned in the Bill.
-(7) The Appropriation Bill mentioned in clause (6) shall not include expenditures
-that are
-
---- Chunk 3/3 (423 chars) ---
-
-oduced
 into the National Assembly to authorise the withdrawal from the Consolidated Fund
 of the money needed for the expenditure, and for the appropriation of that money
 for the purposes mentioned in the Bill.
@@ -11764,7 +11062,7 @@ Chapter: TWELVE - PUBLIC FINANCE
 Part: PART 6 - CONTROL OF PUBLIC MONEY
 
 Article Length: 1577 characters
-Number of Chunks: 3
+Number of Chunks: 2
 
 --------------------------------------------------------------------------------
 FULL ARTICLE TEXT:
@@ -11802,7 +11100,7 @@ Accounts and audit of public entities.
 CHUNK BREAKDOWN:
 --------------------------------------------------------------------------------
 
---- Chunk 1/3 (986 chars) ---
+--- Chunk 1/2 (986 chars) ---
 
 225. (1) An Act of Parliament shall provide for the establishment, functions and
 responsibilities of the national Treasury.
@@ -11820,7 +11118,7 @@ transfer of more than ﬁfty per cent of funds due to a county government.
 shall not stop the transfer of funds for more than sixty days; and
 may be enforced immediately, but will lapse retrospectively
 
---- Chunk 2/3 (891 chars) ---
+--- Chunk 2/2 (891 chars) ---
 
 use (3) may not stop the
 transfer of more than ﬁfty per cent of funds due to a county government.
@@ -11836,13 +11134,6 @@ unless—
 the Controller of Budget has presented a report on the matter to
 Parliament; and
 the public entity has been given an opportunity to answer the
-allegations against it, and to state its case, before the relevant
-parliamentary committee.
-Accounts and audit of public entities.
-
---- Chunk 3/3 (191 chars) ---
-
-he public entity has been given an opportunity to answer the
 allegations against it, and to state its case, before the relevant
 parliamentary committee.
 Accounts and audit of public entities.
@@ -12013,7 +11304,7 @@ Chapter: TWELVE - PUBLIC FINANCE
 Part: PART 7 - FINANCIAL OFFICERS AND INSTITUTIONS
 
 Article Length: 1610 characters
-Number of Chunks: 3
+Number of Chunks: 2
 
 --------------------------------------------------------------------------------
 FULL ARTICLE TEXT:
@@ -12055,7 +11346,7 @@ Salaries and Remuneration Commission.
 CHUNK BREAKDOWN:
 --------------------------------------------------------------------------------
 
---- Chunk 1/3 (992 chars) ---
+--- Chunk 1/2 (992 chars) ---
 
 229. (1) There shall be an Auditor-General who shall be nominated by
 the President and, with the approval of the National Assembly, appointed by the
@@ -12077,7 +11368,7 @@ the accounts of the National Assembly, the Senate and the county
 assemblies;
 the accounts of political parties funded from public
 
---- Chunk 2/3 (918 chars) ---
+--- Chunk 2/2 (918 chars) ---
 
 d authorities of the national and county
 governments;
@@ -12100,14 +11391,6 @@ assembly.
 assembly shall debate and consider the report and take appropriate action.
 Salaries and Remuneration Commission.
 
---- Chunk 3/3 (218 chars) ---
-
-levant county
-assembly.
-(8) Within three months after receiving an audit report, Parliament or the county
-assembly shall debate and consider the report and take appropriate action.
-Salaries and Remuneration Commission.
-
 
 ================================================================================
 
@@ -12122,7 +11405,7 @@ Chapter: TWELVE - PUBLIC FINANCE
 Part: PART 7 - FINANCIAL OFFICERS AND INSTITUTIONS
 
 Article Length: 1801 characters
-Number of Chunks: 3
+Number of Chunks: 2
 
 --------------------------------------------------------------------------------
 FULL ARTICLE TEXT:
@@ -12180,7 +11463,7 @@ Central Bank of Kenya.
 CHUNK BREAKDOWN:
 --------------------------------------------------------------------------------
 
---- Chunk 1/3 (997 chars) ---
+--- Chunk 1/2 (997 chars) ---
 
 230. (1) There is established the Salaries and Remuneration Commission.
 (2) The Salaries and Remuneration Commission consists of the following persons
@@ -12213,7 +11496,7 @@ the Attorney-General; and
 one person who has experience in the management of human resources
 in the public service, nominated by
 
---- Chunk 2/3 (986 chars) ---
+--- Chunk 2/2 (1103 chars) ---
 
 employers; and
 (iii)
@@ -12232,16 +11515,6 @@ set and regularly review the remuneration and beneﬁts of all State
 ofﬁcers; and
 advise the national and county governments on the remuneration and
 beneﬁts of all other public ofﬁcers.
-(5) In performing its functions, the Commission shall take the following
-principles into account—
-the need to ensure that the total public compensation bill is ﬁscally
-sustainable;
-the need to ensure that the public services are able to attract and retain
-the skills required to execute their
-
---- Chunk 3/3 (417 chars) ---
-
-fﬁcers.
 (5) In performing its functions, the Commission shall take the following
 principles into account—
 the need to ensure that the total public compensation bill is ﬁscally
@@ -12299,7 +11572,7 @@ Chapter: THIRTEEN - THE PUBLIC SERVICE
 Part: PART 1 - VALUES AND PRINCIPLES OF PUBLIC SERVICE
 
 Article Length: 1005 characters
-Number of Chunks: 2
+Number of Chunks: 1
 
 --------------------------------------------------------------------------------
 FULL ARTICLE TEXT:
@@ -12320,48 +11593,6 @@ representation of Kenya’s diverse communities; and
 affording adequate and equal opportunities for appointment, training
 and advancement, at all levels of the public service, of—
 men and women;
-(ii)
-the members of all ethnic groups; and
-(iii)
-persons with disabilities.
-(2) The values and principles of public service apply to public service in—
-all State organs in both levels of government; and
-all State corporations.
-(3) Parliament shall enact legislation to give full effect to this Article.
-
---------------------------------------------------------------------------------
-CHUNK BREAKDOWN:
---------------------------------------------------------------------------------
-
---- Chunk 1/2 (996 chars) ---
-
-232. (1) The values and principles of public service include—
-high standards of professional ethics;
-efﬁcient, effective and economic use of resources;
-responsive, prompt, effective, impartial and equitable provision of
-services;
-involvement of the people in the process of policy making;
-accountability for administrative acts;
-transparency and provision to the public of timely, accurate
-information;
-subject to paragraphs (h) and (i), fair competition and merit as the basis
-of appointments and promotions;
-representation of Kenya’s diverse communities; and
-affording adequate and equal opportunities for appointment, training
-and advancement, at all levels of the public service, of—
-men and women;
-(ii)
-the members of all ethnic groups; and
-(iii)
-persons with disabilities.
-(2) The values and principles of public service apply to public service in—
-all State organs in both levels of government; and
-all State corporations.
-(3) Parliament shall enact legislation to give full effect to this
-
---- Chunk 2/2 (309 chars) ---
-
-women;
 (ii)
 the members of all ethnic groups; and
 (iii)
@@ -12475,7 +11706,7 @@ Chapter: THIRTEEN - THE PUBLIC SERVICE
 Part: PART 2 - THE PUBLIC SERVICE COMMISSION
 
 Article Length: 2180 characters
-Number of Chunks: 4
+Number of Chunks: 3
 
 --------------------------------------------------------------------------------
 FULL ARTICLE TEXT:
@@ -12534,7 +11765,7 @@ Stafﬁng of county governments.
 CHUNK BREAKDOWN:
 --------------------------------------------------------------------------------
 
---- Chunk 1/4 (996 chars) ---
+--- Chunk 1/3 (996 chars) ---
 
 234. (1) The functions and powers of the Commission are as set out in this
 Article.
@@ -12558,7 +11789,7 @@ ofﬁcers in the public service;
 evaluate and report to the President and Parliament on the extent to
 which the values and principles referred to in Articles 10 and
 
---- Chunk 2/4 (987 chars) ---
+--- Chunk 2/3 (987 chars) ---
 
 ice;
 review and make recommendations to the national government in
@@ -12586,7 +11817,7 @@ the Teachers Service Commission;
 the National Police Service Commission; or
 an ofﬁce in the service of a county government, except as
 
---- Chunk 3/4 (797 chars) ---
+--- Chunk 3/3 (797 chars) ---
 
 ic or
 consular representative of the Republic;
@@ -12605,12 +11836,6 @@ any ofﬁce on the personal staff of the President or a retired President, excep
 the consent of the President or retired President.
 (5) The Commission may delegate, in writing, with or without conditions, any of
 its functions and powers under this Article to any one or more of its members, or to
-any ofﬁcer, body or authority in the public service.
-Stafﬁng of county governments.
-
---- Chunk 4/4 (97 chars) ---
-
-embers, or to
 any ofﬁcer, body or authority in the public service.
 Stafﬁng of county governments.
 
@@ -12758,7 +11983,7 @@ Chapter: FOURTEEN - NATIONAL SECURITY
 Part: PART 1 - NATIONAL SECURITY ORGANS
 
 Article Length: 1111 characters
-Number of Chunks: 2
+Number of Chunks: 1
 
 --------------------------------------------------------------------------------
 FULL ARTICLE TEXT:
@@ -12778,41 +12003,6 @@ further any interest of a political party or cause; or
 prejudice a political interest or political cause that is legitimate under
 this Constitution.
 (4) A person shall not establish a military, paramilitary, or similar organisation
-that purports to promote and guarantee national security, except as provided for by
-this Constitution or an Act of Parliament.
-(5) The national security organs are subordinate to civilian authority.
-(6) Parliament shall enact legislation to provide for the functions, organisation
-and administration of the national security organs.
-Establishment of the National Security Council.
-
---------------------------------------------------------------------------------
-CHUNK BREAKDOWN:
---------------------------------------------------------------------------------
-
---- Chunk 1/2 (998 chars) ---
-
-239. (1) The national security organs are—
-the Kenya Defence Forces;
-the National Intelligence Service; and
-the National Police Service.
-(2) The primary object of the national security organs and security system
-is to promote and guarantee national security in accordance with the principles
-mentioned in Article 238(2).
-(3) In performing their functions and exercising their powers, the national
-security organs and every member of the national security organs shall not—
-act in a partisan manner;
-further any interest of a political party or cause; or
-prejudice a political interest or political cause that is legitimate under
-this Constitution.
-(4) A person shall not establish a military, paramilitary, or similar organisation
-that purports to promote and guarantee national security, except as provided for by
-this Constitution or an Act of Parliament.
-(5) The national security organs are subordinate to civilian authority.
-(6) Parliament shall enact legislation to provide for the functions,
-
---- Chunk 2/2 (413 chars) ---
-
-ilitary, or similar organisation
 that purports to promote and guarantee national security, except as provided for by
 this Constitution or an Act of Parliament.
 (5) The national security organs are subordinate to civilian authority.
@@ -13364,7 +12554,7 @@ Chapter: FIFTEEN - COMMISSIONS AND INDEPENDENT OFFICES
 Part: [Not within a PART]
 
 Article Length: 2120 characters
-Number of Chunks: 4
+Number of Chunks: 3
 
 --------------------------------------------------------------------------------
 FULL ARTICLE TEXT:
@@ -13413,7 +12603,7 @@ Removal from ofﬁce.
 CHUNK BREAKDOWN:
 --------------------------------------------------------------------------------
 
---- Chunk 1/4 (995 chars) ---
+--- Chunk 1/3 (995 chars) ---
 
 250. (1) Each commission shall consist of at least three, but not more than nine,
 members.
@@ -13434,7 +12624,7 @@ regional and ethnic diversity of the people of Kenya.
 unless ex ofﬁcio, shall be appointed for a single term of six years and is
 not eligible for re-appointment;
 
---- Chunk 2/4 (998 chars) ---
+--- Chunk 2/3 (998 chars) ---
 
 ﬂect the
 regional and ethnic diversity of the people of Kenya.
@@ -13453,7 +12643,7 @@ disadvantage of that person during their respective terms of ofﬁce.
 liable for anything done in good faith in the performance of a function of ofﬁce.
 (10) The members of a commission shall
 
---- Chunk 3/4 (727 chars) ---
+--- Chunk 3/3 (727 chars) ---
 
 nt ofﬁce shall not be varied to the
 disadvantage of that person during their respective terms of ofﬁce.
@@ -13471,11 +12661,6 @@ appointed by the commission; and
 the chief executive ofﬁcer of the commission.
 Removal from ofﬁce.
 
---- Chunk 4/4 (27 chars) ---
-
-ission.
-Removal from ofﬁce.
-
 
 ================================================================================
 
@@ -13490,7 +12675,7 @@ Chapter: FIFTEEN - COMMISSIONS AND INDEPENDENT OFFICES
 Part: [Not within a PART]
 
 Article Length: 1742 characters
-Number of Chunks: 3
+Number of Chunks: 2
 
 --------------------------------------------------------------------------------
 FULL ARTICLE TEXT:
@@ -13532,7 +12717,7 @@ General functions and powers.
 CHUNK BREAKDOWN:
 --------------------------------------------------------------------------------
 
---- Chunk 1/3 (992 chars) ---
+--- Chunk 1/2 (992 chars) ---
 
 251. (1) A member of a commission (other than an ex ofﬁcio member), or the
 holder of an independent ofﬁce, may be removed from ofﬁce only for—
@@ -13553,7 +12738,7 @@ may suspend the member or ofﬁce holder pending the outcome of the
 complaint; and
 shall
 
---- Chunk 2/3 (997 chars) ---
+--- Chunk 2/2 (1050 chars) ---
 
 ional Assembly shall consider the petition and, if it is satisﬁed that it
 discloses a ground under clause (1), shall send the petition to the President.
@@ -13569,14 +12754,6 @@ judges; and
 one other member who is qualiﬁed to assess the facts in respect of the
 particular ground for removal.
 (6) The tribunal shall investigate the matter expeditiously, report on the facts
-and make a binding recommendation to the President, who shall act in accordance
-with the recommendation within thirty days.
-(7) A person suspended under this Article is entitled to continue to receive one-
-half of the remuneration and beneﬁts of the
-
---- Chunk 3/3 (353 chars) ---
-
-gate the matter expeditiously, report on the facts
 and make a binding recommendation to the President, who shall act in accordance
 with the recommendation within thirty days.
 (7) A person suspended under this Article is entitled to continue to receive one-
@@ -13780,7 +12957,7 @@ Chapter: SIXTEEN - AMENDMENT OF THIS CONSTITUTION
 Part: [Not within a PART]
 
 Article Length: 1669 characters
-Number of Chunks: 3
+Number of Chunks: 2
 
 --------------------------------------------------------------------------------
 FULL ARTICLE TEXT:
@@ -13819,7 +12996,7 @@ Amendment by popular initiative.
 CHUNK BREAKDOWN:
 --------------------------------------------------------------------------------
 
---- Chunk 1/3 (994 chars) ---
+--- Chunk 1/2 (994 chars) ---
 
 256. (1) A Bill to amend this Constitution—
 may be introduced in either House of Parliament;
@@ -13839,7 +13016,7 @@ a certiﬁcate that the Bill has been passed by Parliament in accordance
 with this Article.
 (4) Subject to clause (5), the President shall assent to the Bill and cause it to
 
---- Chunk 2/3 (975 chars) ---
+--- Chunk 2/2 (975 chars) ---
 
 n, the Speakers of the
 two Houses of Parliament shall jointly submit to the President—
@@ -13854,14 +13031,6 @@ the President shall, before assenting to the Bill, request the
 Independent Electoral and Boundaries Commission to conduct, within
 ninety days, a national referendum for approval of the Bill; and
 within thirty days after the chairperson of the Independent Electoral
-and Boundaries Commission has certiﬁed to the President that the Bill
-has been approved in accordance with Article 255(2), the President shall
-assent to the Bill and cause it to be published.
-Amendment by popular initiative.
-
---- Chunk 3/3 (275 chars) ---
-
-after the chairperson of the Independent Electoral
 and Boundaries Commission has certiﬁed to the President that the Bill
 has been approved in accordance with Article 255(2), the President shall
 assent to the Bill and cause it to be published.
@@ -14015,7 +13184,7 @@ Chapter: SEVENTEEN - GENERAL PROVISIONS
 Part: [Not within a PART]
 
 Article Length: 3905 characters
-Number of Chunks: 6
+Number of Chunks: 5
 
 --------------------------------------------------------------------------------
 FULL ARTICLE TEXT:
@@ -14091,7 +13260,7 @@ Interpretation.
 CHUNK BREAKDOWN:
 --------------------------------------------------------------------------------
 
---- Chunk 1/6 (994 chars) ---
+--- Chunk 1/5 (994 chars) ---
 
 259. (1) This Constitution shall be interpreted in a manner that—
 promotes its purposes, values and principles;
@@ -14113,7 +13282,7 @@ person acting in or otherwise performing the functions of the ofﬁce at
 any particular time;
 a reference in this Constitution to an
 
---- Chunk 2/6 (994 chars) ---
+--- Chunk 2/5 (994 chars) ---
 
 e person holding the
 ofﬁce;
@@ -14134,7 +13303,7 @@ corresponding meaning, read with the changes required by the context;
 and
 the word "includes" means "includes, but is not limited
 
---- Chunk 3/6 (996 chars) ---
+--- Chunk 3/5 (996 chars) ---
 
 ss the context otherwise requires—
 if a word or expression is deﬁned in this Constitution, any grammatical
@@ -14156,7 +13325,7 @@ as years, the period of time ends at the beginning of the date of the
 relevant year that corresponds to the date on which the period began.
 (6) If a period of time prescribed by this Constitution
 
---- Chunk 4/6 (998 chars) ---
+--- Chunk 4/5 (998 chars) ---
 
 f that month has a corresponding date; or
 (ii)
@@ -14175,7 +13344,7 @@ occasion arises.
 period of time prescribed by this Constitution, the authority may be exercised either
 before or after the end of
 
---- Chunk 5/6 (994 chars) ---
+--- Chunk 5/5 (1123 chars) ---
 
 rming
 a required act, the act shall be done without unreasonable delay, and as often as
@@ -14189,14 +13358,6 @@ has vacated an ofﬁce established under this Constitution, the person may, if
 qualiﬁed, again be appointed, elected or otherwise selected to hold the ofﬁce in
 accordance with this Constitution.
 (11) If a function or power conferred on a person under this Constitution
-is exercisable by the person only on the advice or recommendation, with the
-approval or consent of, or on consultation with, another person, the function may
-be performed or the power exercised only on that advice, recommendation, with
-that
-
---- Chunk 6/6 (429 chars) ---
-
-tion or power conferred on a person under this Constitution
 is exercisable by the person only on the advice or recommendation, with the
 approval or consent of, or on consultation with, another person, the function may
 be performed or the power exercised only on that advice, recommendation, with
@@ -14218,7 +13379,7 @@ Chapter: SEVENTEEN - GENERAL PROVISIONS
 Part: [Not within a PART]
 
 Article Length: 6602 characters
-Number of Chunks: 10
+Number of Chunks: 9
 
 --------------------------------------------------------------------------------
 FULL ARTICLE TEXT:
@@ -14351,7 +13512,7 @@ any other means of representing or reproducing words in a visible form; and
 CHUNK BREAKDOWN:
 --------------------------------------------------------------------------------
 
---- Chunk 1/10 (995 chars) ---
+--- Chunk 1/9 (995 chars) ---
 
 260. In this Constitution, unless the context requires otherwise—
 "adult" means an individual who has attained the age of eighteen years;
@@ -14370,7 +13531,7 @@ any publication, or any matter written, expressed, or inscribed on any
 substance by means of letters, ﬁgures or marks, or by more than one of
 those means,
 
---- Chunk 2/10 (995 chars) ---
+--- Chunk 2/9 (995 chars) ---
 
 community to have, a substantial or long-term effect on an individual’s ability
 to carry out ordinary day-to-day activities;
@@ -14390,7 +13551,7 @@ following thirtieth day of June, or other day prescribed by national legislation
 government, or a supplement to the Kenya Gazette;
 "guarantee" means any absolute or
 
---- Chunk 3/10 (996 chars) ---
+--- Chunk 3/9 (996 chars) ---
 
 of time from its coming into existence until the immediately
 following thirtieth day of June, or other day prescribed by national legislation;
@@ -14412,7 +13573,7 @@ an Act of Parliament, or a law made under authority conferred by an
 Act of Parliament; or
 a law
 
---- Chunk 4/10 (997 chars) ---
+--- Chunk 4/9 (997 chars) ---
 
 the surface;
 marine waters in the territorial sea and exclusive economic zone;
@@ -14435,7 +13596,7 @@ unique culture and identity from assimilation, has remained outside
 the integrated social and economic life of Kenya as a whole;
 an indigenous
 
---- Chunk 5/10 (989 chars) ---
+--- Chunk 5/9 (989 chars) ---
 
 le to fully participate in the integrated
 social and economic life of Kenya as a whole;
@@ -14457,7 +13618,7 @@ on one or more of the grounds in Article 27(4);
 "national legislation" means an Act of Parliament, or a law made under authority
 conferred by an Act of
 
---- Chunk 6/10 (996 chars) ---
+--- Chunk 6/9 (996 chars) ---
 
 roup" means a group of people who, because of laws or practices
 before, on, or after the effective date, were or are disadvantaged by discrimination
@@ -14479,7 +13640,7 @@ from—
 land, or permanent ﬁxtures on, or improvements to, land;
 goods or
 
---- Chunk 7/10 (993 chars) ---
+--- Chunk 7/9 (993 chars) ---
 
 on or other body of persons whether
 incorporated or unincorporated;
@@ -14502,7 +13663,7 @@ performing a function within a State organ;
 "Republic" means the Republic of Kenya;
 "State", when used as a noun, means the collectivity of ofﬁces, organs and
 
---- Chunk 8/10 (999 chars) ---
+--- Chunk 8/9 (999 chars) ---
 
 d Fund or directly out of money provided by
 Parliament;
@@ -14528,7 +13689,7 @@ other member of the executive committee of a county government;
 (m) Chief of the Kenya Defence Forces;
 (n) commander of a service of
 
---- Chunk 9/10 (998 chars) ---
+--- Chunk 9/9 (1040 chars) ---
 
 assembly, governor or deputy governor of a county, or
 other member of the executive committee of a county government;
@@ -14549,15 +13710,6 @@ this Constitution;
 any other means of representing or reproducing words in a visible form; and
 "youth" means the collectivity of all individuals in the Republic who—
 (a) have attained the age of eighteen years; but
-(b) have
-
---- Chunk 10/10 (341 chars) ---
-
-Constitution;
-"writing" includes printing, photography, lithography, typewriting, Braille, and
-any other means of representing or reproducing words in a visible form; and
-"youth" means the collectivity of all individuals in the Republic who—
-(a) have attained the age of eighteen years; but
 (b) have not attained the age of thirty-ﬁve years.
 
 
@@ -14574,7 +13726,7 @@ Chapter: EIGHTEEN - TRANSITIONAL AND CONSEQUENTIAL PROVISIONS
 Part: [Not within a PART]
 
 Article Length: 2134 characters
-Number of Chunks: 4
+Number of Chunks: 3
 
 --------------------------------------------------------------------------------
 FULL ARTICLE TEXT:
@@ -14617,7 +13769,7 @@ Transitional and consequential provisions.
 CHUNK BREAKDOWN:
 --------------------------------------------------------------------------------
 
---- Chunk 1/4 (988 chars) ---
+--- Chunk 1/3 (988 chars) ---
 
 261. (1) Parliament shall enact any legislation required by this Constitution
 to be enacted to govern a particular matter within the period speciﬁed in the Fifth
@@ -14636,7 +13788,7 @@ Commission for the Implementation of the Constitution, shall prepare the relevan
 Bills for tabling before Parliament, as soon as reasonably practicable, to enable
 Parliament to enact the
 
---- Chunk 2/4 (999 chars) ---
+--- Chunk 2/3 (999 chars) ---
 
 ker of the
 National Assembly.
@@ -14655,7 +13807,7 @@ order, and to report the progress to the Chief Justice.
 clause (6)(b), the Chief Justice shall advise the President to dissolve Parliament and
 the President
 
---- Chunk 3/4 (747 chars) ---
+--- Chunk 3/3 (747 chars) ---
 
 quired legislation is enacted, within the period speciﬁed in the
 order, and to report the progress to the Chief Justice.
@@ -14667,11 +13819,6 @@ enact the required legislation within the periods speciﬁed in the Fifth Schedu
 beginning with the date of commencement of the term of the new Parliament.
 (9) If the new Parliament fails to enact legislation in accordance with clause (8),
 the provisions of clauses (1) to (8) shall apply afresh.
-Transitional and consequential provisions.
-
---- Chunk 4/4 (47 chars) ---
-
-esh.
 Transitional and consequential provisions.
 
 

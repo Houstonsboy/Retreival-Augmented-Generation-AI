@@ -1,0 +1,13 @@
+{
+  "export_info": {
+    "timestamp": "2026-02-02T15:33:01.826448",
+    "database_path": "/home/gift/Retreival-Augmented-Generation-AI/backend/constitutionlogic",
+    "collection_name": "master_rules",
+    "status": "error",
+    "database_exists": true,
+    "error": "Collection [master_rules] does not exist",
+    "error_type": "NotFoundError"
+  },
+  "chunks": [],
+  "summary": {}
+}
