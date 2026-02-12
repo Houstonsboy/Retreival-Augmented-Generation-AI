@@ -18,9 +18,11 @@ CHROMA_DB_DIR = BASE_DIR / "constitutionlogic" / "MasterRulesDB"
 CHROMA_COLLECTION_NAME = "master_rules"
 EMBEDDING_MODEL_NAME = "intfloat/e5-base-v2"
 
-# Statute mapping
+# Statute mapping (including common variations)
 STATUTE_MAP = {
     "Constitution of Kenya": "TheConstitutionOfKenya.pdf",
+    "Constitution of Kenya 2010": "TheConstitutionOfKenya.pdf",
+    "Constitution of Kenya, 2010": "TheConstitutionOfKenya.pdf",
     "Constitution": "TheConstitutionOfKenya.pdf",
     "Evidence Act": "Evidence Act.pdf",
     "Evidence": "Evidence Act.pdf"
@@ -58,12 +60,41 @@ def load_classifier_output(input_data: Any) -> Dict:
 
 def extract_query_params(classifier_output: Dict) -> Dict[str, Any]:
     """Extract key parameters from classifier output."""
+    entities = classifier_output.get('entities', {})
+    
+    # Extract article/section numbers for direct lookup
+    article_numbers = entities.get('article_numbers', [])
+    section_numbers = entities.get('section_numbers', [])
+    
+    # Extract source documents directly (new schema)
+    source_documents = entities.get('source_documents', [])
+    
+    # Support both old and new statute schema
+    statutes_data = entities.get('statutes', {})
+    if isinstance(statutes_data, dict):
+        # New schema: {primary: [...], contextual: [...]}
+        all_statutes = statutes_data.get('primary', []) + statutes_data.get('contextual', [])
+    else:
+        # Old schema: ["statute1", "statute2"]
+        all_statutes = statutes_data if isinstance(statutes_data, list) else []
+    
+    # Extract mode-specific query if available (for hybrid mode)
+    vector_query = classifier_output.get('vector_query_statutory') or classifier_output.get('vector_query', '')
+    
     return {
-        'vector_query': classifier_output.get('vector_query', ''),
+        'vector_query': vector_query,
         'target_components': classifier_output.get('target_components', []),
         'legal_domains': classifier_output.get('legal_domains', []),
-        'entities': classifier_output.get('entities', {}),
-        'intents': classifier_output.get('intents', [])
+        'entities': entities,
+        'intents': classifier_output.get('intents', []),
+        # NEW FIELDS for direct article lookup
+        'article_numbers': article_numbers,
+        'section_numbers': section_numbers,
+        'source_documents': source_documents,
+        'all_statutes': all_statutes,
+        'retrieval_mode': classifier_output.get('retrieval_mode', ''),
+        'retrieval_strategy': classifier_output.get('retrieval_strategy', ''),
+        'citation_analysis': classifier_output.get('citation_analysis', {})
     }
 
 
@@ -75,20 +106,53 @@ def build_where_filter(query_params: Dict) -> Dict:
     # Always filter for both constitution and evidence_act
     conditions.append({"document_type": {"$in": ["constitution", "evidence_act"]}})
     
-    # Optional: Filter by specific statute if mentioned
-    entities = query_params.get('entities', {})
-    statutes = entities.get('statutes', [])
+    # PRIORITY 1: Filter by article numbers if provided (for direct lookup)
+    article_numbers = query_params.get('article_numbers', [])
+    if article_numbers:
+        # Convert to strings in case they're integers
+        article_numbers_str = [str(num) for num in article_numbers]
+        conditions.append({"article_number": {"$in": article_numbers_str}})
+        print(f"  🎯 Filtering by article_numbers: {article_numbers_str}")
     
-    if statutes:
-        # Map statute names to actual PDF filenames
-        source_docs = []
-        for statute in statutes:
-            mapped_doc = STATUTE_MAP.get(statute)
-            if mapped_doc:
-                source_docs.append(mapped_doc)
+    # PRIORITY 2: Filter by section numbers if provided (for Evidence Act sections)
+    section_numbers = query_params.get('section_numbers', [])
+    if section_numbers:
+        section_numbers_str = [str(num) for num in section_numbers]
+        conditions.append({"article_number": {"$in": section_numbers_str}})  # Evidence Act uses same field
+        print(f"  🎯 Filtering by section_numbers: {section_numbers_str}")
+    
+    # PRIORITY 3: Filter by source documents if provided
+    source_documents = query_params.get('source_documents', [])
+    if source_documents:
+        # Map document names to actual PDF filenames
+        mapped_docs = []
+        for doc_name in source_documents:
+            # Try exact match first
+            if doc_name in STATUTE_MAP:
+                mapped_docs.append(STATUTE_MAP[doc_name])
+            else:
+                # Try fuzzy match (e.g., "Constitution of Kenya 2010" -> "Constitution of Kenya")
+                for key, value in STATUTE_MAP.items():
+                    if key.lower() in doc_name.lower() or doc_name.lower() in key.lower():
+                        mapped_docs.append(value)
+                        break
         
-        if source_docs:
-            conditions.append({"source_document": {"$in": source_docs}})
+        if mapped_docs:
+            conditions.append({"source_document": {"$in": mapped_docs}})
+            print(f"  📄 Filtering by source_documents: {mapped_docs}")
+    else:
+        # FALLBACK: Try old statute mapping (backward compatibility)
+        all_statutes = query_params.get('all_statutes', [])
+        if all_statutes:
+            source_docs = []
+            for statute in all_statutes:
+                mapped_doc = STATUTE_MAP.get(statute)
+                if mapped_doc:
+                    source_docs.append(mapped_doc)
+            
+            if source_docs:
+                conditions.append({"source_document": {"$in": source_docs}})
+                print(f"  📄 Filtering by statutes (legacy): {source_docs}")
     
     # Return single condition or $and combination
     if len(conditions) == 1:
@@ -266,6 +330,12 @@ def retrieve_relevant_rules(classifier_output: Any, verbose: bool = True) -> Dic
     # ---- STEP 4: Build Filters ----
     if verbose:
         print("\n[4/6] Building search filters...")
+        retrieval_mode = query_params.get('retrieval_mode', '')
+        if retrieval_mode:
+            print(f"  🎯 Retrieval Mode: {retrieval_mode}")
+        retrieval_strategy = query_params.get('retrieval_strategy', '')
+        if retrieval_strategy:
+            print(f"  🎯 Retrieval Strategy: {retrieval_strategy}")
     
     where_filter = build_where_filter(query_params)
     if verbose:
@@ -274,6 +344,21 @@ def retrieve_relevant_rules(classifier_output: Any, verbose: bool = True) -> Dic
     # ---- STEP 5: Embed Query & Search ----
     if verbose:
         print("\n[5/6] Embedding query and searching...")
+    
+    retrieval_mode = query_params.get('retrieval_mode', '')
+    article_numbers = query_params.get('article_numbers', [])
+    
+    # For DIRECT_STATUTORY_LOOKUP with article numbers, prioritize exact match
+    if retrieval_mode == "DIRECT_STATUTORY_LOOKUP" and article_numbers:
+        if verbose:
+            print(f"  🎯 DIRECT LOOKUP MODE: Fetching Article(s) {article_numbers} directly")
+        
+        # Since we have article_number in where_filter, semantic search will be constrained
+        # to only those articles. Use a smaller n_results since we expect exact matches.
+        n_results = 10
+    else:
+        # Normal semantic search for broader queries
+        n_results = 30
     
     query_embedding = embedding_model.encode(query_params['vector_query']).tolist()
     
@@ -284,7 +369,7 @@ def retrieve_relevant_rules(classifier_output: Any, verbose: bool = True) -> Dic
     results = collection.query(
         query_embeddings=[query_embedding],
         where=where_filter,
-        n_results=30,  # Get more chunks, will group by article
+        n_results=n_results,
         include=["documents", "metadatas", "distances"]
     )
     

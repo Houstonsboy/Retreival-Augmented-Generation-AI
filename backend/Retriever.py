@@ -188,12 +188,19 @@ def load_classifier_output(input_data: Any) -> Dict:
 
 def extract_query_params(classifier_output: Dict) -> Dict[str, Any]:
     """Extract key parameters from classifier output."""
+    # For hybrid mode, use case law specific query if available
+    vector_query = classifier_output.get('vector_query_caselaw') or classifier_output.get('vector_query', '')
+    
     return {
-        'vector_query': classifier_output.get('vector_query', ''),
+        'vector_query': vector_query,
         'target_components': classifier_output.get('target_components', []),
         'legal_domains': classifier_output.get('legal_domains', []),
         'entities': classifier_output.get('entities', {}),
-        'adverse_signals': classifier_output.get('adverse_retrieval_signals', [])
+        'adverse_signals': classifier_output.get('adverse_retrieval_signals', []),
+        # NEW FIELDS for mode awareness
+        'retrieval_mode': classifier_output.get('retrieval_mode', ''),
+        'retrieval_strategy': classifier_output.get('retrieval_strategy', ''),
+        'citation_analysis': classifier_output.get('citation_analysis', {})
     }
 
 
@@ -450,6 +457,14 @@ def retrieve_relevant_cases(classifier_output: Any, verbose: bool = True) -> Dic
         print(f"  ✓ Vector Query: {query_params['vector_query'][:60]}...")
         print(f"  ✓ Target Components: {', '.join(query_params['target_components'])}")
         print(f"  ✓ Legal Domains: {len(query_params['legal_domains'])} domain(s)")
+        
+        retrieval_mode = query_params.get('retrieval_mode', '')
+        if retrieval_mode:
+            print(f"  🎯 Retrieval Mode: {retrieval_mode}")
+        
+        retrieval_strategy = query_params.get('retrieval_strategy', '')
+        if retrieval_strategy:
+            print(f"  🎯 Retrieval Strategy: {retrieval_strategy}")
     
     # ---- STEP 2: Load Embedding Model ----
     if verbose:

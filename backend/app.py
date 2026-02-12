@@ -1091,13 +1091,21 @@ def QRetriever():
             status_code = 500
             return jsonify(result), status_code
         
-        # Step 2: Check if rules retrieval is needed
+        # Step 2: Check if rules retrieval is needed (mode-aware routing)
         classification = result.get("classification", {})
+        retrieval_mode = classification.get("retrieval_mode", "")
         target_components = classification.get("target_components", [])
         
-        # If "RULES" is in target_components, fetch statutory provisions
-        if "RULES" in target_components:
-            print(f"\n[INFO] 'RULES' detected in target_components - fetching statutory provisions...")
+        # Determine if statutory retrieval should be triggered
+        should_fetch_statutory = (
+            retrieval_mode in ["DIRECT_STATUTORY_LOOKUP", "HYBRID_RETRIEVAL"] or
+            "RULES" in target_components or
+            "STATUTORY_TEXT" in target_components
+        )
+        
+        if should_fetch_statutory:
+            mode_label = retrieval_mode if retrieval_mode else "component-based"
+            print(f"\n[INFO] Statutory retrieval triggered (mode: {mode_label})")
             
             try:
                 # Call rules retriever with classification data
@@ -1110,17 +1118,20 @@ def QRetriever():
                 result["retrieval"]["rules"] = rules_result.get("results", [])
                 result["retrieval"]["rules_count"] = rules_result.get("count", 0)
                 result["retrieval"]["rules_query_summary"] = rules_result.get("query_summary", {})
+                result["retrieval"]["retrieval_mode"] = retrieval_mode  # Pass mode to frontend
                 
                 print(f"[INFO] Retrieved {result['retrieval']['rules_count']} statutory provisions")
                 
             except Exception as e:
-                print(f"[WARNING] Failed to retrieve rules: {e}")
+                print(f"[WARNING] Failed to retrieve statutory rules: {e}")
+                import traceback
+                traceback.print_exc()
                 # Don't fail the whole request, just log the error
                 result["retrieval"]["rules"] = []
                 result["retrieval"]["rules_count"] = 0
                 result["retrieval"]["rules_error"] = str(e)
         else:
-            print(f"[INFO] 'RULES' not in target_components - skipping statutory retrieval")
+            print(f"[INFO] Statutory retrieval not needed (mode: {retrieval_mode or 'none'})")
             if "retrieval" not in result:
                 result["retrieval"] = {}
             result["retrieval"]["rules"] = []
@@ -1128,6 +1139,187 @@ def QRetriever():
 
         status_code = 200 if result.get("success") else 500
         return jsonify(result), status_code
+
+
+@app.route('/api/generate-legal-answer', methods=['POST'])
+def generate_legal_answer():
+    """
+    Generate a comprehensive LLM answer combining statutory provisions and case law.
+    This endpoint takes the user's query + retrieval results and generates a tailored response.
+    """
+    try:
+        data = request.get_json()
+        user_query = data.get("query", "")
+        retrieval_data = data.get("retrieval", {})
+        retrieval_mode = data.get("retrieval_mode", "")
+        
+        if not user_query:
+            return jsonify({"error": "No query provided"}), 400
+        
+        # Extract retrieved data
+        statutory_provisions = retrieval_data.get("rules", [])
+        case_law_results = retrieval_data.get("results", [])
+        
+        print(f"\n[INFO] Generating legal answer for query: {user_query[:60]}...")
+        print(f"[INFO] Retrieved: {len(statutory_provisions)} statutory provisions, {len(case_law_results)} cases")
+        
+        # Build context from retrieved information
+        context_parts = []
+        
+        # PART 1: Statutory Provisions (Priority)
+        if statutory_provisions:
+            context_parts.append("=== STATUTORY PROVISIONS ===\n")
+            for idx, rule in enumerate(statutory_provisions[:3], 1):  # Top 3 articles
+                article_num = rule.get('article_number', 'N/A')
+                article_header = rule.get('article_header', 'N/A')
+                full_text = rule.get('full_text', rule.get('text_preview', 'N/A'))
+                source = rule.get('document_label', 'Unknown')
+                
+                context_parts.append(
+                    f"\n[ARTICLE {article_num}] {article_header} ({source})\n"
+                    f"{full_text}\n"
+                )
+        
+        # PART 2: Relevant Case Law (Secondary)
+        if case_law_results:
+            context_parts.append("\n=== RELEVANT CASE LAW ===\n")
+            for idx, case in enumerate(case_law_results[:2], 1):  # Top 2 cases
+                case_name = case.get('case_name', 'Unknown Case')
+                year = case.get('metadata', {}).get('year', 'N/A')
+                court = case.get('metadata', {}).get('court_level', 'N/A')
+                
+                # Get the most relevant chunks
+                chunks = case.get('chunks', [])
+                relevant_text = "\n".join([
+                    f"[{chunk.get('component', 'N/A')}] {chunk.get('text', '')[:300]}..."
+                    for chunk in chunks[:2]  # Top 2 chunks per case
+                ])
+                
+                context_parts.append(
+                    f"\n[CASE {idx}] {case_name} ({year}, {court})\n"
+                    f"{relevant_text}\n"
+                )
+        
+        context = "\n".join(context_parts)
+        
+        if not context.strip():
+            return jsonify({
+                "success": False,
+                "error": "No relevant legal information retrieved"
+            }), 404
+        
+        # Build LLM prompt based on retrieval mode
+        if retrieval_mode == "DIRECT_STATUTORY_LOOKUP":
+            system_prompt = """You are a Kenyan legal expert providing clear, accurate explanations of statutory provisions.
+
+Your task:
+1. Answer the user's question using the retrieved statutory text as the PRIMARY source
+2. Explain what the provision says in plain language
+3. If case law is provided, use it ONLY to illustrate how courts have interpreted the statute
+4. Be concise and directly answer the question asked
+
+Format:
+- Start with a direct answer to the user's question
+- Quote or paraphrase the relevant statutory text
+- If applicable, briefly mention how courts have applied it
+- Keep it clear and practical"""
+        
+        elif retrieval_mode == "HYBRID_RETRIEVAL":
+            system_prompt = """You are a Kenyan legal expert providing comprehensive legal analysis.
+
+Your task:
+1. Start by explaining the relevant statutory provision(s)
+2. Then explain how courts have interpreted or applied these provisions
+3. Combine both sources to give a complete answer to the user's question
+4. Highlight practical implications
+
+Format:
+- Begin with the statutory basis (what the law says)
+- Follow with judicial interpretation (how courts apply it)
+- End with practical guidance for the user's specific question"""
+        
+        else:  # STRATEGIC_LEGAL_ANALYSIS or default
+            system_prompt = """You are a Kenyan legal expert providing strategic legal analysis.
+
+Your task:
+1. Use case law as the PRIMARY source to answer the user's question
+2. Reference any relevant statutes mentioned in the cases
+3. Focus on practical application and legal strategy
+4. Provide actionable insights
+
+Format:
+- Explain how courts have addressed similar situations
+- Reference the legal principles and rules applied
+- Provide strategic guidance based on precedent"""
+        
+        user_prompt = f"""User's Question: "{user_query}"
+
+Retrieved Legal Information:
+{context}
+
+Instructions:
+Answer the user's question directly and comprehensively using the information provided above.
+Focus on what the user actually asked. If they asked "what does Article X do", explain what Article X does.
+If they asked about a legal scenario, apply the law to their situation.
+
+Your answer:"""
+        
+        # Call Groq API
+        GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+        headers = {
+            "Authorization": f"Bearer {GROQ_API_KEY}",
+            "Content-Type": "application/json"
+        }
+        
+        payload = {
+            "model": "llama-3.3-70b-versatile",
+            "messages": [
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_prompt}
+            ],
+            "temperature": 0.3,
+            "max_tokens": 1500
+        }
+        
+        llm_response = requests.post(
+            "https://api.groq.com/openai/v1/chat/completions",
+            headers=headers,
+            json=payload,
+            timeout=30
+        )
+        
+        llm_response.raise_for_status()
+        llm_data = llm_response.json()
+        
+        generated_answer = llm_data['choices'][0]['message']['content'].strip()
+        
+        print(f"[SUCCESS] Generated answer ({len(generated_answer)} chars)")
+        
+        return jsonify({
+            "success": True,
+            "answer": generated_answer,
+            "sources_used": {
+                "statutory_provisions": len(statutory_provisions),
+                "case_law": len(case_law_results)
+            }
+        }), 200
+        
+    except requests.exceptions.RequestException as e:
+        print(f"[ERROR] LLM API call failed: {e}")
+        return jsonify({
+            "success": False,
+            "error": f"Failed to generate answer: {str(e)}"
+        }), 500
+    
+    except Exception as e:
+        print(f"[ERROR] Answer generation failed: {e}")
+        import traceback
+        traceback.print_exc()
+        return jsonify({
+            "success": False,
+            "error": str(e)
+        }), 500
+
         
 if __name__ == '__main__':
     app.run(debug=True, port=5000, host='0.0.0.0')

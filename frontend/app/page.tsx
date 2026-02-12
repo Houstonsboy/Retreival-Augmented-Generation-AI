@@ -62,14 +62,49 @@ export default function Home() {
         throw new Error(data.error || "Failed to get response");
       }
 
+      // STEP 2: Generate comprehensive legal answer using retrieved information
+      console.log("🤖 Generating comprehensive legal answer...");
+      
+      let generatedAnswer = "No relevant legal information found.";
+      
+      try {
+        const answerResponse = await fetch("http://localhost:5000/api/generate-legal-answer", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            query: userMessage.content,
+            retrieval: data.retrieval,
+            retrieval_mode: data.classification?.retrieval_mode || ""
+          }),
+        });
+
+        if (answerResponse.ok) {
+          const answerData = await answerResponse.json();
+          if (answerData.success) {
+            generatedAnswer = answerData.answer;
+            console.log("✅ Generated answer:", generatedAnswer.substring(0, 100) + "...");
+          }
+        } else {
+          console.warn("⚠️ Answer generation failed, using fallback");
+          // Fallback to first case's ai_summary if answer generation fails
+          generatedAnswer = data.retrieval?.results?.[0]?.ai_summary || "No relevant legal information found.";
+        }
+      } catch (answerError) {
+        console.error("Error generating answer:", answerError);
+        // Fallback to first case's ai_summary
+        generatedAnswer = data.retrieval?.results?.[0]?.ai_summary || "No relevant legal information found.";
+      }
+
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: "assistant",
         content: "",
         classification: data.classification,
-        aiResponse: data.retrieval?.results?.[0]?.ai_summary || "No relevant legal information found.",
+        aiResponse: generatedAnswer,  // NOW uses generated answer that combines statutes + cases
         evidence: data.retrieval?.results || [],
-        rules: data.retrieval?.rules || [],  // NEW: Statutory provisions
+        rules: data.retrieval?.rules || [],  // Statutory provisions
         timestamp: new Date(),
       };
 
@@ -457,6 +492,9 @@ function AIResponseWidget({ response }: { response: string }) {
           <h3 className="font-semibold text-gray-900 dark:text-gray-100">
             Legal Analysis
           </h3>
+          <span className="text-xs text-green-700 dark:text-green-300 bg-green-100 dark:bg-green-900/30 px-2 py-0.5 rounded-full">
+            AI-Generated from Retrieved Sources
+          </span>
         </div>
       </div>
       <div className="px-5 py-4">
