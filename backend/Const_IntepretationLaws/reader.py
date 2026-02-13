@@ -399,7 +399,7 @@ def split_into_entries(text_with_breaks):
     return final_entries
 
 
-def extract_pdf_pages_to_json(pdf_path, output_path, start_page=18, end_page=30, dpi=300):
+def extract_pdf_pages_to_json(pdf_path, output_path, start_page=18, end_page=100, dpi=300):
     """
     Extract text from a range of pages in a PDF and output as JSON.
     
