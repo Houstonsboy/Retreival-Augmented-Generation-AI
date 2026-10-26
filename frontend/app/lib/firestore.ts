@@ -1,3 +1,5 @@
+export const PENDING_USERNAME_KEY = "legalai_pending_username";
+
 import {
   doc,
   getDoc,

@@ -39,6 +39,9 @@ def main():
     if not sa_path:
         print("Error: FIREBASE_SERVICE_ACCOUNT_PATH not set in backend/.env")
         sys.exit(1)
+    # Resolve relative paths from the backend directory, not CWD
+    if not os.path.isabs(sa_path):
+        sa_path = str(BACKEND_DIR / sa_path)
     if not os.path.exists(sa_path):
         print(f"Error: service account file not found at '{sa_path}'")
         sys.exit(1)

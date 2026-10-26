@@ -7,7 +7,11 @@ import {
   useState,
   ReactNode,
 } from "react";
-import { User, onAuthStateChanged, signOut as firebaseSignOut } from "firebase/auth";
+import {
+  User,
+  onAuthStateChanged,
+  signOut as firebaseSignOut,
+} from "firebase/auth";
 import { auth } from "@/app/lib/firebase";
 import { getUserDoc, UserProfile } from "@/app/lib/firestore";
 
@@ -34,13 +38,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       setUser(firebaseUser);
       if (firebaseUser) {
-        const userProfile = await getUserDoc(firebaseUser.uid);
-        setProfile(userProfile);
+        try {
+          const userProfile = await getUserDoc(firebaseUser.uid);
+          setProfile(userProfile);
+        } catch {
+          setProfile(null);
+        }
       } else {
         setProfile(null);
       }
       setLoading(false);
     });
+
     return unsubscribe;
   }, []);
 

@@ -14,7 +14,13 @@ import {
   initializeTestEnvironment,
   RulesTestEnvironment,
 } from "@firebase/rules-unit-testing";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  setDoc,
+  writeBatch,
+  serverTimestamp,
+} from "firebase/firestore";
 import { readFileSync } from "fs";
 import { resolve } from "path";
 
@@ -43,34 +49,54 @@ function userCtx(uid: string, email = "user@example.com") {
   return testEnv.authenticatedContext(uid, { email, email_verified: true });
 }
 
-const baseProfile = (email = "user@example.com") => ({
-  username: "testuser",
-  email,
-  type: "advocate" as const,
-  authProvider: "password" as const,
-  advocateVerified: false,
-  createdAt: new Date(),
-  updatedAt: new Date(),
-});
-
+// Seed bypasses rules — uses new Date() because rules don't apply here.
 async function seedUser(uid: string, username: string, type = "advocate") {
   await testEnv.withSecurityRulesDisabled(async (ctx) => {
     const db = ctx.firestore();
     await setDoc(doc(db, "users", uid), {
-      ...baseProfile(),
       username,
+      email: `${uid}@example.com`,
       type,
+      authProvider: "password",
+      advocateVerified: false,
+      createdAt: new Date(),
+      updatedAt: new Date(),
     });
     await setDoc(doc(db, "usernames", username), { uid });
   });
 }
 
-// ─── Test 1: Can't read another user's document ───────────────────────────────
+// Valid batch payload for a new password-auth user going through rules.
+function passwordProfile(email: string, username: string) {
+  return {
+    username,
+    email,
+    type: "advocate" as const,
+    authProvider: "password" as const,
+    advocateVerified: false,
+    createdAt: serverTimestamp(),
+    updatedAt: serverTimestamp(),
+  };
+}
+
+// Valid batch payload for a new Google-auth user going through rules.
+function googleProfile(email: string, username: string) {
+  return {
+    username,
+    email,
+    type: "advocate" as const,
+    authProvider: "google" as const,
+    advocateVerified: false,
+    createdAt: serverTimestamp(),
+    updatedAt: serverTimestamp(),
+  };
+}
+
+// ─── 1. Cross-user read ──────────────────────────────────────────────────────
 describe("cross-user read", () => {
   test("user A cannot read user B's profile", async () => {
     await seedUser("uid_a", "alice");
     await seedUser("uid_b", "bob");
-
     const db = userCtx("uid_a").firestore();
     await assertFails(getDoc(doc(db, "users", "uid_b")));
   });
@@ -82,74 +108,114 @@ describe("cross-user read", () => {
   });
 });
 
-// ─── Test 2: Can't sign up as admin ──────────────────────────────────────────
+// ─── 2. Can't sign up as admin ───────────────────────────────────────────────
 describe("sign up as admin", () => {
-  test("creating a user doc with type=admin is rejected", async () => {
-    const db = userCtx("uid_new", "new@example.com").firestore();
+  test("batch with type=admin is rejected", async () => {
+    const ctx = userCtx("uid_new", "new@example.com");
+    const db = ctx.firestore();
+    const batch = writeBatch(db);
+    batch.set(doc(db, "users", "uid_new"), {
+      username: "newuser",
+      email: "new@example.com",
+      type: "admin",              // must be rejected
+      authProvider: "password",
+      advocateVerified: false,
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp(),
+    });
+    batch.set(doc(db, "usernames", "newuser"), { uid: "uid_new" });
+    await assertFails(batch.commit());
+  });
+
+  test("batch with type=advocate succeeds (password auth)", async () => {
+    const ctx = userCtx("uid_new", "new@example.com");
+    const db = ctx.firestore();
+    const batch = writeBatch(db);
+    batch.set(doc(db, "users", "uid_new"), passwordProfile("new@example.com", "newuser"));
+    batch.set(doc(db, "usernames", "newuser"), { uid: "uid_new" });
+    await assertSucceeds(batch.commit());
+  });
+});
+
+// ─── 3. Google user profile creation ─────────────────────────────────────────
+describe("Google user sign-up", () => {
+  test("batch with authProvider=google succeeds", async () => {
+    const ctx = userCtx("uid_google", "guser@example.com");
+    const db = ctx.firestore();
+    const batch = writeBatch(db);
+    batch.set(doc(db, "users", "uid_google"), googleProfile("guser@example.com", "guser"));
+    batch.set(doc(db, "usernames", "guser"), { uid: "uid_google" });
+    await assertSucceeds(batch.commit());
+  });
+
+  test("authProvider=google.com is rejected", async () => {
+    const ctx = userCtx("uid_google", "guser@example.com");
+    const db = ctx.firestore();
+    const batch = writeBatch(db);
+    batch.set(doc(db, "users", "uid_google"), {
+      username: "guser",
+      email: "guser@example.com",
+      type: "advocate",
+      authProvider: "google.com",   // Firebase provider ID — must be rejected
+      advocateVerified: false,
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp(),
+    });
+    batch.set(doc(db, "usernames", "guser"), { uid: "uid_google" });
+    await assertFails(batch.commit());
+  });
+
+  test("users write without matching usernames write is rejected", async () => {
+    const ctx = userCtx("uid_google", "guser@example.com");
+    const db = ctx.firestore();
+    // Standalone setDoc — existsAfter(usernamePath) returns false
     await assertFails(
-      setDoc(doc(db, "users", "uid_new"), {
-        username: "newuser",
-        email: "new@example.com",
-        type: "admin", // must be rejected — only "advocate" allowed from client
-        authProvider: "password",
-        advocateVerified: false,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      })
+      setDoc(doc(db, "users", "uid_google"), googleProfile("guser@example.com", "guser"))
     );
   });
 
-  test("creating a user doc with type=advocate succeeds (via batch — tested indirectly)", async () => {
-    // Direct setDoc to users/ without a matching usernames/ write is
-    // allowed by users rules (no getAfter check on the users side).
-    // The batch atomicity constraint lives in the usernames rule.
-    const db = userCtx("uid_new", "new@example.com").firestore();
-    await assertSucceeds(
-      setDoc(doc(db, "users", "uid_new"), {
-        username: "newuser",
-        email: "new@example.com",
-        type: "advocate",
-        authProvider: "password",
-        advocateVerified: false,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      })
+  test("usernames write without matching users write is rejected", async () => {
+    const ctx = userCtx("uid_google", "guser@example.com");
+    const db = ctx.firestore();
+    // Standalone setDoc — existsAfter(userPath) returns false
+    await assertFails(
+      setDoc(doc(db, "usernames", "guser"), { uid: "uid_google" })
     );
   });
 });
 
-// ─── Test 3: Can't change own type ───────────────────────────────────────────
+// ─── 4. Can't change own type ────────────────────────────────────────────────
 describe("change own type", () => {
-  test("updating type field after creation is rejected", async () => {
+  test("merging type=admin is rejected", async () => {
     await seedUser("uid_a", "alice");
     const db = userCtx("uid_a").firestore();
-    // update (merge) that touches the type field must be denied
     await assertFails(
       setDoc(doc(db, "users", "uid_a"), { type: "admin" }, { merge: true })
     );
   });
 
-  test("updating username is allowed", async () => {
+  test("updating username via batch is allowed", async () => {
     await seedUser("uid_a", "alice");
     const db = userCtx("uid_a").firestore();
-    await assertSucceeds(
-      setDoc(
-        doc(db, "users", "uid_a"),
-        { username: "alice2", updatedAt: new Date() },
-        { merge: true }
-      )
+    const batch = writeBatch(db);
+    // users update: only username + updatedAt change; new usernames entry in same batch
+    batch.set(
+      doc(db, "users", "uid_a"),
+      { username: "alice2", updatedAt: serverTimestamp() },
+      { merge: true }
     );
+    batch.set(doc(db, "usernames", "alice2"), { uid: "uid_a" });
+    await assertSucceeds(batch.commit());
   });
 });
 
-// ─── Test 4: Can't take an existing username ──────────────────────────────────
+// ─── 5. Can't take an existing username ──────────────────────────────────────
 describe("username uniqueness", () => {
   test("overwriting another user's username entry is rejected", async () => {
-    await seedUser("uid_a", "alice"); // alice owns "alice"
-    await seedUser("uid_b", "bob");   // uid_b has a valid profile
-
+    await seedUser("uid_a", "alice");
+    await seedUser("uid_b", "bob");
     const db = userCtx("uid_b", "b@example.com").firestore();
-    // "alice" already exists → this is an update, and update is if false
+    // "alice" already exists — update rule is `if false`
     await assertFails(
       setDoc(doc(db, "usernames", "alice"), { uid: "uid_b" })
     );

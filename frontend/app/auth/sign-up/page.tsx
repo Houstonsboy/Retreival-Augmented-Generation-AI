@@ -10,7 +10,7 @@ import {
 } from "firebase/auth";
 import { serverTimestamp } from "firebase/firestore";
 import { auth } from "@/app/lib/firebase";
-import { createUserDoc, isUsernameAvailable } from "@/app/lib/firestore";
+import { createUserDoc, isUsernameAvailable, getUserDoc } from "@/app/lib/firestore";
 
 function validateUsername(v: string): string | null {
   if (v.length < 3) return "At least 3 characters.";
@@ -22,11 +22,10 @@ function validateUsername(v: string): string | null {
 function friendlyError(err: unknown): string {
   if (err && typeof err === "object" && "code" in err) {
     const code = (err as { code: string }).code;
-    if (code === "auth/email-already-in-use")
-      return "An account with this email already exists.";
+    if (code === "auth/email-already-in-use") return "An account with this email already exists.";
     if (code === "auth/weak-password") return "Password is too weak.";
     if (code === "auth/invalid-email") return "Invalid email address.";
-    if (code === "auth/popup-closed-by-user") return "Sign-in cancelled.";
+    if (code === "auth/popup-closed-by-user" || code === "auth/cancelled-popup-request") return "";
   }
   return "An error occurred. Please try again.";
 }
@@ -53,26 +52,16 @@ export default function SignUp() {
 
   const checkUsername = useCallback(async (value: string) => {
     const validErr = validateUsername(value);
-    if (validErr) {
-      setUsernameError(validErr);
-      setUsernameOk(false);
-      return;
-    }
+    if (validErr) { setUsernameError(validErr); setUsernameOk(false); return; }
     setCheckingUsername(true);
     const available = await isUsernameAvailable(value);
     setCheckingUsername(false);
-    if (available) {
-      setUsernameError(null);
-      setUsernameOk(true);
-    } else {
-      setUsernameError("Username already taken.");
-      setUsernameOk(false);
-    }
+    if (available) { setUsernameError(null); setUsernameOk(true); }
+    else { setUsernameError("Username already taken."); setUsernameOk(false); }
   }, []);
 
   useEffect(() => {
-    setUsernameOk(false);
-    setUsernameError(null);
+    setUsernameOk(false); setUsernameError(null);
     if (!username) return;
     const t = setTimeout(() => checkUsername(username), 500);
     return () => clearTimeout(t);
@@ -81,33 +70,38 @@ export default function SignUp() {
   const handleEmailSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!usernameOk) { setError("Fix username before continuing."); return; }
-    setError(null);
-    setLoading(true);
+    setError(null); setLoading(true);
     try {
       const cred = await createUserWithEmailAndPassword(auth, email, password);
       await createUserDoc(cred.user.uid, {
-        username,
-        email,
-        type: "advocate",
-        authProvider: "password",
+        username, email, type: "advocate", authProvider: "password",
         advocateVerified: false,
-        createdAt: serverTimestamp(),
-        updatedAt: serverTimestamp(),
+        createdAt: serverTimestamp(), updatedAt: serverTimestamp(),
       });
       router.replace("/");
     } catch (err) {
       setError(friendlyError(err));
-    } finally {
       setLoading(false);
     }
   };
 
   const handleGoogle = async () => {
     if (!usernameOk) { setError("Fix username before continuing."); return; }
-    setError(null);
-    setLoading(true);
+    setError(null); setLoading(true);
     try {
       const result = await signInWithPopup(auth, new GoogleAuthProvider());
+
+      // If user already has a Firestore profile they signed up before — just sign them in.
+      const existing = await getUserDoc(result.user.uid).catch(() => null);
+      if (existing) { router.replace("/"); return; }
+
+      // New Google user: claim the username they typed.
+      const available = await isUsernameAvailable(username).catch(() => false);
+      if (!available) {
+        setError(`"${username}" was just taken — choose another.`);
+        setLoading(false);
+        return;
+      }
       await createUserDoc(result.user.uid, {
         username,
         email: result.user.email!,
@@ -119,18 +113,16 @@ export default function SignUp() {
       });
       router.replace("/");
     } catch (err) {
-      setError(friendlyError(err));
-    } finally {
+      const msg = friendlyError(err);
+      if (msg) setError(msg);
       setLoading(false);
     }
   };
 
   const usernameInputClass = `w-full rounded-lg border px-3 py-2 text-sm pr-8 focus:outline-none focus:ring-2 ${
-    usernameOk
-      ? "border-green-400 dark:border-green-600 focus:ring-green-500"
-      : usernameError
-      ? "border-red-400 dark:border-red-600 focus:ring-red-500"
-      : "border-gray-300 dark:border-gray-600 focus:ring-blue-500"
+    usernameOk ? "border-green-400 dark:border-green-600 focus:ring-green-500"
+    : usernameError ? "border-red-400 dark:border-red-600 focus:ring-red-500"
+    : "border-gray-300 dark:border-gray-600 focus:ring-blue-500"
   } bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100`;
 
   return (
@@ -146,74 +138,38 @@ export default function SignUp() {
           </div>
         )}
 
-        {/* Username (outside the form so it applies to both sign-up flows) */}
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Username
-          </label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Username</label>
           <div className="relative">
-            <input
-              type="text"
-              value={username}
+            <input type="text" value={username}
               onChange={(e) => setUsername(e.target.value.toLowerCase())}
-              placeholder="e.g. jane_smith"
-              className={usernameInputClass}
-            />
+              placeholder="e.g. jane_smith" className={usernameInputClass} />
             {checkingUsername && (
               <div className="absolute right-2 top-1/2 -translate-y-1/2 h-4 w-4 animate-spin rounded-full border-2 border-blue-500 border-t-transparent" />
             )}
             {!checkingUsername && usernameOk && (
-              <span className="absolute right-2 top-1/2 -translate-y-1/2 text-green-500 text-xs">
-                ✓
-              </span>
+              <span className="absolute right-2 top-1/2 -translate-y-1/2 text-green-500 text-xs">✓</span>
             )}
           </div>
-          {usernameError && (
-            <p className="mt-1 text-xs text-red-600 dark:text-red-400">
-              {usernameError}
-            </p>
-          )}
-          {!usernameError && usernameOk && (
-            <p className="mt-1 text-xs text-green-600 dark:text-green-400">
-              Username available
-            </p>
-          )}
+          {usernameError && <p className="mt-1 text-xs text-red-600 dark:text-red-400">{usernameError}</p>}
+          {!usernameError && usernameOk && <p className="mt-1 text-xs text-green-600 dark:text-green-400">Username available</p>}
         </div>
 
         <form onSubmit={handleEmailSignUp} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              Email
-            </label>
-            <input
-              type="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email</label>
+            <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)}
+              className="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500" />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-              Password
-            </label>
-            <input
-              type="password"
-              required
-              minLength={8}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Password</label>
+            <input type="password" required minLength={8} value={password} onChange={(e) => setPassword(e.target.value)}
+              className="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500" />
             <p className="mt-1 text-xs text-gray-500">Minimum 8 characters</p>
           </div>
-
-          <button
-            type="submit"
-            disabled={loading || !usernameOk}
-            className="w-full rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-          >
-            {loading ? "Creating account…" : "Sign up with email"}
+          <button type="submit" disabled={loading || !usernameOk}
+            className="w-full rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+            {loading ? "Please wait…" : "Sign up with email"}
           </button>
         </form>
 
@@ -223,24 +179,15 @@ export default function SignUp() {
           <div className="flex-1 border-t border-gray-200 dark:border-gray-700" />
         </div>
 
-        <button
-          type="button"
-          onClick={handleGoogle}
-          disabled={loading || !usernameOk}
-          className="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 flex items-center justify-center gap-2 transition-colors"
-        >
+        <button type="button" onClick={handleGoogle} disabled={loading || !usernameOk}
+          className="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50 flex items-center justify-center gap-2 transition-colors">
           <GoogleIcon />
           Continue with Google
         </button>
 
         <p className="mt-6 text-center text-sm text-gray-600 dark:text-gray-400">
           Already have an account?{" "}
-          <Link
-            href="/auth/sign-in"
-            className="text-blue-600 dark:text-blue-400 hover:underline"
-          >
-            Sign in
-          </Link>
+          <Link href="/auth/sign-in" className="text-blue-600 dark:text-blue-400 hover:underline">Sign in</Link>
         </p>
       </div>
     </div>
