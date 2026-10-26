@@ -14,7 +14,7 @@ import  requests
 import json
 
 # Load environment variables
-load_dotenv()
+load_dotenv(dotenv_path=Path(__file__).resolve().parent.parent / ".env", override=True)
 
 # ===== CONFIGURATION =====
 BASE_DIR = Path(__file__).resolve().parent
@@ -27,7 +27,7 @@ GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 if not GROQ_API_KEY:
     raise ValueError("GROQ_API_KEY not found in environment variables. Please set it in your .env file.")
 
-MODEL_NAME = "llama-3.3-70b-versatile"
+MODEL_NAME = "qwen/qwen3.8-27b"
 GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
 
 
@@ -1355,7 +1355,8 @@ def call_groq_api(prompt: str, system_message: str, max_tokens: int = 4000) -> s
             GROQ_API_URL,
             json=payload,
             headers=headers,
-            timeout=120  # 2 minute timeout for long documents
+            timeout=120,
+            proxies={"http": None, "https": None}
         )
         
         response.raise_for_status()

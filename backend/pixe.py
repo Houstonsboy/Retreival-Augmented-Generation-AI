@@ -14,7 +14,7 @@ from groq import Groq  # UPDATED: Using Groq instead of HuggingFace
 from langchain_core.documents import Document
 
 # Load environment variables from .env file
-load_dotenv()
+load_dotenv(dotenv_path=Path(__file__).resolve().parent / ".env", override=True)
 
 # ===== CONFIGURATION ===== 
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
@@ -23,7 +23,7 @@ if not GROQ_API_KEY:
 
 # UPDATED: Using Groq's models instead of HuggingFace
 # Available Groq models: llama-3.3-70b-versatile, llama-3.1-70b-versatile, mixtral-8x7b-32768, gemma2-9b-it
-MODEL_NAME = "llama-3.3-70b-versatile"  # Fast and capable model
+MODEL_NAME = "qwen/qwen3.8-27b"
 
 # IMPROVEMENT: Upgraded from all-MiniLM-L6-v2 (384d) to intfloat/e5-base-v2 (768d)
 # e5-base-v2 provides better semantic understanding and is free from Hugging Face

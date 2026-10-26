@@ -11,7 +11,7 @@ from typing import List, Dict, Optional
 from dotenv import load_dotenv
 
 # Load environment variables
-load_dotenv()
+load_dotenv(dotenv_path=Path(__file__).resolve().parent.parent / ".env", override=True)
 
 # ===== CONFIGURATION =====
 BASE_DIR = Path(__file__).resolve().parent
@@ -23,7 +23,7 @@ GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 if not GROQ_API_KEY:
     raise ValueError("GROQ_API_KEY not found in environment variables. Please set it in your .env file.")
 
-MODEL_NAME = "llama-3.3-70b-versatile"
+MODEL_NAME = "qwen/qwen3.8-27b"
 GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
 
 # System prompt for LLM

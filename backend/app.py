@@ -5,6 +5,7 @@ import os
 import sys
 import io
 import json
+import requests
 from pathlib import Path
 from werkzeug.utils import secure_filename
 from digester import digest_repo
@@ -15,6 +16,7 @@ from Qclassifier import Qclassifier
 from RulesRetriever import retrieve_relevant_rules
 from constitutionlogic.constitutionbreaker import extract_constitution_articles, OUTPUT_DIR as CONST_OUTPUT_DIR, flatten_articles_to_embeddable_chunks, CHUNK_SIZE, CHUNK_OVERLAP
 from constitutionlogic.constitution_digester import ConstitutionDigester, EMBEDDABLE_CHUNKS_JSON
+from config import CASELAW_DB_DIR, CASELAW_COLLECTION_NAME, SCC_CASES_DIR
 app = Flask(__name__)
 CORS(app)  # Enable CORS for frontend
 
@@ -937,13 +939,11 @@ def serve_case_pdf():
     
     try:
         # Connect to ChromaDB to get source_file_path
-        chroma_db_dir = Path(__file__).resolve().parent / "LegalSummariesDB"
-        
-        if not chroma_db_dir.exists():
+        if not CASELAW_DB_DIR.exists():
             return jsonify({'error': 'Database not found'}), 404
-        
-        client = chromadb.PersistentClient(path=str(chroma_db_dir))
-        collection = client.get_collection(name="legal_summaries")
+
+        client = chromadb.PersistentClient(path=str(CASELAW_DB_DIR))
+        collection = client.get_collection(name=CASELAW_COLLECTION_NAME)
         
         # Get one chunk with this case_identifier
         results = collection.get(
@@ -986,14 +986,16 @@ def serve_case_pdf():
                 'tried_paths': [source_file_path, str(RES_IPSA_LOQUITUR_DIR / f"{file_name}.pdf")]
             }), 404
         
-        # Security: Ensure resolved path is under RES_IPSA_LOQUITUR_DIR
-        # (Prevent path traversal attacks)
+        # Security: Ensure resolved path is under an allowed root directory.
+        # Allowed roots: RES_IPSA_LOQUITUR_DIR (legacy) and SCC_CASES_DIR (new cases).
         try:
             pdf_path_resolved = pdf_path.resolve()
-            allowed_root = RES_IPSA_LOQUITUR_DIR.resolve()
-            
-            # Check if pdf_path is under allowed_root
-            if not str(pdf_path_resolved).startswith(str(allowed_root)):
+            allowed_roots = [RES_IPSA_LOQUITUR_DIR.resolve(), SCC_CASES_DIR.resolve()]
+            in_allowed = any(
+                os.path.commonpath([pdf_path_resolved, root]) == str(root)
+                for root in allowed_roots
+            )
+            if not in_allowed:
                 return jsonify({'error': 'Access denied: path outside allowed directory'}), 403
         except Exception as e:
             return jsonify({'error': f'Path resolution error: {str(e)}'}), 500
@@ -1272,7 +1274,7 @@ Your answer:"""
         }
         
         payload = {
-            "model": "llama-3.3-70b-versatile",
+            "model": "qwen/qwen3.8-27b",
             "messages": [
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": user_prompt}

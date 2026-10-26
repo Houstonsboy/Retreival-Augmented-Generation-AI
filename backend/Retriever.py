@@ -6,9 +6,13 @@ with LLM-generated case summaries based on FIRAC components.
 """
 
 import json
+import math
+import re
+import statistics as _stats
 import chromadb
 from pathlib import Path
-from sentence_transformers import SentenceTransformer
+from sentence_transformers import SentenceTransformer, CrossEncoder
+from rank_bm25 import BM25Okapi
 from typing import Dict, List, Any, Optional
 import sys
 import os
@@ -17,23 +21,26 @@ import urllib.parse
 from dotenv import load_dotenv
 
 # Load environment variables
-load_dotenv()
+load_dotenv(dotenv_path=Path(__file__).resolve().parent / ".env", override=True)
 
 # ============================================================================
 # CONFIGURATION
 # ============================================================================
 
 BASE_DIR = Path(__file__).resolve().parent
-CHROMA_DB_DIR = BASE_DIR / "LegalSummariesDB"
-CHROMA_COLLECTION_NAME = "legal_summaries"
-EMBEDDING_MODEL_NAME = "intfloat/e5-base-v2"
+
+from config import (
+    CASELAW_DB_DIR as CHROMA_DB_DIR,
+    CASELAW_COLLECTION_NAME as CHROMA_COLLECTION_NAME,
+    EMBEDDING_MODEL_NAME,
+)
 
 # Groq API Configuration
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 if not GROQ_API_KEY:
     raise ValueError("GROQ_API_KEY not found in environment variables. Please set it in your .env file.")
 
-MODEL_NAME = "llama-3.3-70b-versatile"
+MODEL_NAME = "qwen/qwen3.8-27b"
 GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
 
 # How many parent documents to return
@@ -42,8 +49,49 @@ TOP_N_PARENTS = 3
 # How many chunks to show per component per parent (max)
 MAX_CHUNKS_PER_COMPONENT = 1
 
-# Minimum score threshold to warn about low confidence
-LOW_CONFIDENCE_THRESHOLD = 0.5
+# Cross-encoder score (sigmoid-normalised) below which we warn about low confidence
+LOW_CONFIDENCE_THRESHOLD = 0.4
+
+# ── Hybrid-retrieval module-level state (lazy-initialised once per process) ──
+_SECTION_RE_C = re.compile(r'\b(?:section|s\.|sec\.?|article|art\.?)\s*(\d+\w*)', re.IGNORECASE)
+_CASES_BM25: dict = {"index": None, "ids": [], "docs": [], "metas": []}
+_CASES_CE: dict = {"model": None}
+
+
+def _sigmoid_c(x: float) -> float:
+    return 1.0 / (1.0 + math.exp(-max(-50.0, min(50.0, x))))
+
+
+def _ensure_cases_bm25() -> None:
+    if _CASES_BM25["index"] is not None:
+        return
+    if not CHROMA_DB_DIR.exists():
+        return
+    try:
+        _c = chromadb.PersistentClient(path=str(CHROMA_DB_DIR))
+        _col = _c.get_collection(name=CHROMA_COLLECTION_NAME)
+        _d = _col.get(include=["documents", "metadatas"])
+        _CASES_BM25["ids"] = _d["ids"]
+        _CASES_BM25["docs"] = _d["documents"]
+        _CASES_BM25["metas"] = _d["metadatas"]
+        _CASES_BM25["index"] = BM25Okapi([doc.split() for doc in _d["documents"]])
+    except Exception:
+        pass
+
+
+def _ensure_cases_ce() -> CrossEncoder:
+    if _CASES_CE["model"] is None:
+        _CASES_CE["model"] = CrossEncoder("cross-encoder/ms-marco-MiniLM-L-6-v2")
+    return _CASES_CE["model"]
+
+
+def _rrf_fuse_c(ranked_a: list, ranked_b: list, k: int = 60, n: int = 30) -> list:
+    rrf: dict = {}
+    for rank, cid in enumerate(ranked_a, 1):
+        rrf[cid] = rrf.get(cid, 0.0) + 1.0 / (k + rank)
+    for rank, cid in enumerate(ranked_b, 1):
+        rrf[cid] = rrf.get(cid, 0.0) + 1.0 / (k + rank)
+    return sorted(rrf, key=lambda x: -rrf[x])[:n]
 
 
 # ============================================================================
@@ -132,7 +180,7 @@ Keep your response clear, professional, and focused on practical legal insights.
             "max_tokens": 1000
         }
         
-        response = requests.post(GROQ_API_URL, headers=headers, json=payload, timeout=30)
+        response = requests.post(GROQ_API_URL, headers=headers, json=payload, timeout=30, proxies={"http": None, "https": None})
         response.raise_for_status()
         
         result = response.json()
@@ -267,6 +315,68 @@ def calculate_chunk_score(distance: float, chunk_metadata: Dict,
     }
 
 
+def _find_overlap(text_a: str, text_b: str, max_check: int = 400) -> int:
+    """Number of leading chars of text_b that verbatim-duplicate the end of text_a."""
+    check = min(len(text_a), len(text_b), max_check)
+    for size in range(check, 9, -1):
+        if text_a[-size:] == text_b[:size]:
+            return size
+    return 0
+
+
+def _stitch_chunks(chunks: list) -> str:
+    """Join chunk dicts sorted by chunk_index, stripping inter-chunk overlap."""
+    if not chunks:
+        return ""
+    result = chunks[0]["text"]
+    for chunk in chunks[1:]:
+        overlap = _find_overlap(result, chunk["text"])
+        result += chunk["text"][overlap:]
+    return result
+
+
+def _enrich_case_chunks(collection, parent_data: Dict) -> None:
+    """
+    For each chunk in a parent group, fetch any prev/next adjacent chunks
+    that are not already in the group. Mutates parent_data['chunks'] in place.
+    """
+    known_ids = {c["chunk_id"] for c in parent_data["chunks"]}
+    to_fetch = set()
+    for c in parent_data["chunks"]:
+        if c.get("prev_chunk_id") and c["prev_chunk_id"] not in known_ids:
+            to_fetch.add(c["prev_chunk_id"])
+        if c.get("next_chunk_id") and c["next_chunk_id"] not in known_ids:
+            to_fetch.add(c["next_chunk_id"])
+
+    if not to_fetch:
+        return
+
+    try:
+        fetched = collection.get(
+            ids=list(to_fetch),
+            include=["documents", "metadatas"],
+        )
+        for i, fid in enumerate(fetched["ids"]):
+            if fid in known_ids:
+                continue
+            meta = fetched["metadatas"][i]
+            parent_data["chunks"].append({
+                "chunk_id": fid,
+                "component": meta.get("firac_component", "").upper(),
+                "text": fetched["documents"][i],
+                "score": 0.0,
+                "base_similarity": 0.0,
+                "domain_boost": 0.0,
+                "match_reasons": ["adjacent context"],
+                "chunk_index": int(meta.get("chunk_index", 0)),
+                "prev_chunk_id": str(meta.get("prev_chunk_id", "")),
+                "next_chunk_id": str(meta.get("next_chunk_id", "")),
+            })
+            known_ids.add(fid)
+    except Exception:
+        pass  # non-fatal: adjacent chunks may not yet be embedded
+
+
 def group_by_parent(results: Dict, scores: List[Dict], target_components: List[str]) -> Dict:
     """Group chunks by parent document (case_identifier)."""
     parents = {}
@@ -302,7 +412,10 @@ def group_by_parent(results: Dict, scores: List[Dict], target_components: List[s
             'score': score_info['final_score'],
             'base_similarity': score_info['base_similarity'],
             'domain_boost': score_info['domain_boost'],
-            'match_reasons': score_info['match_reasons']
+            'match_reasons': score_info['match_reasons'],
+            'chunk_index': int(metadata.get('chunk_index', 0)),
+            'prev_chunk_id': str(metadata.get('prev_chunk_id', '')),
+            'next_chunk_id': str(metadata.get('next_chunk_id', '')),
         }
         
         parents[parent_id]['chunks'].append(chunk_data)
@@ -327,19 +440,25 @@ def select_best_chunks_per_parent(parent_data: Dict, target_components: List[str
         chunks_by_component[component].append(chunk)
     
     selected_chunks = []
-    
+
     for component in target_components:
         comp_upper = component.upper()
         if comp_upper in chunks_by_component:
-            sorted_chunks = sorted(chunks_by_component[comp_upper], 
-                                  key=lambda x: x['score'], 
-                                  reverse=True)
+            sorted_chunks = sorted(chunks_by_component[comp_upper],
+                                   key=lambda x: x['score'],
+                                   reverse=True)
             selected_chunks.extend(sorted_chunks[:MAX_CHUNKS_PER_COMPONENT])
-    
+
+    if not selected_chunks:
+        # Verbatim chunks have firac_component=""; return the top-scored chunks
+        # so the evidence widget and best_chunk preview still have content.
+        all_sorted = sorted(parent_data['chunks'], key=lambda x: x['score'], reverse=True)
+        selected_chunks = all_sorted[:max(3, MAX_CHUNKS_PER_COMPONENT)]
+
     return selected_chunks
 
 
-def format_output(top_parents: List[tuple], query_params: Dict, stats: Dict, verbose: bool = True) -> Dict:
+def format_output(top_parents: List[tuple], query_params: Dict, stats: Dict, verbose: bool = True, skip_summaries: bool = False) -> Dict:
     """
     Format final output with LLM-generated summaries in frontend-compatible structure.
     
@@ -360,8 +479,11 @@ def format_output(top_parents: List[tuple], query_params: Dict, stats: Dict, ver
             'chunks': parent_data['chunks']
         }
         
-        # Generate LLM summary
-        summary_result = generate_case_summary(case_info, query_params, verbose)
+        # Generate LLM summary (skipped in validation / no-LLM mode)
+        if skip_summaries:
+            summary_result = {'summary': '', 'generated': False}
+        else:
+            summary_result = generate_case_summary(case_info, query_params, verbose)
         
         # Select best chunks for evidence
         evidence_chunks = select_best_chunks_per_parent(parent_data, query_params['target_components'])
@@ -394,7 +516,10 @@ def format_output(top_parents: List[tuple], query_params: Dict, stats: Dict, ver
             'matched_components': list(set([chunk['component'] for chunk in evidence_chunks])),
             
             # BEST CHUNK TEXT FOR EVIDENCE WIDGET PREVIEW
-            'best_chunk': evidence_chunks[0]['text'] if evidence_chunks else '',
+            # Stitch consecutive evidence chunks (handles overlap from split sections)
+            'best_chunk': _stitch_chunks(
+                sorted(evidence_chunks, key=lambda x: x.get('chunk_index', 0))
+            ) if evidence_chunks else '',
             
             # DETAILED CHUNKS FOR EVIDENCE WIDGET
             'chunks': [
@@ -435,7 +560,8 @@ def format_output(top_parents: List[tuple], query_params: Dict, stats: Dict, ver
 # MAIN RETRIEVAL FUNCTION
 # ============================================================================
 
-def retrieve_relevant_cases(classifier_output: Any, verbose: bool = True) -> Dict:
+def retrieve_relevant_cases(classifier_output: Any, verbose: bool = True,
+                            skip_summaries: bool = False, top_n: int = None) -> Dict:
     """
     Main retrieval function with LLM-enhanced summaries.
     Returns data in frontend-compatible format.
@@ -496,92 +622,132 @@ def retrieve_relevant_cases(classifier_output: Any, verbose: bool = True) -> Dic
     if verbose:
         print("\n[4/7] Embedding vector query...")
     
-    query_embedding = embedding_model.encode(query_params['vector_query']).tolist()
+    query_embedding = embedding_model.encode("query: " + query_params['vector_query']).tolist()
     
     if verbose:
         print(f"  ✓ Embedding dimension: {len(query_embedding)}")
     
-    # ---- STEP 5: Semantic Search ----
+    # ---- STEP 5: Hybrid Search (BM25 + Vector → RRF → Cross-encoder) ----
     if verbose:
-        print("\n[5/7] Performing semantic search...")
-    
-    search_results = collection.query(
+        print("\n[5/7] Hybrid search: BM25 + vector + cross-encoder...")
+
+    query_str = query_params['vector_query']
+
+    # 5a. BM25 over all case chunks
+    _ensure_cases_bm25()
+    bm25_ranked_ids: list = []
+    if _CASES_BM25["index"] is not None:
+        bm25_raw = _CASES_BM25["index"].get_scores(query_str.split())
+        bm25_order = sorted(range(len(bm25_raw)), key=lambda i: -bm25_raw[i])[:50]
+        bm25_ranked_ids = [_CASES_BM25["ids"][i] for i in bm25_order]
+
+    # 5b. Vector search (top 50)
+    n_vec = min(50, collection.count())
+    vec_raw = collection.query(
         query_embeddings=[query_embedding],
-        n_results=50,
+        n_results=n_vec,
         include=['documents', 'metadatas', 'distances']
     )
-    
+    vec_ranked_ids = vec_raw['ids'][0]
+
+    if verbose:
+        print(f"  ✓ Vector: {len(vec_ranked_ids)} | BM25: {len(bm25_ranked_ids)} chunks")
+
+    # 5c. RRF fusion → top 30
+    fused_ids = _rrf_fuse_c(vec_ranked_ids, bm25_ranked_ids, k=60, n=30)
+
+    # 5d. Build id→(doc, meta) lookup
+    id_to_data: dict = {}
+    for i, cid in enumerate(vec_ranked_ids):
+        id_to_data[cid] = (vec_raw['documents'][0][i], vec_raw['metadatas'][0][i])
+    if _CASES_BM25["index"] is not None:
+        for i, cid in enumerate(_CASES_BM25["ids"]):
+            if cid not in id_to_data:
+                id_to_data[cid] = (_CASES_BM25["docs"][i], _CASES_BM25["metas"][i])
+
+    # 5e. Cross-encoder rerank
+    cand_ids = [cid for cid in fused_ids if cid in id_to_data]
+    cand_docs = [id_to_data[cid][0] for cid in cand_ids]
+    cand_metas = [id_to_data[cid][1] for cid in cand_ids]
+
+    ce_model = _ensure_cases_ce()
+    ce_raw_scores = ce_model.predict([(query_str, doc) for doc in cand_docs])
+    ce_sigmoid = [_sigmoid_c(float(s)) for s in ce_raw_scores]
+
+    # Sort descending by CE score
+    order = sorted(range(len(cand_ids)), key=lambda i: -ce_sigmoid[i])
+    cand_ids = [cand_ids[i] for i in order]
+    cand_docs = [cand_docs[i] for i in order]
+    cand_metas = [cand_metas[i] for i in order]
+    ce_sigmoid = [ce_sigmoid[i] for i in order]
+
+    if verbose and ce_sigmoid:
+        print(f"  ✓ Cross-encoder done. CE-sigmoid: "
+              f"min={min(ce_sigmoid):.3f}  median={_stats.median(ce_sigmoid):.3f}  max={max(ce_sigmoid):.3f}")
+
+    # ---- STEP 6: Build score_info dicts and group by parent ----
+    if verbose:
+        print("\n[6/7] Grouping by parent document...")
+
+    # Build flat results dict from CE-reranked candidates
     results = {
-        'ids': search_results['ids'][0],
-        'documents': search_results['documents'][0],
-        'metadatas': search_results['metadatas'][0],
-        'distances': search_results['distances'][0]
+        'ids': cand_ids,
+        'documents': cand_docs,
+        'metadatas': cand_metas,
+        'distances': [0.0] * len(cand_ids),
     }
-    
-    if verbose:
-        print(f"  ✓ Found {len(results['ids'])} candidate chunks")
-    
-    # ---- STEP 6: Filter and Score ----
-    if verbose:
-        print("\n[6/7] Filtering by target components and scoring...")
-    
-    all_scores = []
-    for idx in range(len(results['ids'])):
-        score_info = calculate_chunk_score(
-            results['distances'][idx],
-            results['metadatas'][idx],
-            query_params['target_components'],
-            query_params['legal_domains']
-        )
-        all_scores.append(score_info)
-    
-    filtered_results = {'ids': [], 'documents': [], 'metadatas': [], 'distances': []}
-    filtered_scores = []
-    
-    for idx in range(len(results['ids'])):
-        if all_scores[idx]['component_match']:
-            filtered_results['ids'].append(results['ids'][idx])
-            filtered_results['documents'].append(results['documents'][idx])
-            filtered_results['metadatas'].append(results['metadatas'][idx])
-            filtered_results['distances'].append(results['distances'][idx])
-            filtered_scores.append(all_scores[idx])
-    
-    if verbose:
-        print(f"  ✓ After component filter: {len(filtered_results['ids'])} chunks")
-    
-    if len(filtered_results['ids']) == 0:
-        if verbose:
-            print("\n  ⚠️  WARNING: No chunks found in target components!")
-            print("  Falling back to top overall matches...")
-        filtered_results = results
-        filtered_scores = all_scores
-    
-    parents = group_by_parent(filtered_results, filtered_scores, query_params['target_components'])
-    
+
+    # Build score_info dicts using CE sigmoid as final_score
+    target_comps = [c.upper() for c in query_params['target_components']]
+    scored = []
+    for i, cid in enumerate(cand_ids):
+        meta = cand_metas[i]
+        chunk_comp = meta.get('firac_component', '').upper()
+        comp_match = chunk_comp in target_comps
+        scored.append({
+            'final_score': ce_sigmoid[i],
+            'base_similarity': ce_sigmoid[i],
+            'component_match': comp_match,
+            'domain_boost': 0.0,
+            'match_reasons': ['cross-encoder reranked'],
+        })
+
+    parents = group_by_parent(results, scored, query_params['target_components'])
+
     if verbose:
         print(f"  ✓ Grouped into {len(parents)} unique parent documents")
-    
+
     sorted_parents = sorted(parents.items(), key=lambda x: x[1]['best_score'], reverse=True)
-    top_parents = sorted_parents[:TOP_N_PARENTS]
-    
-    # ---- STEP 7: Format Output with LLM Summaries (FRONTEND-COMPATIBLE) ----
+    _top_n = top_n if top_n is not None else TOP_N_PARENTS
+    top_parents = sorted_parents[:_top_n]
+
+    # Fetch adjacent chunks for overlap stitching
+    for _, parent_data in top_parents:
+        _enrich_case_chunks(collection, parent_data)
+
+    # ---- STEP 7: Format Output ----
     if verbose:
-        print(f"\n[7/7] Formatting results with AI summaries...")
-    
+        print(f"\n[7/7] Formatting results{'  (LLM summaries skipped)' if skip_summaries else ' with AI summaries'}...")
+
     stats = {
-        'total_candidates': len(results['ids']),
-        'after_component_filter': len(filtered_results['ids']),
+        'total_candidates': len(cand_ids),
+        'after_component_filter': len(cand_ids),  # no filter needed post-CE
         'unique_parents_found': len(parents),
-        'returned_parents': len(top_parents)
+        'returned_parents': len(top_parents),
+        'ce_scores': {
+            'min': round(min(ce_sigmoid), 3) if ce_sigmoid else 0,
+            'median': round(_stats.median(ce_sigmoid), 3) if ce_sigmoid else 0,
+            'max': round(max(ce_sigmoid), 3) if ce_sigmoid else 0,
+        },
     }
     
-    output = format_output(top_parents, query_params, stats, verbose)
-    
+    output = format_output(top_parents, query_params, stats, verbose, skip_summaries)
+
     if top_parents and top_parents[0][1]['best_score'] < LOW_CONFIDENCE_THRESHOLD:
-        output['warning'] = "Low confidence results - consider refining query"
-    
+        output['warning'] = "Low confidence results — CE score below threshold; consider refining query"
+
     if verbose:
-        print(f"\n  ✓ Generated summaries for {len(top_parents)} cases")
+        print(f"\n  ✓ {'Formatted' if skip_summaries else 'Generated summaries for'} {len(top_parents)} cases")
         print("\n" + "="*80)
         print("✅ RETRIEVAL COMPLETE")
         print("="*80 + "\n")

@@ -1,18 +1,29 @@
 import os
 import json
 import requests
+from pathlib import Path
 from typing import Dict, Any, Optional
 from dotenv import load_dotenv
 from Retriever import retrieve_relevant_cases, display_results
 
 # Load environment variables
-load_dotenv()
+load_dotenv(dotenv_path=Path(__file__).resolve().parent / ".env", override=True)
 
-GROQ_API_KEY = os.getenv("GROQ_API_KEY")
-if not GROQ_API_KEY:
-    raise ValueError("GROQ_API_KEY not found in environment variables. Please set it in your .env file.")
+def _load_api_keys() -> list:
+    keys = []
+    for var in ["GROQ_API_KEY", "GROQ_API_KEY_2", "GROQ_API_KEY_3"]:
+        k = os.getenv(var)
+        if k:
+            keys.append(k)
+    if not keys:
+        raise ValueError("No GROQ_API_KEY found in .env. Add at least GROQ_API_KEY.")
+    return keys
 
-MODEL_NAME = "llama-3.3-70b-versatile"
+GROQ_KEYS = _load_api_keys()
+GROQ_API_KEY = GROQ_KEYS[0]
+print(f"[INFO] Loaded {len(GROQ_KEYS)} Groq API key(s)")
+
+MODEL_NAME = "qwen/qwen3.8-27b"
 GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
 
 #System prompt to guide the classifier
@@ -406,266 +417,6 @@ Expected Output:
 
 ---
 
-## SECTION 9: DECISION FLOWCHART
-```
-USER QUERY
-    ↓
-[STEP 0: Mode Detection]
-    ↓
-    ├─→ Contains explicit/implied citation? 
-    │   └─→ YES → MODE A (DIRECT_STATUTORY_LOOKUP)
-    │        ├─→ Extract citations (Layer 1)
-    │        ├─→ Build statutory signals (Layer 2)
-    │        ├─→ Skip audit (Layer 3)
-    │        └─→ Check for litigation context
-    │             └─→ YES → Upgrade to MODE C
-    │
-    ├─→ Involves litigation/procedure/doctrine?
-    │   └─→ YES → MODE B (STRATEGIC_LEGAL_ANALYSIS)
-    │        └─→ Run full audit (Section 3)
-    │
-    └─→ Both statutory lookup AND case law needed?
-        └─→ YES → MODE C (HYBRID_RETRIEVAL)
-             ├─→ TRACK 1: Statutory (Section 2)
-             ├─→ TRACK 2: Case Law (Section 3)
-             └─→ Specify retrieval_strategy
-```
-
----
-
-## EXAMPLES
-
-### Example 1: Pure Direct Lookup
-**Query:** "What does Article 37 say?"
-```json
-{
-  "retrieval_mode": "DIRECT_STATUTORY_LOOKUP",
-  "intents": ["DIRECT_ARTICLE_RETRIEVAL"],
-  "target_components": ["STATUTORY_TEXT"],
-  "legal_domains": [
-    {
-      "domain": "Constitutional Law",
-      "mode_of_presence": "Direct Invocation",
-      "procedural_scope": "in-scope",
-      "confidence_score": 1.0,
-      "applies_to": "STATUTORY_LOOKUP"
-    }
-  ],
-  "citation_analysis": {
-    "explicit_citations": ["37"],
-    "implied_subject": [],
-    "citation_confidence": "HIGH"
-  },
-  "strategy_critique": {
-    "spatial": null,
-    "doctrinal": null,
-    "temporal": null,
-    "procedural": null
-  },
-  "entities": {
-    "statutes": {
-      "primary": ["Article 37, Constitution of Kenya 2010"],
-      "contextual": []
-    },
-    "article_numbers": ["37"],
-    "source_documents": ["Constitution of Kenya 2010"],
-    "cases": [],
-    "judges": []
-  },
-  "vector_query": "Article 37 Constitution Kenya",
-  "retrieval_strategy": "EXACT_ARTICLE_MATCH",
-  "reasoning_summary": "Pure statutory lookup query. User requests exact text of Article 37. No litigation context detected. Retrieval should prioritize metadata filter on article_number='37' in Master_Rules database."
-}
-```
-
-### Example 2: Citation Mismatch
-**Query:** "Article 50 says you can protest peacefully"
-```json
-{
-  "retrieval_mode": "DIRECT_STATUTORY_LOOKUP",
-  "intents": ["DIRECT_ARTICLE_RETRIEVAL", "STATUTORY_INTERPRETATION"],
-  "target_components": ["STATUTORY_TEXT"],
-  "legal_domains": [
-    {
-      "domain": "Constitutional Law",
-      "mode_of_presence": "Direct Invocation",
-      "procedural_scope": "in-scope",
-      "confidence_score": 0.9,
-      "applies_to": "STATUTORY_LOOKUP"
-    }
-  ],
-  "citation_analysis": {
-    "explicit_citations": ["50"],
-    "implied_subject": ["freedom of assembly", "peaceful protest", "demonstrations"],
-    "user_stated_citation": "Article 50",
-    "citation_confidence": "MISMATCH",
-    "correction_signal": "Article 50 addresses fair hearing rights. Freedom of assembly/protests is Article 37."
-  },
-  "strategy_critique": {
-    "spatial": null,
-    "doctrinal": "Potential user confusion between Article 50 (fair hearing) and Article 37 (assembly)",
-    "temporal": null,
-    "procedural": null
-  },
-  "entities": {
-    "statutes": {
-      "primary": ["Article 50, Constitution of Kenya 2010", "Article 37, Constitution of Kenya 2010"],
-      "contextual": []
-    },
-    "article_numbers": ["50", "37"],
-    "source_documents": ["Constitution of Kenya 2010"]
-  },
-  "vector_query": "Article 50 Constitution Kenya, Article 37 freedom of assembly protest",
-  "retrieval_strategy": "FETCH_BOTH_FOR_COMPARISON",
-  "reasoning_summary": "User stated Article 50 but described freedom of assembly content (Article 37). Retrieving both articles to: (1) educate user on Article 50's actual content (fair hearing), (2) provide Article 37 as correct provision for protests."
-}
-```
-
-### Example 3: Implied Citation
-**Query:** "What does the Constitution say about freedom of assembly?"
-```json
-{
-  "retrieval_mode": "DIRECT_STATUTORY_LOOKUP",
-  "intents": ["DIRECT_ARTICLE_RETRIEVAL"],
-  "target_components": ["STATUTORY_TEXT"],
-  "legal_domains": [
-    {
-      "domain": "Constitutional Law",
-      "mode_of_presence": "Direct Invocation",
-      "procedural_scope": "in-scope",
-      "confidence_score": 0.95,
-      "applies_to": "STATUTORY_LOOKUP"
-    }
-  ],
-  "citation_analysis": {
-    "explicit_citations": [],
-    "implied_subject": ["freedom of assembly", "demonstrations", "picketing"],
-    "citation_confidence": "MEDIUM"
-  },
-  "strategy_critique": {
-    "spatial": null,
-    "doctrinal": null,
-    "temporal": null,
-    "procedural": null
-  },
-  "entities": {
-    "statutes": {
-      "primary": ["Article 37, Constitution of Kenya 2010"],
-      "contextual": []
-    },
-    "article_numbers": ["37"],
-    "source_documents": ["Constitution of Kenya 2010"]
-  },
-  "vector_query": "freedom of assembly demonstrations Constitution Kenya",
-  "retrieval_strategy": "SEMANTIC_SUBJECT_MATCH",
-  "reasoning_summary": "No explicit article number provided. User asks about freedom of assembly subject matter. Article 37 is the constitutional provision. Using semantic query to retrieve based on subject."
-}
-```
-
-### Example 4: Hybrid Mode
-**Query:** "What does Article 37 say and can I use it to challenge a ban on protests?"
-```json
-{
-  "retrieval_mode": "HYBRID_RETRIEVAL",
-  "intents": ["DIRECT_ARTICLE_RETRIEVAL", "RULE_APPLICATION", "PROCEDURAL_GUIDANCE"],
-  "target_components": ["STATUTORY_TEXT", "RULES", "APPLICATION"],
-  "legal_domains": [
-    {
-      "domain": "Constitutional Law",
-      "mode_of_presence": "Direct Invocation",
-      "procedural_scope": "in-scope",
-      "confidence_score": 1.0,
-      "applies_to": "BOTH"
-    },
-    {
-      "domain": "Administrative Law",
-      "mode_of_presence": "Contextual",
-      "procedural_scope": "in-scope",
-      "confidence_score": 0.7,
-      "applies_to": "CASE_LAW"
-    }
-  ],
-  "citation_analysis": {
-    "explicit_citations": ["37"],
-    "implied_subject": ["constitutional challenge", "ban on protests"],
-    "citation_confidence": "HIGH"
-  },
-  "strategy_critique": {
-    "spatial": "Constitutional petition under Article 165(3)(b) - High Court jurisdiction",
-    "doctrinal": "Limitation analysis under Article 24 required for protest ban justification",
-    "temporal": "No specific limitation period for constitutional petitions",
-    "procedural": "Consider interim relief under Order 40 Civil Procedure Rules for urgent matters"
-  },
-  "entities": {
-    "statutes": {
-      "primary": ["Article 37, Constitution of Kenya 2010", "Article 24, Constitution of Kenya 2010"],
-      "contextual": ["Article 165, Constitution of Kenya 2010"]
-    },
-    "article_numbers": ["37", "24", "165"],
-    "source_documents": ["Constitution of Kenya 2010", "Civil Procedure Rules"],
-    "cases": ["Maina Kiai v Attorney General", "Coalition for Reform and Democracy v Republic"],
-    "judges": []
-  },
-  "vector_query_statutory": "Article 37 Constitution Kenya",
-  "vector_query_caselaw": "Article 37, freedom of assembly, constitutional challenge, protest ban, limitation of rights, Article 24, judicial review Kenya",
-  "retrieval_strategy": "STATUTORY_FIRST_THEN_CASELAW",
-  "reasoning_summary": "Hybrid query: (1) Direct lookup of Article 37 text, (2) Strategic analysis of using it to challenge protest ban. TRACK 1 retrieves Article 37 statutory text. TRACK 2 retrieves case law on Article 37 challenges and Article 24 limitation analysis. Full audit applied to litigation component."
-}
-```
-
-### Example 5: Strategic Analysis Only
-**Query:** "Can I sue the government for unlawful detention without filing a notice?"
-```json
-{
-  "retrieval_mode": "STRATEGIC_LEGAL_ANALYSIS",
-  "intents": ["PROCEDURAL_GUIDANCE", "RULE_APPLICATION"],
-  "target_components": ["RULES", "APPLICATION", "ISSUES"],
-  "legal_domains": [
-    {
-      "domain": "Constitutional Law",
-      "mode_of_presence": "Direct Invocation",
-      "procedural_scope": "in-scope",
-      "confidence_score": 0.9,
-      "applies_to": "CASE_LAW"
-    },
-    {
-      "domain": "Civil Procedure",
-      "mode_of_presence": "Direct Invocation",
-      "procedural_scope": "in-scope",
-      "confidence_score": 0.95,
-      "applies_to": "CASE_LAW"
-    }
-  ],
-  "citation_analysis": {
-    "explicit_citations": [],
-    "implied_subject": ["unlawful detention", "notice to Attorney General"],
-    "citation_confidence": "LOW"
-  },
-  "strategy_critique": {
-    "spatial": "Habeas corpus or constitutional petition - High Court under Article 165(3)",
-    "doctrinal": "Unlawful detention implicates Article 29 (freedom and security), Article 49 (habeas corpus rights)",
-    "temporal": "Habeas corpus applications are urgent - no statutory notice requirement under Article 49(1)(h)",
-    "procedural": "CRITICAL: Government Proceedings Act exempts habeas corpus from 30-day notice requirement. Constitutional petitions under Article 22 also exempt per Supreme Court in Anarita Karimi Njeru."
-  },
-  "entities": {
-    "statutes": {
-      "primary": ["Article 29, Constitution of Kenya 2010", "Article 49, Constitution of Kenya 2010"],
-      "contextual": ["Government Proceedings Act Cap 40", "Article 22, Constitution of Kenya 2010"]
-    },
-    "article_numbers": ["29", "49", "22"],
-    "section_numbers": ["9"],
-    "source_documents": ["Constitution of Kenya 2010", "Government Proceedings Act"],
-    "cases": ["Anarita Karimi Njeru v Republic", "Mwangi v Attorney General"],
-    "judges": []
-  },
-  "vector_query": "unlawful detention, habeas corpus, Article 29, Article 49, notice to Attorney General, Government Proceedings Act, constitutional petition, urgent application Kenya",
-  "retrieval_strategy": "CASE_LAW_PROCEDURAL_FOCUS",
-  "reasoning_summary": "Strategic procedural query. No direct statutory lookup needed. Full audit identifies: (1) Spatial - High Court jurisdiction via Article 165(3), (2) Procedural - Exemption from notice requirement for habeas corpus and constitutional rights violations. Case law retrieval should focus on procedural precedents for urgency and notice exemptions."
-}
-```
-
----
-
 **END OF SYSTEM PROMPT**
 """
 
@@ -681,8 +432,9 @@ def classify_legal_query(user_query: str, max_retries: int = 3) -> Optional[Dict
         Dictionary containing the classified query structure, or None if failed
     """
     
+    active_key_index = 0
     headers = {
-        "Authorization": f"Bearer {GROQ_API_KEY}",
+        "Authorization": f"Bearer {GROQ_KEYS[active_key_index]}",
         "Content-Type": "application/json"
     }
     
@@ -706,7 +458,7 @@ def classify_legal_query(user_query: str, max_retries: int = 3) -> Optional[Dict
             }
         ],
         "temperature": 0.1,  # Low temperature for consistent, deterministic output
-        "max_tokens": 800,
+        "max_tokens": 1500,
         "top_p": 1,
         "stream": False
     }
@@ -722,7 +474,8 @@ def classify_legal_query(user_query: str, max_retries: int = 3) -> Optional[Dict
                 GROQ_API_URL,
                 headers=headers,
                 json=payload,
-                timeout=30
+                timeout=30,
+                proxies={"http": None, "https": None}
             )
             
             # Enhanced debugging for HTTP errors
@@ -730,18 +483,23 @@ def classify_legal_query(user_query: str, max_retries: int = 3) -> Optional[Dict
             
             # Check for rate limiting (429) or other HTTP errors
             if response.status_code == 429:
-                print(f"[ERROR] GROQ RATE LIMIT / TOKEN LIMIT EXCEEDED (429)")
+                print(f"[ERROR] GROQ RATE LIMIT HIT on key index {active_key_index}")
                 import time
+                # Try next key first before sleeping
+                next_index = (active_key_index + 1) % len(GROQ_KEYS)
+                if next_index != active_key_index:
+                    active_key_index = next_index
+                    headers["Authorization"] = f"Bearer {GROQ_KEYS[active_key_index]}"
+                    print(f"[INFO] Rotated to key index {active_key_index} — retrying immediately")
+                    continue
+                # All keys exhausted — fall back to waiting
                 retry_after = response.headers.get("retry-after")
-                if retry_after and retry_after.isdigit():
-                    wait_time = min(int(retry_after), 120)  # Cap at 2 minutes
-                    print(f"[DEBUG] Retry-After: {retry_after} | Using wait: {wait_time}s (capped)")
-                else:
-                    wait_time = min(5 * (attempt + 1), 60)  # Exponential backoff, cap 60s
-                    print(f"[DEBUG] Response headers: {dict(response.headers)}")
-                if attempt < max_retries - 1:
-                    print(f"[INFO] Waiting {wait_time} seconds before retry...")
-                    time.sleep(wait_time)
+                wait_time = min(int(retry_after), 60) if (retry_after and retry_after.isdigit()) else 30
+                print(f"[INFO] All keys rate-limited. Waiting {wait_time}s...")
+                time.sleep(wait_time)
+                # Reset to primary key after wait
+                active_key_index = 0
+                headers["Authorization"] = f"Bearer {GROQ_KEYS[0]}"
                 continue
             
             elif response.status_code == 401:

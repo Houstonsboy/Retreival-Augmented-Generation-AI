@@ -1,12 +1,8 @@
 #!/usr/bin/env python3
 """
-BlackLaw PDF Text Extractor with Auto Column Detection - JSON Output Version
-Extracts text from first 20 pages, automatically detecting single vs two-column layouts
-Outputs JSON format with metadata including:
-- Page number
-- Phrase/term
-- Definition
-- Cross-references (See, Cf., Also termed)
+Black's Law Dictionary Direct Embedder
+Extracts text from PDF and directly embeds into ChromaDB without intermediate JSON file.
+Processes page-by-page for memory efficiency and progress tracking.
 """
 
 import fitz  # PyMuPDF
@@ -14,68 +10,64 @@ from PIL import Image
 import pytesseract
 import numpy as np
 import os
-import json
-from pathlib import Path
 import re
+import hashlib
+import time
+from pathlib import Path
+from typing import Dict, List, Optional
+import chromadb
+from chromadb.config import Settings
+from sentence_transformers import SentenceTransformer
 
+
+# ===== CONFIGURATION =====
+BASE_DIR = Path(__file__).resolve().parent
+CHROMA_DB_DIR = BASE_DIR / "BlackLawDictionaryDB"
+CHROMA_COLLECTION_NAME = "black_law_dictionary"
+EMBEDDING_MODEL_NAME = "intfloat/e5-base-v2"
+
+# PDF Configuration
+PDF_FILENAME = "BlackLaw7thEdition.pdf"
+PDF_PATH = BASE_DIR / PDF_FILENAME
+
+# Page range to process - CONFIGURE THESE
+START_PAGE = 1200    # First page to extract (1-indexed)
+END_PAGE = 1751    # Last page to extract (1-indexed)
+DPI = 300          # OCR resolution
+
+
+# ===== PDF EXTRACTION FUNCTIONS (UNCHANGED) =====
 
 def detect_two_column_layout(img):
     """
     Detect if a page has a two-column layout by looking for the black vertical dividing line.
     If the black line exists = two columns. If not = single column.
-    
-    Args:
-        img: PIL Image object
-    
-    Returns:
-        bool: True if black dividing line found (two columns), False otherwise (single column)
     """
-    # Convert to grayscale
     gray = img.convert('L')
     width, height = gray.size
     
-    # Look at the exact center vertical strip (middle 2-3% of width)
-    # This is where the black dividing line should be
     center = width // 2
-    strip_width = int(width * 0.02)  # Very narrow strip at center
+    strip_width = int(width * 0.02)
     center_start = center - strip_width
     center_end = center + strip_width
     
-    # Crop the center vertical strip
     center_strip = gray.crop((center_start, 0, center_end, height))
-    
-    # Convert to numpy array
     pixels = np.array(center_strip)
     
-    # Count very dark pixels (black line should be very dark, < 30 out of 255)
     very_dark_pixels = np.sum(pixels < 30)
     total_pixels = pixels.size
-    
     dark_ratio = very_dark_pixels / total_pixels
     
-    # If more than 1% of the center strip is very dark, we found the black line
-    # This threshold is low because the line is thin but should run vertically
     has_black_line = dark_ratio > 0.01
-    
     return has_black_line
 
 
 def remove_running_header(text):
-    """
-    Remove running headers from column text.
-    Running headers appear at the very top of columns - usually single words or short phrases.
-    
-    Args:
-        text: Extracted text from a column
-    
-    Returns:
-        str: Text with running header removed
-    """
+    """Remove running headers from column text."""
     lines = text.split('\n')
     if not lines:
         return text
     
-    # Check first non-empty line
     first_line_idx = 0
     for i, line in enumerate(lines):
         if line.strip():
@@ -83,32 +75,15 @@ def remove_running_header(text):
             break
     
     first_line = lines[first_line_idx].strip()
-    
-    # Running headers are typically:
-    # - Very short (1-3 words)
-    # - At the very top
-    # - Not punctuated definitions
-    # - Often bold/isolated
-    
     words = first_line.split()
     
-    # If first line is 1-3 words and doesn't end with definition markers, it's likely a header
     if len(words) <= 3:
-        # Check if it looks like a header vs. actual content
-        # Headers don't typically end with: period, comma, semicolon, parenthesis
-        # Headers are usually: single word, or short phrase
-        
-        # If it ends with punctuation that suggests it's content, keep it
         if first_line.endswith(('.', ',', ';', ')', ':', '—')):
-            # This looks like actual content, keep it
             return text
         
-        # If all uppercase or title case single word, likely header
         if len(words) == 1:
-            # Single word without punctuation at top = likely header
             return '\n'.join(lines[first_line_idx + 1:])
         
-        # If 2-3 words without punctuation, likely header
         if len(words) <= 3 and not any(first_line.endswith(p) for p in ['.', ',', ';', ')', ':', '—', '©']):
             return '\n'.join(lines[first_line_idx + 1:])
     
@@ -116,50 +91,25 @@ def remove_running_header(text):
 
 
 def is_continuation(left_text, right_text):
-    """
-    Check if right column text continues from left column.
-    
-    For dictionary content:
-    - Definitions can span columns even if left ends with period
-    - Need to check if right column starts a NEW entry (headword) or continues definition
-    
-    Args:
-        left_text: Text from left column
-        right_text: Text from right column
-    
-    Returns:
-        bool: True if continuation, False if new section
-    """
+    """Check if right column text continues from left column."""
     left_stripped = left_text.strip()
     right_stripped = right_text.strip()
     
     if not left_stripped or not right_stripped:
         return False
     
-    # Get the first line of right column
     right_first_line = right_stripped.split('\n')[0].strip()
     
-    # Check if right column starts with a dictionary headword
-    # Dictionary headwords match pattern: word(s) followed by pronunciation or part of speech
     headword_pattern = r'^([a-z][a-z\s-]+?)(?:\s*\([^)]+\))?,?\s+(?:n\.|v\.|adj\.|adv\.|prep\.|conj\.|See\s|[A-Z][a-z])'
     
     if re.match(headword_pattern, right_first_line):
-        # Right column starts with a new dictionary entry
         return False
-    
-    # Check if right column starts with a sentence continuation
-    # Continuations typically start with:
-    # - Lowercase word (mid-sentence)
-    # - Capital word that's clearly continuing (Thus, Therefore, Also, etc.)
-    # - List continuation (and, or, but)
     
     first_word = right_first_line.split()[0] if right_first_line else ""
     
-    # If starts with lowercase, it's definitely continuation
     if first_word and first_word[0].islower():
         return True
     
-    # Capital words that indicate continuation (not new entries)
     continuation_capitals = ['Thus', 'Therefore', 'Also', 'However', 'Moreover', 
                             'Furthermore', 'Additionally', 'Consequently', 'Hence',
                             'Accordingly', 'Nevertheless', 'Otherwise', 'Then',
@@ -168,7 +118,6 @@ def is_continuation(left_text, right_text):
     if first_word in continuation_capitals:
         return True
     
-    # Common lowercase continuation starters
     continuation_lowercase = ['and', 'or', 'but', 'on', 'in', 'to', 'of', 'for', 'with', 
                              'from', 'by', 'at', 'as', 'if', 'when', 'while', 'which',
                              'that', 'than', 'so', 'yet', 'nor']
@@ -176,8 +125,6 @@ def is_continuation(left_text, right_text):
     if first_word.lower() in continuation_lowercase:
         return True
     
-    # If we get here, right column likely starts a new section
-    # (Capital letter that's not a known continuation word = new entry)
     return False
 
 
@@ -188,172 +135,112 @@ def extract_single_column(img):
 
 
 def extract_two_columns(img):
-    """
-    Extract text from a two-column page (left then right).
-    Removes running headers from each column, then intelligently combines them.
-    Preserves blank lines that separate dictionary entries.
-    """
+    """Extract text from a two-column page (left then right)."""
     width, height = img.size
     midpoint = width // 2
-    
-    # Add small overlap to avoid cutting words
     overlap = 20
     
-    # Crop left column
     left_box = (0, 0, midpoint + overlap, height)
     left_img = img.crop(left_box)
     left_text = pytesseract.image_to_string(left_img, lang='eng')
-    
-    # Remove running header from left column
     left_text = remove_running_header(left_text)
     
-    # Crop right column
     right_box = (midpoint - overlap, 0, width, height)
     right_img = img.crop(right_box)
     right_text = pytesseract.image_to_string(right_img, lang='eng')
-    
-    # Remove running header from right column
     right_text = remove_running_header(right_text)
     
-    # Check if right column continues from left column
     if is_continuation(left_text, right_text):
-        # Continuation: join with space (same paragraph)
         combined_text = left_text.strip() + " " + right_text.strip()
     else:
-        # New section: separate with blank line to preserve entry boundaries
         combined_text = left_text.strip() + "\n\n" + right_text.strip()
     
     return combined_text
 
 
 def extract_page_text(page, page_number, dpi=300):
-    """
-    Extract text from a page, auto-detecting layout type.
-    Running headers are removed at the column level during extraction.
-    
-    Args:
-        page: PyMuPDF page object
-        page_number: Actual page number (for reference)
-        dpi: Resolution for rendering
-    
-    Returns:
-        tuple: (extracted_text, layout_type)
-    """
-    # Render page to high-resolution image
+    """Extract text from a page, auto-detecting layout type."""
     mat = fitz.Matrix(dpi/72, dpi/72)
     pix = page.get_pixmap(matrix=mat)
-    
-    # Convert to PIL Image
     img = Image.frombytes("RGB", [pix.width, pix.height], pix.samples)
     
-    # Detect layout type
     is_two_column = detect_two_column_layout(img)
     
     if is_two_column:
-        text = extract_two_columns(img)  # Headers removed inside this function
+        text = extract_two_columns(img)
         layout_type = "TWO_COLUMN"
     else:
         text = extract_single_column(img)
-        text = remove_running_header(text)  # Remove header for single column too
+        text = remove_running_header(text)
         layout_type = "SINGLE_COLUMN"
     
     return text, layout_type
 
 
+def normalize_metadata_ref(ref):
+    """Normalize a cross-reference string."""
+    if not ref or not isinstance(ref, str):
+        return ref
+    ref = re.sub(r'-\s*\r?\n\s*', '', ref)
+    ref = ref.replace('\r\n', ' ').replace('\n', ' ').replace('\r', ' ')
+    ref = re.sub(r'\s+', ' ', ref).strip()
+    return ref
+
+
 def extract_cross_references(definition_text):
-    """
-    Extract cross-reference metadata from definition text.
-    Looks for: See [word], Cf. [word], Also termed [phrase]
-    
-    Args:
-        definition_text: The definition text to analyze
-    
-    Returns:
-        dict: Dictionary with 'see', 'cf', and 'also_termed' lists
-    """
+    """Extract cross-reference metadata from definition text."""
     metadata = {
         'see': [],
         'cf': [],
         'also_termed': []
     }
-    
-    # Pattern for "See WORD" or "See also WORD"
+
     see_pattern = r'\bSee\s+(?:also\s+)?([A-Z][A-Z\s-]+?)(?:\s*[.;,]|\s*$|\s+\()'
     see_matches = re.finditer(see_pattern, definition_text)
     for match in see_matches:
-        ref = match.group(1).strip()
+        ref = normalize_metadata_ref(match.group(1).strip())
         if ref and ref not in metadata['see']:
             metadata['see'].append(ref)
-    
-    # Pattern for "Cf." or "cf."
+
     cf_pattern = r'\b[Cc]f\.\s+([A-Z][A-Z\s-]+?)(?:\s*[.;,]|\s*$|\s+\()'
     cf_matches = re.finditer(cf_pattern, definition_text)
     for match in cf_matches:
-        ref = match.group(1).strip()
+        ref = normalize_metadata_ref(match.group(1).strip())
         if ref and ref not in metadata['cf']:
             metadata['cf'].append(ref)
-    
-    # Pattern for "Also termed" or "Also spelled"
+
     also_pattern = r'\bAlso\s+(?:termed|spelled)\s+([a-z][a-z\s-]+?)(?:\s*[.;]|\s*$)'
     also_matches = re.finditer(also_pattern, definition_text, re.IGNORECASE)
     for match in also_matches:
-        ref = match.group(1).strip()
+        ref = normalize_metadata_ref(match.group(1).strip())
         if ref and ref not in metadata['also_termed']:
             metadata['also_termed'].append(ref)
-    
+
     return metadata
 
 
 def parse_dictionary_entry(entry_text, page_number):
-    """
-    Parse a dictionary entry into structured JSON format.
-    
-    Args:
-        entry_text: Raw text of the dictionary entry
-        page_number: Page number where this entry appears
-    
-    Returns:
-        dict: Structured entry with metadata
-    """
+    """Parse a dictionary entry into structured format."""
     entry_text = entry_text.strip()
     if not entry_text:
         return None
     
-    # Remove continuation markers
     entry_text = entry_text.replace('[CONTINUATION FROM PREVIOUS PAGE]', '').strip()
-    
-    # Pattern to extract headword and definition
-    # Format: "headword (pronunciation), part_of_speech. Definition..."
-    # Or: "headword. Definition..."
     
     lines = entry_text.split('\n')
     first_line = lines[0].strip()
     
-    # Try to extract headword (the term being defined)
-    # The headword appears at the start, often followed by pronunciation in parens
-    # Examples:
-    # "absolution (ab-sa-loo-shan). 1. Release..."
-    # "abstain, vb. 1. To refrain..."
-    # "Burford abstention. A federal court's..."
-    
-    # Match pattern: term at start, possibly with pronunciation, then period or comma
     headword_match = re.match(r'^([a-z][a-z\s-]+?)(?:\s+\([^)]+\))?[,.]', first_line, re.IGNORECASE)
     
     if headword_match:
         headword = headword_match.group(1).strip()
     else:
-        # Fallback: take first word(s) before punctuation
         headword_fallback = re.match(r'^([^\s.,:]+(?:\s+[^\s.,:]+)*)', first_line)
         headword = headword_fallback.group(1).strip() if headword_fallback else first_line.split()[0]
     
-    # The full definition is the entire entry text (including the headword line)
-    # We keep everything as-is to preserve the structure
     definition = entry_text
-    
-    # Extract cross-references from definition
     cross_refs = extract_cross_references(definition)
     
-    # Build the entry object
     entry = {
         'page': page_number,
         'term': headword,
@@ -369,21 +256,8 @@ def parse_dictionary_entry(entry_text, page_number):
 
 
 def split_into_entries(text_with_breaks):
-    """
-    Split combined text into individual dictionary entries.
-    Each entry is separated by blank lines (double newlines) in the original text.
-    
-    Args:
-        text_with_breaks: Text with __ENTRY_BREAK__ markers and blank line separators
-    
-    Returns:
-        list: List of individual entry texts
-    """
-    # First, replace entry break markers with double newlines
+    """Split combined text into individual dictionary entries."""
     text_normalized = text_with_breaks.replace('__ENTRY_BREAK__', '\n\n')
-    
-    # Split by blank lines (double or triple newlines indicate entry boundaries)
-    # This matches the original script's behavior of using whitespace to separate entries
     entries = re.split(r'\n\s*\n+', text_normalized)
     
     final_entries = []
@@ -392,128 +266,322 @@ def split_into_entries(text_with_breaks):
         if not entry:
             continue
         
-        # Filter out very short fragments (likely OCR artifacts or headers)
-        if len(entry) > 10:  # At minimum, an entry should have a headword and some definition
+        if len(entry) > 10:
             final_entries.append(entry)
     
     return final_entries
 
 
-def extract_pdf_pages_to_json(pdf_path, output_path, start_page=18, end_page=100, dpi=300):
-    """
-    Extract text from a range of pages in a PDF and output as JSON.
+# ===== EMBEDDING FUNCTIONS =====
+
+class BlackLawDirectEmbedder:
+    """Handles direct PDF extraction and embedding into ChromaDB."""
     
-    Args:
-        pdf_path: Path to the PDF file
-        output_path: Path to save the JSON output
-        start_page: First page to extract (1-indexed, default: 18)
-        end_page: Last page to extract (1-indexed, default: 30)
-        dpi: Resolution for OCR (default: 300)
-    """
-    print(f"Opening PDF: {pdf_path}")
-    print("="*80)
-    
-    # Open the PDF
-    doc = fitz.open(pdf_path)
-    total_pages = len(doc)
-    
-    # Convert to 0-indexed and validate range
-    start_idx = start_page - 1
-    end_idx = min(end_page, total_pages)
-    
-    print(f"Total pages in PDF: {total_pages}")
-    print(f"Extracting pages {start_page} to {end_idx}...")
-    print(f"DPI: {dpi}")
-    print("="*80)
-    print()
-    
-    all_entries = []
-    
-    for page_num in range(start_idx, end_idx):
-        actual_page_number = page_num + 1
-        print(f"Page {actual_page_number}/{end_idx}...", end=' ', flush=True)
+    def __init__(self):
+        """Initialize the embedder with model and ChromaDB client."""
+        print(f"\n{'='*80}")
+        print("INITIALIZING BLACK'S LAW DICTIONARY DIRECT EMBEDDER")
+        print(f"{'='*80}\n")
         
-        page = doc[page_num]
+        # Initialize embedding model
+        print(f"📦 Loading embedding model: {EMBEDDING_MODEL_NAME}...")
+        self.model = SentenceTransformer(EMBEDDING_MODEL_NAME)
+        print(f"✓ Model loaded successfully\n")
         
-        # Extract text with auto layout detection
-        page_text, layout_type = extract_page_text(page, actual_page_number, dpi=dpi)
+        # Initialize ChromaDB
+        print(f"🗄️  Connecting to ChromaDB at: {CHROMA_DB_DIR}")
+        CHROMA_DB_DIR.mkdir(parents=True, exist_ok=True)
         
-        # Split into individual entries
-        entries = split_into_entries(page_text)
+        self.client = chromadb.PersistentClient(
+            path=str(CHROMA_DB_DIR),
+            settings=Settings(anonymized_telemetry=False)
+        )
         
-        # Parse each entry
-        for entry_text in entries:
-            parsed_entry = parse_dictionary_entry(entry_text, actual_page_number)
-            if parsed_entry:
-                all_entries.append(parsed_entry)
+        self.collection = self.client.get_or_create_collection(
+            name=CHROMA_COLLECTION_NAME,
+            metadata={"hnsw:space": "cosine"}
+        )
+        print(f"✓ Connected to collection: {CHROMA_COLLECTION_NAME}\n")
+    
+    def generate_entry_id(self, entry_data: Dict) -> str:
+        """Generate a unique, deterministic ID for a dictionary entry."""
+        term = entry_data.get('term', '').lower().replace(' ', '_')
+        page = entry_data.get('page', 0)
         
-        print(f"✓ [{layout_type}] - {len(entries)} entries")
+        identifier = f"bld_p{page}_{term}"
+        
+        definition = entry_data.get('definition', '')
+        content_hash = hashlib.sha256(
+            definition.encode('utf-8')
+        ).hexdigest()[:8]
+        
+        return f"{identifier}_{content_hash}"
     
-    doc.close()
+    def prepare_metadata(self, entry_data: Dict) -> Dict:
+        """Prepare metadata for ChromaDB storage."""
+        metadata = {
+            'term': entry_data.get('term', ''),
+            'page': entry_data.get('page', 0),
+            'definition_length': len(entry_data.get('definition', '')),
+            'document_type': 'legal_dictionary',
+            'source': 'BlackLaw7thEdition',
+            'ingestion_timestamp': int(time.time())
+        }
+        
+        # Add cross-references
+        meta = entry_data.get('metadata', {})
+        if meta.get('see'):
+            metadata['see'] = ', '.join(meta['see'])
+        if meta.get('cf'):
+            metadata['cf'] = ', '.join(meta['cf'])
+        if meta.get('also_termed'):
+            metadata['also_termed'] = ', '.join(meta['also_termed'])
+        
+        # Ensure all values are compatible with ChromaDB
+        for key, value in metadata.items():
+            if value is None:
+                metadata[key] = ''
+        
+        return metadata
     
-    # Create output structure
-    output_data = {
-        'source': os.path.basename(pdf_path),
-        'pages_extracted': f"{start_page}-{end_idx}",
-        'total_entries': len(all_entries),
-        'entries': all_entries
-    }
+    def create_searchable_text(self, entry_data: Dict) -> str:
+        """Create comprehensive searchable text from dictionary entry."""
+        parts = []
+        
+        term = entry_data.get('term', '')
+        if term:
+            parts.append(f"Term: {term}")
+        
+        definition = entry_data.get('definition', '')
+        if definition:
+            parts.append(f"Definition: {definition}")
+        
+        meta = entry_data.get('metadata', {})
+        
+        if meta.get('see'):
+            parts.append(f"See: {', '.join(meta['see'])}")
+        
+        if meta.get('cf'):
+            parts.append(f"Compare: {', '.join(meta['cf'])}")
+        
+        if meta.get('also_termed'):
+            parts.append(f"Also termed: {', '.join(meta['also_termed'])}")
+        
+        return '\n'.join(parts)
     
-    # Write to JSON file
-    with open(output_path, 'w', encoding='utf-8') as f:
-        json.dump(output_data, f, indent=2, ensure_ascii=False)
+    def embed_entry(self, searchable_text: str) -> List[float]:
+        """Generate embedding for a dictionary entry."""
+        prefixed_text = f"passage: {searchable_text}"
+        embedding = self.model.encode(prefixed_text, normalize_embeddings=True)
+        return embedding.tolist()
     
-    print()
-    print("="*80)
-    print("EXTRACTION COMPLETE!")
-    print("="*80)
-    print(f"Output saved to: {output_path}")
-    print(f"Total entries extracted: {len(all_entries):,}")
-    print(f"File size: {os.path.getsize(output_path):,} bytes")
+    def check_existing_entry(self, entry_id: str) -> bool:
+        """Check if an entry already exists in the database."""
+        try:
+            result = self.collection.get(ids=[entry_id])
+            return len(result['ids']) > 0
+        except Exception:
+            return False
     
-    # Print sample entry
-    if all_entries:
-        print()
-        print("Sample entry:")
-        print(json.dumps(all_entries[0], indent=2))
+    def ingest_entry(self, entry_data: Dict, skip_existing: bool = True) -> bool:
+        """
+        Ingest a single dictionary entry into ChromaDB.
+        
+        Returns:
+            bool: True if ingested, False if skipped or failed
+        """
+        try:
+            entry_id = self.generate_entry_id(entry_data)
+            
+            if skip_existing and self.check_existing_entry(entry_id):
+                return False
+            
+            searchable_text = self.create_searchable_text(entry_data)
+            embedding = self.embed_entry(searchable_text)
+            metadata = self.prepare_metadata(entry_data)
+            
+            self.collection.add(
+                ids=[entry_id],
+                embeddings=[embedding],
+                documents=[searchable_text],
+                metadatas=[metadata]
+            )
+            
+            return True
+            
+        except Exception as e:
+            print(f"\n      ❌ Error embedding entry: {str(e)}")
+            return False
+    
+    def process_pdf(
+        self, 
+        pdf_path: Path,
+        start_page: int = START_PAGE,
+        end_page: int = END_PAGE,
+        dpi: int = DPI,
+        skip_existing: bool = True
+    ) -> Dict:
+        """
+        Process PDF pages directly into ChromaDB.
+        
+        Args:
+            pdf_path: Path to PDF file
+            start_page: First page to process (1-indexed)
+            end_page: Last page to process (1-indexed)
+            dpi: OCR resolution
+            skip_existing: Skip entries that already exist
+        
+        Returns:
+            Dictionary with processing statistics
+        """
+        print(f"\n{'='*80}")
+        print("STARTING DIRECT PDF PROCESSING")
+        print(f"{'='*80}\n")
+        print(f"📄 PDF: {pdf_path}")
+        print(f"📑 Pages: {start_page} to {end_page}")
+        print(f"🔍 DPI: {dpi}")
+        print(f"⏭️  Skip existing: {skip_existing}\n")
+        
+        if not pdf_path.exists():
+            raise FileNotFoundError(f"PDF file not found: {pdf_path}")
+        
+        # Open PDF
+        doc = fitz.open(pdf_path)
+        total_pages = len(doc)
+        
+        # Convert to 0-indexed and validate
+        start_idx = start_page - 1
+        end_idx = min(end_page, total_pages)
+        
+        stats = {
+            'total_pages': end_idx - start_idx,
+            'pages_processed': 0,
+            'total_entries_found': 0,
+            'entries_ingested': 0,
+            'entries_skipped': 0,
+            'entries_failed': 0
+        }
+        
+        print(f"{'='*80}")
+        print("PROCESSING PAGES")
+        print(f"{'='*80}\n")
+        
+        # Process each page
+        for page_num in range(start_idx, end_idx):
+            actual_page_number = page_num + 1
+            
+            # Extract text from page
+            print(f"📖 Page {actual_page_number}/{end_idx}: Reading...", end=' ', flush=True)
+            
+            page = doc[page_num]
+            page_text, layout_type = extract_page_text(page, actual_page_number, dpi=dpi)
+            
+            # Split into entries
+            entries = split_into_entries(page_text)
+            num_entries = len(entries)
+            stats['total_entries_found'] += num_entries
+            
+            print(f"✓ [{layout_type}] {num_entries} entries found", flush=True)
+            
+            # Embed each entry
+            if num_entries > 0:
+                print(f"   ⚡ Embedding entries: ", end='', flush=True)
+                
+                for i, entry_text in enumerate(entries, 1):
+                    parsed_entry = parse_dictionary_entry(entry_text, actual_page_number)
+                    
+                    if parsed_entry:
+                        success = self.ingest_entry(parsed_entry, skip_existing=skip_existing)
+                        
+                        if success:
+                            stats['entries_ingested'] += 1
+                            print("✓", end='', flush=True)
+                        else:
+                            # Check if it was skipped or failed
+                            entry_id = self.generate_entry_id(parsed_entry)
+                            if self.check_existing_entry(entry_id):
+                                stats['entries_skipped'] += 1
+                                print("⏭", end='', flush=True)
+                            else:
+                                stats['entries_failed'] += 1
+                                print("✗", end='', flush=True)
+                    else:
+                        stats['entries_failed'] += 1
+                        print("✗", end='', flush=True)
+                    
+                    # Add space every 10 entries for readability
+                    if i % 10 == 0:
+                        print(" ", end='', flush=True)
+                
+                print(f" → {stats['entries_ingested']} embedded")
+            
+            stats['pages_processed'] += 1
+            print()  # Blank line after each page
+        
+        doc.close()
+        
+        # Final summary
+        print(f"\n{'='*80}")
+        print("PROCESSING COMPLETE")
+        print(f"{'='*80}")
+        print(f"📄 Pages processed:       {stats['pages_processed']}")
+        print(f"📝 Total entries found:   {stats['total_entries_found']}")
+        print(f"✅ Entries embedded:      {stats['entries_ingested']}")
+        print(f"⏭️  Entries skipped:       {stats['entries_skipped']}")
+        print(f"❌ Entries failed:        {stats['entries_failed']}")
+        print(f"{'='*80}\n")
+        
+        return stats
 
 
 def main():
-    """Main function to run the extraction."""
-    # Get script directory
-    script_dir = Path(__file__).parent
-    
-    # Define file paths
-    pdf_filename = "BlackLaw7thEdition.pdf"
-    pdf_path = script_dir / pdf_filename
-    output_path = script_dir / "extracted_dictionary_pages_18_to_30.json"
+    """Main function to run direct embedding."""
+    print(f"\n{'='*80}")
+    print("BLACK'S LAW DICTIONARY - DIRECT PDF TO CHROMADB EMBEDDER")
+    print(f"{'='*80}\n")
     
     # Check if PDF exists
-    if not pdf_path.exists():
-        print("ERROR: PDF file not found!")
-        print(f"Expected location: {pdf_path}")
+    if not PDF_PATH.exists():
+        print("❌ ERROR: PDF file not found!")
+        print(f"Expected location: {PDF_PATH}")
         print()
-        print(f"Please place '{pdf_filename}' in the same folder as this script:")
-        print(f"  {script_dir}")
+        print(f"Please place '{PDF_FILENAME}' in the same folder as this script:")
+        print(f"  {BASE_DIR}")
         return
     
-    # Extract text from pages 18-30 and save as JSON
     try:
-        extract_pdf_pages_to_json(
-            pdf_path=str(pdf_path),
-            output_path=str(output_path),
-            start_page=18,
-            end_page=30,
-            dpi=300  # Adjust if needed: higher = better quality but slower
+        # Initialize embedder
+        embedder = BlackLawDirectEmbedder()
+        
+        # Process PDF
+        stats = embedder.process_pdf(
+            pdf_path=PDF_PATH,
+            start_page=START_PAGE,
+            end_page=END_PAGE,
+            dpi=DPI,
+            skip_existing=True
         )
+        
+        # Exit with appropriate code
+        if stats['entries_failed'] > 0:
+            print(f"⚠️  Completed with {stats['entries_failed']} failures")
+            exit(1)
+        else:
+            print(f"✅ All entries processed successfully!")
+            exit(0)
+            
     except Exception as e:
-        print(f"\nERROR: {e}")
+        print(f"\n🚨 CRITICAL ERROR: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        
         print("\nMake sure you have installed the required packages:")
-        print("  pip install PyMuPDF Pillow pytesseract numpy")
+        print("  pip install PyMuPDF Pillow pytesseract numpy chromadb sentence-transformers")
         print("\nAnd that Tesseract OCR is installed on your system:")
         print("  Ubuntu/Debian: sudo apt-get install tesseract-ocr")
         print("  macOS: brew install tesseract")
         print("  Windows: https://github.com/UB-Mannheim/tesseract/wiki")
+        exit(1)
 
 
 if __name__ == "__main__":

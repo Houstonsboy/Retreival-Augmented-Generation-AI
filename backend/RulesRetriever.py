@@ -6,33 +6,213 @@ Retrieves relevant statutory provisions based on vector query and filters.
 """
 
 import json
+import math
+import re
+import statistics as _stats
 import chromadb
 from pathlib import Path
-from sentence_transformers import SentenceTransformer
+from sentence_transformers import SentenceTransformer, CrossEncoder
+from rank_bm25 import BM25Okapi
 from typing import Dict, List, Any, Optional
 import urllib.parse
 
 # ===== CONFIGURATION =====
 BASE_DIR = Path(__file__).resolve().parent
-CHROMA_DB_DIR = BASE_DIR / "constitutionlogic" / "MasterRulesDB"
-CHROMA_COLLECTION_NAME = "master_rules"
-EMBEDDING_MODEL_NAME = "intfloat/e5-base-v2"
 
-# Statute mapping (including common variations)
-STATUTE_MAP = {
-    "Constitution of Kenya": "TheConstitutionOfKenya.pdf",
-    "Constitution of Kenya 2010": "TheConstitutionOfKenya.pdf",
-    "Constitution of Kenya, 2010": "TheConstitutionOfKenya.pdf",
-    "Constitution": "TheConstitutionOfKenya.pdf",
-    "Evidence Act": "Evidence Act.pdf",
-    "Evidence": "Evidence Act.pdf"
-}
+from config import (
+    STATUTES_DB_DIR as CHROMA_DB_DIR,
+    STATUTES_COLLECTION_NAME as CHROMA_COLLECTION_NAME,
+    MASTER_RULES_DB_DIR,
+    MASTER_RULES_COLLECTION_NAME,
+    EMBEDDING_MODEL_NAME,
+    STATUTE_MANIFEST_PATH,
+)
 
-# Document type labels
-DOC_TYPE_LABELS = {
-    "constitution": "Constitution of Kenya",
-    "evidence_act": "Evidence Act"
-}
+
+def _load_manifest():
+    """Load STATUTE_MAP, DOC_TYPE_LABELS, and Constitution aliases from manifest.json."""
+    with open(STATUTE_MANIFEST_PATH) as _f:
+        _manifest = json.load(_f)
+    _statute_map = {}
+    _doc_labels = {"constitution": "Constitution of Kenya"}  # for master_rules fallback chunks
+    for _entry in _manifest["acts"]:
+        _doc_labels[_entry["act_slug"]] = _entry["act_title"]
+        for _alias in _entry["aliases"]:
+            _statute_map[_alias] = _entry["act_title"]
+    _const_aliases = set(_manifest["constitution_fallback"]["aliases"])
+    return _statute_map, _doc_labels, _const_aliases
+
+
+STATUTE_MAP, DOC_TYPE_LABELS, _CONSTITUTION_ALIASES = _load_manifest()
+
+# ── Hybrid-retrieval module-level state (lazy-initialised once per process) ──
+_SCHEDULE_TERMS = frozenset({"schedule", "form", "fee", "tariff", "appendix", "annex", "prescribed"})
+_SECTION_RE = re.compile(r'\b(?:section|s\.|sec\.?|article|art\.?)\s*(\d+\w*)', re.IGNORECASE)
+_STATUTES_BM25: dict = {"index": None, "ids": [], "docs": [], "metas": []}
+_STATUTES_CE: dict = {"model": None}
+
+
+def _sigmoid(x: float) -> float:
+    return 1.0 / (1.0 + math.exp(-max(-50.0, min(50.0, x))))
+
+
+def _ensure_statutes_bm25() -> None:
+    if _STATUTES_BM25["index"] is not None:
+        return
+    if not CHROMA_DB_DIR.exists():
+        return
+    try:
+        _c = chromadb.PersistentClient(path=str(CHROMA_DB_DIR))
+        _col = _c.get_collection(name=CHROMA_COLLECTION_NAME)
+        _d = _col.get(include=["documents", "metadatas"])
+        _STATUTES_BM25["ids"] = _d["ids"]
+        _STATUTES_BM25["docs"] = _d["documents"]
+        _STATUTES_BM25["metas"] = _d["metadatas"]
+        _STATUTES_BM25["index"] = BM25Okapi([doc.split() for doc in _d["documents"]])
+    except Exception:
+        pass  # BM25 unavailable; fall back to vector-only
+
+
+def _ensure_statutes_ce() -> CrossEncoder:
+    if _STATUTES_CE["model"] is None:
+        _STATUTES_CE["model"] = CrossEncoder("cross-encoder/ms-marco-MiniLM-L-6-v2")
+    return _STATUTES_CE["model"]
+
+
+def _matches_where(meta: dict, f: dict) -> bool:
+    """Evaluate a ChromaDB where-filter dict against a metadata dict."""
+    if "$and" in f:
+        return all(_matches_where(meta, sub) for sub in f["$and"])
+    for field, cond in f.items():
+        if field.startswith("$"):
+            continue
+        mv = str(meta.get(field, ""))
+        if isinstance(cond, dict):
+            op, val = next(iter(cond.items()))
+            if op == "$eq" and mv != str(val):
+                return False
+            if op == "$in" and mv not in [str(v) for v in val]:
+                return False
+        elif mv != str(cond):
+            return False
+    return True
+
+
+def _rrf_fuse(ranked_a: list, ranked_b: list, k: int = 60, n: int = 30) -> list:
+    """Reciprocal rank fusion of two ranked ID lists."""
+    rrf: dict = {}
+    for rank, cid in enumerate(ranked_a, 1):
+        rrf[cid] = rrf.get(cid, 0.0) + 1.0 / (k + rank)
+    for rank, cid in enumerate(ranked_b, 1):
+        rrf[cid] = rrf.get(cid, 0.0) + 1.0 / (k + rank)
+    return sorted(rrf, key=lambda x: -rrf[x])[:n]
+
+
+def _schedule_mult(meta: dict, query: str) -> float:
+    """Return 0.3 penalty for schedule chunks unless the query mentions a schedule/form/fee."""
+    if not meta.get("is_schedule", False):
+        return 1.0
+    return 1.0 if any(t in query.lower() for t in _SCHEDULE_TERMS) else 0.3
+
+
+def _extract_section_nums(text: str) -> list:
+    return list({m.group(1) for m in _SECTION_RE.finditer(text)})
+
+
+def _is_constitution_query(source_docs: list, all_statutes: list) -> bool:
+    """Return True if any named source looks like the Constitution of Kenya."""
+    terms = [t.lower() for t in (source_docs + all_statutes)]
+    for alias in _CONSTITUTION_ALIASES:
+        al = alias.lower()
+        if any(al in t or t in al for t in terms):
+            return True
+    return False
+
+
+def _find_overlap(text_a: str, text_b: str, max_check: int = 400) -> int:
+    """
+    Return the number of leading characters of text_b that are a verbatim
+    suffix of text_a (i.e. the overlap region from the sliding-window split).
+    Only reports overlaps >= 10 chars to avoid false positives on short matches.
+    """
+    check = min(len(text_a), len(text_b), max_check)
+    for size in range(check, 9, -1):
+        if text_a[-size:] == text_b[:size]:
+            return size
+    return 0
+
+
+def _stitch_chunks(chunks: list) -> str:
+    """
+    Join a list of chunk dicts (already sorted by chunk_index) into a single
+    string, stripping the duplicated overlap text between consecutive chunks.
+    Each dict must have a 'text' key.
+    """
+    if not chunks:
+        return ""
+    result = chunks[0]["text"]
+    for chunk in chunks[1:]:
+        overlap = _find_overlap(result, chunk["text"])
+        result += chunk["text"][overlap:]
+    return result
+
+
+def _enrich_article_chunks(collection, articles: Dict) -> None:
+    """
+    For each article group, fetch any adjacent chunks referenced by
+    prev_chunk_id / next_chunk_id that are not already in the group.
+    Mutates `articles` in place.
+    """
+    for article in articles.values():
+        known_ids = {c["chunk_id"] for c in article["chunks"]}
+        to_fetch = set()
+        for c in article["chunks"]:
+            if c.get("prev_chunk_id") and c["prev_chunk_id"] not in known_ids:
+                to_fetch.add(c["prev_chunk_id"])
+            if c.get("next_chunk_id") and c["next_chunk_id"] not in known_ids:
+                to_fetch.add(c["next_chunk_id"])
+
+        if not to_fetch:
+            continue
+
+        try:
+            fetched = collection.get(
+                ids=list(to_fetch),
+                include=["documents", "metadatas"],
+            )
+            for i, fid in enumerate(fetched["ids"]):
+                if fid in known_ids:
+                    continue
+                article["chunks"].append({
+                    "text": fetched["documents"][i],
+                    "score": 0.0,  # fetched for context, not by similarity
+                    "chunk_id": fid,
+                    "chunk_index": int(fetched["metadatas"][i].get("chunk_index", 0)),
+                    "prev_chunk_id": str(fetched["metadatas"][i].get("prev_chunk_id", "")),
+                    "next_chunk_id": str(fetched["metadatas"][i].get("next_chunk_id", "")),
+                })
+                known_ids.add(fid)
+        except Exception:
+            pass  # adjacent chunks may not exist if collection was partially populated
+
+
+def _query_constitution_fallback(query_embedding: list, n_results: int = 10) -> Dict:
+    """Query master_rules for Constitution chunks and return raw ChromaDB result."""
+    import chromadb as _chromadb
+    empty = {"ids": [[]], "documents": [[]], "metadatas": [[]], "distances": [[]]}
+    if not MASTER_RULES_DB_DIR.exists():
+        return empty
+    try:
+        _client = _chromadb.PersistentClient(path=str(MASTER_RULES_DB_DIR))
+        _col = _client.get_collection(name=MASTER_RULES_COLLECTION_NAME)
+        return _col.query(
+            query_embeddings=[query_embedding],
+            where={"document_type": {"$eq": "constitution"}},
+            n_results=min(n_results, _col.count()),
+            include=["documents", "metadatas", "distances"],
+        )
+    except Exception:
+        return empty
 
 
 def load_classifier_output(input_data: Any) -> Dict:
@@ -94,17 +274,19 @@ def extract_query_params(classifier_output: Dict) -> Dict[str, Any]:
         'all_statutes': all_statutes,
         'retrieval_mode': classifier_output.get('retrieval_mode', ''),
         'retrieval_strategy': classifier_output.get('retrieval_strategy', ''),
-        'citation_analysis': classifier_output.get('citation_analysis', {})
+        'citation_analysis': classifier_output.get('citation_analysis', {}),
+        'needs_constitution': _is_constitution_query(source_documents, all_statutes),
     }
 
 
 def build_where_filter(query_params: Dict) -> Dict:
-    """Build ChromaDB where filter based on query parameters."""
-    # Build list of conditions to combine with $and
+    """
+    Build ChromaDB where filter based on query parameters.
+    Returns {} (no filter) when no constraints apply so the caller can
+    omit the `where` argument entirely and search all acts.
+    """
     conditions = []
-    
-    # Always filter for both constitution and evidence_act
-    conditions.append({"document_type": {"$in": ["constitution", "evidence_act"]}})
+    # (hardcoded document_type filter removed — StatutesDB holds all 14 acts)
     
     # PRIORITY 1: Filter by article numbers if provided (for direct lookup)
     article_numbers = query_params.get('article_numbers', [])
@@ -154,11 +336,12 @@ def build_where_filter(query_params: Dict) -> Dict:
                 conditions.append({"source_document": {"$in": source_docs}})
                 print(f"  📄 Filtering by statutes (legacy): {source_docs}")
     
-    # Return single condition or $and combination
+    # Return single condition, $and, or {} (= no filter → search all acts)
+    if not conditions:
+        return {}
     if len(conditions) == 1:
         return conditions[0]
-    else:
-        return {"$and": conditions}
+    return {"$and": conditions}
 
 
 def calculate_rule_score(distance: float, chunk_metadata: Dict, legal_domains: List[Dict]) -> float:
@@ -202,7 +385,10 @@ def group_by_article(results: Dict, scores: List[float]) -> Dict:
         articles[article_key]['chunks'].append({
             'text': doc_text,
             'score': score,
-            'chunk_id': chunk_id
+            'chunk_id': chunk_id,
+            'chunk_index': int(metadata.get('chunk_index', 0)),
+            'prev_chunk_id': str(metadata.get('prev_chunk_id', '')),
+            'next_chunk_id': str(metadata.get('next_chunk_id', '')),
         })
         
         articles[article_key]['chunk_ids'].append(chunk_id)
@@ -213,22 +399,21 @@ def group_by_article(results: Dict, scores: List[float]) -> Dict:
     return articles
 
 
-def format_rules_output(articles: Dict, query_params: Dict, stats: Dict) -> Dict:
+def format_rules_output(articles: Dict, query_params: Dict, stats: Dict, max_results: int = 5) -> Dict:
     """Format rules results in frontend-compatible structure."""
-    
-    # Sort articles by best score
+
     sorted_articles = sorted(
         articles.values(),
         key=lambda x: x['best_score'],
         reverse=True
-    )[:5]  # Top 5 articles
+    )[:max_results]
     
     results = []
     for rank, article in enumerate(sorted_articles, 1):
         # Combine all chunks for full article text
         # Sort chunks by score to show most relevant first
-        sorted_chunks = sorted(article['chunks'], key=lambda x: x['score'], reverse=True)
-        full_text = " ".join([chunk['text'] for chunk in sorted_chunks])
+        sorted_chunks = sorted(article['chunks'], key=lambda x: x.get('chunk_index', 0))
+        full_text = _stitch_chunks(sorted_chunks)
         
         # Get preview (first 500 chars)
         text_preview = full_text[:500]
@@ -268,7 +453,7 @@ def format_rules_output(articles: Dict, query_params: Dict, stats: Dict) -> Dict
     }
 
 
-def retrieve_relevant_rules(classifier_output: Any, verbose: bool = True) -> Dict:
+def retrieve_relevant_rules(classifier_output: Any, verbose: bool = True, max_results: int = 5) -> Dict:
     """
     Main rules retrieval function.
     Searches MasterRulesDB for relevant Constitution and Evidence Act provisions.
@@ -310,13 +495,13 @@ def retrieve_relevant_rules(classifier_output: Any, verbose: bool = True) -> Dic
     except Exception as e:
         raise RuntimeError(f"Failed to load embedding model: {e}")
     
-    # ---- STEP 3: Connect to MasterRulesDB ----
+    # ---- STEP 3: Connect to StatutesDB ----
     if verbose:
-        print("\n[3/6] Connecting to MasterRulesDB...")
-    
+        print("\n[3/6] Connecting to StatutesDB...")
+
     if not CHROMA_DB_DIR.exists():
-        raise FileNotFoundError(f"MasterRulesDB not found at {CHROMA_DB_DIR}")
-    
+        raise FileNotFoundError(f"StatutesDB not found at {CHROMA_DB_DIR}. Run embed_knowledge.py first.")
+
     try:
         client = chromadb.PersistentClient(path=str(CHROMA_DB_DIR))
         collection = client.get_collection(name=CHROMA_COLLECTION_NAME)
@@ -341,71 +526,182 @@ def retrieve_relevant_rules(classifier_output: Any, verbose: bool = True) -> Dic
     if verbose:
         print(f"  ✓ Filters: {json.dumps(where_filter, indent=2)}")
     
-    # ---- STEP 5: Embed Query & Search ----
+    # ---- STEP 5: Embed Query & Hybrid Search (BM25 + Vector → RRF → Cross-encoder) ----
     if verbose:
-        print("\n[5/6] Embedding query and searching...")
-    
-    retrieval_mode = query_params.get('retrieval_mode', '')
-    article_numbers = query_params.get('article_numbers', [])
-    
-    # For DIRECT_STATUTORY_LOOKUP with article numbers, prioritize exact match
-    if retrieval_mode == "DIRECT_STATUTORY_LOOKUP" and article_numbers:
-        if verbose:
-            print(f"  🎯 DIRECT LOOKUP MODE: Fetching Article(s) {article_numbers} directly")
-        
-        # Since we have article_number in where_filter, semantic search will be constrained
-        # to only those articles. Use a smaller n_results since we expect exact matches.
-        n_results = 10
-    else:
-        # Normal semantic search for broader queries
-        n_results = 30
-    
-    query_embedding = embedding_model.encode(query_params['vector_query']).tolist()
-    
+        print("\n[5/6] Embedding query and hybrid search (BM25 + vector + cross-encoder)...")
+
+    query_str = query_params['vector_query']
+    query_embedding = embedding_model.encode("query: " + query_str).tolist()
+
     if verbose:
         print(f"  ✓ Embedding dimension: {len(query_embedding)}")
-    
-    # Search with filters
-    results = collection.query(
-        query_embeddings=[query_embedding],
-        where=where_filter,
-        n_results=n_results,
-        include=["documents", "metadatas", "distances"]
+
+    # 5a. BM25 search over entire StatutesDB corpus, filtered by where_filter scope
+    _ensure_statutes_bm25()
+    bm25_ranked_ids: list = []
+    if _STATUTES_BM25["index"] is not None:
+        bm25_raw = _STATUTES_BM25["index"].get_scores(query_str.split())
+        if where_filter:
+            eligible = [
+                i for i, m in enumerate(_STATUTES_BM25["metas"])
+                if _matches_where(m, where_filter)
+            ]
+        else:
+            eligible = list(range(len(_STATUTES_BM25["ids"])))
+        bm25_order = sorted(eligible, key=lambda i: -bm25_raw[i])[:50]
+        bm25_ranked_ids = [_STATUTES_BM25["ids"][i] for i in bm25_order]
+
+    # 5b. Vector search (top 50) — apply where_filter when present
+    query_kwargs = {
+        "query_embeddings": [query_embedding],
+        "n_results": min(50, collection_count),
+        "include": ["documents", "metadatas", "distances"],
+    }
+    if where_filter:
+        query_kwargs["where"] = where_filter
+    vec_results = collection.query(**query_kwargs)
+    vec_ranked_ids = vec_results["ids"][0]
+
+    if verbose:
+        print(f"  ✓ Vector: {len(vec_ranked_ids)} chunks | BM25: {len(bm25_ranked_ids)} chunks")
+
+    # 5c. RRF fusion → top 30 candidates
+    fused_ids = _rrf_fuse(vec_ranked_ids, bm25_ranked_ids, k=60, n=30)
+
+    # 5d. Section exact-lookup: inject any explicitly named sections not yet in candidates.
+    #     Only inject when the query ALSO names an Act; bare section numbers without an Act
+    #     would pull the same section number from every Act in the corpus.  When no Act is
+    #     named, the BM25 + vector candidates already contain the relevant chunks — let the
+    #     cross-encoder rank them.
+    explicit_secs = set(
+        _extract_section_nums(query_str) +
+        [str(n) for n in query_params.get("section_numbers", [])] +
+        [str(n) for n in query_params.get("article_numbers", [])]
     )
-    
+    # Resolve named Acts → act_title strings stored in chunk source_document metadata
+    _named_act_titles: set = set()
+    for _doc in query_params.get("source_documents", []):
+        _mapped = STATUTE_MAP.get(_doc)
+        if _mapped:
+            _named_act_titles.add(_mapped)
+        else:
+            for _k, _v in STATUTE_MAP.items():
+                if _k.lower() in _doc.lower() or _doc.lower() in _k.lower():
+                    _named_act_titles.add(_v)
+                    break
+    for _s in query_params.get("all_statutes", []):
+        _mapped = STATUTE_MAP.get(_s)
+        if _mapped:
+            _named_act_titles.add(_mapped)
+
+    if explicit_secs and _named_act_titles and _STATUTES_BM25["index"] is not None:
+        fused_set = set(fused_ids)
+        inject = [
+            _STATUTES_BM25["ids"][i]
+            for i, m in enumerate(_STATUTES_BM25["metas"])
+            if str(m.get("article_number", "")) in explicit_secs
+            and m.get("source_document", "") in _named_act_titles
+            and _STATUTES_BM25["ids"][i] not in fused_set
+        ]
+        fused_ids = inject + fused_ids
+        fused_ids = fused_ids[:35]
+        if inject and verbose:
+            print(f"  ✓ Injected {len(inject)} exact-section chunks "
+                  f"(acts: {', '.join(_named_act_titles)}, sections: {explicit_secs})")
+    elif explicit_secs and verbose:
+        print(f"  ✓ Section {explicit_secs} detected — no Act named, skipping injection")
+
+    # 5e. Build id → (doc, meta) lookup from both sources
+    id_to_data: dict = {}
+    for i, cid in enumerate(vec_ranked_ids):
+        id_to_data[cid] = (vec_results["documents"][0][i], vec_results["metadatas"][0][i])
+    if _STATUTES_BM25["index"] is not None:
+        for i, cid in enumerate(_STATUTES_BM25["ids"]):
+            if cid not in id_to_data:
+                id_to_data[cid] = (_STATUTES_BM25["docs"][i], _STATUTES_BM25["metas"][i])
+
+    # 5f. Constitution fallback: add master_rules chunks to CE candidate pool
+    if query_params.get('needs_constitution'):
+        if verbose:
+            print("  🏛️  Constitution query — also fetching master_rules chunks...")
+        const_res = _query_constitution_fallback(query_embedding, n_results=10)
+        const_added = 0
+        fused_set = set(fused_ids)
+        for i, cid in enumerate(const_res["ids"][0]):
+            if cid not in id_to_data:
+                id_to_data[cid] = (const_res["documents"][0][i], const_res["metadatas"][0][i])
+            if cid not in fused_set:
+                fused_ids.append(cid)
+                fused_set.add(cid)
+                const_added += 1
+        if verbose and const_added:
+            print(f"  ✓ Added {const_added} Constitution chunks from master_rules")
+
+    # 5g. Cross-encoder rerank
+    cand_ids = [cid for cid in fused_ids if cid in id_to_data]
+    cand_docs = [id_to_data[cid][0] for cid in cand_ids]
+    cand_metas = [id_to_data[cid][1] for cid in cand_ids]
+
+    ce_model = _ensure_statutes_ce()
+    ce_raw = ce_model.predict([(query_str, doc) for doc in cand_docs])
+
+    # 5h. Sigmoid-normalise + schedule penalty → effective score
+    effective = [
+        _sigmoid(float(ce_raw[i])) * _schedule_mult(cand_metas[i], query_str)
+        for i in range(len(cand_ids))
+    ]
+
+    # Sort descending by effective score
+    order = sorted(range(len(cand_ids)), key=lambda i: -effective[i])
+    cand_ids = [cand_ids[i] for i in order]
+    cand_docs = [cand_docs[i] for i in order]
+    cand_metas = [cand_metas[i] for i in order]
+    effective = [effective[i] for i in order]
+
+    if verbose and effective:
+        print(f"  ✓ Cross-encoder done. CE-sigmoid scores: "
+              f"min={min(effective):.3f}  median={_stats.median(effective):.3f}  max={max(effective):.3f}")
+
+    # Rebuild results dict in the format expected by group_by_article
+    results = {
+        "ids": [cand_ids],
+        "documents": [cand_docs],
+        "metadatas": [cand_metas],
+        "distances": [[0.0] * len(cand_ids)],
+    }
+
+    # ---- STEP 6: Group, enrich, and format ----
     if verbose:
-        print(f"  ✓ Retrieved {len(results['ids'][0])} chunks")
-    
-    # ---- STEP 6: Group and Format Results ----
-    if verbose:
-        print("\n[6/6] Grouping by article and formatting...")
-    
-    # Calculate scores
-    scores = [calculate_rule_score(dist, results['metadatas'][0][idx], query_params['legal_domains']) 
-              for idx, dist in enumerate(results['distances'][0])]
-    
-    # Group by article
-    articles = group_by_article(results, scores)
-    
+        print("\n[6/6] Grouping by article, enriching, and formatting...")
+
+    # Pass CE-derived effective scores directly (skip calculate_rule_score)
+    articles = group_by_article(results, effective)
+
+    # Fetch prev/next chunks for any partial hits (uses real collection)
+    _enrich_article_chunks(collection, articles)
+
     if verbose:
         print(f"  ✓ Grouped into {len(articles)} unique articles")
-    
-    # Compile stats
+
     stats = {
-        'total_chunks_retrieved': len(results['ids'][0]),
+        'total_chunks_retrieved': len(cand_ids),
         'unique_articles': len(articles),
-        'top_articles_returned': min(5, len(articles)),
-        'database': 'MasterRulesDB',
-        'collection': CHROMA_COLLECTION_NAME
+        'top_articles_returned': min(max_results, len(articles)),
+        'database': 'StatutesDB',
+        'collection': CHROMA_COLLECTION_NAME,
+        'ce_scores': {
+            'min': round(min(effective), 3) if effective else 0,
+            'median': round(_stats.median(effective), 3) if effective else 0,
+            'max': round(max(effective), 3) if effective else 0,
+        },
     }
-    
-    # Format output
-    output = format_rules_output(articles, query_params, stats)
-    
+
+    output = format_rules_output(articles, query_params, stats, max_results=max_results)
+
     if verbose:
         print(f"\n✓ Retrieval complete! Found {output['count']} relevant articles")
         print("="*80 + "\n")
-    
+
     return output
 
 
