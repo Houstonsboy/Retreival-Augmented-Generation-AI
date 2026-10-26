@@ -9,7 +9,6 @@ serviceAccount*.json
 
 # Firebase build artifacts
 .firebase/
-.firebaserc
 
 # Python
 __pycache__/

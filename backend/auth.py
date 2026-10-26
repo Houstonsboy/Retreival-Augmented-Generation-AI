@@ -8,6 +8,9 @@ from flask import request, jsonify, g
 _db = None
 
 
+_BACKEND_DIR = os.path.dirname(os.path.abspath(__file__))
+
+
 def init_firebase_admin():
     """Initialize Firebase Admin SDK from FIREBASE_SERVICE_ACCOUNT_PATH. Call once at startup."""
     global _db
@@ -18,6 +21,9 @@ def init_firebase_admin():
     if not sa_path:
         print("WARNING: FIREBASE_SERVICE_ACCOUNT_PATH not set — protected routes will return 503")
         return
+    # Resolve relative paths from the backend directory, not CWD
+    if not os.path.isabs(sa_path):
+        sa_path = os.path.join(_BACKEND_DIR, sa_path)
     if not os.path.exists(sa_path):
         print(f"WARNING: service account not found at '{sa_path}' — protected routes will return 503")
         return
