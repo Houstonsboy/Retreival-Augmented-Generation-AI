@@ -6,6 +6,7 @@ import sys
 import io
 import json
 import requests
+from auth import init_firebase_admin, require_role
 from pathlib import Path
 from werkzeug.utils import secure_filename
 from digester import digest_repo
@@ -18,13 +19,21 @@ from constitutionlogic.constitutionbreaker import extract_constitution_articles,
 from constitutionlogic.constitution_digester import ConstitutionDigester, EMBEDDABLE_CHUNKS_JSON
 from config import CASELAW_DB_DIR, CASELAW_COLLECTION_NAME, SCC_CASES_DIR
 app = Flask(__name__)
-CORS(app)  # Enable CORS for frontend
+_CORS_ORIGIN = os.environ.get("CORS_ORIGIN", "http://localhost:3000")
+CORS(app, origins=_CORS_ORIGIN)
+init_firebase_admin()
 
 # Path to the Repo directory
 REPO_DIR = Path(__file__).resolve().parent / "Repo"
 RES_IPSA_LOQUITUR_DIR = REPO_DIR / "Res_ipsa_loquitur"
 
+@app.route('/api/health', methods=['GET'])
+def health():
+    return jsonify({'status': 'ok'})
+
+
 @app.route('/api/chat', methods=['POST'])
+@require_role("advocate", "admin")
 def chat():
     """
     RAG endpoint that processes queries using the pixe.py pipeline.
@@ -89,6 +98,7 @@ def chat():
         }), 500
 
 @app.route('/api/files', methods=['GET'])
+@require_role("advocate", "admin")
 def get_files():
     """
     Return list of files in the Repo directory.
@@ -100,6 +110,7 @@ def get_files():
     return jsonify({'files': files})
 
 @app.route('/api/upload', methods=['POST'])
+@require_role("admin")
 def upload_file():
     """
     Handle file uploads and save them to the Repo directory.
@@ -131,6 +142,7 @@ def upload_file():
         return jsonify({'error': f'Failed to save file: {str(e)}'}), 500
 
 @app.route('/api/files/<filename>', methods=['GET'])
+@require_role("advocate", "admin")
 def serve_file(filename):
     """
     Serve PDF files from the Repo directory.
@@ -155,6 +167,7 @@ def serve_file(filename):
     )
 
 @app.route('/api/digest', methods=['POST'])
+@require_role("admin")
 def digest():
     """
     Process PDF files: Extract FIRAC and embed into ChromaDB.
@@ -249,6 +262,7 @@ def digest():
         return jsonify({'error': f'Processing failed: {str(e)}', 'status': 'error'}), 500
 
 @app.route('/api/firac', methods=['POST'])
+@require_role("advocate", "admin")
 def firac():
     """
     Execute firac.py to process a PDF document (defaults to Wilson Wanjala).
@@ -372,6 +386,7 @@ def firac():
             }), 500
 
 @app.route('/api/ingest-firac', methods=['POST'])
+@require_role("admin")
 def ingest_firac():
     """
     Ingest FIRAC data into ChromaDB vector database.
@@ -490,6 +505,7 @@ def ingest_firac():
         }), 500
 
 @app.route('/api/digest/constitution', methods=['POST'])
+@require_role("admin")
 def digest_constitution():
     """
     Process Constitution PDF: Extract articles and embed into ChromaDB.
@@ -866,6 +882,7 @@ def constitution_status():
 
 
 @app.route('/api/digest/constitution/reset', methods=['DELETE'])
+@require_role("admin")
 def reset_constitution():
     """
     Remove all constitution chunks from ChromaDB.
@@ -1070,6 +1087,7 @@ def serve_rule_pdf():
 
 
 @app.route('/api/qretrieve', methods=['POST'])
+@require_role("advocate", "admin")
 def QRetriever():
         """
         Executes the legal query classification + retrieval pipeline.
@@ -1144,6 +1162,7 @@ def QRetriever():
 
 
 @app.route('/api/generate-legal-answer', methods=['POST'])
+@require_role("advocate", "admin")
 def generate_legal_answer():
     """
     Generate a comprehensive LLM answer combining statutory provisions and case law.

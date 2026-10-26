@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { FileText, Scale, Search, ChevronDown, ChevronUp, AlertCircle, ExternalLink } from "lucide-react";
+import { apiFetch } from "@/app/lib/api";
 
 interface Message {
   id: string;
@@ -44,11 +45,8 @@ export default function Home() {
     setIsLoading(true);
 
     try {
-      const response = await fetch("http://localhost:5000/api/qretrieve", {
+      const response = await apiFetch("/api/qretrieve", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
         body: JSON.stringify({ query: userMessage.content }),
       });
 
@@ -68,11 +66,8 @@ export default function Home() {
       let generatedAnswer = "No relevant legal information found.";
       
       try {
-        const answerResponse = await fetch("http://localhost:5000/api/generate-legal-answer", {
+        const answerResponse = await apiFetch("/api/generate-legal-answer", {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
           body: JSON.stringify({
             query: userMessage.content,
             retrieval: data.retrieval,

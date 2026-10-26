@@ -1,0 +1,63 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ── users/{uid} ──────────────────────────────────────────────────────────
+    match /users/{uid} {
+      // Only the owner can read their own profile
+      allow read: if request.auth != null && request.auth.uid == uid;
+
+      // Create: type must be "advocate" (admin is set only via backend script)
+      allow create: if request.auth != null
+        && request.auth.uid == uid
+        && request.resource.data.keys().hasOnly([
+            'username', 'email', 'type', 'authProvider',
+            'advocateVerified', 'createdAt', 'updatedAt'
+           ])
+        && request.resource.data.type == 'advocate'
+        && request.resource.data.email == request.auth.token.email
+        && request.resource.data.advocateVerified == false
+        && request.resource.data.username is string
+        && request.resource.data.username.size() >= 3
+        && request.resource.data.username.size() <= 30
+        && request.resource.data.username.matches('^[a-z0-9_]+$')
+        && request.resource.data.authProvider in ['password', 'google'];
+
+      // Update: only username and updatedAt may change (type is immutable from client)
+      allow update: if request.auth != null
+        && request.auth.uid == uid
+        && request.resource.data.diff(resource.data).affectedKeys()
+             .hasOnly(['username', 'updatedAt'])
+        && request.resource.data.username is string
+        && request.resource.data.username.size() >= 3
+        && request.resource.data.username.size() <= 30
+        && request.resource.data.username.matches('^[a-z0-9_]+$');
+
+      allow delete: if false;
+    }
+
+    // ── usernames/{username} ─────────────────────────────────────────────────
+    match /usernames/{username} {
+      // Any signed-in user can check availability
+      allow read: if request.auth != null;
+
+      // Create: must own the uid and the matching users doc must be set in same batch
+      allow create: if request.auth != null
+        && request.resource.data.uid == request.auth.uid
+        && getAfter(
+             /databases/$(database)/documents/users/$(request.auth.uid)
+           ).exists == true;
+
+      // Owner can release their own username (e.g. during a rename)
+      allow delete: if request.auth != null
+        && resource.data.uid == request.auth.uid;
+
+      allow update: if false;
+    }
+
+    // Deny everything else
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

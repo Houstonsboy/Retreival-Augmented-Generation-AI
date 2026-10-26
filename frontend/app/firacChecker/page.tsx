@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Navigation from "../components/Navigation";
+import { apiFetch } from "@/app/lib/api";
 
 
 
@@ -39,14 +40,9 @@ export default function FiracChecker() {
 
     try {
       // Process Wilson Wanjala PDF (default) using combined API call
-      const response = await fetch("http://localhost:5000/api/firac", {
+      const response = await apiFetch("/api/firac", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          // No file_path specified, uses default Wilson Wanjala PDF
-        }),
+        body: JSON.stringify({}),
       });
 
       const data = await response.json();
@@ -112,15 +108,9 @@ export default function FiracChecker() {
       // Call digest endpoint which extracts FIRAC from PDFs and embeds them into ChromaDB
       // If file_path is provided in body, processes only that file (for testing)
       // Otherwise, processes all PDFs in Res_ipsa_loquitur directory
-      const response = await fetch("http://localhost:5000/api/digest", {
+      const response = await apiFetch("/api/digest", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          // Optional: Add "file_path": "path/to/file.pdf" to test a single file
-          // Leave empty to process all files in Res_ipsa_loquitur
-        }),
+        body: JSON.stringify({}),
       });
 
       const data = await response.json();

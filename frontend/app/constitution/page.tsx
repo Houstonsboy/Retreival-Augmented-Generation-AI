@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Navigation from "../components/Navigation";
+import { apiFetch } from "@/app/lib/api";
 
 export default function Constitution() {
   const [isDigesting, setIsDigesting] = useState(false);
@@ -20,15 +21,9 @@ export default function Constitution() {
     setDigestError(null);
 
     try {
-      const response = await fetch("http://localhost:5000/api/digest/constitution", {
+      const response = await apiFetch("/api/digest/constitution", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          force_reextract: false,
-          skip_existing: true,
-        }),
+        body: JSON.stringify({ force_reextract: false, skip_existing: true }),
       });
 
       const data = await response.json();
@@ -55,9 +50,7 @@ export default function Constitution() {
     setStatusError(null);
 
     try {
-      const response = await fetch("http://localhost:5000/api/digest/constitution/status", {
-        method: "GET",
-      });
+      const response = await apiFetch("/api/digest/constitution/status");
 
       const data = await response.json();
 
@@ -87,7 +80,7 @@ export default function Constitution() {
     setDeleteError(null);
 
     try {
-      const response = await fetch("http://localhost:5000/api/digest/constitution/reset", {
+      const response = await apiFetch("/api/digest/constitution/reset", {
         method: "DELETE",
       });
 

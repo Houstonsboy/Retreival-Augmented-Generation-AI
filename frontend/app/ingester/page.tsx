@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import Navigation from "../components/Navigation";
+import { apiFetch, fetchProtectedFile } from "@/app/lib/api";
 
 interface Document {
   name: string;
@@ -25,7 +26,7 @@ export default function Ingester() {
 
   const fetchDocuments = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/files");
+      const response = await apiFetch("/api/files");
       if (response.ok) {
         const data = await response.json();
         // Convert array of strings to array of objects with name property
@@ -56,7 +57,7 @@ export default function Ingester() {
     formData.append("file", file);
 
     try {
-      const response = await fetch("http://localhost:5000/api/upload", {
+      const response = await apiFetch("/api/upload", {
         method: "POST",
         body: formData,
       });
@@ -113,9 +114,13 @@ export default function Ingester() {
     fileInputRef.current?.click();
   };
 
-  const handleDocumentClick = (filename: string) => {
-    const url = `http://localhost:5000/api/files/${encodeURIComponent(filename)}`;
-    window.open(url, "_blank");
+  const handleDocumentClick = async (filename: string) => {
+    try {
+      const url = await fetchProtectedFile(`/api/files/${encodeURIComponent(filename)}`);
+      window.open(url, "_blank");
+    } catch {
+      console.error("Failed to open file");
+    }
   };
 
   const handleDigest = async () => {
@@ -124,11 +129,9 @@ export default function Ingester() {
     setDigestSuccess(null);
 
     try {
-      const response = await fetch("http://localhost:5000/api/digest", {
+      const response = await apiFetch("/api/digest", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        body: JSON.stringify({}),
       });
 
       const data = await response.json();

@@ -1,5 +1,15 @@
 # Environment variables
 .env
+.env.local
+
+# Firebase service account credentials — NEVER commit these
+*-service-account.json
+firebase-adminsdk*.json
+serviceAccount*.json
+
+# Firebase build artifacts
+.firebase/
+.firebaserc
 
 # Python
 __pycache__/
@@ -15,6 +25,7 @@ eggs/
 .eggs/
 lib/
 lib64/
+!frontend/app/lib/
 parts/
 sdist/
 var/
