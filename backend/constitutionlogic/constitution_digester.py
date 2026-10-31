@@ -54,26 +54,21 @@ class ConstitutionDigester:
     
     def generate_chunk_id(self, chunk_data: Dict) -> str:
         """
-        Generate a unique, deterministic ID for a constitution chunk.
-        
-        Args:
-            chunk_data: Dictionary containing chunk information
-            
-        Returns:
-            Unique hash-based ID
+        Use the chunk_id from the JSON when present (written by constitutionbreaker.py
+        so that locations.db and ChromaDB share identical IDs).
+        Falls back to the hash-based scheme for backward compatibility.
         """
-        # Create a unique identifier from article number, chunk index, and source
+        if chunk_data.get("chunk_id"):
+            return chunk_data["chunk_id"]
+
         identifier = (
             f"const_{chunk_data['source_document']}_"
             f"art{chunk_data['article_number']}_"
             f"chunk{chunk_data['chunk_index']}"
         )
-        
-        # Add hash of content for additional uniqueness
         content_hash = hashlib.sha256(
             chunk_data['chunk_text'].encode('utf-8')
         ).hexdigest()[:8]
-        
         return f"{identifier}_{content_hash}"
     
     def prepare_metadata(self, chunk_data: Dict) -> Dict:

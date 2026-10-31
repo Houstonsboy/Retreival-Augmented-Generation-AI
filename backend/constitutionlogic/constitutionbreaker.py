@@ -1,14 +1,17 @@
 import fitz  # PyMuPDF
 import pytesseract
 import io
-import re
 import json
+import re
+import sqlite3
 from PIL import Image
 from pathlib import Path
 from typing import List, Dict
 
 # ===== CONFIGURATION =====
 SCRIPT_DIR = Path(__file__).parent
+LOCATIONS_DB = SCRIPT_DIR.parent / "locations.db"  # backend/locations.db
+_COLLECTION = "master_rules"
 
 # 1. Output directory within the same folder as the script
 OUTPUT_DIR = SCRIPT_DIR / "Constsection"
@@ -20,6 +23,49 @@ CONSTITUTION_DIR = SCRIPT_DIR / "../MasterRules/TheConstitutionOfKenya.pdf"
 CHUNK_SIZE = 1000
 CHUNK_OVERLAP = 300
 MIN_CHUNK_SIZE = 150  # Minimum chunk size to prevent noise chunks
+
+
+def _safe_art_chunk_id(article_number: str, chunk_idx: int) -> str:
+    """Stable ChromaDB-safe chunk ID for constitution articles."""
+    return f"constitution_art{article_number}_{chunk_idx}"
+
+
+def _init_locations_db(db_path: Path) -> sqlite3.Connection:
+    conn = sqlite3.connect(str(db_path))
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS chunk_locations (
+            chunk_id         TEXT PRIMARY KEY,
+            collection       TEXT NOT NULL,
+            source_file_path TEXT NOT NULL,
+            served_file_path TEXT,
+            page_start       INTEGER,
+            page_end         INTEGER,
+            boxes_json       TEXT,
+            page_dims_json   TEXT,
+            label            TEXT,
+            ocr              INTEGER DEFAULT 0
+        )
+    """)
+    conn.commit()
+    return conn
+
+
+def _assign_article_pages(articles: List[Dict], pdf_path: Path) -> None:
+    """In-place: set page_start on each article by searching per-page texts."""
+    doc = fitz.open(str(pdf_path))
+    page_texts = [(i, page.get_text()) for i, page in enumerate(doc)]
+    doc.close()
+
+    for article in articles:
+        num = article["number"]
+        pattern = re.compile(rf"(?m)^{re.escape(num)}\.\s")
+        article["page_start"] = 0
+        for page_num, text in page_texts:
+            if pattern.search(text):
+                article["page_start"] = page_num
+                break
+        # Approximate: end page = start page (most articles fit on one page)
+        article["page_end"] = article["page_start"]
 
 
 def extract_text_from_pdf(file_path: Path, use_ocr_threshold: int = 50) -> str:
@@ -318,19 +364,22 @@ def chunk_article_text(article_text: str, chunk_size: int = CHUNK_SIZE,
 def process_articles_with_chunks(sections: List[Dict[str, str]], source_pdf_path: Path) -> List[Dict]:
     """Process articles and create chunks with source document metadata."""
     processed_articles = []
-    
+
     for section in sections:
         article_text = section['full_article_text']
         chunks = chunk_article_text(article_text)
-        
+
         article_with_chunks = section.copy()
         article_with_chunks['text_length'] = len(article_text)
         article_with_chunks['num_chunks'] = len(chunks)
         article_with_chunks['chunks'] = chunks
         article_with_chunks['source_document'] = source_pdf_path.name
-        
+        # page_start/page_end are set by _assign_article_pages() after this call
+        article_with_chunks.setdefault('page_start', 0)
+        article_with_chunks.setdefault('page_end', 0)
+
         processed_articles.append(article_with_chunks)
-    
+
     return processed_articles
 
 
@@ -338,21 +387,23 @@ def flatten_articles_to_embeddable_chunks(articles: List[Dict]) -> List[Dict]:
     """
     Convert articles with multiple chunks into individual embeddable units.
     Each chunk becomes its own record with metadata (WITHOUT full_article_text to save space).
-    
+
     Args:
         articles: List of articles with nested chunks
-        
+
     Returns:
         List of individual chunk records ready for embedding
     """
     embeddable_chunks = []
-    
+
     for article in articles:
         num_chunks = article['num_chunks']
-        
-        # Create base metadata (shared across all chunks)
+        art_num = article['number']
+        page_start = article.get('page_start', 0)
+        page_end = article.get('page_end', page_start)
+
         base_metadata = {
-            'article_number': article['number'],
+            'article_number': art_num,
             'article_header': article.get('header', ''),
             'chapter': article.get('chapter', ''),
             'chapter_title': article.get('chapter_title', ''),
@@ -360,19 +411,29 @@ def flatten_articles_to_embeddable_chunks(articles: List[Dict]) -> List[Dict]:
             'part_title': article.get('part_title', ''),
             'source_document': article['source_document'],
             'article_length': article['text_length'],
-            'total_chunks': num_chunks
+            'total_chunks': num_chunks,
+            'page_start': page_start,
+            'page_end': page_end,
         }
-        
-        # Create individual chunk records
+
         for chunk_idx, chunk_text in enumerate(article['chunks'], 1):
+            chunk_id = _safe_art_chunk_id(art_num, chunk_idx - 1)
+            label = (
+                f"Art. {art_num}"
+                if num_chunks == 1
+                else f"Art. {art_num} [{chunk_idx}/{num_chunks}]"
+            )
+
             chunk_record = base_metadata.copy()
+            chunk_record['chunk_id'] = chunk_id
             chunk_record['chunk_index'] = chunk_idx
-            chunk_record['chunk_text'] = chunk_text  # This is EITHER full article OR the specific chunk
+            chunk_record['chunk_text'] = chunk_text
             chunk_record['chunk_length'] = len(chunk_text)
             chunk_record['is_complete_article'] = (num_chunks == 1)
-            
+            chunk_record['clause_label'] = label
+
             embeddable_chunks.append(chunk_record)
-    
+
     return embeddable_chunks
 
 
@@ -380,38 +441,81 @@ def extract_constitution_articles(pdf_path: Path = None) -> List[Dict]:
     """
     Main extraction function that returns structured articles.
     This is the primary function to be called from other modules.
-    
+
     Args:
         pdf_path: Path to Constitution PDF. If None, uses CONSTITUTION_DIR.
-        
+
     Returns:
         List of article dictionaries with chunks and metadata
     """
     if pdf_path is None:
         pdf_path = CONSTITUTION_DIR
-    
+
     print("\n" + "=" * 80)
     print("CONSTITUTION ARTICLE EXTRACTOR")
     print("=" * 80 + "\n")
-    
-    # Load constitution
+
     constitution_text = load_constitution_document(pdf_path)
-    
+
     if constitution_text.startswith("Error:"):
         print(f"Failed to load document: {constitution_text}")
         return []
-    
-    # Extract articles
+
     sections = find_numbered_sections_with_headers(constitution_text)
-    
+
     if not sections:
         print("No articles found.")
         return []
-    
-    # Process and chunk articles with source document
+
     processed_articles = process_articles_with_chunks(sections, pdf_path)
-    
+
+    # Assign page numbers by searching per-page raw text
+    print("Assigning page numbers to articles...")
+    _assign_article_pages(processed_articles, pdf_path)
+
     return processed_articles
+
+
+def write_constitution_locations(articles: List[Dict], pdf_path: Path) -> None:
+    """
+    Write embeddable-chunk location rows to backend/locations.db.
+    Called from main() after JSON output is written.
+    """
+    conn = _init_locations_db(LOCATIONS_DB)
+    source_str = str(pdf_path.resolve())
+    count = 0
+
+    for article in articles:
+        art_num = article["number"]
+        page_start = article.get("page_start", 0)
+        page_end = article.get("page_end", page_start)
+        num_chunks = article["num_chunks"]
+
+        for chunk_idx in range(num_chunks):
+            chunk_id = _safe_art_chunk_id(art_num, chunk_idx)
+            label = (
+                f"Art. {art_num}"
+                if num_chunks == 1
+                else f"Art. {art_num} [{chunk_idx + 1}/{num_chunks}]"
+            )
+            conn.execute(
+                """INSERT OR REPLACE INTO chunk_locations
+                   (chunk_id, collection, source_file_path, served_file_path,
+                    page_start, page_end, boxes_json, page_dims_json, label, ocr)
+                   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 0)""",
+                (
+                    chunk_id, _COLLECTION,
+                    source_str, source_str,
+                    page_start, page_end,
+                    "[]", "{}",  # bboxes not yet tracked for constitution
+                    label,
+                ),
+            )
+            count += 1
+
+    conn.commit()
+    conn.close()
+    print(f"Wrote {count} constitution location rows → {LOCATIONS_DB}")
 
 
 def main():
@@ -596,6 +700,12 @@ def main():
     print("   - For long articles: chunk_text = specific chunk portion")
     print("   - No duplication of full_article_text = smaller file size!\n")
     print("🚀 Next step: Use 'constitution_embeddable_chunks.json' with the ingester\n")
+
+    # Write page-location rows to SQLite sidecar
+    try:
+        write_constitution_locations(articles, CONSTITUTION_DIR)
+    except Exception as e:
+        print(f"WARNING: Failed to write location data to SQLite: {e}")
 
 
 if __name__ == "__main__":
