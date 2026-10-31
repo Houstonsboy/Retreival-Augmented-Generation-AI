@@ -1536,11 +1536,11 @@ def generate_legal_answer():
 
             used = cited_directly or cited_via_parent
 
-            if cited_directly:
+            if cited_directly and is_chunk_alias:
                 precision = "chunk"
-            elif cited_via_parent and is_chunk_alias:
-                precision = "document"
             elif cited_directly and not is_chunk_alias:
+                precision = "document"
+            elif cited_via_parent and is_chunk_alias:
                 precision = "document"
             else:
                 precision = "chunk" if is_chunk_alias else "document"
