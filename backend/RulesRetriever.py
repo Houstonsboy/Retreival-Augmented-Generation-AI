@@ -387,6 +387,9 @@ def group_by_article(results: Dict, scores: List[float]) -> Dict:
             'score': score,
             'chunk_id': chunk_id,
             'chunk_index': int(metadata.get('chunk_index', 0)),
+            'section_num': str(metadata.get('section_num', metadata.get('article_number', ''))),
+            'breadcrumb': str(metadata.get('breadcrumb', '')),
+            'section_heading': str(metadata.get('section_heading', metadata.get('article_header', ''))),
             'prev_chunk_id': str(metadata.get('prev_chunk_id', '')),
             'next_chunk_id': str(metadata.get('next_chunk_id', '')),
         })
@@ -438,7 +441,9 @@ def format_rules_output(articles: Dict, query_params: Dict, stats: Dict, max_res
             'text_preview': text_preview,
             'full_text': full_text,
             'chunk_count': len(article['chunks']),
-            'pdf_url': pdf_url
+            'chunks': sorted_chunks,
+            'pdf_url': pdf_url,
+            'chunk_id': sorted_chunks[0]['chunk_id'] if sorted_chunks else '',
         })
     
     return {

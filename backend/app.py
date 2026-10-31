@@ -1,12 +1,16 @@
-from flask import Flask, request, jsonify, send_from_directory, send_file
+from flask import Flask, request, jsonify, send_from_directory, send_file, g
 from flask_cors import CORS
+import re
 import time
 import os
 import sys
 import io
 import json
 import requests
+import uuid as uuid_mod
+import urllib.parse as urllib_parse
 from auth import init_firebase_admin, require_role
+from firebase_admin import firestore as fb_firestore, storage as fb_storage
 from pathlib import Path
 from werkzeug.utils import secure_filename
 from digester import digest_repo
@@ -978,13 +982,32 @@ def serve_case_pdf():
         
         # Try to resolve PDF file
         pdf_path = None
-        
+
+        # Option 0: Check SQLite sidecar for an OCR copy (served_file_path)
+        try:
+            import sqlite3 as _sqlite3
+            _db = Path(__file__).resolve().parent / "locations.db"
+            if _db.exists() and source_file_path:
+                _conn = _sqlite3.connect(str(_db))
+                _row = _conn.execute(
+                    "SELECT served_file_path FROM chunk_locations "
+                    "WHERE source_file_path = ? LIMIT 1",
+                    (source_file_path,),
+                ).fetchone()
+                _conn.close()
+                if _row and _row[0] and _row[0] != source_file_path:
+                    _served = Path(_row[0])
+                    if _served.exists():
+                        pdf_path = _served
+        except Exception:
+            pass  # sidecar not critical; fall through to normal resolution
+
         # Option 1: Use source_file_path if available
-        if source_file_path:
+        if not pdf_path and source_file_path:
             candidate = Path(source_file_path)
             if candidate.exists() and candidate.is_file():
                 pdf_path = candidate
-        
+
         # Option 2: Fallback to RES_IPSA_LOQUITUR_DIR + file_name.pdf
         if not pdf_path and file_name:
             # Try with .pdf extension
@@ -1029,6 +1052,64 @@ def serve_case_pdf():
     except Exception as e:
         print(f"Error serving PDF for case_id={case_id}: {e}")
         return jsonify({'error': f'Failed to serve PDF: {str(e)}'}), 500
+
+
+@app.route('/api/chunks/<chunk_id>/location', methods=['GET'])
+def chunk_location(chunk_id):
+    """
+    Return page + bounding-box location data for a chunk.
+    Source: backend/locations.db (written by build_case_chunks.py / constitutionbreaker.py).
+    """
+    import sqlite3
+    db_path = Path(__file__).resolve().parent / "locations.db"
+    if not db_path.exists():
+        return jsonify({"error": "Location database not available — run build_case_chunks.py first"}), 404
+    chunk_id = urllib_parse.unquote(chunk_id)
+    conn = sqlite3.connect(str(db_path))
+    conn.row_factory = sqlite3.Row
+    row = conn.execute(
+        "SELECT * FROM chunk_locations WHERE chunk_id = ?", (chunk_id,)
+    ).fetchone()
+    conn.close()
+    if not row:
+        return jsonify({"error": f"No location data for chunk: {chunk_id}"}), 404
+    return jsonify({
+        "chunk_id": chunk_id,
+        "collection": row["collection"],
+        "source_file_path": row["source_file_path"],
+        "served_file_path": row["served_file_path"],
+        "page_start": row["page_start"],
+        "page_end": row["page_end"],
+        "boxes": json.loads(row["boxes_json"] or "[]"),
+        "page_dims": json.loads(row["page_dims_json"] or "{}"),
+        "label": row["label"],
+        "ocr": bool(row["ocr"]),
+    }), 200
+
+
+@app.route('/api/documents/<path:doc_key>/chunks', methods=['GET'])
+def document_chunks(doc_key):
+    """
+    List all chunks recorded in locations.db whose source path contains doc_key.
+    Useful for loading all page positions for a given case file.
+    """
+    import sqlite3
+    db_path = Path(__file__).resolve().parent / "locations.db"
+    if not db_path.exists():
+        return jsonify({"error": "Location database not available"}), 404
+    doc_key = urllib_parse.unquote(doc_key)
+    conn = sqlite3.connect(str(db_path))
+    conn.row_factory = sqlite3.Row
+    rows = conn.execute(
+        "SELECT chunk_id, collection, page_start, page_end, label, ocr "
+        "FROM chunk_locations WHERE source_file_path LIKE ?",
+        (f"%{doc_key}%",),
+    ).fetchall()
+    conn.close()
+    return jsonify({
+        "doc_key": doc_key,
+        "chunks": [dict(r) for r in rows],
+    }), 200
 
 
 @app.route('/api/rule-pdf', methods=['GET'])
@@ -1165,183 +1246,417 @@ def QRetriever():
 @require_role("advocate", "admin")
 def generate_legal_answer():
     """
-    Generate a comprehensive LLM answer combining statutory provisions and case law.
-    This endpoint takes the user's query + retrieval results and generates a tailored response.
+    Grounded synthesis: coverage check → structured JSON synthesis → citation verification.
+
+    Request body:
+      query          str   user question
+      retrieval      dict  output from /api/qretrieve
+      retrieval_mode str
+      classification dict  classifier output (for coverage check)
     """
+    from coverage import check_coverage
+    from citation_verifier import verify_and_clean
+
     try:
         data = request.get_json()
-        user_query = data.get("query", "")
+        user_query     = data.get("query", "")
         retrieval_data = data.get("retrieval", {})
-        retrieval_mode = data.get("retrieval_mode", "")
-        
+        classification = data.get("classification", {})
+
         if not user_query:
             return jsonify({"error": "No query provided"}), 400
-        
-        # Extract retrieved data
+
         statutory_provisions = retrieval_data.get("rules", [])
-        case_law_results = retrieval_data.get("results", [])
-        
-        print(f"\n[INFO] Generating legal answer for query: {user_query[:60]}...")
-        print(f"[INFO] Retrieved: {len(statutory_provisions)} statutory provisions, {len(case_law_results)} cases")
-        
-        # Build context from retrieved information
-        context_parts = []
-        
-        # PART 1: Statutory Provisions (Priority)
-        if statutory_provisions:
-            context_parts.append("=== STATUTORY PROVISIONS ===\n")
-            for idx, rule in enumerate(statutory_provisions[:3], 1):  # Top 3 articles
-                article_num = rule.get('article_number', 'N/A')
-                article_header = rule.get('article_header', 'N/A')
-                full_text = rule.get('full_text', rule.get('text_preview', 'N/A'))
-                source = rule.get('document_label', 'Unknown')
-                
-                context_parts.append(
-                    f"\n[ARTICLE {article_num}] {article_header} ({source})\n"
-                    f"{full_text}\n"
-                )
-        
-        # PART 2: Relevant Case Law (Secondary)
-        if case_law_results:
-            context_parts.append("\n=== RELEVANT CASE LAW ===\n")
-            for idx, case in enumerate(case_law_results[:2], 1):  # Top 2 cases
-                case_name = case.get('case_name', 'Unknown Case')
-                year = case.get('metadata', {}).get('year', 'N/A')
-                court = case.get('metadata', {}).get('court_level', 'N/A')
-                
-                # Get the most relevant chunks
-                chunks = case.get('chunks', [])
-                relevant_text = "\n".join([
-                    f"[{chunk.get('component', 'N/A')}] {chunk.get('text', '')[:300]}..."
-                    for chunk in chunks[:2]  # Top 2 chunks per case
-                ])
-                
-                context_parts.append(
-                    f"\n[CASE {idx}] {case_name} ({year}, {court})\n"
-                    f"{relevant_text}\n"
-                )
-        
-        context = "\n".join(context_parts)
-        
-        if not context.strip():
-            return jsonify({
-                "success": False,
-                "error": "No relevant legal information retrieved"
-            }), 404
-        
-        # Build LLM prompt based on retrieval mode
-        if retrieval_mode == "DIRECT_STATUTORY_LOOKUP":
-            system_prompt = """You are a Kenyan legal expert providing clear, accurate explanations of statutory provisions.
+        case_law_results     = retrieval_data.get("results", [])
 
-Your task:
-1. Answer the user's question using the retrieved statutory text as the PRIMARY source
-2. Explain what the provision says in plain language
-3. If case law is provided, use it ONLY to illustrate how courts have interpreted the statute
-4. Be concise and directly answer the question asked
+        print(f"\n[INFO] generate-legal-answer: {user_query[:60]}…")
+        print(f"[INFO] Sources: {len(statutory_provisions)} statutes, {len(case_law_results)} cases")
 
-Format:
-- Start with a direct answer to the user's question
-- Quote or paraphrase the relevant statutory text
-- If applicable, briefly mention how courts have applied it
-- Keep it clear and practical"""
-        
-        elif retrieval_mode == "HYBRID_RETRIEVAL":
-            system_prompt = """You are a Kenyan legal expert providing comprehensive legal analysis.
+        # ── 1. Coverage check ────────────────────────────────────────────────
+        coverage = check_coverage(classification)
+        print(f"[INFO] Coverage: in={coverage['in_corpus']}, out={coverage['not_in_corpus']}")
 
-Your task:
-1. Start by explaining the relevant statutory provision(s)
-2. Then explain how courts have interpreted or applied these provisions
-3. Combine both sources to give a complete answer to the user's question
-4. Highlight practical implications
+        # ── 2. Build labelled source list ────────────────────────────────────
+        sources = []  # {"id", "type", "label", "data"}
+        source_blocks: list[str] = []
+        # alias_map: chunk-level alias (e.g. "C1.2") → chunk_id string
+        alias_map: dict = {}
 
-Format:
-- Begin with the statutory basis (what the law says)
-- Follow with judicial interpretation (how courts apply it)
-- End with practical guidance for the user's specific question"""
-        
-        else:  # STRATEGIC_LEGAL_ANALYSIS or default
-            system_prompt = """You are a Kenyan legal expert providing strategic legal analysis.
+        for i, rule in enumerate(statutory_provisions[:5], 1):
+            sid   = f"S{i}"
+            label = rule.get("document_label", "Unknown")
+            an    = rule.get("article_number", "")
+            hdr   = rule.get("article_header", "")
+            stat_chunks = rule.get("chunks", [])
 
-Your task:
-1. Use case law as the PRIMARY source to answer the user's question
-2. Reference any relevant statutes mentioned in the cases
-3. Focus on practical application and legal strategy
-4. Provide actionable insights
+            sources.append({"id": sid, "type": "statute", "label": f"{label} s.{an}", "data": rule})
 
-Format:
-- Explain how courts have addressed similar situations
-- Reference the legal principles and rules applied
-- Provide strategic guidance based on precedent"""
-        
-        user_prompt = f"""User's Question: "{user_query}"
+            chunk_lines = []
+            for j, sch in enumerate(stat_chunks, 1):
+                chunk_alias = f"S{i}.{j}"
+                sec_num = sch.get("section_num") or an
+                sec_hdr = sch.get("section_heading") or hdr
+                chunk_label = f"{label} s.{sec_num}"
+                alias_map[chunk_alias] = {
+                    "chunk_id": sch.get("chunk_id", ""),
+                    "label": chunk_label,
+                    "type": "statute",
+                }
+                chunk_lines.append(f"  [{chunk_alias}] s.{sec_num} {sec_hdr}\n  {sch.get('text','')[:600]}")
 
-Retrieved Legal Information:
-{context}
+            # Fallback top-level alias for bare [S#] references
+            top_cid = stat_chunks[0]["chunk_id"] if stat_chunks else rule.get("chunk_id", "")
+            alias_map[sid] = {"chunk_id": top_cid, "label": f"{label} s.{an}", "type": "statute"}
 
-Instructions:
-Answer the user's question directly and comprehensively using the information provided above.
-Focus on what the user actually asked. If they asked "what does Article X do", explain what Article X does.
-If they asked about a legal scenario, apply the law to their situation.
+            block_header = f"[{sid}] {label}, s.{an} — {hdr}"
+            source_blocks.append(block_header + "\n" + "\n".join(chunk_lines))
 
-Your answer:"""
-        
-        # Call Groq API
-        GROQ_API_KEY = os.getenv("GROQ_API_KEY")
-        headers = {
-            "Authorization": f"Bearer {GROQ_API_KEY}",
-            "Content-Type": "application/json"
-        }
-        
-        payload = {
-            "model": "qwen/qwen3.8-27b",
-            "messages": [
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": user_prompt}
-            ],
-            "temperature": 0.3,
-            "max_tokens": 1500
-        }
-        
-        llm_response = requests.post(
-            "https://api.groq.com/openai/v1/chat/completions",
-            headers=headers,
-            json=payload,
-            timeout=30
+        for i, case in enumerate(case_law_results[:3], 1):
+            cid_base = f"C{i}"
+            cn   = case.get("case_name", "Unknown")
+            meta = case.get("metadata", {})
+            year = meta.get("year", "")
+            court= meta.get("court_level", "")
+            case_chunks = case.get("chunks", [])[:3]
+            chunk_lines = []
+            for j, ch in enumerate(case_chunks, 1):
+                chunk_alias = f"C{i}.{j}"
+                chunk_cid = ch.get("chunk_id", ch.get("id", ""))
+                alias_map[chunk_alias] = {
+                    "chunk_id": chunk_cid,
+                    "label": f"{cn} ({year}) chunk {j}",
+                    "type": "case",
+                }
+                chunk_lines.append(f"  [{chunk_alias}] {ch.get('text','')[:500]}")
+            sources.append({"id": cid_base, "type": "case", "label": f"{cn} ({year}, {court})", "data": case})
+            source_blocks.append(
+                f"[{cid_base}] {cn} ({year}, {court})\n" + "\n".join(chunk_lines)
+            )
+
+        if not source_blocks:
+            return jsonify({"success": False, "error": "No relevant legal information retrieved"}), 404
+
+        # ── 3. System prompt — grounding rules only, NO legal content ────────
+        SYSTEM = (
+            "You are a Kenyan legal research assistant. "
+            "Output ONLY a single valid JSON object. No text before or after it.\n\n"
+            "ABSOLUTE RULES:\n"
+            "1. Every legal statement MUST cite using exact aliases from the sources.\n"
+            "   Statute chunk aliases: [S1.1], [S1.2] etc. (use the most specific chunk alias).\n"
+            "   Bare [S#] may be used to refer to a whole statute article if you didn't use a specific chunk.\n"
+            "   Case chunks use [C#.#] (e.g. [C1.2]).\n"
+            "2. Never state a section number, article number, rule number, case name, holding, "
+            "   or procedure that does not appear verbatim or near-verbatim in the source text supplied.\n"
+            "3. Never say a source is wrong, outdated, or misapplied. If the user's premise "
+            "   conflicts with a source, report what the source says.\n"
+            "4. If a provision the user names is NOT in the provided sources, state that in "
+            "   premise_check and gaps. Do not describe its content from memory.\n"
+            "5. For cases, report only what the judgment text explicitly says — parties, court, "
+            "   outcome, quoted reasoning. Do not add, correct, or supplement.\n"
+            "6. Use ONLY sources you mark relevant=true. After marking a source irrelevant, "
+            "   do not reference it anywhere else.\n"
+            "7. A short, accurate answer is better than a complete-looking one. "
+            "   If sources are insufficient, say so and stop.\n\n"
+            "OUTPUT SCHEMA (all fields required, empty string if not applicable):\n"
+            "{\n"
+            '  "source_review": [\n'
+            '    {"id":"S1","relevant":true,"reason":"one sentence","key_points":["verbatim text"]}\n'
+            "  ],\n"
+            '  "premise_check": "Does the question rely on provisions not in the sources? List them.",\n'
+            '  "short_answer": "2-3 sentences citing [S#]/[C#]. If insufficient: say so.",\n'
+            '  "applicable_law": "Verbatim or near-verbatim text from relevant [S#] sources.",\n'
+            '  "case_law_discussion": "Holdings as stated in [C#] sources — parties, court, outcome, quoted reasoning.",\n'
+            '  "application": "How [S#][C#] provisions apply. No claims beyond source text.",\n'
+            '  "jurisdiction_and_procedure": "From [S#][C#] only. Empty string if not in sources.",\n'
+            '  "gaps": "What the question needed that sources do not cover.",\n'
+            '  "follow_up_questions": ["up to 3 questions the corpus could answer"],\n'
+            '  "citations_used": ["S1.1 — Document s.N chunk", "C1.2 — Case name chunk"]\n'
+            "}"
         )
-        
-        llm_response.raise_for_status()
-        llm_data = llm_response.json()
-        
-        generated_answer = llm_data['choices'][0]['message']['content'].strip()
-        
-        print(f"[SUCCESS] Generated answer ({len(generated_answer)} chars)")
-        
+
+        # ── 4. User prompt ────────────────────────────────────────────────────
+        coverage_notice = ""
+        if coverage["not_in_corpus"]:
+            acts = "; ".join(coverage["not_in_corpus"])
+            coverage_notice = (
+                f"COVERAGE NOTICE: The following Acts named in the question are NOT in the "
+                f"knowledge base — do not describe their content: {acts}.\n\n"
+            )
+
+        USER = (
+            coverage_notice
+            + "SOURCES:\n"
+            + "\n\n".join(source_blocks)
+            + f'\n\nUSER QUESTION: "{user_query}"\n\nOutput the JSON object now.'
+        )
+
+        # ── 5. Groq call (temperature 0, with key rotation) ──────────────────
+        _groq_keys = [v for k, v in sorted(os.environ.items())
+                      if k == "GROQ_API_KEY" or k.startswith("GROQ_API_KEY_")]
+        if not _groq_keys:
+            return jsonify({"success": False, "error": "No GROQ_API_KEY configured"}), 500
+        _key_idx = [0]
+
+        messages = [{"role": "system", "content": SYSTEM}, {"role": "user", "content": USER}]
+
+        def _groq(msgs, max_tokens=2500) -> str:
+            GROQ_URL = "https://api.groq.com/openai/v1/chat/completions"
+            for attempt in range(len(_groq_keys) + 1):
+                key = _groq_keys[_key_idx[0]]
+                try:
+                    resp = requests.post(
+                        GROQ_URL,
+                        headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json"},
+                        json={"model": "qwen/qwen3.8-27b", "messages": msgs,
+                              "temperature": 0, "max_tokens": max_tokens},
+                        timeout=60,
+                    )
+                    if resp.status_code == 429:
+                        next_idx = (_key_idx[0] + 1) % len(_groq_keys)
+                        if next_idx != _key_idx[0]:
+                            print(f"[WARN] synthesis 429 on key {_key_idx[0]}, rotating to {next_idx}")
+                            _key_idx[0] = next_idx
+                            continue
+                        print("[WARN] All synthesis keys rate-limited, waiting 30s...")
+                        time.sleep(30)
+                        continue
+                    resp.raise_for_status()
+                    raw = resp.json()["choices"][0]["message"]["content"]
+                    return re.sub(r"<think>.*?</think>", "", raw, flags=re.DOTALL).strip()
+                except requests.HTTPError:
+                    raise
+            raise RuntimeError("All Groq keys exhausted for synthesis")
+
+        raw = _groq(messages)
+
+        # ── 6. Parse JSON ─────────────────────────────────────────────────────
+        def _parse_json(text: str) -> dict:
+            text = re.sub(r"^```(?:json)?\s*", "", text, flags=re.MULTILINE)
+            text = re.sub(r"\s*```\s*$", "", text, flags=re.MULTILINE)
+            start = text.find("{")
+            if start == -1:
+                raise ValueError("No JSON found")
+            depth = 0
+            for i, ch in enumerate(text[start:], start):
+                if ch == "{":
+                    depth += 1
+                elif ch == "}":
+                    depth -= 1
+                    if depth == 0:
+                        return json.loads(text[start: i + 1])
+            raise ValueError("Unmatched braces")
+
+        try:
+            parsed = _parse_json(raw)
+        except Exception as parse_err:
+            print(f"[WARN] JSON parse failed ({parse_err}); returning raw text")
+            parsed = {"short_answer": raw, "source_review": []}
+
+        # ── 7. Filter irrelevant sources ──────────────────────────────────────
+        relevant_ids = {
+            sr["id"]
+            for sr in parsed.get("source_review", [])
+            if sr.get("relevant") is True
+        }
+        # If model didn't mark anything relevant, treat all as relevant
+        if not relevant_ids:
+            relevant_ids = {s["id"] for s in sources}
+
+        relevant_source_data = [s["data"] for s in sources if s["id"] in relevant_ids]
+
+        # ── 8. Citation verification ──────────────────────────────────────────
+        analysis_fields = " ".join(filter(None, [
+            parsed.get("short_answer", ""),
+            parsed.get("applicable_law", ""),
+            parsed.get("case_law_discussion", ""),
+            parsed.get("application", ""),
+            parsed.get("jurisdiction_and_procedure", ""),
+        ]))
+
+        def _regen(unsupported_list: list) -> str:
+            regen_msgs = messages + [
+                {"role": "assistant", "content": raw},
+                {"role": "user", "content": (
+                    "The following citations are not present in the provided sources and must be "
+                    f"removed or replaced with 'not in the sources': {', '.join(unsupported_list)}. "
+                    "Output the corrected JSON object."
+                )},
+            ]
+            return _groq(regen_msgs)
+
+        verified = verify_and_clean(analysis_fields, relevant_source_data, user_query, _regen)
+
+        removed = verified.get("unverified_claims_removed", [])
+        if removed:
+            print(f"[WARN] Removed {len(removed)} unverified claim(s): {removed}")
+
+        # ── 9. Build answer string ────────────────────────────────────────────
+        def _build_answer(p: dict) -> str:
+            parts: list[str] = []
+
+            for key, heading in [
+                ("short_answer",              None),
+                ("applicable_law",            "#### Applicable Law"),
+                ("case_law_discussion",       "#### Case Law"),
+                ("application",               "#### Application"),
+                ("jurisdiction_and_procedure","#### Jurisdiction & Procedure"),
+                ("gaps",                      "#### Gaps in Available Sources"),
+            ]:
+                val = (p.get(key) or "").strip()
+                skip = {"", "n/a", "none", "not applicable", "no gaps identified", "no gaps"}
+                if val.lower() not in skip:
+                    parts.append(f"{heading}\n{val}" if heading else val)
+
+            fqs = p.get("follow_up_questions") or []
+            if fqs:
+                parts.append("#### Follow-up Questions\n" + "\n".join(f"- {q}" for q in fqs[:3]))
+
+            cu = p.get("citations_used") or []
+            if cu:
+                parts.append("#### Sources Referenced\n" + "\n".join(f"- {c}" for c in cu))
+
+            return "\n\n".join(parts)
+
+        answer = _build_answer(parsed)
+
+        # Determine which chunk aliases appear in the answer text
+        _alias_pat = re.compile(r"\[([CS]\d+(?:\.\d+)?)\]")
+        _used_aliases = set(_alias_pat.findall(answer))
+        # Also check all parsed text fields
+        for _field in ("applicable_law", "case_law_discussion", "application",
+                        "short_answer", "jurisdiction_and_procedure"):
+            _used_aliases.update(_alias_pat.findall(parsed.get(_field) or ""))
+
+        response_sources = []
+        for alias, info in alias_map.items():
+            base = alias.split(".")[0]  # e.g. "C1" or "S1"
+            is_chunk_alias = "." in alias  # S1.1 / C1.2 — chunk-level
+            cited_directly = alias in _used_aliases
+            cited_via_parent = base in _used_aliases  # bare [C1]/[S1] in answer
+
+            used = cited_directly or cited_via_parent
+
+            if cited_directly:
+                precision = "chunk"
+            elif cited_via_parent and is_chunk_alias:
+                precision = "document"
+            elif cited_directly and not is_chunk_alias:
+                precision = "document"
+            else:
+                precision = "chunk" if is_chunk_alias else "document"
+
+            response_sources.append({
+                "alias": alias,
+                "chunk_id": info["chunk_id"],
+                "label": info["label"],
+                "type": info["type"],
+                "used": used,
+                "precision": precision,
+            })
+
+        print(f"[SUCCESS] Answer built ({len(answer)} chars), removed={len(removed)}")
+
         return jsonify({
             "success": True,
-            "answer": generated_answer,
+            "answer": answer,
+            "coverage": coverage,
+            "source_review": parsed.get("source_review", []),
+            "premise_check": (parsed.get("premise_check") or "").strip(),
+            "unverified_claims_removed": removed,
+            "sources": response_sources,
+            "alias_map": {k: v["chunk_id"] for k, v in alias_map.items()},
             "sources_used": {
                 "statutory_provisions": len(statutory_provisions),
-                "case_law": len(case_law_results)
-            }
+                "case_law": len(case_law_results),
+            },
         }), 200
-        
+
     except requests.exceptions.RequestException as e:
         print(f"[ERROR] LLM API call failed: {e}")
-        return jsonify({
-            "success": False,
-            "error": f"Failed to generate answer: {str(e)}"
-        }), 500
-    
-    except Exception as e:
-        print(f"[ERROR] Answer generation failed: {e}")
-        import traceback
-        traceback.print_exc()
-        return jsonify({
-            "success": False,
-            "error": str(e)
-        }), 500
+        return jsonify({"success": False, "error": f"LLM call failed: {e}"}), 500
 
-        
+    except Exception as e:
+        import traceback
+        print(f"[ERROR] generate-legal-answer: {e}")
+        traceback.print_exc()
+        return jsonify({"success": False, "error": str(e)}), 500
+
+
+# ---------------------------------------------------------------------------
+# Case Laws repository endpoints
+# ---------------------------------------------------------------------------
+
+ALLOWED_CASE_EXTS = {'pdf', 'docx'}
+
+
+@app.route('/api/case-laws/upload', methods=['POST'])
+@require_role("advocate", "admin")
+def upload_case_law():
+    if 'file' not in request.files:
+        return jsonify({'error': 'No file provided'}), 400
+
+    file = request.files['file']
+    if not file.filename:
+        return jsonify({'error': 'No file selected'}), 400
+
+    ext = file.filename.rsplit('.', 1)[-1].lower() if '.' in file.filename else ''
+    if ext not in ALLOWED_CASE_EXTS:
+        return jsonify({'error': 'Only PDF and DOCX files are allowed'}), 400
+
+    SCC_CASES_DIR.mkdir(parents=True, exist_ok=True)
+    filename = secure_filename(file.filename)
+
+    file_data = file.read()
+    file_size = len(file_data)
+
+    # Persist locally for RAG pipeline
+    with open(SCC_CASES_DIR / filename, 'wb') as fh:
+        fh.write(file_data)
+
+    # Write metadata to Firestore CaseLaws collection
+    title = filename.rsplit('.', 1)[0] if '.' in filename else filename
+    local_path = str(SCC_CASES_DIR / filename)
+    db_client = fb_firestore.client()
+    _, doc_ref = db_client.collection('CaseLaws').add({
+        'title': title,
+        'fileName': filename,
+        'fileType': ext,
+        'localPath': local_path,
+        'uploadedBy': g.profile.get('username', 'unknown'),
+        'uploadedByUid': g.uid,
+        'uploadedAt': fb_firestore.SERVER_TIMESTAMP,
+        'fileSizeBytes': file_size,
+    })
+
+    return jsonify({
+        'id': doc_ref.id,
+        'title': title,
+        'fileName': filename,
+        'localPath': local_path,
+    }), 200
+
+
+@app.route('/api/case-laws/file/<path:filename>', methods=['GET'])
+def serve_case_law_file(filename):
+    """Serve a case law file from SCCCases/ (local, no auth — internal tool only)."""
+    # Resolve and guard against directory traversal without mangling the original name
+    resolved = (SCC_CASES_DIR / filename).resolve()
+    if not str(resolved).startswith(str(SCC_CASES_DIR.resolve())):
+        return jsonify({'error': 'Invalid path'}), 400
+    if not resolved.exists():
+        return jsonify({'error': 'File not found'}), 404
+
+    ext = resolved.suffix.lower().lstrip('.')
+    if ext not in ALLOWED_CASE_EXTS:
+        return jsonify({'error': 'File type not permitted'}), 400
+
+    mime = (
+        'application/pdf' if ext == 'pdf'
+        else 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+    )
+    return send_from_directory(str(SCC_CASES_DIR), resolved.name, mimetype=mime, as_attachment=False)
+
+
 if __name__ == '__main__':
     app.run(debug=True, port=5000, host='0.0.0.0')
 

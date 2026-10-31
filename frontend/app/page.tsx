@@ -1,8 +1,46 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
-import { FileText, Scale, Search, ChevronDown, ChevronUp, AlertCircle, ExternalLink } from "lucide-react";
+import { useState, useRef, useEffect, useCallback } from "react";
+import Link from "next/link";
+import {
+  FileText,
+  Scale,
+  Search,
+  ChevronDown,
+  ChevronUp,
+  AlertCircle,
+  ExternalLink,
+  BookOpen,
+  File,
+  X,
+} from "lucide-react";
 import { apiFetch } from "@/app/lib/api";
+import { UserMenu } from "@/app/components/UserMenu";
+import type { ReactNode } from "react";
+
+// ── Design tokens ─────────────────────────────────────────────────────────────
+const BG       = "#FAF7F0";
+const GOLD     = "#C9971A";
+const GOLD_DK  = "#A87A0C";
+const HIGHLIGHT= "#F6E7B8";
+const BORDER   = "#DDD3BE";
+const CREAM_2  = "#F0EAE0";
+const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:5000";
+
+// ── Types ─────────────────────────────────────────────────────────────────────
+interface Coverage {
+  in_corpus: string[];
+  not_in_corpus: string[];
+}
+
+interface ChunkSource {
+  alias: string;
+  chunk_id: string;
+  label: string;
+  type: "case" | "statute" | "knowledge";
+  used: boolean;
+  precision?: "chunk" | "document";
+}
 
 interface Message {
   id: string;
@@ -12,22 +50,40 @@ interface Message {
   classification?: any;
   aiResponse?: string;
   evidence?: any[];
-  rules?: any[];  // NEW: Statutory provisions
+  rules?: any[];
+  coverage?: Coverage;
+  premiseCheck?: string;
+  unverifiedClaims?: string[];
+  sources?: ChunkSource[];
+  aliasMap?: Record<string, string>;
 }
 
+const EXAMPLE_QUESTIONS = [
+  { category: "DIFFICULT JUDGMENT", question: "When will the SCC set aside an ex parte judgment after service by WhatsApp?" },
+  { category: "ELECTRONIC EVIDENCE", question: "Are M-Pesa statements admissible without a section 106B certificate?" },
+  { category: "EXECUTION", question: "What must I show to stay execution of a warrant of attachment?" },
+  { category: "BAILMENT", question: "Is a bailee for reward liable for theft by an independent security contractor?" },
+];
+
+// ── Main page ─────────────────────────────────────────────────────────────────
 export default function Home() {
   const [messages, setMessages] = useState<Message[]>([]);
-  const [input, setInput] = useState("");
+  const [input, setInput]       = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [panelMessage, setPanelMessage] = useState<Message | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLTextAreaElement>(null);
-
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
+  const inputRef       = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
-    scrollToBottom();
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
+  // Auto-show sources panel for the latest assistant message
+  useEffect(() => {
+    const last = [...messages].reverse().find(
+      (m) => m.role === "assistant" && m.sources && m.sources.length > 0
+    );
+    if (last) setPanelMessage(last);
   }, [messages]);
 
   const handleSubmit = async () => {
@@ -39,7 +95,6 @@ export default function Home() {
       content: input.trim(),
       timestamp: new Date(),
     };
-
     setMessages((prev) => [...prev, userMessage]);
     setInput("");
     setIsLoading(true);
@@ -49,654 +104,1003 @@ export default function Home() {
         method: "POST",
         body: JSON.stringify({ query: userMessage.content }),
       });
-
       const data = await response.json();
+      if (!response.ok || !data.success) throw new Error(data.error || "Retrieval failed");
 
-      console.log("📥 Received data:", data);
-      console.log("Classification:", data.classification);
-      console.log("Retrieval:", data.retrieval);
+      let aiResponse = "No relevant legal information found.";
+      let coverage: Coverage | undefined;
+      let premiseCheck: string | undefined;
+      let unverifiedClaims: string[] | undefined;
+      let sources: ChunkSource[] | undefined;
+      let aliasMap: Record<string, string> | undefined;
 
-      if (!response.ok || !data.success) {
-        throw new Error(data.error || "Failed to get response");
-      }
-
-      // STEP 2: Generate comprehensive legal answer using retrieved information
-      console.log("🤖 Generating comprehensive legal answer...");
-      
-      let generatedAnswer = "No relevant legal information found.";
-      
       try {
-        const answerResponse = await apiFetch("/api/generate-legal-answer", {
+        const ansRes = await apiFetch("/api/generate-legal-answer", {
           method: "POST",
           body: JSON.stringify({
             query: userMessage.content,
             retrieval: data.retrieval,
-            retrieval_mode: data.classification?.retrieval_mode || ""
+            retrieval_mode: data.classification?.retrieval_mode || "",
+            classification: data.classification || {},
           }),
         });
-
-        if (answerResponse.ok) {
-          const answerData = await answerResponse.json();
-          if (answerData.success) {
-            generatedAnswer = answerData.answer;
-            console.log("✅ Generated answer:", generatedAnswer.substring(0, 100) + "...");
+        if (ansRes.ok) {
+          const ans = await ansRes.json();
+          if (ans.success) {
+            aiResponse       = ans.answer;
+            coverage         = ans.coverage;
+            premiseCheck     = ans.premise_check;
+            unverifiedClaims = ans.unverified_claims_removed;
+            sources          = ans.sources;
+            aliasMap         = ans.alias_map;
           }
-        } else {
-          console.warn("⚠️ Answer generation failed, using fallback");
-          // Fallback to first case's ai_summary if answer generation fails
-          generatedAnswer = data.retrieval?.results?.[0]?.ai_summary || "No relevant legal information found.";
         }
-      } catch (answerError) {
-        console.error("Error generating answer:", answerError);
-        // Fallback to first case's ai_summary
-        generatedAnswer = data.retrieval?.results?.[0]?.ai_summary || "No relevant legal information found.";
-      }
+      } catch { /* keep fallback aiResponse */ }
 
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: "assistant",
         content: "",
         classification: data.classification,
-        aiResponse: generatedAnswer,  // NOW uses generated answer that combines statutes + cases
+        aiResponse,
         evidence: data.retrieval?.results || [],
-        rules: data.retrieval?.rules || [],  // Statutory provisions
+        rules:    data.retrieval?.rules   || [],
+        coverage,
+        premiseCheck,
+        unverifiedClaims,
+        sources,
+        aliasMap,
         timestamp: new Date(),
       };
-
       setMessages((prev) => [...prev, assistantMessage]);
-    } catch (error) {
-      console.error("Error:", error);
-      const errorMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        role: "assistant",
-        content: "",
-        aiResponse: error instanceof Error ? error.message : "Sorry, I encountered an error. Please try again.",
-        timestamp: new Date(),
-      };
-      setMessages((prev) => [...prev, errorMessage]);
+    } catch (err) {
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: (Date.now() + 1).toString(),
+          role: "assistant",
+          content: "",
+          aiResponse: err instanceof Error ? err.message : "An error occurred. Please try again.",
+          timestamp: new Date(),
+        },
+      ]);
     } finally {
       setIsLoading(false);
     }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      handleSubmit();
-    }
+    if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); handleSubmit(); }
+  };
+  const autoResize = (e: React.FormEvent<HTMLTextAreaElement>) => {
+    const t = e.target as HTMLTextAreaElement;
+    t.style.height = "auto";
+    t.style.height = `${Math.min(t.scrollHeight, 200)}px`;
   };
 
+  const hasMessages  = messages.length > 0;
+  const hasSources   = !!(panelMessage?.sources?.length);
+
   return (
-    <div className="flex h-screen flex-col bg-gradient-to-br from-slate-50 to-slate-100 dark:from-gray-900 dark:to-gray-800">
-      {/* Top Navigation */}
-      <div className="border-b border-slate-200 dark:border-gray-700 bg-white dark:bg-gray-900 shadow-sm">
-        <div className="mx-auto max-w-7xl px-4 py-4">
-          <div className="flex items-center gap-3">
-            <Scale className="h-8 w-8 text-blue-600" />
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
-              Kenyan Legal RAG
-            </h1>
+    <div className="flex h-screen flex-col" style={{ backgroundColor: BG }}>
+      {/* ── Header ─────────────────────────────────────────────────────── */}
+      <header className="shrink-0 z-10" style={{ backgroundColor: BG, borderBottom: `1px solid ${BORDER}` }}>
+        <div className="mx-auto max-w-full px-6 py-3 flex items-center justify-between">
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
+              style={{ background: `linear-gradient(135deg, #7A3A12 0%, ${GOLD} 100%)` }}>
+              <Scale className="h-4 w-4 text-white" />
+            </div>
+            <span className="text-sm font-bold tracking-tight text-gray-900">
+              Kenyan Legal{" "}<span style={{ color: GOLD }} className="font-black">RAG</span>
+            </span>
+          </div>
+          <div className="flex items-center gap-4">
+            <Link href="/dashboard" className="text-sm font-medium text-gray-500 hover:text-gray-800 transition-colors">
+              Dashboard
+            </Link>
+            <UserMenu />
           </div>
         </div>
-      </div>
+      </header>
 
-      {/* Messages Area */}
-      <div className="flex-1 overflow-y-auto">
-        <div className="mx-auto max-w-7xl px-4 py-6">
-          {messages.length === 0 ? (
-            <div className="flex h-full items-center justify-center">
-              <div className="text-center">
-                <Scale className="mx-auto h-16 w-16 text-blue-600 mb-4" />
-                <h2 className="mb-2 text-2xl font-semibold text-gray-900 dark:text-gray-100">
-                  How can I help you today?
-                </h2>
-                <p className="text-gray-500 dark:text-gray-400">
-                  Ask me anything about Kenyan legal documents and cases.
-                </p>
-              </div>
-            </div>
-          ) : (
-            <div className="space-y-8">
-              {messages.map((message) => (
-                <div key={message.id}>
-                  {message.role === "user" ? (
-                    <div className="flex justify-end mb-6">
-                      <div className="max-w-[85%] rounded-2xl px-4 py-3 bg-blue-600 text-white">
-                        <p className="whitespace-pre-wrap break-words">
-                          {message.content}
-                        </p>
-                      </div>
-                    </div>
-                  ) : (
-                    <AssistantResponse message={message} />
-                  )}
+      {/* ── Body (split layout) ─────────────────────────────────────────── */}
+      <div className="flex-1 flex overflow-hidden">
+
+        {/* ── Left: chat column ──────────────────────────────────────────── */}
+        <div
+          className="flex flex-col overflow-hidden"
+          style={{
+            width: hasSources ? "33.33%" : "100%",
+            transition: "width 0.45s cubic-bezier(.4,0,.2,1)",
+            minWidth: hasSources ? 320 : undefined,
+          }}
+        >
+          <div className="flex-1 overflow-y-auto">
+            {!hasMessages ? (
+              /* ── Landing ── */
+              <div className="flex flex-col items-center justify-center min-h-full py-16 px-6">
+                <div className="w-16 h-16 rounded-full mb-6 flex items-center justify-center"
+                  style={{ background: "radial-gradient(circle at 35% 30%, #E8A84E, #A85A1A)", boxShadow: "0 6px 24px rgba(180,90,20,.35)" }}>
+                  <Scale className="h-7 w-7 text-white opacity-90" />
                 </div>
-              ))}
-              {isLoading && (
-                <div className="flex justify-start">
-                  <div className="rounded-2xl bg-white dark:bg-gray-800 px-6 py-4 shadow-md border border-slate-200 dark:border-gray-700">
-                    <div className="flex items-center gap-3">
-                      <div className="flex space-x-2">
-                        <div className="h-2 w-2 animate-bounce rounded-full bg-blue-600 [animation-delay:-0.3s]"></div>
-                        <div className="h-2 w-2 animate-bounce rounded-full bg-blue-600 [animation-delay:-0.15s]"></div>
-                        <div className="h-2 w-2 animate-bounce rounded-full bg-blue-600"></div>
-                      </div>
-                      <span className="text-sm text-gray-600 dark:text-gray-400">
-                        Analyzing legal documents...
-                      </span>
+                <p className="text-[10px] font-semibold tracking-[.28em] uppercase mb-4" style={{ color: GOLD }}>
+                  Small Claims Court · Research Assistant
+                </p>
+                <h1 className="text-4xl font-bold text-gray-900 mb-4 text-center leading-tight">
+                  Ask the{" "}
+                  <em style={{ fontFamily: "Georgia,'Times New Roman',serif", fontStyle: "italic", fontWeight: 700 }}>
+                    law library
+                  </em>
+                </h1>
+                <p className="text-gray-500 text-center max-w-sm text-sm leading-relaxed mb-10">
+                  Describe your client&apos;s facts. You get a FIRAC opinion grounded in Kenyan case law and statutes,
+                  with every source open beside it.
+                </p>
+                <div className="w-full max-w-2xl">
+                  <InputArea
+                    inputRef={inputRef} value={input} onChange={setInput}
+                    onKeyDown={handleKeyDown} onInput={autoResize}
+                    onSubmit={handleSubmit} isLoading={isLoading}
+                    placeholder="Ask a legal question…"
+                  />
+                  <div className="mt-8">
+                    <p className="text-[10px] uppercase tracking-[.22em] text-gray-400 mb-3 font-semibold">Try a question</p>
+                    <div className="grid grid-cols-2 gap-3">
+                      {EXAMPLE_QUESTIONS.map((ex, i) => (
+                        <button key={i} onClick={() => { setInput(ex.question); inputRef.current?.focus(); }}
+                          className="text-left p-3 rounded-xl bg-white transition-all hover:shadow-md"
+                          style={{ border: `1px solid ${BORDER}` }}>
+                          <p className="text-[9px] uppercase tracking-[.18em] text-gray-400 mb-1.5 font-semibold">{ex.category}</p>
+                          <p className="text-[11px] text-gray-700 leading-snug">{ex.question}</p>
+                        </button>
+                      ))}
                     </div>
                   </div>
                 </div>
-              )}
-              <div ref={messagesEndRef} />
+              </div>
+            ) : (
+              /* ── Chat messages ── */
+              <div className={`py-6 space-y-8 ${hasSources ? "px-4" : "mx-auto max-w-3xl px-6"}`}>
+                {messages.map((msg) => (
+                  <div key={msg.id}>
+                    {msg.role === "user" ? (
+                      <div className="flex justify-end mb-2">
+                        <div className="max-w-[85%] rounded-2xl px-4 py-3 text-white" style={{ background: GOLD }}>
+                          <p className="whitespace-pre-wrap break-words text-sm">{msg.content}</p>
+                        </div>
+                      </div>
+                    ) : (
+                      <AssistantMessage
+                        message={msg}
+                        isActive={panelMessage?.id === msg.id}
+                        onShowSources={() => setPanelMessage(msg)}
+                        compact={hasSources}
+                      />
+                    )}
+                  </div>
+                ))}
+                {isLoading && (
+                  <div className="flex justify-start">
+                    <div className="rounded-2xl bg-white px-5 py-4 shadow-sm border" style={{ borderColor: BORDER }}>
+                      <div className="flex items-center gap-3">
+                        <div className="flex space-x-1.5">
+                          {["-0.3s", "-0.15s", "0s"].map((d, i) => (
+                            <div key={i} className="h-2 w-2 rounded-full animate-bounce" style={{ background: GOLD, animationDelay: d }} />
+                          ))}
+                        </div>
+                        <span className="text-sm text-gray-500">Analyzing legal documents…</span>
+                      </div>
+                    </div>
+                  </div>
+                )}
+                <div ref={messagesEndRef} />
+              </div>
+            )}
+          </div>
+
+          {/* Bottom input bar (chat mode) */}
+          {hasMessages && (
+            <div className="shrink-0 bg-white" style={{ borderTop: `1px solid ${BORDER}` }}>
+              <div className="px-4 py-3">
+                <InputArea
+                  inputRef={inputRef} value={input} onChange={setInput}
+                  onKeyDown={handleKeyDown} onInput={autoResize}
+                  onSubmit={handleSubmit} isLoading={isLoading}
+                  placeholder="Ask a follow-up question…"
+                />
+              </div>
             </div>
           )}
         </div>
-      </div>
 
-      {/* Input Area */}
-      <div className="border-t border-slate-200 dark:border-gray-700 bg-white dark:bg-gray-900 shadow-lg">
-        <div className="mx-auto max-w-7xl px-4 py-4">
-          <div className="flex items-end gap-3">
-            <div className="flex-1 rounded-2xl border border-slate-300 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm focus-within:border-blue-500 dark:focus-within:border-blue-400 focus-within:ring-2 focus-within:ring-blue-500/20">
-              <textarea
-                ref={inputRef}
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                onKeyDown={handleKeyDown}
-                placeholder="Ask a legal question..."
-                rows={1}
-                className="w-full resize-none border-0 bg-transparent px-4 py-3 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-0"
-                style={{
-                  maxHeight: "200px",
-                  minHeight: "52px",
-                }}
-                onInput={(e) => {
-                  const target = e.target as HTMLTextAreaElement;
-                  target.style.height = "auto";
-                  target.style.height = `${Math.min(target.scrollHeight, 200)}px`;
-                }}
-                disabled={isLoading}
-              />
-            </div>
-            <button
-              onClick={handleSubmit}
-              disabled={!input.trim() || isLoading}
-              className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-blue-600 text-white transition-all hover:bg-blue-700 hover:scale-105 disabled:bg-gray-300 dark:disabled:bg-gray-700 disabled:cursor-not-allowed disabled:scale-100"
-            >
-              <svg
-                className="h-5 w-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
-                />
-              </svg>
-            </button>
-          </div>
+        {/* ── Right: source panel ─────────────────────────────────────────── */}
+        <div
+          className="flex flex-col overflow-hidden"
+          style={{
+            width: hasSources ? "66.67%" : "0%",
+            transition: "width 0.45s cubic-bezier(.4,0,.2,1)",
+            borderLeft: hasSources ? `1px solid ${BORDER}` : "none",
+            backgroundColor: BG,
+          }}
+        >
+          {hasSources && panelMessage && (
+            <SourcePanel
+              message={panelMessage}
+              onClose={() => setPanelMessage(null)}
+            />
+          )}
         </div>
       </div>
     </div>
   );
 }
 
-function AssistantResponse({ message }: { message: Message }) {
+// ── Shared input area ─────────────────────────────────────────────────────────
+function InputArea({
+  inputRef, value, onChange, onKeyDown, onInput, onSubmit, isLoading, placeholder,
+}: {
+  inputRef: React.RefObject<HTMLTextAreaElement | null>;
+  value: string;
+  onChange: (v: string) => void;
+  onKeyDown: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void;
+  onInput: (e: React.FormEvent<HTMLTextAreaElement>) => void;
+  onSubmit: () => void;
+  isLoading: boolean;
+  placeholder: string;
+}) {
   return (
-    <div className="space-y-4">
-      {/* Classification Widget */}
-      {message.classification && (
+    <div className="flex items-end gap-3">
+      <div className="flex-1 flex items-start rounded-2xl bg-white px-4 py-3"
+        style={{ border: `1px solid ${BORDER}`, boxShadow: "0 1px 4px rgba(0,0,0,.06)" }}>
+        <textarea
+          ref={inputRef}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          onKeyDown={onKeyDown}
+          onInput={onInput}
+          placeholder={placeholder}
+          rows={1}
+          disabled={isLoading}
+          className="flex-1 resize-none bg-transparent text-gray-800 placeholder-gray-400 focus:outline-none text-sm"
+          style={{ minHeight: "24px", maxHeight: "160px" }}
+        />
+        <div className="flex items-center gap-1 ml-3 text-[10px] font-bold tracking-[.18em] shrink-0 text-[#B5A090] mt-0.5">
+          <span>KENYA</span><span className="opacity-50">·</span><span>SCC</span>
+        </div>
+      </div>
+      <button
+        onClick={onSubmit}
+        disabled={!value.trim() || isLoading}
+        className="w-10 h-10 rounded-full flex items-center justify-center text-white shrink-0 transition-all hover:brightness-110 hover:scale-105 disabled:opacity-40 disabled:cursor-not-allowed disabled:scale-100"
+        style={{ background: GOLD }}
+      >
+        <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 10l7-7m0 0l7 7m-7-7v18" />
+        </svg>
+      </button>
+    </div>
+  );
+}
+
+// ── Assistant message (chat column) ──────────────────────────────────────────
+function AssistantMessage({
+  message, isActive, onShowSources, compact,
+}: {
+  message: Message;
+  isActive: boolean;
+  onShowSources: () => void;
+  compact: boolean;
+}) {
+  const hasSrcs = !!(message.sources?.length);
+  return (
+    <div className="space-y-3">
+      {message.classification && !compact && (
         <ClassificationWidget classification={message.classification} />
       )}
-
-      {/* AI Response Widget */}
-      {message.aiResponse && (
-        <AIResponseWidget response={message.aiResponse} />
-      )}
-
-      {/* Statutory Rules Widget */}
-      {message.rules && message.rules.length > 0 && (
-        <RulesWidget rules={message.rules} />
-      )}
-
-      {/* Evidence Chunks Widget (Case Law) */}
-      {message.evidence && message.evidence.length > 0 && (
-        <EvidenceWidget evidence={message.evidence} />
-      )}
-    </div>
-  );
-}
-
-function ClassificationWidget({ classification }: { classification: any }) {
-  const [isExpanded, setIsExpanded] = useState(true);
-
-  return (
-    <div className="rounded-xl bg-white dark:bg-gray-800 shadow-md border border-slate-200 dark:border-gray-700 overflow-hidden">
-      <div
-        className="flex items-center justify-between px-5 py-3 bg-gradient-to-r from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/20 cursor-pointer"
-        onClick={() => setIsExpanded(!isExpanded)}
-      >
-        <div className="flex items-center gap-3">
-          <Search className="h-5 w-5 text-purple-600 dark:text-purple-400" />
-          <h3 className="font-semibold text-gray-900 dark:text-gray-100">
-            Query Classification
-          </h3>
-        </div>
-        {isExpanded ? (
-          <ChevronUp className="h-5 w-5 text-gray-600 dark:text-gray-400" />
-        ) : (
-          <ChevronDown className="h-5 w-5 text-gray-600 dark:text-gray-400" />
-        )}
-      </div>
-      {isExpanded && (
-        <div className="px-5 py-4 space-y-4">
-          {/* Display Intents */}
-          {classification.intents && classification.intents.length > 0 && (
-            <div>
-              <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">
-                Query Intents
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {classification.intents.map((intent: string, idx: number) => (
-                  <span
-                    key={idx}
-                    className="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full text-xs font-medium"
-                  >
-                    {intent.replace(/_/g, ' ')}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Display Legal Domains */}
-          {classification.legal_domains && classification.legal_domains.length > 0 && (
-            <div>
-              <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">
-                Legal Domains
-              </p>
-              <div className="space-y-2">
-                {classification.legal_domains.map((domain: any, idx: number) => (
-                  <div
-                    key={idx}
-                    className="flex items-center justify-between p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg border border-purple-100 dark:border-purple-800/30"
-                  >
-                    <div className="flex items-center gap-3 flex-1">
-                      <div className="flex-1">
-                        <span className="font-semibold text-purple-900 dark:text-purple-100 block">
-                          {domain.domain}
-                        </span>
-                        <div className="flex items-center gap-2 mt-1">
-                          <span className="text-xs px-2 py-0.5 bg-purple-200 dark:bg-purple-800/40 text-purple-800 dark:text-purple-200 rounded">
-                            {domain.mode}
-                          </span>
-                          <span className="text-xs text-gray-600 dark:text-gray-400">
-                            {domain.procedural_scope}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <div className="text-right">
-                        <div className="text-lg font-bold text-purple-700 dark:text-purple-300">
-                          {(domain.confidence_score * 100).toFixed(0)}%
-                        </div>
-                        <div className="text-xs text-gray-500 dark:text-gray-400">
-                          confidence
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Display Target Components */}
-          {classification.target_components && classification.target_components.length > 0 && (
-            <div>
-              <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">
-                Target Components (IRAC)
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {classification.target_components.map((component: string, idx: number) => (
-                  <span
-                    key={idx}
-                    className="px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-lg text-xs font-medium border border-green-200 dark:border-green-800"
-                  >
-                    {component}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Display Strategy Critique */}
-          {classification.strategy_critique && Object.keys(classification.strategy_critique).length > 0 && (
-            <div>
-              <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">
-                Strategy Analysis
-              </p>
-              <div className="space-y-2">
-                {Object.entries(classification.strategy_critique).map(([key, value]) => (
-                  <div 
-                    key={key} 
-                    className="p-3 bg-amber-50 dark:bg-amber-900/10 rounded-lg border border-amber-100 dark:border-amber-800/30"
-                  >
-                    <div className="flex items-start gap-2">
-                      <AlertCircle className="h-4 w-4 text-amber-600 dark:text-amber-400 mt-0.5 flex-shrink-0" />
-                      <div className="flex-1">
-                        <span className="font-semibold text-amber-900 dark:text-amber-100 capitalize text-sm">
-                          {key}:
-                        </span>{" "}
-                        <span className="text-sm text-gray-700 dark:text-gray-300">
-                          {value as string}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Display Entities */}
-          {classification.entities && (
-            <div>
-              <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">
-                Referenced Legal Entities
-              </p>
-              <div className="space-y-2 bg-slate-50 dark:bg-gray-900 p-3 rounded-lg border border-slate-200 dark:border-gray-700">
-                {classification.entities.statutes && classification.entities.statutes.length > 0 && (
-                  <div>
-                    <span className="text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wide">
-                      Statutes:
-                    </span>
-                    <div className="mt-1 flex flex-wrap gap-1">
-                      {classification.entities.statutes.map((statute: string, idx: number) => (
-                        <span 
-                          key={idx}
-                          className="text-xs text-gray-600 dark:text-gray-400 bg-white dark:bg-gray-800 px-2 py-1 rounded border border-slate-200 dark:border-gray-700"
-                        >
-                          {statute}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                )}
-                {classification.entities.cases && classification.entities.cases.length > 0 && (
-                  <div className="mt-2">
-                    <span className="text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wide">
-                      Cases:
-                    </span>
-                    <div className="mt-1 flex flex-wrap gap-1">
-                      {classification.entities.cases.map((caseRef: string, idx: number) => (
-                        <span 
-                          key={idx}
-                          className="text-xs text-gray-600 dark:text-gray-400 bg-white dark:bg-gray-800 px-2 py-1 rounded border border-slate-200 dark:border-gray-700"
-                        >
-                          {caseRef}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
-
-          {/* Display Vector Query */}
-          {classification.vector_query && (
-            <div>
-              <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">
-                Search Vector Query
-              </p>
-              <p className="text-sm text-gray-700 dark:text-gray-300 bg-slate-50 dark:bg-gray-900 p-3 rounded-lg border border-slate-200 dark:border-gray-700 italic">
-                "{classification.vector_query}"
-              </p>
-            </div>
-          )}
-
-          {/* Display Reasoning Summary */}
-          {classification.reasoning_summary && (
-            <div>
-              <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">
-                Classification Reasoning
-              </p>
-              <p className="text-sm text-gray-700 dark:text-gray-300 bg-slate-50 dark:bg-gray-900 p-3 rounded-lg border border-slate-200 dark:border-gray-700 leading-relaxed">
-                {classification.reasoning_summary}
-              </p>
-            </div>
-          )}
-        </div>
+      <CoverageNotice coverage={message.coverage} removed={message.unverifiedClaims} />
+      {message.aiResponse && <AIResponseWidget response={message.aiResponse} />}
+      {hasSrcs && (
+        <button
+          onClick={onShowSources}
+          className="flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium transition-all hover:shadow-sm"
+          style={{
+            background: isActive ? HIGHLIGHT : "white",
+            border: `1px solid ${isActive ? GOLD : BORDER}`,
+            color: isActive ? GOLD_DK : "#555",
+          }}
+        >
+          <BookOpen className="h-4 w-4" />
+          {isActive ? "Viewing sources →" : "Open sources panel →"}
+          <span className="ml-auto text-xs opacity-60">
+            {message.sources!.filter((s) => s.used).length} cited ·{" "}
+            {message.sources!.length} total
+          </span>
+        </button>
       )}
     </div>
   );
 }
 
-function AIResponseWidget({ response }: { response: string }) {
+// ── Source panel (right column) ───────────────────────────────────────────────
+function SourcePanel({ message, onClose }: { message: Message; onClose: () => void }) {
+  const [tab, setTab] = useState<"reader" | "original">("reader");
+  const [selectedCaseId, setSelectedCaseId] = useState<string | null>(null);
+
+  const sources  = message.sources  || [];
+  const evidence = message.evidence || [];
+  const rules    = message.rules    || [];
+  const aliasMap = message.aliasMap || {};
+
+  // Build reverse map: chunk_id → alias
+  const chunkIdToAlias = Object.fromEntries(
+    Object.entries(aliasMap).map(([alias, cid]) => [cid, alias])
+  );
+  const usedAliases = new Set(sources.filter((s) => s.used).map((s) => s.alias));
+
+  // Case list for OriginalPane
+  const cases = evidence.map((ev, i) => ({
+    caseId: ev.case_name || ev.case_identifier || `Case ${i + 1}`,
+    label: ev.case_name || `Case ${i + 1}`,
+    pdfUrl: ev.pdf_url || null,
+  }));
+
   return (
-    <div className="rounded-xl bg-white dark:bg-gray-800 shadow-md border border-slate-200 dark:border-gray-700 overflow-hidden">
-      <div className="px-5 py-3 bg-gradient-to-r from-green-50 to-emerald-100 dark:from-green-900/20 dark:to-emerald-800/20">
-        <div className="flex items-center gap-3">
-          <Scale className="h-5 w-5 text-green-600 dark:text-green-400" />
-          <h3 className="font-semibold text-gray-900 dark:text-gray-100">
-            Legal Analysis
-          </h3>
-          <span className="text-xs text-green-700 dark:text-green-300 bg-green-100 dark:bg-green-900/30 px-2 py-0.5 rounded-full">
-            AI-Generated from Retrieved Sources
+    <div className="flex flex-col h-full">
+      {/* ── Panel header ────────────────────────────────────────────────── */}
+      <div className="shrink-0 flex items-center justify-between px-5 py-3"
+        style={{ borderBottom: `1px solid ${BORDER}`, backgroundColor: CREAM_2 }}>
+        <div className="flex items-center gap-2">
+          <BookOpen className="h-4 w-4" style={{ color: GOLD }} />
+          <span className="text-sm font-semibold text-gray-800">Sources</span>
+          <span className="text-xs px-2 py-0.5 rounded-full font-medium"
+            style={{ background: HIGHLIGHT, color: GOLD_DK }}>
+            {sources.filter((s) => s.used).length} cited
           </span>
         </div>
+        <div className="flex items-center gap-3">
+          {/* Tab switcher */}
+          <div className="flex rounded-lg overflow-hidden" style={{ border: `1px solid ${BORDER}` }}>
+            {(["reader", "original"] as const).map((t) => (
+              <button
+                key={t}
+                onClick={() => setTab(t)}
+                className="px-3 py-1.5 text-xs font-medium transition-colors capitalize"
+                style={{
+                  background: tab === t ? GOLD : "white",
+                  color: tab === t ? "white" : "#555",
+                }}
+              >
+                {t === "reader" ? "Reader" : "PDF"}
+              </button>
+            ))}
+          </div>
+          <button onClick={onClose} className="text-gray-400 hover:text-gray-700 transition-colors">
+            <X className="h-4 w-4" />
+          </button>
+        </div>
       </div>
-      <div className="px-5 py-4">
-        <p className="text-gray-800 dark:text-gray-200 whitespace-pre-wrap leading-relaxed">
-          {response}
-        </p>
+
+      {/* ── Cluster bar ────────────────────────────────────────────────── */}
+      <ClusterBar sources={sources} evidence={evidence} rules={rules} />
+
+      {/* ── Pane content ────────────────────────────────────────────────── */}
+      <div className="flex-1 overflow-y-auto">
+        {tab === "reader" ? (
+          <ReaderPane
+            sources={sources}
+            evidence={evidence}
+            rules={rules}
+            chunkIdToAlias={chunkIdToAlias}
+            usedAliases={usedAliases}
+          />
+        ) : (
+          <OriginalPane
+            cases={cases}
+            selectedCaseId={selectedCaseId}
+            onSelectCase={setSelectedCaseId}
+            sources={sources}
+          />
+        )}
       </div>
     </div>
   );
 }
 
-function EvidenceWidget({ evidence }: { evidence: any[] }) {
-  const [isExpanded, setIsExpanded] = useState(false);
+// ── Cluster widget ────────────────────────────────────────────────────────────
+type DocCard = {
+  title: string;
+  citation: string;
+  kind: "Judgment" | "Statute" | "Constitution" | "Summary";
+  relevance: number;
+  url?: string;
+};
+
+function ClusterBar({
+  sources, evidence, rules,
+}: {
+  sources: ChunkSource[];
+  evidence: any[];
+  rules: any[];
+}) {
+  const [open, setOpen] = useState(false);
+  const [activeIdx, setActiveIdx] = useState<number | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const docs: DocCard[] = [
+    ...evidence.map((ev) => ({
+      title: ev.case_name || "Case",
+      citation: ev.metadata?.citation || ev.metadata?.year || "",
+      kind: "Judgment" as const,
+      relevance: ev.score ?? 0,
+      url: ev.pdf_url ? `${API_BASE}${ev.pdf_url}` : undefined,
+    })),
+    ...rules.map((r) => ({
+      title: r.document_label || r.source_document || "Statute",
+      citation: `s.${r.article_number}${r.article_header ? ` — ${r.article_header}` : ""}`,
+      kind: "Statute" as const,
+      relevance: r.score ?? 0,
+      url: r.pdf_url ? `${API_BASE}${r.pdf_url}` : undefined,
+    })),
+  ];
+
+  useEffect(() => {
+    if (!open) return;
+    const handler = (e: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [open]);
+
+  if (!docs.length) return null;
+
+  const CARD_W = 228;
+
+  const kindBadge = (kind: DocCard["kind"], isStatute: boolean) => (
+    <span className="rounded px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide"
+      style={{ background: isStatute ? "#EDE8DC" : HIGHLIGHT, color: isStatute ? "#6B6660" : GOLD_DK }}>
+      {kind}
+    </span>
+  );
 
   return (
-    <div className="rounded-xl bg-white dark:bg-gray-800 shadow-md border border-slate-200 dark:border-gray-700 overflow-hidden">
-      <div
-        className="flex items-center justify-between px-5 py-3 bg-gradient-to-r from-amber-50 to-orange-100 dark:from-amber-900/20 dark:to-orange-800/20 cursor-pointer"
-        onClick={() => setIsExpanded(!isExpanded)}
-      >
-        <div className="flex items-center gap-3">
-          <FileText className="h-5 w-5 text-amber-600 dark:text-amber-400" />
-          <h3 className="font-semibold text-gray-900 dark:text-gray-100">
-            Supporting Cases ({evidence.length})
-          </h3>
-        </div>
-        {isExpanded ? (
-          <ChevronUp className="h-5 w-5 text-gray-600 dark:text-gray-400" />
-        ) : (
-          <ChevronDown className="h-5 w-5 text-gray-600 dark:text-gray-400" />
+    <div className="shrink-0 px-4 py-2 flex items-center justify-between"
+      style={{ borderBottom: `1px solid ${BORDER}`, background: "#FFFDF8" }}>
+      <span className="text-[10px] uppercase tracking-[.18em] text-gray-400 font-semibold">
+        {docs.length} source{docs.length !== 1 ? "s" : ""}
+      </span>
+
+      <div ref={containerRef} className="relative">
+        {/* Fanned stack button */}
+        <button
+          aria-label="Toggle document cluster"
+          aria-expanded={open}
+          onClick={() => setOpen((p) => !p)}
+          onMouseEnter={() => setOpen(true)}
+          className="relative focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400"
+          style={{ width: 36 + Math.min(docs.length - 1, 4) * 7, height: 40 }}
+        >
+          {docs.slice(0, 5).map((doc, i) => {
+            const isStatute = doc.kind === "Statute";
+            const isActive = activeIdx === i;
+            return (
+              <div
+                key={i}
+                className="absolute rounded-lg shadow-sm transition-transform duration-200"
+                style={{
+                  width: 36,
+                  height: 40,
+                  left: i * 7,
+                  background: isStatute ? "#EDE8DC" : "#FFFDF8",
+                  border: `1.5px solid ${isActive ? GOLD : BORDER}`,
+                  boxShadow: isActive ? `0 0 0 2px ${GOLD}` : "0 1px 3px rgba(0,0,0,.06)",
+                  zIndex: i,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                {isStatute
+                  ? <Scale className="h-4 w-4" style={{ color: "#6B6660" }} />
+                  : <FileText className="h-4 w-4" style={{ color: GOLD_DK }} />
+                }
+              </div>
+            );
+          })}
+          <span
+            className="absolute -top-1.5 rounded-full text-[10px] font-bold text-center"
+            style={{
+              right: -6, background: GOLD, color: "white",
+              minWidth: 18, lineHeight: "18px", height: 18, padding: "0 3px", zIndex: 10,
+            }}
+          >
+            {docs.length}
+          </span>
+        </button>
+
+        {/* Expanded cards */}
+        {open && (
+          <div
+            className="absolute right-0 z-50 flex flex-col gap-2 py-2"
+            style={{ top: 48, width: CARD_W }}
+            onMouseLeave={() => setOpen(false)}
+          >
+            {docs.map((doc, i) => {
+              const isStatute = doc.kind === "Statute";
+              const isActive = activeIdx === i;
+              return (
+                <div
+                  key={i}
+                  role="button"
+                  tabIndex={0}
+                  aria-label={`${doc.title}`}
+                  onClick={() => { setActiveIdx(i === activeIdx ? null : i); if (doc.url) window.open(doc.url, "_blank"); }}
+                  onKeyDown={(e) => e.key === "Enter" && setActiveIdx(i === activeIdx ? null : i)}
+                  className="rounded-xl p-3 cursor-pointer transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400"
+                  style={{
+                    background: isActive ? HIGHLIGHT : "#FFFDF8",
+                    border: `1.5px solid ${isActive ? GOLD : BORDER}`,
+                    boxShadow: isActive ? `inset 3px 0 0 ${GOLD}` : "0 1px 4px rgba(0,0,0,.06)",
+                    color: "#151515",
+                  }}
+                >
+                  <div className="flex items-start justify-between gap-2 mb-1">
+                    <p className="text-xs font-semibold leading-tight line-clamp-2 flex-1" style={{ color: "#151515" }}>
+                      {doc.title}
+                    </p>
+                    {kindBadge(doc.kind, isStatute)}
+                  </div>
+                  <p className="text-[11px] leading-snug line-clamp-1 mb-1.5" style={{ color: "#6B6660" }}>
+                    {doc.citation}
+                  </p>
+                  <div className="flex items-center gap-2">
+                    <div className="h-1 flex-1 rounded-full overflow-hidden" style={{ background: BORDER }}>
+                      <div className="h-full rounded-full transition-all" style={{ width: `${Math.round(doc.relevance * 100)}%`, background: GOLD }} />
+                    </div>
+                    <span className="text-[10px] tabular-nums" style={{ color: "#6B6660" }}>
+                      {Math.round(doc.relevance * 100)}%
+                    </span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         )}
       </div>
-      {isExpanded && (
-        <div className="px-5 py-4 space-y-4 max-h-96 overflow-y-auto">
-          {evidence.map((item, idx) => (
-            <div
-              key={idx}
-              className="p-4 bg-slate-50 dark:bg-gray-900 rounded-lg border border-slate-200 dark:border-gray-700"
+    </div>
+  );
+}
+
+// ── Reader pane ───────────────────────────────────────────────────────────────
+function ReaderPane({
+  sources, evidence, rules, chunkIdToAlias, usedAliases,
+}: {
+  sources: ChunkSource[];
+  evidence: any[];
+  rules: any[];
+  chunkIdToAlias: Record<string, string>;
+  usedAliases: Set<string>;
+}) {
+  return (
+    <div className="px-5 py-4 space-y-6">
+      {/* Case law chunks */}
+      {evidence.map((ev, caseIdx) => (
+        <div key={caseIdx}>
+          <div className="flex items-center gap-2 mb-3">
+            <FileText className="h-4 w-4 text-gray-400" />
+            <h3 className="text-sm font-semibold text-gray-800 truncate">{ev.case_name || `Case ${caseIdx + 1}`}</h3>
+            {ev.metadata?.year && (
+              <span className="text-xs text-gray-400">{ev.metadata.year}</span>
+            )}
+            {ev.pdf_url && (
+              <a href={`${API_BASE}${ev.pdf_url}`} target="_blank" rel="noopener noreferrer"
+                className="ml-auto flex items-center gap-1 text-xs px-2 py-1 rounded text-white transition-all hover:brightness-110"
+                style={{ background: GOLD }}>
+                <ExternalLink className="h-3 w-3" />
+                PDF
+              </a>
+            )}
+          </div>
+          <div className="space-y-3">
+            {(ev.chunks || []).slice(0, 3).map((ch: any, chIdx: number) => {
+              const alias = chunkIdToAlias[ch.chunk_id || ch.id] || `C${caseIdx + 1}.${chIdx + 1}`;
+              const parentAlias = `C${caseIdx + 1}`;
+              const srcEntry = sources.find((s) => s.alias === alias);
+              const parentEntry = sources.find((s) => s.alias === parentAlias);
+              const isUsedDirect = usedAliases.has(alias);
+              const isUsedParent = usedAliases.has(parentAlias);
+              const isUsed = isUsedDirect || isUsedParent;
+              const precision: "chunk" | "document" = isUsedDirect ? "chunk" : "document";
+              return (
+                <ChunkCard
+                  key={chIdx}
+                  alias={alias}
+                  text={ch.text || ""}
+                  isUsed={isUsed}
+                  label={ch.component || ""}
+                  precision={precision}
+                />
+              );
+            })}
+          </div>
+        </div>
+      ))}
+
+      {/* Statute chunks */}
+      {rules.length > 0 && (
+        <div>
+          <div className="flex items-center gap-2 mb-3">
+            <Scale className="h-4 w-4 text-gray-400" />
+            <h3 className="text-sm font-semibold text-gray-800">Statutory Provisions</h3>
+          </div>
+          <div className="space-y-3">
+            {rules.map((rule, rIdx) => {
+              const parentAlias = `S${rIdx + 1}`;
+              const ruleChunks: any[] = rule.chunks || [];
+              // Show individual chunk cards if available, else fall back to full text
+              if (ruleChunks.length > 0) {
+                return ruleChunks.map((sch: any, schIdx: number) => {
+                  const alias = `S${rIdx + 1}.${schIdx + 1}`;
+                  const isUsedDirect = usedAliases.has(alias);
+                  const isUsedParent = usedAliases.has(parentAlias);
+                  const isUsed = isUsedDirect || isUsedParent;
+                  const precision: "chunk" | "document" = isUsedDirect ? "chunk" : "document";
+                  const secLabel = `${rule.document_label || ""} s.${sch.section_num || rule.article_number}${sch.section_heading ? ` — ${sch.section_heading}` : ""}`;
+                  return (
+                    <ChunkCard
+                      key={`${rIdx}-${schIdx}`}
+                      alias={alias}
+                      text={sch.text || ""}
+                      isUsed={isUsed}
+                      label={secLabel}
+                      precision={precision}
+                    />
+                  );
+                });
+              }
+              // Fallback: single card
+              const isUsed = usedAliases.has(parentAlias);
+              const text = rule.full_text || rule.text_preview || "";
+              return (
+                <ChunkCard
+                  key={rIdx}
+                  alias={parentAlias}
+                  text={text.slice(0, 600) + (text.length > 600 ? "…" : "")}
+                  isUsed={isUsed}
+                  label={`${rule.document_label || ""} s.${rule.article_number} — ${rule.article_header || ""}`}
+                  precision={isUsed ? "document" : undefined}
+                />
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {!evidence.length && !rules.length && (
+        <p className="text-sm text-gray-400 text-center py-12">No source chunks available.</p>
+      )}
+    </div>
+  );
+}
+
+// ── Chunk card ────────────────────────────────────────────────────────────────
+function ChunkCard({
+  alias, text, isUsed, label, precision,
+}: {
+  alias: string;
+  text: string;
+  isUsed: boolean;
+  label?: string;
+  precision?: "chunk" | "document";
+}) {
+  const [expanded, setExpanded] = useState(false);
+  const preview = text.slice(0, 280);
+  const showToggle = text.length > 280;
+  const isDocLevel = isUsed && precision === "document";
+  const isChunkLevel = isUsed && precision !== "document";
+
+  return (
+    <div
+      className="rounded-xl p-4 cursor-pointer transition-all"
+      style={{
+        background: isChunkLevel ? HIGHLIGHT : isDocLevel ? "#FDF8EC" : "white",
+        border: isChunkLevel
+          ? `1.5px solid ${GOLD}`
+          : isDocLevel
+          ? `1.5px solid #E5D9A8`
+          : `1.5px dashed ${BORDER}`,
+        borderLeft: isChunkLevel ? `3px solid ${GOLD}` : undefined,
+      }}
+      onClick={() => showToggle && setExpanded((e) => !e)}
+    >
+      <div className="flex items-start gap-2 mb-2">
+        <span className="shrink-0 text-xs font-bold px-1.5 py-0.5 rounded"
+          style={{
+            background: isChunkLevel ? GOLD : isDocLevel ? "#E8D99A" : CREAM_2,
+            color: isChunkLevel ? "white" : isDocLevel ? "#7A6520" : "#888",
+          }}>
+          {alias}
+        </span>
+        {label && (
+          <span className="text-xs text-gray-500 truncate leading-tight mt-0.5">{label}</span>
+        )}
+        {isDocLevel && (
+          <span className="ml-auto shrink-0 text-[10px] italic" style={{ color: "#9A8550" }}>
+            cited at case level
+          </span>
+        )}
+        {isChunkLevel && (
+          <span className="ml-auto shrink-0 text-[10px] font-semibold uppercase tracking-widest"
+            style={{ color: GOLD_DK }}>
+            cited
+          </span>
+        )}
+      </div>
+      <p className="text-xs text-gray-700 leading-relaxed" style={{ fontFamily: "Georgia, 'Times New Roman', serif" }}>
+        {expanded ? text : preview}
+        {!expanded && showToggle && "…"}
+      </p>
+      {showToggle && (
+        <button className="mt-1.5 text-[10px] font-semibold" style={{ color: GOLD }}>
+          {expanded ? "Show less" : "Show more"}
+        </button>
+      )}
+    </div>
+  );
+}
+
+// ── Original pane (PDF viewer) ────────────────────────────────────────────────
+function OriginalPane({
+  cases, selectedCaseId, onSelectCase, sources,
+}: {
+  cases: Array<{ caseId: string; label: string; pdfUrl: string | null }>;
+  selectedCaseId: string | null;
+  onSelectCase: (id: string) => void;
+  sources: ChunkSource[];
+}) {
+  const [ocrInfo, setOcrInfo] = useState<Record<string, boolean>>({});
+
+  const active = cases.find((c) => c.caseId === selectedCaseId) ?? cases[0] ?? null;
+
+  // Fetch OCR status for the active case's first used chunk
+  useEffect(() => {
+    if (!active) return;
+    const usedChunk = sources.find(
+      (s) => s.used && s.type === "case" && s.chunk_id
+    );
+    if (!usedChunk?.chunk_id || ocrInfo[active.caseId] !== undefined) return;
+    apiFetch(`/api/chunks/${encodeURIComponent(usedChunk.chunk_id)}/location`)
+      .then((r) => r.json())
+      .then((d) => {
+        if (d.ocr !== undefined) {
+          setOcrInfo((prev) => ({ ...prev, [active.caseId]: d.ocr }));
+        }
+      })
+      .catch(() => {});
+  }, [active, sources, ocrInfo]);
+
+  if (!cases.length) {
+    return (
+      <div className="flex items-center justify-center h-64 text-sm text-gray-400">
+        No case PDF available for this query.
+      </div>
+    );
+  }
+
+  const pdfSrc = active?.pdfUrl
+    ? `${API_BASE}${active.pdfUrl}`
+    : active
+    ? `${API_BASE}/api/case-pdf?case_id=${encodeURIComponent(active.caseId)}`
+    : null;
+
+  const isOcr = active ? ocrInfo[active.caseId] : false;
+
+  return (
+    <div className="flex flex-col h-full">
+      {/* Case selector */}
+      {cases.length > 1 && (
+        <div className="flex gap-2 px-4 py-2 flex-wrap shrink-0"
+          style={{ borderBottom: `1px solid ${BORDER}` }}>
+          {cases.map((c) => (
+            <button
+              key={c.caseId}
+              onClick={() => onSelectCase(c.caseId)}
+              className="text-xs px-2.5 py-1.5 rounded-lg font-medium transition-colors"
+              style={{
+                background: (selectedCaseId ?? cases[0]?.caseId) === c.caseId ? GOLD : CREAM_2,
+                color: (selectedCaseId ?? cases[0]?.caseId) === c.caseId ? "white" : "#555",
+              }}
             >
-              <div className="flex items-start justify-between mb-3">
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="px-2 py-0.5 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 rounded text-xs font-bold">
-                      #{item.rank || idx + 1}
-                    </span>
-                    <h4 className="font-semibold text-gray-900 dark:text-gray-100 text-sm">
-                      {item.case_name || `Evidence ${idx + 1}`}
-                    </h4>
-                  </div>
-                  {item.metadata && (
-                    <div className="text-xs text-gray-500 dark:text-gray-400 space-y-0.5 mt-2">
-                      {item.metadata.court_level && (
-                        <div>Court: {item.metadata.court_level}</div>
-                      )}
-                      {item.metadata.year && (
-                        <div>Year: {item.metadata.year}</div>
-                      )}
-                      {item.metadata.judge && (
-                        <div>Judge: {item.metadata.judge}</div>
-                      )}
-                    </div>
-                  )}
-                </div>
-                <div className="flex flex-col items-end gap-2 ml-2">
-                  <span className="px-3 py-1 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 rounded-full text-xs font-bold">
-                    {(item.score * 100)?.toFixed(1)}%
-                  </span>
-                  {item.pdf_url && (
-                    <button
-                      onClick={() => window.open(`http://localhost:5000${item.pdf_url}`, '_blank')}
-                      className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-medium transition-colors"
-                      title="Open PDF in new tab"
-                    >
-                      <ExternalLink className="h-3.5 w-3.5" />
-                      View PDF
-                    </button>
-                  )}
-                </div>
-              </div>
-              
-              {item.matched_components && item.matched_components.length > 0 && (
-                <div className="mb-3">
-                  <p className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
-                    Matched Components:
-                  </p>
-                  <div className="flex flex-wrap gap-1">
-                    {item.matched_components.map((comp: string, i: number) => (
-                      <span
-                        key={i}
-                        className="px-2 py-0.5 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded text-xs font-medium"
-                      >
-                        {comp}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )}
-              
-              {item.best_chunk && (
-                <div className="mt-3 p-3 bg-white dark:bg-gray-800 rounded border border-slate-200 dark:border-gray-700">
-                  <p className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
-                    Relevant Excerpt:
-                  </p>
-                  <p className="text-sm text-gray-700 dark:text-gray-300 italic leading-relaxed">
-                    "{item.best_chunk.substring(0, 300)}{item.best_chunk.length > 300 ? '...' : ''}"
-                  </p>
-                </div>
-              )}
-            </div>
+              {c.label}
+            </button>
           ))}
+        </div>
+      )}
+
+      {/* OCR chip */}
+      {isOcr && (
+        <div className="shrink-0 px-4 py-2 flex items-center gap-2"
+          style={{ background: "#FFF8E1", borderBottom: `1px solid #FFE082` }}>
+          <span className="text-xs font-semibold text-amber-700">OCR</span>
+          <span className="text-xs text-amber-600">This document was scanned — text was extracted via OCR and may contain errors.</span>
+        </div>
+      )}
+
+      {/* PDF embed */}
+      {pdfSrc ? (
+        <div className="flex-1 relative">
+          <object
+            data={pdfSrc}
+            type="application/pdf"
+            className="w-full h-full"
+            style={{ minHeight: 500 }}
+          >
+            <div className="flex flex-col items-center justify-center h-64 gap-3">
+              <File className="h-10 w-10 text-gray-300" />
+              <p className="text-sm text-gray-400">PDF preview unavailable in this browser.</p>
+              <a href={pdfSrc} target="_blank" rel="noopener noreferrer"
+                className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-white text-sm"
+                style={{ background: GOLD }}>
+                <ExternalLink className="h-4 w-4" /> Open PDF
+              </a>
+            </div>
+          </object>
+        </div>
+      ) : (
+        <div className="flex items-center justify-center h-64 text-sm text-gray-400">
+          No PDF available for this case.
         </div>
       )}
     </div>
   );
 }
 
-function RulesWidget({ rules }: { rules: any[] }) {
-  const [isExpanded, setIsExpanded] = useState(false);
-
+// ── Coverage notice ───────────────────────────────────────────────────────────
+function CoverageNotice({ coverage, removed }: { coverage?: Coverage; removed?: string[] }) {
+  const missing = coverage?.not_in_corpus ?? [];
+  if (!missing.length && !(removed?.length)) return null;
   return (
-    <div className="rounded-xl bg-white dark:bg-gray-800 shadow-md border border-slate-200 dark:border-gray-700 overflow-hidden">
-      <div
-        className="flex items-center justify-between px-5 py-3 bg-gradient-to-r from-purple-50 to-indigo-100 dark:from-purple-900/20 dark:to-indigo-800/20 cursor-pointer"
-        onClick={() => setIsExpanded(!isExpanded)}
-      >
-        <div className="flex items-center gap-3">
-          <Scale className="h-5 w-5 text-purple-600 dark:text-purple-400" />
-          <h3 className="font-semibold text-gray-900 dark:text-gray-100">
-            Statutory Provisions ({rules.length})
-          </h3>
-        </div>
-        {isExpanded ? (
-          <ChevronUp className="h-5 w-5 text-gray-600 dark:text-gray-400" />
-        ) : (
-          <ChevronDown className="h-5 w-5 text-gray-600 dark:text-gray-400" />
+    <div className="rounded-xl border border-amber-200 bg-amber-50 overflow-hidden">
+      <div className="flex items-center gap-2.5 px-4 py-3 border-b border-amber-200">
+        <AlertCircle className="h-4 w-4 text-amber-600 shrink-0" />
+        <span className="text-sm font-semibold text-amber-900">Knowledge Base Coverage</span>
+      </div>
+      <div className="px-4 py-3 space-y-2 text-sm">
+        {missing.length > 0 && (
+          <p className="text-amber-800">
+            <span className="font-medium">Not in knowledge base: </span>
+            {missing.join("; ")}.
+          </p>
+        )}
+        {removed && removed.length > 0 && (
+          <p className="text-amber-700 text-xs">
+            {removed.length} unverified citation{removed.length > 1 ? "s" : ""} removed.
+          </p>
         )}
       </div>
-      {isExpanded && (
-        <div className="px-5 py-4 space-y-4 max-h-96 overflow-y-auto">
-          {rules.map((rule, idx) => (
-            <div
-              key={idx}
-              className="p-4 bg-slate-50 dark:bg-gray-900 rounded-lg border border-slate-200 dark:border-gray-700"
-            >
-              <div className="flex items-start justify-between mb-3">
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="px-2 py-0.5 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded text-xs font-bold">
-                      #{rule.rank || idx + 1}
-                    </span>
-                    <span className="px-2 py-0.5 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 rounded text-xs font-semibold">
-                      {rule.document_label || rule.document_type}
-                    </span>
-                    <span className="font-semibold text-gray-900 dark:text-gray-100 text-sm">
-                      Article {rule.article_number}
-                    </span>
-                  </div>
-                  <h4 className="font-medium text-gray-800 dark:text-gray-200 mb-2 text-base">
-                    {rule.article_header}
-                  </h4>
-                  <div className="text-xs text-gray-500 dark:text-gray-400 space-y-0.5">
-                    <div>
-                      <span className="font-medium">Chapter:</span> {rule.chapter} - {rule.chapter_title}
-                    </div>
-                    {rule.part && (
-                      <div>
-                        <span className="font-medium">Part:</span> {rule.part} - {rule.part_title}
-                      </div>
-                    )}
-                    {rule.chunk_count && (
-                      <div>
-                        <span className="font-medium">Chunks:</span> {rule.chunk_count}
-                      </div>
-                    )}
-                  </div>
-                </div>
-                <div className="flex flex-col items-end gap-2 ml-2">
-                  <span className="px-3 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded-full text-xs font-bold">
-                    {(rule.score * 100)?.toFixed(1)}%
-                  </span>
-                  {rule.pdf_url && (
-                    <button
-                      onClick={() => window.open(`http://localhost:5000${rule.pdf_url}`, '_blank')}
-                      className="flex items-center gap-1.5 px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-xs font-medium transition-colors"
-                      title="Open PDF in new tab"
-                    >
-                      <ExternalLink className="h-3.5 w-3.5" />
-                      View PDF
-                    </button>
-                  )}
-                </div>
-              </div>
-              
-              {rule.text_preview && (
-                <div className="mt-3 p-3 bg-white dark:bg-gray-800 rounded border border-slate-200 dark:border-gray-700">
-                  <p className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">
-                    Article Text:
-                  </p>
-                  <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
-                    {rule.text_preview}
-                  </p>
-                </div>
-              )}
+    </div>
+  );
+}
+
+// ── Classification widget ─────────────────────────────────────────────────────
+function ClassificationWidget({ classification }: { classification: any }) {
+  const [expanded, setExpanded] = useState(false);
+  return (
+    <div className="rounded-xl bg-white shadow-sm border overflow-hidden" style={{ borderColor: BORDER }}>
+      <div className="flex items-center justify-between px-4 py-2.5 cursor-pointer"
+        style={{ background: "#F5F0FF" }} onClick={() => setExpanded((e) => !e)}>
+        <div className="flex items-center gap-2">
+          <Search className="h-4 w-4 text-purple-500" />
+          <span className="text-sm font-semibold text-gray-800">Classification</span>
+          {classification.legal_domains?.length > 0 && (
+            <span className="text-xs px-2 py-0.5 rounded-full bg-purple-100 text-purple-700 font-medium">
+              {classification.legal_domains[0]?.domain}
+            </span>
+          )}
+        </div>
+        {expanded ? <ChevronUp className="h-4 w-4 text-gray-400" /> : <ChevronDown className="h-4 w-4 text-gray-400" />}
+      </div>
+      {expanded && (
+        <div className="px-4 py-3 space-y-3">
+          {classification.intents?.length > 0 && (
+            <div className="flex flex-wrap gap-1.5">
+              {classification.intents.map((intent: string, i: number) => (
+                <span key={i} className="px-2.5 py-1 bg-blue-50 text-blue-700 rounded-full text-xs font-medium border border-blue-100">
+                  {intent.replace(/_/g, " ")}
+                </span>
+              ))}
             </div>
-          ))}
+          )}
+          {classification.reasoning_summary && (
+            <p className="text-xs text-gray-600 leading-relaxed bg-gray-50 px-3 py-2 rounded-lg">
+              {classification.reasoning_summary}
+            </p>
+          )}
         </div>
       )}
+    </div>
+  );
+}
+
+// ── Inline markdown ───────────────────────────────────────────────────────────
+function renderInline(text: string): ReactNode[] {
+  // Split on bold, code, italic, and citation badges [C1.1] [S2]
+  const parts = text.split(/(\*\*[^*]+\*\*|`[^`]+`|\*[^*]+\*|\[[CS]\d+(?:\.\d+)?\])/g);
+  return parts.map((part, i) => {
+    if (part.startsWith("**") && part.endsWith("**"))
+      return <strong key={i} className="font-semibold text-gray-900">{part.slice(2, -2)}</strong>;
+    if (part.startsWith("`") && part.endsWith("`"))
+      return <code key={i} className="bg-slate-100 text-green-700 px-1.5 py-0.5 rounded text-xs font-mono">{part.slice(1, -1)}</code>;
+    if (part.startsWith("*") && part.endsWith("*"))
+      return <em key={i} className="italic text-gray-600">{part.slice(1, -1)}</em>;
+    if (/^\[[CS]\d+/.test(part))
+      return (
+        <span key={i} className="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-bold mx-0.5"
+          style={{ background: HIGHLIGHT, color: GOLD_DK }}>
+          {part}
+        </span>
+      );
+    return part;
+  });
+}
+
+function parseMd(raw: string): ReactNode[] {
+  const lines = raw.split("\n");
+  const out: ReactNode[] = [];
+  let ulItems: string[] = [];
+  let olItems: string[] = [];
+
+  const flushUl = () => {
+    if (!ulItems.length) return;
+    out.push(
+      <ul key={out.length} className="list-disc list-outside pl-5 mb-3 space-y-1.5">
+        {ulItems.map((t, i) => <li key={i} className="text-sm text-gray-800 leading-relaxed">{renderInline(t)}</li>)}
+      </ul>
+    );
+    ulItems = [];
+  };
+  const flushOl = () => {
+    if (!olItems.length) return;
+    out.push(
+      <ol key={out.length} className="list-decimal list-outside pl-5 mb-3 space-y-1.5">
+        {olItems.map((t, i) => <li key={i} className="text-sm text-gray-800 leading-relaxed">{renderInline(t)}</li>)}
+      </ol>
+    );
+    olItems = [];
+  };
+
+  for (const line of lines) {
+    if (/^#{4}\s/.test(line)) { flushUl(); flushOl(); out.push(<h4 key={out.length} className="text-sm font-semibold text-gray-700 mt-4 mb-1">{renderInline(line.slice(5))}</h4>); continue; }
+    if (/^#{3}\s/.test(line)) { flushUl(); flushOl(); out.push(<h3 key={out.length} className="text-base font-semibold text-gray-900 mt-5 mb-2 border-b pb-1" style={{ borderColor: BORDER }}>{renderInline(line.slice(4))}</h3>); continue; }
+    if (/^#{2}\s/.test(line)) { flushUl(); flushOl(); out.push(<h2 key={out.length} className="text-lg font-bold text-gray-900 mt-6 mb-2">{renderInline(line.slice(3))}</h2>); continue; }
+    if (/^>\s/.test(line)) { flushUl(); flushOl(); out.push(<blockquote key={out.length} className="border-l-4 border-green-400 pl-4 my-3 bg-green-50 py-2 pr-3 rounded-r-lg"><p className="text-sm text-green-900 italic leading-relaxed">{renderInline(line.slice(2))}</p></blockquote>); continue; }
+    const ulM = line.match(/^\s*[*\-]\s{1,3}(.+)$/);
+    if (ulM) { flushOl(); ulItems.push(ulM[1]); continue; }
+    const olM = line.match(/^\s*\d+\.\s{1,3}(.+)$/);
+    if (olM) { flushUl(); olItems.push(olM[1]); continue; }
+    if (line.trim() === "") { flushUl(); flushOl(); continue; }
+    flushUl(); flushOl();
+    out.push(<p key={out.length} className="text-sm text-gray-800 leading-relaxed mb-2.5">{renderInline(line)}</p>);
+  }
+  flushUl(); flushOl();
+  return out;
+}
+
+// ── AI response widget ────────────────────────────────────────────────────────
+function AIResponseWidget({ response }: { response: string }) {
+  return (
+    <div className="rounded-xl bg-white shadow-sm border overflow-hidden" style={{ borderColor: BORDER }}>
+      <div className="px-4 py-2.5 flex items-center gap-2" style={{ background: "#F0FDF4" }}>
+        <Scale className="h-4 w-4 text-green-600" />
+        <span className="text-sm font-semibold text-gray-800">Legal Analysis</span>
+        <span className="text-xs px-2 py-0.5 rounded-full bg-green-100 text-green-700 font-medium ml-1">
+          Source-grounded
+        </span>
+      </div>
+      <div className="px-4 py-4 space-y-0">{parseMd(response)}</div>
     </div>
   );
 }
