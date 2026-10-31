@@ -14,9 +14,13 @@ import {
   File,
   X,
 } from "lucide-react";
+import dynamic from "next/dynamic";
 import { apiFetch } from "@/app/lib/api";
 import { UserMenu } from "@/app/components/UserMenu";
 import type { ReactNode } from "react";
+import type { ChunkLocation } from "@/app/components/PdfViewer";
+
+const PdfViewer = dynamic(() => import("@/app/components/PdfViewer"), { ssr: false });
 
 // ── Design tokens ─────────────────────────────────────────────────────────────
 const BG       = "#FAF7F0";
@@ -423,9 +427,10 @@ function AssistantMessage({
 }
 
 // ── Source panel (right column) ───────────────────────────────────────────────
-function SourcePanel({ message, onClose }: { message: Message; onClose: () => void }) {
+function SourcePanel({ message, onClose, scrollToChunkId: extScrollTo }: { message: Message; onClose: () => void; scrollToChunkId?: string | null }) {
   const [tab, setTab] = useState<"reader" | "original">("reader");
   const [selectedCaseId, setSelectedCaseId] = useState<string | null>(null);
+  const [scrollToChunkId, setScrollToChunkId] = useState<string | null>(extScrollTo ?? null);
 
   const sources  = message.sources  || [];
   const evidence = message.evidence || [];
@@ -500,6 +505,7 @@ function SourcePanel({ message, onClose }: { message: Message; onClose: () => vo
             selectedCaseId={selectedCaseId}
             onSelectCase={setSelectedCaseId}
             sources={sources}
+            scrollToChunkId={scrollToChunkId}
           />
         )}
       </div>
@@ -852,35 +858,52 @@ function ChunkCard({
   );
 }
 
-// ── Original pane (PDF viewer) ────────────────────────────────────────────────
+// ── Original pane (PDF viewer with bbox overlays) ────────────────────────────
 function OriginalPane({
-  cases, selectedCaseId, onSelectCase, sources,
+  cases, selectedCaseId, onSelectCase, sources, scrollToChunkId,
 }: {
   cases: Array<{ caseId: string; label: string; pdfUrl: string | null }>;
   selectedCaseId: string | null;
   onSelectCase: (id: string) => void;
   sources: ChunkSource[];
+  scrollToChunkId?: string | null;
 }) {
   const [ocrInfo, setOcrInfo] = useState<Record<string, boolean>>({});
+  const [locations, setLocations] = useState<ChunkLocation[]>([]);
 
   const active = cases.find((c) => c.caseId === selectedCaseId) ?? cases[0] ?? null;
 
-  // Fetch OCR status for the active case's first used chunk
+  // Fetch all chunk locations for chunks in this doc
   useEffect(() => {
-    if (!active) return;
-    const usedChunk = sources.find(
-      (s) => s.used && s.type === "case" && s.chunk_id
-    );
-    if (!usedChunk?.chunk_id || ocrInfo[active.caseId] !== undefined) return;
-    apiFetch(`/api/chunks/${encodeURIComponent(usedChunk.chunk_id)}/location`)
-      .then((r) => r.json())
-      .then((d) => {
-        if (d.ocr !== undefined) {
-          setOcrInfo((prev) => ({ ...prev, [active.caseId]: d.ocr }));
-        }
-      })
-      .catch(() => {});
-  }, [active, sources, ocrInfo]);
+    const caseChunks = sources.filter((s) => s.type === "case" && s.chunk_id);
+    if (!caseChunks.length) return;
+    Promise.all(
+      caseChunks.map((s) =>
+        apiFetch(`/api/chunks/${encodeURIComponent(s.chunk_id)}/location`)
+          .then((r) => r.json())
+          .then((d): ChunkLocation | null => {
+            if (d.error) return null;
+            if (d.ocr && active) {
+              setOcrInfo((prev) => ({ ...prev, [active.caseId]: true }));
+            }
+            return {
+              chunk_id: s.chunk_id,
+              page_start: d.page_start ?? 1,
+              page_end: d.page_end ?? 1,
+              boxes: (d.boxes ?? []).map((b: any) => ({
+                page: b.page ?? 0,
+                bbox: b.bbox,
+              })),
+              ocr: !!d.ocr,
+            };
+          })
+          .catch(() => null)
+      )
+    ).then((results) => {
+      setLocations(results.filter(Boolean) as ChunkLocation[]);
+    });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sources.map((s) => s.chunk_id).join(",")]);
 
   if (!cases.length) {
     return (
@@ -897,6 +920,9 @@ function OriginalPane({
     : null;
 
   const isOcr = active ? ocrInfo[active.caseId] : false;
+
+  const citedChunkIds = new Set(sources.filter((s) => s.used && s.type === "case").map((s) => s.chunk_id));
+  const unusedChunkIds = new Set(sources.filter((s) => !s.used && s.type === "case").map((s) => s.chunk_id));
 
   return (
     <div className="flex flex-col h-full">
@@ -925,29 +951,20 @@ function OriginalPane({
         <div className="shrink-0 px-4 py-2 flex items-center gap-2"
           style={{ background: "#FFF8E1", borderBottom: `1px solid #FFE082` }}>
           <span className="text-xs font-semibold text-amber-700">OCR</span>
-          <span className="text-xs text-amber-600">This document was scanned — text was extracted via OCR and may contain errors.</span>
+          <span className="text-xs text-amber-600">Scanned document — text extracted via OCR and may contain errors.</span>
         </div>
       )}
 
-      {/* PDF embed */}
+      {/* PDF viewer */}
       {pdfSrc ? (
-        <div className="flex-1 relative">
-          <object
-            data={pdfSrc}
-            type="application/pdf"
-            className="w-full h-full"
-            style={{ minHeight: 500 }}
-          >
-            <div className="flex flex-col items-center justify-center h-64 gap-3">
-              <File className="h-10 w-10 text-gray-300" />
-              <p className="text-sm text-gray-400">PDF preview unavailable in this browser.</p>
-              <a href={pdfSrc} target="_blank" rel="noopener noreferrer"
-                className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-white text-sm"
-                style={{ background: GOLD }}>
-                <ExternalLink className="h-4 w-4" /> Open PDF
-              </a>
-            </div>
-          </object>
+        <div className="flex-1 overflow-y-auto">
+          <PdfViewer
+            pdfUrl={pdfSrc}
+            locations={locations}
+            citedChunkIds={citedChunkIds}
+            unusedChunkIds={unusedChunkIds}
+            scrollToChunkId={scrollToChunkId}
+          />
         </div>
       ) : (
         <div className="flex items-center justify-center h-64 text-sm text-gray-400">
