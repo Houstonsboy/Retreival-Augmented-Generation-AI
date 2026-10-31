@@ -11,6 +11,10 @@ requests==2.32.5
 # PDF support
 pypdf==6.3.0
 python-docx==1.2.0  # DOCX case file ingestion
+PyMuPDF==1.24.14    # fitz — coordinate-aware PDF extraction + rendering
+pytesseract==0.3.13 # OCR wrapper (requires tesseract-ocr system package)
+Pillow==11.1.0      # image handling for OCR paths
+ocrmypdf==16.5.0    # pre-ingestion scanned-PDF routing
 
 # Hybrid retrieval
 rank-bm25==0.2.2  # BM25Okapi used in both Retriever.py and RulesRetriever.py
