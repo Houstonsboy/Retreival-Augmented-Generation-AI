@@ -11,6 +11,7 @@ import uuid as uuid_mod
 import urllib.parse as urllib_parse
 from auth import init_firebase_admin, require_role
 from firebase_admin import firestore as fb_firestore, storage as fb_storage
+from groq_client import call_groq, GROQ_MODEL, get_groq_keys
 from pathlib import Path
 from werkzeug.utils import secure_filename
 from digester import digest_repo
@@ -1112,6 +1113,73 @@ def document_chunks(doc_key):
     }), 200
 
 
+@app.route('/api/cases/<path:case_identifier>/all-chunks', methods=['GET'])
+def case_all_chunks(case_identifier):
+    """
+    Return every chunk for a case, sorted by chunk_index.
+    Used by the frontend reader to show the full document with cited sections highlighted.
+    """
+    try:
+        import chromadb
+        case_identifier = urllib_parse.unquote(case_identifier)
+        client = chromadb.PersistentClient(path=str(CASELAW_DB_DIR))
+        collection = client.get_collection(name=CASELAW_COLLECTION_NAME)
+        results = collection.get(
+            where={"case_identifier": case_identifier},
+            include=["documents", "metadatas"],
+        )
+        ids       = results.get("ids", [])
+        docs      = results.get("documents", [])
+        metas     = results.get("metadatas", [])
+        chunks = []
+        for i, chunk_id in enumerate(ids):
+            meta = metas[i] if metas else {}
+            chunks.append({
+                "chunk_id":    chunk_id,
+                "text":        docs[i] if docs else "",
+                "chunk_index": int(meta.get("chunk_index", i)),
+                "firac_component": meta.get("firac_component", ""),
+            })
+        chunks.sort(key=lambda c: c["chunk_index"])
+        return jsonify({"case_identifier": case_identifier, "chunks": chunks}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route('/api/statutes/<path:source_document>/all-chunks', methods=['GET'])
+def statute_all_chunks(source_document):
+    """
+    Return every chunk for a statute source document, sorted by chunk_index.
+    """
+    try:
+        import chromadb
+        from config import STATUTES_DB_DIR, STATUTES_COLLECTION_NAME
+        source_document = urllib_parse.unquote(source_document)
+        client = chromadb.PersistentClient(path=str(STATUTES_DB_DIR))
+        collection = client.get_collection(name=STATUTES_COLLECTION_NAME)
+        results = collection.get(
+            where={"source_document": source_document},
+            include=["documents", "metadatas"],
+        )
+        ids   = results.get("ids", [])
+        docs  = results.get("documents", [])
+        metas = results.get("metadatas", [])
+        chunks = []
+        for i, chunk_id in enumerate(ids):
+            meta = metas[i] if metas else {}
+            chunks.append({
+                "chunk_id":        chunk_id,
+                "text":            docs[i] if docs else "",
+                "chunk_index":     int(meta.get("chunk_index", i)),
+                "article_number":  meta.get("article_number") or meta.get("section_num", ""),
+                "article_header":  meta.get("article_header", ""),
+            })
+        chunks.sort(key=lambda c: c["chunk_index"])
+        return jsonify({"source_document": source_document, "chunks": chunks}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
 @app.route('/api/rule-pdf', methods=['GET'])
 def serve_rule_pdf():
     """
@@ -1391,43 +1459,12 @@ def generate_legal_answer():
         )
 
         # ── 5. Groq call (temperature 0, with key rotation) ──────────────────
-        _groq_keys = [v for k, v in sorted(os.environ.items())
-                      if k == "GROQ_API_KEY" or k.startswith("GROQ_API_KEY_")]
-        if not _groq_keys:
+        if not get_groq_keys():
             return jsonify({"success": False, "error": "No GROQ_API_KEY configured"}), 500
-        _key_idx = [0]
 
         messages = [{"role": "system", "content": SYSTEM}, {"role": "user", "content": USER}]
 
-        def _groq(msgs, max_tokens=2500) -> str:
-            GROQ_URL = "https://api.groq.com/openai/v1/chat/completions"
-            for attempt in range(len(_groq_keys) + 1):
-                key = _groq_keys[_key_idx[0]]
-                try:
-                    resp = requests.post(
-                        GROQ_URL,
-                        headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json"},
-                        json={"model": "qwen/qwen3.8-27b", "messages": msgs,
-                              "temperature": 0, "max_tokens": max_tokens},
-                        timeout=60,
-                    )
-                    if resp.status_code == 429:
-                        next_idx = (_key_idx[0] + 1) % len(_groq_keys)
-                        if next_idx != _key_idx[0]:
-                            print(f"[WARN] synthesis 429 on key {_key_idx[0]}, rotating to {next_idx}")
-                            _key_idx[0] = next_idx
-                            continue
-                        print("[WARN] All synthesis keys rate-limited, waiting 30s...")
-                        time.sleep(30)
-                        continue
-                    resp.raise_for_status()
-                    raw = resp.json()["choices"][0]["message"]["content"]
-                    return re.sub(r"<think>.*?</think>", "", raw, flags=re.DOTALL).strip()
-                except requests.HTTPError:
-                    raise
-            raise RuntimeError("All Groq keys exhausted for synthesis")
-
-        raw = _groq(messages)
+        raw = call_groq(messages)
 
         # ── 6. Parse JSON ─────────────────────────────────────────────────────
         def _parse_json(text: str) -> dict:
@@ -1482,7 +1519,7 @@ def generate_legal_answer():
                     "Output the corrected JSON object."
                 )},
             ]
-            return _groq(regen_msgs)
+            return call_groq(regen_msgs)
 
         verified = verify_and_clean(analysis_fields, relevant_source_data, user_query, _regen)
 
