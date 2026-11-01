@@ -1,3 +1,9 @@
+# Neo4j runtime data and binaries (too large for GitHub)
+neo4j-community-*/data/
+neo4j-community-*.tar.gz
+neo4j-community-*.zip
+neo4j-java/target/
+
 # Environment variables
 .env
 .env.local
