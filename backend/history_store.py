@@ -178,6 +178,27 @@ def build_sources_for_history(response_sources: list, retrieval_data: dict) -> l
 # ── Firestore transaction ─────────────────────────────────────────────────────
 
 @_transactional
+def _exec_turn_overwrite_transaction(
+    transaction,
+    conv_ref,
+    turn_ref,
+    turn_doc: dict,
+    query_preview: str,
+):
+    """
+    Overwrite a previously-failed turn doc in place.
+    turn_doc already contains the correct turn_index set by the caller.
+    Updates conversation updated_at / last_query_preview but does NOT
+    touch turn_count — the slot was already counted on the first attempt.
+    """
+    transaction.set(turn_ref, turn_doc)
+    transaction.update(conv_ref, {
+        "updated_at":         fb_firestore.SERVER_TIMESTAMP,
+        "last_query_preview": query_preview,
+    })
+
+
+@_transactional
 def _exec_turn_transaction(
     transaction,
     conv_ref,
@@ -237,19 +258,59 @@ def get_or_create_conversation(uid: str, conversation_id: str, first_query: str)
     return ref, False
 
 
+def check_idempotency(
+    uid: str,
+    conversation_id: str,
+    client_turn_id: str,
+) -> tuple[str | None, dict | None]:
+    """
+    Look up an existing turn by client_turn_id.
+
+    Returns:
+      ("complete", turn_dict)  – turn already succeeded; caller should return
+                                 a cached response and skip the LLM.
+      ("failed",   turn_dict)  – turn previously failed; caller should run the
+                                 LLM again and overwrite the turn in place.
+                                 turn_dict["turn_index"] is the index to reuse.
+      (None, None)             – turn not found; proceed normally.
+
+    Never raises — errors return (None, None).
+    """
+    if not uid or not conversation_id or not client_turn_id:
+        return None, None
+    try:
+        snap = _turns_col(uid, conversation_id).document(client_turn_id).get()
+        if not snap.exists:
+            return None, None
+        data = snap.to_dict()
+        status = data.get("status")
+        if status == "complete":
+            return "complete", data
+        if status == "failed":
+            return "failed", data
+        return None, None
+    except Exception as exc:
+        logger.warning("check_idempotency lookup failed: %s", exc)
+        return None, None
+
+
 def save_turn(
     uid: str,
     conversation_id: str | None,
     turn_data: dict,
     client_turn_id: str | None = None,
+    overwrite_turn_index: int | None = None,
 ) -> dict:
     """
     Persist a turn to Firestore inside a transaction.
 
-    conversation_id=None  → create a new conversation (auto-UUID).
-    client_turn_id        → used as the turn doc ID for idempotency; if a
-                            turn with that id already exists, return its ids
-                            without writing a duplicate.
+    conversation_id=None      → create a new conversation (auto-UUID).
+    client_turn_id            → used as the turn doc ID for idempotency; if a
+                                complete turn with that id already exists, return
+                                its ids without writing a duplicate.
+    overwrite_turn_index      → when set, overwrite an existing failed turn at
+                                that index in place (preserves turn_index, does
+                                NOT increment turn_count).
 
     Returns {"conversation_id": str, "turn_id": str, "is_new_conversation": bool}.
     """
@@ -263,7 +324,27 @@ def save_turn(
     turn_id   = client_turn_id or str(_uuid_mod.uuid4())
     turn_ref  = _turns_col(uid, conversation_id).document(turn_id)
 
-    # Idempotency: if the turn doc already exists, return early
+    # ── Overwrite path: replace a previously-failed turn in place ─────────────
+    if overwrite_turn_index is not None:
+        turn_doc = {
+            "created_at":     fb_firestore.SERVER_TIMESTAMP,
+            "schema_version": 1,
+            "client_turn_id": client_turn_id,
+            "truncated":      False,
+            "turn_index":     overwrite_turn_index,
+            **turn_data,
+        }
+        turn_doc = _size_guard(turn_doc)
+        query_preview = turn_data.get("query", "")[:_PREVIEW_MAX]
+        txn = db.transaction()
+        _exec_turn_overwrite_transaction(txn, conv_ref, turn_ref, turn_doc, query_preview)
+        return {
+            "conversation_id":     conversation_id,
+            "turn_id":             turn_id,
+            "is_new_conversation": False,
+        }
+
+    # ── Normal idempotency: complete turns are never re-written ───────────────
     if client_turn_id and not is_new_conv:
         snap = turn_ref.get()
         if snap.exists:

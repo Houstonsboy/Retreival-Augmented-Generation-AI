@@ -14,6 +14,7 @@ from firebase_admin import firestore as fb_firestore, storage as fb_storage
 from groq_client import call_groq, GROQ_MODEL, get_groq_keys
 from history_store import (
     build_sources_for_history,
+    check_idempotency,
     get_or_create_conversation,
     make_fallback_title,
     save_turn,
@@ -1319,6 +1320,40 @@ def QRetriever():
         return jsonify(result), status_code
 
 
+def _build_cached_response(
+    conversation_id: str,
+    turn_id: str,
+    cached_turn: dict,
+    conv_title: str | None,
+):
+    """
+    Reconstruct the generate-legal-answer JSON response from a stored complete
+    turn.  Called when client_turn_id resolves to an already-complete turn so
+    the LLM work can be skipped entirely.
+    """
+    structured = cached_turn.get("answer_structured") or {}
+    rs = cached_turn.get("retrieval_summary") or {}
+    return jsonify({
+        "success":                   True,
+        "answer":                    cached_turn.get("answer_markdown", ""),
+        "coverage":                  cached_turn.get("coverage", {}),
+        "source_review":             [],   # not stored; safe to omit on replay
+        "premise_check":             structured.get("premise_check", ""),
+        "unverified_claims_removed": [],   # only count was stored
+        "sources":                   cached_turn.get("sources", []),
+        "alias_map":                 cached_turn.get("alias_map", {}),
+        "sources_used": {
+            "statutory_provisions": rs.get("rules_count", 0),
+            "case_law":             rs.get("cases_count", 0),
+        },
+        "conversation_id":   conversation_id,
+        "turn_id":           turn_id,
+        "history_saved":     True,
+        "conversation_title": conv_title,
+        "cached":            True,
+    }), 200
+
+
 def _try_save_failed_turn(
     uid: str,
     conversation_id,
@@ -1328,6 +1363,7 @@ def _try_save_failed_turn(
     error_msg: str,
     error_code: str,
     t0: float,
+    overwrite_turn_index: int | None = None,
 ) -> None:
     """Save a status='failed' turn without raising. Called from error paths."""
     if not uid or not user_query:
@@ -1348,7 +1384,8 @@ def _try_save_failed_turn(
             "error":              error_msg,
             "error_code":         error_code,
         }
-        save_turn(uid, conversation_id, turn_data, client_turn_id)
+        save_turn(uid, conversation_id, turn_data, client_turn_id,
+                  overwrite_turn_index=overwrite_turn_index)
     except Exception as _save_err:
         print(f"[WARN] Failed to persist error turn: {_save_err}")
 
@@ -1393,6 +1430,25 @@ def generate_legal_answer():
                 _existing_conv_title = _conv_snap.get("title")
             except Exception as _conv_err:
                 print(f"[WARN] Conversation ownership check failed: {_conv_err}")
+
+        # ── Idempotency gate ──────────────────────────────────────────────────
+        # complete turn → return the stored answer immediately, skip the LLM.
+        # failed turn   → run normally, then overwrite the turn in place.
+        _overwrite_turn_index = None
+        if client_turn_id and conversation_id:
+            _idem_status, _cached_turn = check_idempotency(
+                g.uid, conversation_id, client_turn_id
+            )
+            if _idem_status == "complete" and _cached_turn:
+                print(f"[INFO] Returning cached turn {client_turn_id!r}")
+                return _build_cached_response(
+                    conversation_id, client_turn_id,
+                    _cached_turn, _existing_conv_title,
+                )
+            if _idem_status == "failed" and _cached_turn:
+                _overwrite_turn_index = _cached_turn.get("turn_index")
+                print(f"[INFO] Retrying failed turn {client_turn_id!r} "
+                      f"(index={_overwrite_turn_index})")
 
         statutory_provisions = retrieval_data.get("rules", [])
         case_law_results     = retrieval_data.get("results", [])
@@ -1466,6 +1522,7 @@ def generate_legal_answer():
                 g.uid, conversation_id, client_turn_id, user_query,
                 coverage, "No relevant legal information retrieved",
                 "no_sources", _t0,
+                overwrite_turn_index=_overwrite_turn_index,
             )
             return jsonify({"success": False, "error": "No relevant legal information retrieved"}), 404
 
@@ -1529,6 +1586,7 @@ def generate_legal_answer():
                 g.uid, conversation_id, client_turn_id, user_query,
                 coverage, "No GROQ_API_KEY configured",
                 "llm_error", _t0,
+                overwrite_turn_index=_overwrite_turn_index,
             )
             return jsonify({"success": False, "error": "No GROQ_API_KEY configured"}), 500
 
@@ -1705,7 +1763,8 @@ def generate_legal_answer():
                 "error":      None,
                 "error_code": None,
             }
-            _hist = save_turn(g.uid, conversation_id, _turn_data, client_turn_id)
+            _hist = save_turn(g.uid, conversation_id, _turn_data, client_turn_id,
+                              overwrite_turn_index=_overwrite_turn_index)
             _history_saved = True
             conversation_id = _hist["conversation_id"]
             _turn_id        = _hist["turn_id"]
@@ -1747,6 +1806,7 @@ def generate_legal_answer():
             locals().get("coverage", {}),
             f"LLM call failed: {e}", "llm_error",
             locals().get("_t0", time.time()),
+            overwrite_turn_index=locals().get("_overwrite_turn_index"),
         )
         return jsonify({"success": False, "error": f"LLM call failed: {e}"}), 500
 
@@ -1760,6 +1820,7 @@ def generate_legal_answer():
             locals().get("coverage", {}),
             str(e), "internal_error",
             locals().get("_t0", time.time()),
+            overwrite_turn_index=locals().get("_overwrite_turn_index"),
         )
         return jsonify({"success": False, "error": str(e)}), 500
 

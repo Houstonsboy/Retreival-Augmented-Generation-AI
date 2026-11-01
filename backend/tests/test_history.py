@@ -716,7 +716,132 @@ class TestSizeGuard:
 
 
 # ---------------------------------------------------------------------------
-# 7. Emulator-only integration tests (skipped when emulator not available)
+# 7. Idempotency tests
+# ---------------------------------------------------------------------------
+
+class TestCheckIdempotency:
+    """Unit tests for check_idempotency()."""
+
+    def _mock_turns_col(self, status=None, turn_index=None):
+        """Build a mock _turns_col chain that returns a turn snap with given status."""
+        snap = MagicMock()
+        if status is None:
+            snap.exists = False
+        else:
+            snap.exists = True
+            data = {"status": status}
+            if turn_index is not None:
+                data["turn_index"] = turn_index
+            snap.to_dict.return_value = data
+
+        mock_turn_ref = MagicMock()
+        mock_turn_ref.get.return_value = snap
+
+        mock_turns_col = MagicMock()
+        mock_turns_col.document.return_value = mock_turn_ref
+        return mock_turns_col
+
+    def test_returns_none_when_turn_not_found(self):
+        from history_store import check_idempotency
+        with patch("history_store._turns_col", return_value=self._mock_turns_col(status=None)):
+            status, data = check_idempotency("uid-1", "conv-1", "tid-1")
+        assert status is None
+        assert data is None
+
+    def test_returns_complete_for_complete_turn(self):
+        from history_store import check_idempotency
+        col = self._mock_turns_col(status="complete", turn_index=2)
+        with patch("history_store._turns_col", return_value=col):
+            status, data = check_idempotency("uid-1", "conv-1", "tid-1")
+        assert status == "complete"
+        assert data["status"] == "complete"
+
+    def test_returns_failed_for_failed_turn(self):
+        from history_store import check_idempotency
+        col = self._mock_turns_col(status="failed", turn_index=3)
+        with patch("history_store._turns_col", return_value=col):
+            status, data = check_idempotency("uid-1", "conv-1", "tid-1")
+        assert status == "failed"
+        assert data["turn_index"] == 3
+
+    def test_returns_none_when_any_arg_missing(self):
+        from history_store import check_idempotency
+        # No patch needed — should short-circuit before touching Firestore
+        for args in [
+            ("", "conv-1", "tid-1"),
+            ("uid-1", "", "tid-1"),
+            ("uid-1", "conv-1", ""),
+        ]:
+            status, data = check_idempotency(*args)
+            assert status is None and data is None
+
+    def test_returns_none_on_firestore_error(self):
+        from history_store import check_idempotency
+        mock_turns = MagicMock()
+        mock_turns.document.return_value.get.side_effect = RuntimeError("network")
+        with patch("history_store._turns_col", return_value=mock_turns):
+            status, data = check_idempotency("uid-1", "conv-1", "tid-1")
+        assert status is None
+
+
+class TestSaveTurnOverwrite:
+    """save_turn(overwrite_turn_index=N) must reuse turn_index and skip turn_count."""
+
+    def test_overwrite_calls_overwrite_transaction_not_normal(self):
+        from history_store import save_turn
+        cid = str(uuid.uuid4())
+        with patch("history_store._db") as mock_db_fn, \
+             patch("history_store._exec_turn_overwrite_transaction") as mock_ow, \
+             patch("history_store._exec_turn_transaction") as mock_normal:
+            mock_db_fn.return_value = MagicMock()
+            mock_ow.return_value = None
+            save_turn(
+                "uid-1", cid,
+                {"query": "Retry Q", "status": "complete"},
+                client_turn_id="tid-retry",
+                overwrite_turn_index=3,
+            )
+        mock_ow.assert_called_once()
+        mock_normal.assert_not_called()
+
+    def test_overwrite_preserves_turn_index_in_doc(self):
+        from history_store import save_turn
+        cid = str(uuid.uuid4())
+        written_doc = {}
+
+        def _capture(txn, conv_ref, turn_ref, turn_doc, query_preview):
+            written_doc.update(turn_doc)
+
+        with patch("history_store._db") as mock_db_fn, \
+             patch("history_store._exec_turn_overwrite_transaction", side_effect=_capture):
+            mock_db_fn.return_value = MagicMock()
+            save_turn(
+                "uid-1", cid,
+                {"query": "Retry Q", "status": "complete"},
+                client_turn_id="tid-retry",
+                overwrite_turn_index=5,
+            )
+        assert written_doc.get("turn_index") == 5
+
+    def test_overwrite_returns_is_new_false(self):
+        from history_store import save_turn
+        cid = str(uuid.uuid4())
+        with patch("history_store._db") as mock_db_fn, \
+             patch("history_store._exec_turn_overwrite_transaction"):
+            mock_db_fn.return_value = MagicMock()
+            result = save_turn(
+                "uid-1", cid,
+                {"query": "Q", "status": "complete"},
+                client_turn_id="tid-retry",
+                overwrite_turn_index=0,
+            )
+        assert result["is_new_conversation"] is False
+        assert result["turn_id"] == "tid-retry"
+        assert result["conversation_id"] == cid
+
+
+# ---------------------------------------------------------------------------
+# 8. Emulator-only integration tests (skipped when emulator not available)
 # ---------------------------------------------------------------------------
 
 @pytest.mark.skipif(not EMULATOR, reason="Firestore emulator not running")
@@ -834,3 +959,42 @@ class TestEmulatorIntegration:
                    .collection("conversations").document(cid).get()
         assert snap.get("title") == "My Custom Name"
         assert snap.get("title_source") == "user"
+
+    def test_overwrite_failed_turn_preserves_turn_index(self):
+        from history_store import save_turn, check_idempotency, get_conversation
+
+        tid = str(uuid.uuid4())
+
+        # First save: failed turn (creates conversation, turn_count=1, turn_index=0)
+        r1 = save_turn(self.uid, None, {
+            "status": "failed", "query": "Q", "answer_markdown": None,
+            "answer_structured": None, "sources": [], "alias_map": {},
+            "coverage": {}, "retrieval_summary": {},
+            "unverified_claims_removed_count": 0, "model": "test",
+            "latency_ms": 10, "error": "boom", "error_code": "llm_error",
+        }, client_turn_id=tid)
+        cid = r1["conversation_id"]
+
+        # check_idempotency returns ("failed", turn_dict) with turn_index 0
+        status, cached = check_idempotency(self.uid, cid, tid)
+        assert status == "failed"
+        assert cached["turn_index"] == 0
+
+        # Retry: overwrite in place
+        r2 = save_turn(self.uid, cid, {
+            "status": "complete", "query": "Q", "answer_markdown": "A",
+            "answer_structured": {"short_answer": "A"}, "sources": [], "alias_map": {},
+            "coverage": {}, "retrieval_summary": {},
+            "unverified_claims_removed_count": 0, "model": "test",
+            "latency_ms": 50, "error": None, "error_code": None,
+        }, client_turn_id=tid, overwrite_turn_index=cached["turn_index"])
+
+        assert r2["turn_id"] == tid
+        assert r2["is_new_conversation"] is False
+
+        # turn_count must still be 1 (not 2)
+        conv = get_conversation(self.uid, cid)
+        assert conv["conversation"]["turn_count"] == 1
+        # The turn is now complete
+        assert conv["turns"][0]["status"] == "complete"
+        assert conv["turns"][0]["turn_index"] == 0
