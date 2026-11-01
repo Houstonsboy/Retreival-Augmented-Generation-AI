@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { serverTimestamp } from "firebase/firestore";
 import { auth } from "@/app/lib/firebase";
 import { createUserDoc, isUsernameAvailable, PENDING_USERNAME_KEY } from "@/app/lib/firestore";
+import { useAuth } from "@/app/context/AuthContext";
 
 function validateUsername(v: string): string | null {
   if (v.length < 3) return "At least 3 characters.";
@@ -15,6 +16,7 @@ function validateUsername(v: string): string | null {
 
 export default function CompleteProfile() {
   const router = useRouter();
+  const { refreshProfile } = useAuth();
   const [username, setUsername] = useState("");
   const [usernameError, setUsernameError] = useState<string | null>(null);
   const [usernameOk, setUsernameOk] = useState(false);
@@ -64,6 +66,7 @@ export default function CompleteProfile() {
         updatedAt: serverTimestamp(),
       });
       sessionStorage.removeItem(PENDING_USERNAME_KEY);
+      await refreshProfile();
       router.replace("/dashboard");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to save profile.");
