@@ -3,6 +3,23 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  /* ── Skeleton design tokens ──────────────────────────────────────── */
+  /* Warm-toned greys that read as "loading" against the cream app BG  */
+  --sk-base:        #E5DDD1;
+  --sk-hi:          #EDE7DB;
+  --sk-bubble:      #EAE3D6;
+  --sk-tint:        rgba(201, 151, 26, 0.06);
+
+  /* Text bar height ≈ 60% of body line-height (26.25px → ~16px)      */
+  --sk-line-h:      1rem;
+  /* Title bar height ≈ 60% of h2 line-height (30px → ~18px)          */
+  --sk-title-h:     1.125rem;
+  --sk-radius:      4px;
+  --sk-radius-lg:   6px;
+
+  /* Reveal animation duration */
+  --reveal-dur:     250ms;
 }
 
 @theme inline {
@@ -16,6 +33,11 @@
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+
+    --sk-base:   #2A2A2E;
+    --sk-hi:     #35353A;
+    --sk-bubble: #202024;
+    --sk-tint:   rgba(234, 179, 8, 0.05);
   }
 }
 
@@ -27,4 +49,69 @@ body {
 
 .font-newsreader {
   font-family: var(--font-newsreader), Georgia, "Times New Roman", serif;
+}
+
+/* ── Skeleton shimmer ──────────────────────────────────────────────── */
+@keyframes sk-sweep {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+
+@keyframes sk-pulse {
+  0%, 100% { opacity: 1;    }
+  50%       { opacity: 0.55; }
+}
+
+/* Every element with this class shares the same animation phase       */
+.sk-bar {
+  display: block;
+  flex-shrink: 0;
+  border-radius: var(--sk-radius);
+  background: linear-gradient(
+    100deg,
+    var(--sk-base) 35%,
+    var(--sk-hi)   50%,
+    var(--sk-base) 65%
+  );
+  background-size: 300% 100%;
+  animation: sk-sweep 1.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sk-bar {
+    background: var(--sk-base);
+    animation: sk-pulse 1.6s ease-in-out infinite;
+  }
+}
+
+/* ── Reveal transition ─────────────────────────────────────────────── */
+@keyframes reveal-up {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0);   }
+}
+
+@keyframes reveal-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.sk-reveal {
+  animation: reveal-up var(--reveal-dur) ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sk-reveal {
+    animation: reveal-fade 150ms ease-out both;
+  }
+}
+
+/* ── Accessibility ─────────────────────────────────────────────────── */
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border-width: 0;
 }

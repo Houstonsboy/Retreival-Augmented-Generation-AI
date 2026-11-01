@@ -19,8 +19,21 @@ import {
 } from "@/app/lib/historyApi";
 import type { ReactNode } from "react";
 import type { ChunkLocation } from "@/app/components/PdfViewer";
+import { ChatPanelSkeleton } from "@/app/components/skeleton/ChatPanelSkeleton";
+import { SidebarSkeleton } from "@/app/components/skeleton/SidebarSkeleton";
+import { WorkspaceSkeleton } from "@/app/components/skeleton/WorkspaceSkeleton";
+import { Reveal } from "@/app/components/skeleton/Reveal";
+import { DevReplay } from "@/app/components/skeleton/DevReplay";
 
 const PdfViewer = dynamic(() => import("@/app/components/PdfViewer"), { ssr: false });
+
+// ── Dev-only simulated latency ──────────────────────────────────────────────────
+async function devDelay(ms = 1800): Promise<void> {
+  if (process.env.NODE_ENV !== "development") return;
+  if (typeof window === "undefined") return;
+  if (!new URLSearchParams(window.location.search).has("simulateLatency")) return;
+  await new Promise<void>((r) => setTimeout(r, ms));
+}
 
 // ── Design tokens ───────────────────────────────────────────────────────────────
 const BG        = "#FAF7F0";
@@ -194,6 +207,9 @@ export function ChatView({ initialConversationId }: { initialConversationId?: st
   const [deleteConfirmId,   setDeleteConfirmId]   = useState<string | null>(null);
   const [renamingId,        setRenamingId]        = useState<string | null>(null);
   const [renameValue,       setRenameValue]       = useState("");
+  // true while loadConversation() is in flight (shows ChatPanelSkeleton)
+  const [isConversationLoading, setIsConversationLoading] = useState(!!initialConversationId);
+  const [announceMsg, setAnnounceMsg] = useState(initialConversationId ? "Loading document…" : "");
 
   // ── Refs ──────────────────────────────────────────────────────────────────────
   const requestCounterRef      = useRef(0);
@@ -255,6 +271,7 @@ export function ChatView({ initialConversationId }: { initialConversationId?: st
   const loadSidebar = async (cursor?: string | null) => {
     if (!user) return;
     setSidebarLoading(true);
+    await devDelay(1200);
     try {
       const res = await listConversations(cursor);
       if (cursor) {
@@ -272,6 +289,9 @@ export function ChatView({ initialConversationId }: { initialConversationId?: st
 
   const loadConversation = async (cid: string) => {
     if (!user) return;
+    setIsConversationLoading(true);
+    setAnnounceMsg("Loading document…");
+    await devDelay(1800);
     try {
       const res = await getConversation(cid);
       setConversationId(cid);
@@ -314,6 +334,9 @@ export function ChatView({ initialConversationId }: { initialConversationId?: st
     } catch (e: any) {
       if (e?.status === 404) router.replace("/");
       else console.error("[History] loadConversation failed:", e);
+    } finally {
+      setIsConversationLoading(false);
+      setAnnounceMsg("Document loaded");
     }
   };
 
@@ -660,7 +683,18 @@ export function ChatView({ initialConversationId }: { initialConversationId?: st
 
   // ── Render ────────────────────────────────────────────────────────────────────
   return (
-    <div className="flex h-screen flex-col" style={{ backgroundColor: BG, fontFamily: MNR }}>
+    <div
+      className="flex h-screen flex-col"
+      style={{ backgroundColor: BG, fontFamily: MNR }}
+      aria-busy={isConversationLoading}
+    >
+      {/* Screen-reader live region — announces load start and completion */}
+      <p className="sr-only" role="status" aria-live="polite" aria-atomic="true">
+        {announceMsg}
+      </p>
+
+      {/* Dev-only replay button (stripped from production builds) */}
+      <DevReplay />
 
       {/* ── Sidebar backdrop ──────────────────────────────────────────────── */}
       {sidebarOpen && (
@@ -707,6 +741,8 @@ export function ChatView({ initialConversationId }: { initialConversationId?: st
 
         {/* Conversation list */}
         <div className="flex-1 overflow-y-auto py-2">
+          {/* Skeleton while the first page of conversations loads */}
+          {sidebarLoading && conversations.length === 0 && <SidebarSkeleton />}
           {conversations.length === 0 && !sidebarLoading && (
             <p className="px-4 py-6 text-xs text-center" style={{ color: MUTED }}>
               No conversations yet. Start by asking a question.
@@ -864,7 +900,10 @@ export function ChatView({ initialConversationId }: { initialConversationId?: st
             transition: hasSources ? "none" : "width 0.5s cubic-bezier(.4,0,.2,1)",
           }}>
           <div className="flex-1 overflow-y-auto">
-            {!hasMessages ? (
+            {/* Skeleton while an existing conversation loads from the API */}
+            {isConversationLoading ? (
+              <ChatPanelSkeleton />
+            ) : !hasMessages ? (
               <div className="flex flex-col items-center justify-center min-h-full py-16 px-6">
                 <div className="w-16 h-16 rounded-full mb-6 flex items-center justify-center"
                   style={{ background: "radial-gradient(circle at 35% 30%, #E8A84E, #A85A1A)", boxShadow: "0 6px 24px rgba(180,90,20,.35)" }}>
@@ -914,8 +953,8 @@ export function ChatView({ initialConversationId }: { initialConversationId?: st
                   </div>
                 )}
 
-                {messages.map((msg) => (
-                  <div key={msg.id}>
+                {messages.map((msg, idx) => (
+                  <Reveal key={msg.id} delay={Math.min(idx * 45, 360)}>
                     {msg.role === "user"
                       ? <UserBubble msg={msg} />
                       : <AssistantCard
@@ -930,7 +969,7 @@ export function ChatView({ initialConversationId }: { initialConversationId?: st
                           onRetry={() => handleRetry(msg)}
                         />
                     }
-                  </div>
+                  </Reveal>
                 ))}
                 {isLoading && <LoadingCard />}
                 <div ref={messagesEndRef} />
@@ -977,11 +1016,16 @@ export function ChatView({ initialConversationId }: { initialConversationId?: st
         <div className="flex-1 flex flex-col overflow-hidden"
           style={{
             backgroundColor: WS_BG,
-            opacity: hasSources ? 1 : 0,
-            pointerEvents: hasSources ? "auto" : "none",
+            opacity: (hasSources || isConversationLoading) ? 1 : 0,
+            pointerEvents: (hasSources || isConversationLoading) ? "auto" : "none",
             transition: "opacity 0.4s ease",
           }}>
+          {/* Skeleton for the document viewer while history loads */}
+          {isConversationLoading && !hasSources && (
+            <DocumentViewerSkeleton />
+          )}
           {hasSources && panelMessage && (
+            <Reveal>
             <WorkspaceColumn
               message={panelMessage}
               activeDocKey={activeDocKey}
@@ -989,7 +1033,52 @@ export function ChatView({ initialConversationId }: { initialConversationId?: st
               activeChunkId={activeChunkId}
               onChunkClick={setActiveChunkId}
             />
+            </Reveal>
           )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── Document viewer skeleton (embedded in right panel, not full-page) ───────────
+import { DocumentHeaderSkeleton } from "@/app/components/skeleton/DocumentHeaderSkeleton";
+import { DocumentBodySkeleton } from "@/app/components/skeleton/DocumentBodySkeleton";
+import { SourcesCardSkeleton } from "@/app/components/skeleton/SourcesCardSkeleton";
+import { SkeletonBar as SBar } from "@/app/components/skeleton/SkeletonBar";
+import { SkeletonPill as SPill } from "@/app/components/skeleton/SkeletonPill";
+
+function DocumentViewerSkeleton() {
+  return (
+    <div className="flex flex-col h-full" aria-hidden="true">
+      {/* Workspace header */}
+      <div className="shrink-0 flex items-start justify-between px-5 py-3"
+        style={{ borderBottom: `1px solid ${BORDER}`, background: WS_BG }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "0.35rem" }}>
+          <SBar width="130px" height="0.6rem" />
+          <SBar width="200px" height="0.75rem" />
+        </div>
+        <SourcesCardSkeleton />
+      </div>
+      {/* Tab bar */}
+      <div className="shrink-0 flex items-center gap-2 px-5 py-2"
+        style={{ borderBottom: `1px solid ${BORDER}`, background: WS_BG }}>
+        <div className="flex rounded-full overflow-hidden" style={{ border: `1px solid ${BORDER}` }}>
+          <SBar width="60px" height="1.75rem" radius="0px" />
+          <SBar width="42px" height="1.75rem" radius="0px" style={{ marginLeft: 1 }} />
+        </div>
+        <div style={{ marginLeft: "auto" }}>
+          <SPill width="80px" height="1.5rem" />
+        </div>
+      </div>
+      {/* Document card */}
+      <div className="flex-1 overflow-y-auto">
+        <div className="px-6 py-8 flex justify-center">
+          <div className="w-full rounded-2xl bg-white"
+            style={{ maxWidth: "42rem", border: `1px solid ${BORDER}`, boxShadow: "0 8px 32px rgba(60,45,10,0.08)" }}>
+            <DocumentHeaderSkeleton />
+            <DocumentBodySkeleton />
+          </div>
         </div>
       </div>
     </div>
