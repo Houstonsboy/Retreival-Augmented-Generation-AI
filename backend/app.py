@@ -12,6 +12,14 @@ import urllib.parse as urllib_parse
 from auth import init_firebase_admin, require_role
 from firebase_admin import firestore as fb_firestore, storage as fb_storage
 from groq_client import call_groq, GROQ_MODEL, get_groq_keys
+from history_store import (
+    build_sources_for_history,
+    get_or_create_conversation,
+    make_fallback_title,
+    save_turn,
+    submit_title_generation,
+)
+from history_routes import history_bp
 from pathlib import Path
 from werkzeug.utils import secure_filename
 from digester import digest_repo
@@ -27,6 +35,7 @@ app = Flask(__name__)
 _CORS_ORIGIN = os.environ.get("CORS_ORIGIN", "http://localhost:3000")
 CORS(app, origins=_CORS_ORIGIN)
 init_firebase_admin()
+app.register_blueprint(history_bp)
 
 # Path to the Repo directory
 REPO_DIR = Path(__file__).resolve().parent / "Repo"
@@ -1310,6 +1319,40 @@ def QRetriever():
         return jsonify(result), status_code
 
 
+def _try_save_failed_turn(
+    uid: str,
+    conversation_id,
+    client_turn_id,
+    user_query: str,
+    coverage: dict,
+    error_msg: str,
+    error_code: str,
+    t0: float,
+) -> None:
+    """Save a status='failed' turn without raising. Called from error paths."""
+    if not uid or not user_query:
+        return  # nothing meaningful to save
+    try:
+        turn_data = {
+            "status":             "failed",
+            "query":              user_query,
+            "answer_markdown":    None,
+            "answer_structured":  None,
+            "sources":            [],
+            "alias_map":          {},
+            "coverage":           coverage or {},
+            "retrieval_summary":  {},
+            "unverified_claims_removed_count": 0,
+            "model":              GROQ_MODEL,
+            "latency_ms":         int((time.time() - t0) * 1000),
+            "error":              error_msg,
+            "error_code":         error_code,
+        }
+        save_turn(uid, conversation_id, turn_data, client_turn_id)
+    except Exception as _save_err:
+        print(f"[WARN] Failed to persist error turn: {_save_err}")
+
+
 @app.route('/api/generate-legal-answer', methods=['POST'])
 @require_role("advocate", "admin")
 def generate_legal_answer():
@@ -1327,12 +1370,29 @@ def generate_legal_answer():
 
     try:
         data = request.get_json()
-        user_query     = data.get("query", "")
-        retrieval_data = data.get("retrieval", {})
-        classification = data.get("classification", {})
+        user_query      = data.get("query", "")
+        retrieval_data  = data.get("retrieval", {})
+        classification  = data.get("classification", {})
+        conversation_id = data.get("conversation_id") or None
+        client_turn_id  = data.get("client_turn_id") or None
+        _t0 = time.time()
 
         if not user_query:
             return jsonify({"error": "No query provided"}), 400
+
+        # Validate conversation ownership before spending API budget.
+        # Also fetch the existing title so we can echo it back in the response.
+        _existing_conv_title = None
+        if conversation_id is not None:
+            try:
+                _conv_snap = fb_firestore.client().collection("users") \
+                    .document(g.uid).collection("conversations") \
+                    .document(conversation_id).get()
+                if not _conv_snap.exists:
+                    return jsonify({"error": "Conversation not found"}), 404
+                _existing_conv_title = _conv_snap.get("title")
+            except Exception as _conv_err:
+                print(f"[WARN] Conversation ownership check failed: {_conv_err}")
 
         statutory_provisions = retrieval_data.get("rules", [])
         case_law_results     = retrieval_data.get("results", [])
@@ -1402,6 +1462,11 @@ def generate_legal_answer():
             )
 
         if not source_blocks:
+            _try_save_failed_turn(
+                g.uid, conversation_id, client_turn_id, user_query,
+                coverage, "No relevant legal information retrieved",
+                "no_sources", _t0,
+            )
             return jsonify({"success": False, "error": "No relevant legal information retrieved"}), 404
 
         # ── 3. System prompt — grounding rules only, NO legal content ────────
@@ -1460,6 +1525,11 @@ def generate_legal_answer():
 
         # ── 5. Groq call (temperature 0, with key rotation) ──────────────────
         if not get_groq_keys():
+            _try_save_failed_turn(
+                g.uid, conversation_id, client_turn_id, user_query,
+                coverage, "No GROQ_API_KEY configured",
+                "llm_error", _t0,
+            )
             return jsonify({"success": False, "error": "No GROQ_API_KEY configured"}), 500
 
         messages = [{"role": "system", "content": SYSTEM}, {"role": "user", "content": USER}]
@@ -1593,29 +1663,104 @@ def generate_legal_answer():
 
         print(f"[SUCCESS] Answer built ({len(answer)} chars), removed={len(removed)}")
 
+        # ── 10. Persist this turn ─────────────────────────────────────────────
+        _history_saved    = False
+        _conv_title       = _existing_conv_title
+        _turn_id          = None
+        _is_new_conv      = False
+        try:
+            _turn_data = {
+                "status":         "complete",
+                "query":          user_query,
+                "answer_markdown": answer,
+                "answer_structured": {
+                    "short_answer":             parsed.get("short_answer", ""),
+                    "applicable_law":           parsed.get("applicable_law", ""),
+                    "case_law_discussion":      parsed.get("case_law_discussion", ""),
+                    "application":              parsed.get("application", ""),
+                    "jurisdiction_and_procedure": parsed.get("jurisdiction_and_procedure", ""),
+                    "gaps":                     parsed.get("gaps", ""),
+                    "premise_check":            (parsed.get("premise_check") or "").strip(),
+                    "follow_up_questions":      parsed.get("follow_up_questions", []),
+                },
+                "sources":   build_sources_for_history(response_sources, retrieval_data),
+                "alias_map": {k: v["chunk_id"] for k, v in alias_map.items()},
+                "coverage":  coverage,
+                "retrieval_summary": {
+                    "retrieval_mode": (
+                        retrieval_data.get("retrieval_mode")
+                        or classification.get("retrieval_mode", "")
+                    ),
+                    "legal_domains": [
+                        d.get("name") or d.get("domain", "")
+                        for d in classification.get("legal_domains", [])
+                        if isinstance(d, dict)
+                    ],
+                    "cases_count": len(case_law_results),
+                    "rules_count": len(statutory_provisions),
+                },
+                "unverified_claims_removed_count": len(removed),
+                "model":      GROQ_MODEL,
+                "latency_ms": int((time.time() - _t0) * 1000),
+                "error":      None,
+                "error_code": None,
+            }
+            _hist = save_turn(g.uid, conversation_id, _turn_data, client_turn_id)
+            _history_saved = True
+            conversation_id = _hist["conversation_id"]
+            _turn_id        = _hist["turn_id"]
+            _is_new_conv    = _hist["is_new_conversation"]
+            if _is_new_conv:
+                _conv_title = make_fallback_title(user_query)
+                submit_title_generation(
+                    g.uid, conversation_id,
+                    user_query, parsed.get("short_answer", ""),
+                )
+        except Exception as _hist_err:
+            print(f"[WARN] History save failed: {_hist_err}")
+
         return jsonify({
-            "success": True,
-            "answer": answer,
-            "coverage": coverage,
-            "source_review": parsed.get("source_review", []),
-            "premise_check": (parsed.get("premise_check") or "").strip(),
+            "success":            True,
+            "answer":             answer,
+            "coverage":           coverage,
+            "source_review":      parsed.get("source_review", []),
+            "premise_check":      (parsed.get("premise_check") or "").strip(),
             "unverified_claims_removed": removed,
-            "sources": response_sources,
-            "alias_map": {k: v["chunk_id"] for k, v in alias_map.items()},
+            "sources":            response_sources,
+            "alias_map":          {k: v["chunk_id"] for k, v in alias_map.items()},
             "sources_used": {
                 "statutory_provisions": len(statutory_provisions),
-                "case_law": len(case_law_results),
+                "case_law":             len(case_law_results),
             },
+            # History fields
+            "conversation_id":    conversation_id,
+            "turn_id":            _turn_id,
+            "history_saved":      _history_saved,
+            "conversation_title": _conv_title,
         }), 200
 
     except requests.exceptions.RequestException as e:
         print(f"[ERROR] LLM API call failed: {e}")
+        _try_save_failed_turn(
+            g.uid, conversation_id, client_turn_id,
+            locals().get("user_query", ""),
+            locals().get("coverage", {}),
+            f"LLM call failed: {e}", "llm_error",
+            locals().get("_t0", time.time()),
+        )
         return jsonify({"success": False, "error": f"LLM call failed: {e}"}), 500
 
     except Exception as e:
         import traceback
         print(f"[ERROR] generate-legal-answer: {e}")
         traceback.print_exc()
+        _try_save_failed_turn(
+            g.uid, conversation_id, client_turn_id,
+            locals().get("user_query", ""),
+            locals().get("coverage", {}),
+            str(e), "internal_error",
+            locals().get("_t0", time.time()),
+        )
         return jsonify({"success": False, "error": str(e)}), 500
 
 
