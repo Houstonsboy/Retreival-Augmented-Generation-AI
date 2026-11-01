@@ -1,45 +1,26 @@
-import { SkeletonBar } from "./SkeletonBar";
-import { SkeletonText } from "./SkeletonText";
+import { Skeleton, SkeletonParagraph } from "@/app/components/loading/Skeleton";
 
 interface ParagraphSkeletonProps {
-  lines: number;
+  lines:         number;
   lastLineWidth: string;
-  /** True → wrap in amber-tinted highlight block (cited passage) */
-  highlighted?: boolean;
-  /** Show the numbered subsection square (e.g. "(1)") at line start */
-  numbered?: boolean;
+  highlighted?:  boolean;
+  numbered?:     boolean;
 }
 
-function ParagraphSkeleton({
-  lines,
-  lastLineWidth,
-  highlighted = false,
-  numbered = false,
-}: ParagraphSkeletonProps) {
+function ParagraphSkeleton({ lines, lastLineWidth, highlighted = false, numbered = false }: ParagraphSkeletonProps) {
   const inner = (
-    <div
-      style={{
-        display: "flex",
-        gap: "1rem",
-        /* Match real layout: flex gap-4 between line-number gutter and text */
-      }}
-    >
+    <div style={{ display: "flex", gap: "1rem" }}>
       {/* Gutter: w-6 text-right — small square for numbered subsections */}
-      <div
-        style={{ width: "1.5rem", flexShrink: 0, paddingTop: "0.15rem" }}
-        aria-hidden="true"
-      >
-        {numbered && (
-          <SkeletonBar width="1rem" height="0.875rem" radius="2px" />
-        )}
+      <div style={{ width: "1.5rem", flexShrink: 0, paddingTop: "0.15rem" }} aria-hidden="true">
+        {numbered && <Skeleton variant="line" width="1rem" height="0.875rem" radius="2px" />}
       </div>
-      {/* Paragraph text: text-[15px] leading-[1.75] → bar height ≈ 1rem */}
+      {/* Paragraph text: text-[15px] leading-[1.75] */}
       <div style={{ flex: 1 }}>
-        <SkeletonText
+        <SkeletonParagraph
           lines={lines}
-          lastLineWidth={lastLineWidth}
+          lastWidth={lastLineWidth}
           gap="0.65rem"
-          barHeight="1rem"
+          tone={highlighted ? "accent" : "neutral"}
         />
       </div>
     </div>
@@ -48,14 +29,14 @@ function ParagraphSkeleton({
   if (highlighted) {
     return (
       <div
+        aria-hidden="true"
         style={{
-          background: "var(--sk-tint)",
+          background: "var(--skeleton-accent-base)",
           borderLeft: "3px solid #E2C673",
           borderRadius: "0.625rem",
           padding: "0.75rem 1rem",
           marginBottom: "0.25rem",
         }}
-        aria-hidden="true"
       >
         {inner}
       </div>
@@ -63,7 +44,7 @@ function ParagraphSkeleton({
   }
 
   return (
-    <div style={{ padding: "0.25rem 1rem", marginBottom: "0.75rem" }} aria-hidden="true">
+    <div aria-hidden="true" style={{ padding: "0.25rem 1rem", marginBottom: "0.75rem" }}>
       {inner}
     </div>
   );
@@ -71,28 +52,27 @@ function ParagraphSkeleton({
 
 /**
  * Mirrors the DocumentReader chunk list:
- *   px-8 py-6 with paragraphs of text-[15px] leading-[1.75].
- *   Every third paragraph gets the amber highlight tint.
+ * px-8 py-6 with paragraphs of text-[15px] leading-[1.75].
  */
 export function DocumentBodySkeleton() {
   const paragraphs: Array<{ lines: number; last: string; highlighted: boolean; numbered: boolean }> = [
-    { lines: 4, last: "55%",  highlighted: false, numbered: false },
-    { lines: 3, last: "45%",  highlighted: false, numbered: true  },
-    { lines: 5, last: "60%",  highlighted: true,  numbered: true  },
-    { lines: 3, last: "50%",  highlighted: false, numbered: false },
-    { lines: 4, last: "40%",  highlighted: true,  numbered: true  },
-    { lines: 3, last: "65%",  highlighted: false, numbered: false },
+    { lines: 4, last: "55%", highlighted: false, numbered: false },
+    { lines: 3, last: "45%", highlighted: false, numbered: true  },
+    { lines: 5, last: "60%", highlighted: true,  numbered: true  },
+    { lines: 3, last: "50%", highlighted: false, numbered: false },
+    { lines: 4, last: "40%", highlighted: true,  numbered: true  },
+    { lines: 3, last: "65%", highlighted: false, numbered: false },
   ];
 
   return (
     <div aria-hidden="true" className="px-8 py-6">
-      {/* "Full document" info banner (matches the real banner in DocumentReader) */}
+      {/* "Full document" info banner */}
       <div
         className="flex items-center gap-2 mb-4 px-0 py-1.5"
         style={{ borderBottom: "1px solid #ECE6D8" }}
       >
-        <SkeletonBar width="90px" height="0.65rem" />
-        <SkeletonBar width="160px" height="0.65rem" />
+        <Skeleton variant="line" width="90px"  height="0.65rem" />
+        <Skeleton variant="line" width="160px" height="0.65rem" />
       </div>
 
       {paragraphs.map((p, i) => (

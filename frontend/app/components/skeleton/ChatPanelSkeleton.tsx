@@ -1,6 +1,4 @@
-import { SkeletonBar } from "./SkeletonBar";
-import { SkeletonText } from "./SkeletonText";
-import { SkeletonPill } from "./SkeletonPill";
+import { Skeleton, SkeletonParagraph } from "@/app/components/loading/Skeleton";
 
 /** Right-aligned user message bubble skeleton */
 function UserBubbleSkeleton({ lines = 2, lastW = "40%" }: { lines?: number; lastW?: string }) {
@@ -10,18 +8,18 @@ function UserBubbleSkeleton({ lines = 2, lastW = "40%" }: { lines?: number; last
         className="max-w-[88%] rounded-2xl px-4 py-3"
         style={{ background: "#F3E9CF" }}
       >
-        <SkeletonText
+        <SkeletonParagraph
           lines={lines}
-          lastLineWidth={lastW}
+          lastWidth={lastW}
           gap="0.45rem"
-          barHeight="0.875rem"
+          tone="accent"
         />
       </div>
     </div>
   );
 }
 
-/** Assistant card skeleton */
+/** Assistant response card skeleton */
 function AssistantCardSkeleton({ bodyLines = 4 }: { bodyLines?: number }) {
   return (
     <div
@@ -34,42 +32,41 @@ function AssistantCardSkeleton({ bodyLines = 4 }: { bodyLines?: number }) {
         className="flex items-center gap-2 px-4 py-3"
         style={{ borderBottom: "1px solid #ECE6D8" }}
       >
-        <SkeletonBar width="1.5rem" height="1.5rem" radius="0.5rem" />
-        <SkeletonBar width="110px" height="0.875rem" />
-        <SkeletonPill width="145px" height="1.25rem" />
+        <Skeleton variant="line" width="1.5rem" height="1.5rem" radius="0.5rem" />
+        <Skeleton variant="line" width="110px" height="0.875rem" />
+        <Skeleton variant="pill" width="145px" />
       </div>
+
       {/* Card body */}
       <div className="px-4 py-4">
-        <SkeletonText lines={bodyLines} lastLineWidth="48%" />
+        <SkeletonParagraph lines={bodyLines} lastWidth="48%" />
         {/* Bottom citations row */}
         <div
           className="flex items-center gap-2 mt-4 pt-3"
           style={{ borderTop: "1px solid #ECE6D8" }}
         >
-          <SkeletonBar width="50px" height="0.6rem" />
-          <SkeletonPill width="68px" height="1.35rem" />
-          <SkeletonPill width="80px" height="1.35rem" />
-          <SkeletonPill width="58px" height="1.35rem" />
+          <Skeleton variant="line" width="50px"  height="0.6rem" />
+          <Skeleton variant="pill" width="68px"  height="1.35rem" />
+          <Skeleton variant="pill" width="80px"  height="1.35rem" />
+          <Skeleton variant="pill" width="58px"  height="1.35rem" />
         </div>
       </div>
+
       {/* "Open sources" footer */}
       <div
         className="px-4 py-2.5 flex items-center gap-2"
         style={{ borderTop: "1px solid #ECE6D8" }}
       >
-        <SkeletonBar width="1rem" height="1rem" radius="3px" />
-        <SkeletonBar width="120px" height="0.75rem" />
+        <Skeleton variant="line" width="1rem"  height="1rem"   radius="3px" />
+        <Skeleton variant="line" width="120px" height="0.75rem" />
       </div>
     </div>
   );
 }
 
 /**
- * Full left-panel skeleton.
- * Mirrors: py-5 space-y-6 px-4 message list + fixed input at bottom.
- *
- * Pass inputRef/inputValue to render the real (but disabled) input area
- * instead of a skeleton — keeping it interactive is a hard requirement.
+ * Full left-panel skeleton. Mirrors py-5 space-y-6 px-4 message list
+ * + fixed input bar at bottom.
  */
 export function ChatPanelSkeleton() {
   return (
@@ -84,7 +81,7 @@ export function ChatPanelSkeleton() {
         </div>
       </div>
 
-      {/* Composer — real input but disabled while loading */}
+      {/* Composer placeholder */}
       <div
         className="shrink-0 px-4 py-3"
         style={{ borderTop: "1px solid #ECE6D8", background: "white" }}
@@ -94,8 +91,7 @@ export function ChatPanelSkeleton() {
             className="flex-1 flex items-start rounded-2xl px-4 py-3"
             style={{ border: "1px solid #ECE6D8", background: "white" }}
           >
-            {/* Placeholder bar mimics the textarea placeholder text */}
-            <SkeletonBar width="160px" height="0.875rem" style={{ marginTop: "2px" }} />
+            <Skeleton variant="line" width="160px" height="0.875rem" style={{ marginTop: "2px" }} />
           </div>
           {/* Send button — dimmed */}
           <div

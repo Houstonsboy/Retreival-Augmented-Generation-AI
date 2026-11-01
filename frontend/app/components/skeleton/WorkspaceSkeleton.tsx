@@ -1,14 +1,12 @@
-import { TopBarSkeleton } from "./TopBarSkeleton";
-import { ChatPanelSkeleton } from "./ChatPanelSkeleton";
+import { TopBarSkeleton }         from "./TopBarSkeleton";
+import { ChatPanelSkeleton }      from "./ChatPanelSkeleton";
 import { DocumentHeaderSkeleton } from "./DocumentHeaderSkeleton";
-import { DocumentBodySkeleton } from "./DocumentBodySkeleton";
-import { SourcesCardSkeleton } from "./SourcesCardSkeleton";
-import { SkeletonBar } from "./SkeletonBar";
-import { SkeletonPill } from "./SkeletonPill";
+import { DocumentBodySkeleton }   from "./DocumentBodySkeleton";
+import { SourcesCardSkeleton }    from "./SourcesCardSkeleton";
+import { Skeleton }               from "@/app/components/loading/Skeleton";
 
 /**
  * Full-page skeleton for the chat workspace.
- * Used in loading.tsx files and as the ChatView internal loading state.
  *
  * showWorkspace=false → chat panel fills full width (home / new-chat route)
  * showWorkspace=true  → 40/60 split with document viewer (conversation route)
@@ -21,14 +19,13 @@ export function WorkspaceSkeleton({ showWorkspace = true }: { showWorkspace?: bo
       className="flex h-screen flex-col"
       style={{ backgroundColor: "#FAF7F0", fontFamily: "var(--font-manrope), system-ui, sans-serif" }}
     >
-      {/* Screen-reader announce (live region) */}
-      <p className="sr-only" role="status" aria-live="polite">Loading document…</p>
+      <p className="sr-only" role="status" aria-live="polite">Loading…</p>
 
       <TopBarSkeleton />
 
       <div className="flex-1 flex overflow-hidden">
 
-        {/* ── LEFT: chat column ─────────────────────────────────────── */}
+        {/* ── LEFT: chat column ──────────────────────────────────────── */}
         <div
           className="flex flex-col overflow-hidden"
           style={{
@@ -40,12 +37,12 @@ export function WorkspaceSkeleton({ showWorkspace = true }: { showWorkspace?: bo
           <ChatPanelSkeleton />
         </div>
 
-        {/* ── Resizer placeholder ───────────────────────────────────── */}
+        {/* ── Resizer gap ────────────────────────────────────────────── */}
         {showWorkspace && (
           <div style={{ width: 8, flexShrink: 0, background: "transparent" }} />
         )}
 
-        {/* ── RIGHT: document workspace ─────────────────────────────── */}
+        {/* ── RIGHT: document workspace ──────────────────────────────── */}
         {showWorkspace && (
           <div
             className="flex-1 flex flex-col overflow-hidden"
@@ -58,12 +55,9 @@ export function WorkspaceSkeleton({ showWorkspace = true }: { showWorkspace?: bo
               aria-hidden="true"
             >
               <div style={{ display: "flex", flexDirection: "column", gap: "0.35rem" }}>
-                {/* "RETRIEVED AUTHORITIES" eyebrow */}
-                <SkeletonBar width="130px" height="0.6rem" />
-                {/* Matter title */}
-                <SkeletonBar width="200px" height="0.75rem" />
+                <Skeleton variant="line" width="130px" height="0.6rem" />
+                <Skeleton variant="line" width="200px" height="0.75rem" />
               </div>
-              {/* ClusterWidget / Sources card */}
               <SourcesCardSkeleton />
             </div>
 
@@ -77,11 +71,11 @@ export function WorkspaceSkeleton({ showWorkspace = true }: { showWorkspace?: bo
                 className="flex rounded-full overflow-hidden"
                 style={{ border: "1px solid #ECE6D8" }}
               >
-                <SkeletonBar width="60px" height="1.75rem" radius="0" />
-                <SkeletonBar width="42px" height="1.75rem" radius="0" style={{ marginLeft: 1 }} />
+                <Skeleton variant="line" width="60px" height="1.75rem" radius="0" />
+                <Skeleton variant="line" width="42px" height="1.75rem" radius="0" style={{ marginLeft: 1 }} />
               </div>
               <div style={{ marginLeft: "auto" }}>
-                <SkeletonPill width="80px" height="1.5rem" />
+                <Skeleton variant="pill" width="80px" />
               </div>
             </div>
 

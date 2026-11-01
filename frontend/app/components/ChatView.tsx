@@ -940,7 +940,7 @@ export function ChatView({ initialConversationId }: { initialConversationId?: st
                 </div>
               </div>
             ) : (
-              <div className="py-5 space-y-6 px-4">
+              <div className="py-5 space-y-6 px-4 sk-fade-in">
                 {/* "not saved" banner */}
                 {notSavedNote && (
                   <div className="rounded-xl px-4 py-2.5 flex items-center gap-2 text-xs"
@@ -1043,10 +1043,9 @@ export function ChatView({ initialConversationId }: { initialConversationId?: st
 
 // ── Document viewer skeleton (embedded in right panel, not full-page) ───────────
 import { DocumentHeaderSkeleton } from "@/app/components/skeleton/DocumentHeaderSkeleton";
-import { DocumentBodySkeleton } from "@/app/components/skeleton/DocumentBodySkeleton";
-import { SourcesCardSkeleton } from "@/app/components/skeleton/SourcesCardSkeleton";
-import { SkeletonBar as SBar } from "@/app/components/skeleton/SkeletonBar";
-import { SkeletonPill as SPill } from "@/app/components/skeleton/SkeletonPill";
+import { DocumentBodySkeleton }   from "@/app/components/skeleton/DocumentBodySkeleton";
+import { SourcesCardSkeleton }    from "@/app/components/skeleton/SourcesCardSkeleton";
+import { Skeleton as Sk }         from "@/app/components/loading/Skeleton";
 
 function DocumentViewerSkeleton() {
   return (
@@ -1055,8 +1054,8 @@ function DocumentViewerSkeleton() {
       <div className="shrink-0 flex items-start justify-between px-5 py-3"
         style={{ borderBottom: `1px solid ${BORDER}`, background: WS_BG }}>
         <div style={{ display: "flex", flexDirection: "column", gap: "0.35rem" }}>
-          <SBar width="130px" height="0.6rem" />
-          <SBar width="200px" height="0.75rem" />
+          <Sk variant="line" width="130px" height="0.6rem" />
+          <Sk variant="line" width="200px" height="0.75rem" />
         </div>
         <SourcesCardSkeleton />
       </div>
@@ -1064,11 +1063,11 @@ function DocumentViewerSkeleton() {
       <div className="shrink-0 flex items-center gap-2 px-5 py-2"
         style={{ borderBottom: `1px solid ${BORDER}`, background: WS_BG }}>
         <div className="flex rounded-full overflow-hidden" style={{ border: `1px solid ${BORDER}` }}>
-          <SBar width="60px" height="1.75rem" radius="0px" />
-          <SBar width="42px" height="1.75rem" radius="0px" style={{ marginLeft: 1 }} />
+          <Sk variant="line" width="60px" height="1.75rem" radius="0px" />
+          <Sk variant="line" width="42px" height="1.75rem" radius="0px" style={{ marginLeft: 1 }} />
         </div>
         <div style={{ marginLeft: "auto" }}>
-          <SPill width="80px" height="1.5rem" />
+          <Sk variant="pill" width="80px" />
         </div>
       </div>
       {/* Document card */}
