@@ -62,6 +62,18 @@ service cloud.firestore {
       allow write: if false;  // writes go through the Admin SDK (Flask backend)
     }
 
+    // Chat history — written exclusively by the backend Admin SDK.
+    // Clients may read their own conversations and turns; all writes are denied.
+    match /users/{uid}/conversations/{convId} {
+      allow read: if request.auth != null && request.auth.uid == uid;
+      allow write: if false;
+
+      match /turns/{turnId} {
+        allow read: if request.auth != null && request.auth.uid == uid;
+        allow write: if false;
+      }
+    }
+
     match /{document=**} {
       allow read, write: if false;
     }
