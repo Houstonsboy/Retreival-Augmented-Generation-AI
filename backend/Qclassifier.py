@@ -711,7 +711,8 @@ def Qclassifier(userQuery: str):
         # Step 3: Retrieve relevant cases
         retrieval_output = retrieve_relevant_cases(
             normalized,
-            verbose=True  # keep verbose for CLI
+            verbose=True,
+            skip_summaries=True  # summaries generated at synthesis stage, not retrieval
         )
 
         print("\n✅ Retrieval completed.")

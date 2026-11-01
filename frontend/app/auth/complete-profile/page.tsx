@@ -64,7 +64,7 @@ export default function CompleteProfile() {
         updatedAt: serverTimestamp(),
       });
       sessionStorage.removeItem(PENDING_USERNAME_KEY);
-      router.replace("/");
+      router.replace("/dashboard");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to save profile.");
       setLoading(false);

@@ -8,7 +8,7 @@ import "react-pdf/dist/Page/TextLayer.css";
 // Worker setup — must be client-side only
 if (typeof window !== "undefined") {
   pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-    "pdfjs-dist/build/pdf.worker.min.mjs",
+    "pdfjs-dist/build/pdf.worker.min.js",
     import.meta.url
   ).toString();
 }

@@ -30,7 +30,7 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
     }
 
     if (isPublic) {
-      router.replace("/");
+      router.replace("/dashboard");
       return;
     }
 
@@ -38,7 +38,7 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
       ADMIN_ONLY_PATHS.some((p) => pathname.startsWith(p)) &&
       profile.type !== "admin"
     ) {
-      router.replace("/");
+      router.replace("/dashboard");
     }
   }, [user, profile, loading, pathname, router]);
 

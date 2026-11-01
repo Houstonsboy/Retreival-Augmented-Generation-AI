@@ -50,7 +50,7 @@ export default function SignIn() {
     setLoading(true);
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      router.replace("/");
+      router.replace("/dashboard");
     } catch (err) {
       setError(friendlyError(err));
       setLoading(false);
@@ -61,9 +61,11 @@ export default function SignIn() {
     setError(null);
     setLoading(true);
     try {
-      const result = await signInWithPopup(auth, new GoogleAuthProvider());
+      const gProvider = new GoogleAuthProvider();
+      gProvider.setCustomParameters({ prompt: "select_account" });
+      const result = await signInWithPopup(auth, gProvider);
       const profile = await getUserDoc(result.user.uid).catch(() => null);
-      router.replace(profile ? "/" : "/auth/complete-profile");
+      router.replace(profile ? "/dashboard" : "/auth/complete-profile");
     } catch (err) {
       const msg = friendlyError(err);
       if (msg) setError(msg);

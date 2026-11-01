@@ -57,6 +57,11 @@ service cloud.firestore {
       allow update: if false;
     }
 
+    match /CaseLaws/{docId} {
+      allow read: if request.auth != null;
+      allow write: if false;  // writes go through the Admin SDK (Flask backend)
+    }
+
     match /{document=**} {
       allow read, write: if false;
     }

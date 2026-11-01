@@ -78,7 +78,7 @@ export default function SignUp() {
         advocateVerified: false,
         createdAt: serverTimestamp(), updatedAt: serverTimestamp(),
       });
-      router.replace("/");
+      router.replace("/dashboard");
     } catch (err) {
       setError(friendlyError(err));
       setLoading(false);
@@ -86,14 +86,22 @@ export default function SignUp() {
   };
 
   const handleGoogle = async () => {
-    if (!usernameOk) { setError("Fix username before continuing."); return; }
     setError(null); setLoading(true);
     try {
-      const result = await signInWithPopup(auth, new GoogleAuthProvider());
+      const gProvider = new GoogleAuthProvider();
+      gProvider.setCustomParameters({ prompt: "select_account" });
+      const result = await signInWithPopup(auth, gProvider);
 
-      // If user already has a Firestore profile they signed up before — just sign them in.
+      // Already registered — go straight to dashboard, no username needed.
       const existing = await getUserDoc(result.user.uid).catch(() => null);
-      if (existing) { router.replace("/"); return; }
+      if (existing) { router.replace("/dashboard"); return; }
+
+      // New user — username must be valid before we can create their profile.
+      if (!usernameOk) {
+        setError("Choose a username before continuing with Google.");
+        setLoading(false);
+        return;
+      }
 
       // New Google user: claim the username they typed.
       const available = await isUsernameAvailable(username).catch(() => false);
@@ -111,7 +119,7 @@ export default function SignUp() {
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),
       });
-      router.replace("/");
+      router.replace("/dashboard");
     } catch (err) {
       const msg = friendlyError(err);
       if (msg) setError(msg);

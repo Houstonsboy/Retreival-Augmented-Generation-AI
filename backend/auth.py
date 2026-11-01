@@ -28,7 +28,7 @@ def init_firebase_admin():
         print(f"WARNING: service account not found at '{sa_path}' — protected routes will return 503")
         return
     cred = credentials.Certificate(sa_path)
-    firebase_admin.initialize_app(cred)
+    firebase_admin.initialize_app(cred, {'storageBucket': 'legalai-scc.firebasestorage.app'})
     _db = fb_firestore.client()
     print(f"Firebase Admin initialized from {sa_path}")
 
