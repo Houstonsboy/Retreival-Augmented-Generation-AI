@@ -21,6 +21,9 @@ from history_store import (
     submit_title_generation,
 )
 from history_routes import history_bp
+from SCCVision.router import sccvision_bp
+from SCCVision.engine import warmup as sccvision_warmup
+from SCCVision.s106b.routes import s106b_bp
 from pathlib import Path
 from werkzeug.utils import secure_filename
 from digester import digest_repo
@@ -37,6 +40,8 @@ _CORS_ORIGIN = os.environ.get("CORS_ORIGIN", "http://localhost:3000")
 CORS(app, origins=_CORS_ORIGIN)
 init_firebase_admin()
 app.register_blueprint(history_bp)
+app.register_blueprint(sccvision_bp)
+app.register_blueprint(s106b_bp)
 
 # Path to the Repo directory
 REPO_DIR = Path(__file__).resolve().parent / "Repo"
@@ -1263,8 +1268,17 @@ def QRetriever():
 
         user_query = data["query"]
 
+        # Optional: probe only specific pinned documents instead of the full DB
+        raw_pinned = data.get("pinned_docs") or []
+        pinned_case_ids = [pd["id"] for pd in raw_pinned if pd.get("type") == "case"] or None
+        pinned_statute_ids = [pd["id"] for pd in raw_pinned if pd.get("type") == "statute"] or None
+        if pinned_case_ids:
+            print(f"[INFO] Probe mode: restricting case retrieval to {pinned_case_ids}")
+        if pinned_statute_ids:
+            print(f"[INFO] Probe mode: restricting statute retrieval to {pinned_statute_ids}")
+
         # Step 1: Run Qclassifier (includes case law retrieval)
-        result = Qclassifier(user_query)
+        result = Qclassifier(user_query, pinned_case_ids=pinned_case_ids)
         
         if not result.get("success"):
             status_code = 500
@@ -1288,7 +1302,8 @@ def QRetriever():
             
             try:
                 # Call rules retriever with classification data
-                rules_result = retrieve_relevant_rules(classification, verbose=False)
+                rules_result = retrieve_relevant_rules(classification, verbose=False,
+                                                       pinned_statute_ids=pinned_statute_ids)
                 
                 # Add rules to the retrieval section
                 if "retrieval" not in result:
@@ -1901,5 +1916,8 @@ def serve_case_law_file(filename):
 
 
 if __name__ == '__main__':
+    # Warm the OCR engine in the background so the first request is not slow.
+    import threading
+    threading.Thread(target=sccvision_warmup, daemon=True).start()
     app.run(debug=True, port=5000, host='0.0.0.0')
 
