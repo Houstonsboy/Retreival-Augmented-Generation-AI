@@ -67,6 +67,8 @@ def call_groq(
     max_tokens: int = 2500,
     timeout: float = 60,
     api_key: str | None = None,
+    seed: int | None = None,
+    extra_body: dict | None = None,
 ) -> str:
     """
     POST to Groq with shuffled key rotation on 429/403.
@@ -87,12 +89,21 @@ def call_groq(
 
         for idx, key in enumerate(keys):
             try:
+                body: dict = {
+                    "model": model,
+                    "messages": msgs,
+                    "temperature": temperature,
+                    "max_tokens": max_tokens,
+                }
+                if seed is not None:
+                    body["seed"] = seed
+                if extra_body:
+                    body.update(extra_body)
                 resp = requests.post(
                     GROQ_URL,
                     headers={"Authorization": f"Bearer {key}",
                              "Content-Type": "application/json"},
-                    json={"model": model, "messages": msgs,
-                          "temperature": temperature, "max_tokens": max_tokens},
+                    json=body,
                     timeout=timeout,
                 )
                 if resp.status_code == 413:

@@ -4,7 +4,9 @@ from __future__ import annotations
 
 import hashlib
 import json
+import time
 import uuid
+from collections import defaultdict, deque
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
 
@@ -12,12 +14,14 @@ from flask import Blueprint, g, jsonify, request
 from requests import HTTPError
 
 from auth import require_auth
-from groq_client import GroqPayloadTooLargeError, GroqRateLimitError
+from groq_client import GroqPayloadTooLargeError, GroqRateLimitError, call_groq
 from .analysis_store import save_analysis_snapshot
 from .analyst.client import AnalystError
 from .analyst.dates import compute_date_checks, get_timezone, parse_iso, validate_user_fact_dates
 from .analyst.mpssa import classify_evidence, parse_mpesa_screenshot
+from .analyst.followup_catalog import compute_round_diff
 from .analyst.pipeline import analyze, analyze_case
+from .analyst.versions import PROMPT_VERSION, RULES_VERSION, VERIFY_PROMPT_VERSION
 from .engine import get_engine
 from .preprocess import InvalidImageError, PreprocessOptions
 from .service import extract_text
@@ -31,6 +35,13 @@ MAX_BYTES = 10 * 1024 * 1024  # 10 MB
 # the process. Each request still runs off the Flask worker thread.
 _executor = ThreadPoolExecutor(max_workers=2)
 
+# Startup self-check: log version constants on import so server logs confirm 2.2.0
+import logging as _logging
+_logging.getLogger(__name__).info(
+    "SCCVision router loaded — PROMPT_VERSION=%s VERIFY_PROMPT_VERSION=%s RULES_VERSION=%s",
+    PROMPT_VERSION, VERIFY_PROMPT_VERSION, RULES_VERSION,
+)
+
 
 @sccvision_bp.route("/sccvision/health", methods=["GET"])
 def health():
@@ -41,6 +52,9 @@ def health():
             "module": "SCCVision",
             "engine": "rapidocr",
             "loaded": engine is not None,
+            "prompt_version": PROMPT_VERSION,
+            "verify_prompt_version": VERIFY_PROMPT_VERSION,
+            "rules_version": RULES_VERSION,
         }
     )
 
@@ -279,8 +293,22 @@ def _slim_case_file(case_file: dict) -> dict:
 @sccvision_bp.route("/sccvision/case/analyze", methods=["POST"])
 @require_auth
 def case_analyze():
-    """Run the contract-validity analysis over a whole case file (no images)."""
-    case_file = request.get_json(silent=True) or {}
+    """Run the contract-validity analysis over a whole case file (no images).
+
+    Accepts an optional ``force_rerun: true`` field in the JSON body.
+    Without it, a cached result is returned when the same canonical input was
+    analyzed before (0 Groq calls, identical response).
+    """
+    body = request.get_json(silent=True) or {}
+
+    # Support both {case_file: {...}} and direct case_file at root
+    if "evidence" in body:
+        case_file = body
+        force_rerun = False
+    else:
+        case_file = body.get("case_file") or body
+        force_rerun = bool(body.get("force_rerun", False))
+
     if not isinstance(case_file, dict) or not case_file.get("evidence"):
         return jsonify({"error": "case_file with an evidence[] list is required"}), 400
 
@@ -292,7 +320,8 @@ def case_analyze():
         rejected = validate_user_fact_dates(case_file, analysis_date)
         if rejected:
             return jsonify({"error": "future_dated_facts", "rejected": rejected}), 422
-        analysis = analyze_case(case_file)
+
+        analysis = analyze_case(case_file, force_rerun=force_rerun, uid=g.uid)
     except AnalystError as exc:
         return jsonify({"error": f"Analysis failed: {exc}"}), 502
     except GroqPayloadTooLargeError as exc:
@@ -306,9 +335,177 @@ def case_analyze():
     except Exception:
         return jsonify({"error": "Analysis failed"}), 500
 
-    # Save snapshot for certificate generation; never block the response on failure.
-    analysis_id = save_analysis_snapshot(g.uid, analysis)
-    analysis["analysis_id"] = analysis_id
+    # Persist snapshot (skip if served from cache — it's already stored).
+    if not analysis.get("from_cache"):
+        analysis_id = save_analysis_snapshot(g.uid, analysis)
+        analysis["analysis_id"] = analysis_id
+        analysis.pop("analysis_input", None)  # don't send raw input to client
+
+    return jsonify(analysis), 200
+
+
+# ---------------------------------------------------------------------------
+# Supplement endpoint rate limiter (in-memory, per uid, 3 req / 60 s)
+# ---------------------------------------------------------------------------
+
+_SUPPLEMENT_RATE: dict[str, deque] = defaultdict(deque)
+_SUPPLEMENT_MAX = 3
+_SUPPLEMENT_WINDOW = 60  # seconds
+
+
+def _check_supplement_rate(uid: str) -> bool:
+    """Return True if the request is within rate limit, False if exceeded."""
+    now = time.monotonic()
+    q: deque = _SUPPLEMENT_RATE[uid]
+    while q and now - q[0] > _SUPPLEMENT_WINDOW:
+        q.popleft()
+    if len(q) >= _SUPPLEMENT_MAX:
+        return False
+    q.append(now)
+    return True
+
+
+@sccvision_bp.route("/sccvision/case/supplement", methods=["POST"])
+@require_auth
+def case_supplement():
+    """Merge new evidence / statements into a case file and re-analyse.
+
+    Request body:
+    {
+      "case_file": {...},            // existing case file
+      "supplement": {
+        "files": [<evidence item>],  // already processed by /evidence/process
+        "statements": [              // typed user answers
+          {"field_key": "...", "value": "...", "request_id": "...", "label": "..."}
+        ]
+      },
+      "parent_analysis_id": "...",  // optional: analysis_id from previous round
+      "force_rerun": false          // optional
+    }
+
+    Returns the new analysis response with an extra "round_diff" key.
+    """
+    if not _check_supplement_rate(g.uid):
+        return jsonify({
+            "error": "Rate limit reached for supplements. Try again in 60 seconds.",
+            "retry_after_seconds": _SUPPLEMENT_WINDOW,
+        }), 429
+
+    body = request.get_json(silent=True) or {}
+    case_file = body.get("case_file")
+    supplement = body.get("supplement") or {}
+    parent_analysis_id = body.get("parent_analysis_id")
+    force_rerun = bool(body.get("force_rerun", True))  # supplements always re-run by default
+
+    if not isinstance(case_file, dict) or not case_file.get("evidence"):
+        return jsonify({"error": "case_file with an evidence[] list is required"}), 400
+
+    new_files = supplement.get("files") or []
+    statements = supplement.get("statements") or []
+
+    if not new_files and not statements:
+        return jsonify({"error": "supplement must contain at least one file or statement"}), 400
+
+    # --- Merge new files into case file ---
+    existing_ids = {ev.get("evidence_id") for ev in case_file.get("evidence") or []}
+    merged_evidence = list(case_file.get("evidence") or [])
+    for item in new_files:
+        if isinstance(item, dict) and item.get("evidence_id") not in existing_ids:
+            merged_evidence.append(item)
+            existing_ids.add(item.get("evidence_id"))
+
+    # --- Merge statements as user_provided_facts ---
+    merged_facts = list(case_file.get("user_provided_facts") or [])
+    answered_request_ids = set()
+    for stmt in statements:
+        if not isinstance(stmt, dict) or not stmt.get("field_key") or not stmt.get("value"):
+            continue
+        merged_facts.append({
+            "id": f"stmt-{uuid.uuid4().hex[:8]}",
+            "kind": "text",
+            "fact": str(stmt["value"]),
+            "applies_to": stmt.get("applies_to"),
+            "answers_request_id": stmt.get("request_id"),
+            "status": "claimant-statement",
+            "label": stmt.get("label") or stmt.get("field_key"),
+        })
+        if stmt.get("request_id"):
+            answered_request_ids.add(stmt["request_id"])
+
+    # --- Mark answered requests as answered ---
+    merged_requests = []
+    for req in case_file.get("requests") or []:
+        if req.get("id") in answered_request_ids and req.get("status") == "open":
+            merged_requests.append({**req, "status": "answered"})
+        else:
+            merged_requests.append(req)
+
+    # Build the enriched case file for this round
+    round_case_file = {
+        **case_file,
+        "evidence": merged_evidence,
+        "user_provided_facts": merged_facts,
+        "requests": merged_requests,
+    }
+    round_case_file = _slim_case_file(round_case_file)
+    next_round = len(round_case_file.get("analyses") or []) + 1
+
+    # --- Load previous snapshot for diff computation ---
+    prev_snapshot: dict = {}
+    if parent_analysis_id:
+        try:
+            from .analysis_store import get_analysis_snapshot
+            prev_snapshot = get_analysis_snapshot(g.uid, parent_analysis_id) or {}
+        except Exception as exc:
+            print(f"[WARN] supplement: could not load parent snapshot: {exc}")
+
+    try:
+        analysis = analyze_case(
+            round_case_file,
+            force_rerun=force_rerun,
+            uid=g.uid,
+            round_num=next_round,
+            parent_analysis_id=parent_analysis_id,
+        )
+    except Exception as exc:
+        from .analyst.client import AnalystError
+        from groq_client import GroqPayloadTooLargeError, GroqRateLimitError
+        if isinstance(exc, AnalystError):
+            return jsonify({"error": f"Analysis failed: {exc}"}), 502
+        if isinstance(exc, GroqPayloadTooLargeError):
+            return jsonify({"error": str(exc)}), 413
+        if isinstance(exc, GroqRateLimitError):
+            return jsonify({"error": str(exc), "retry_after_seconds": 30}), 429
+        if isinstance(exc, ValueError):
+            return jsonify({"error": str(exc)}), 400
+        return jsonify({"error": "Re-analysis failed"}), 500
+
+    # Persist new snapshot
+    if not analysis.get("from_cache"):
+        from .analysis_store import save_analysis_snapshot
+        analysis_id = save_analysis_snapshot(g.uid, analysis)
+        analysis["analysis_id"] = analysis_id
+        analysis.pop("analysis_input", None)
+
+    # --- Compute round diff ---
+    prev_follow_ups_raw = prev_snapshot.get("guided_follow_ups") or []
+    new_follow_ups_raw = analysis.get("guided_follow_ups") or []
+    # Reconstruct minimal FollowUpRequestV2-compatible objects for diff
+    from .analyst.followups import FollowUpRequestV2
+    try:
+        prev_reqs = [FollowUpRequestV2(**r) for r in prev_follow_ups_raw]
+        new_reqs = [FollowUpRequestV2(**r) for r in new_follow_ups_raw]
+    except Exception:
+        prev_reqs, new_reqs = [], []
+
+    round_diff = compute_round_diff(
+        prev_snapshot=prev_snapshot,
+        new_snapshot=analysis,
+        prev_requests=prev_reqs,
+        new_requests=new_reqs,
+        round_num=next_round,
+    )
+    analysis["round_diff"] = round_diff
 
     return jsonify(analysis), 200
 

@@ -73,19 +73,39 @@ def _check_4a(snapshot: dict, facts: DeviceFacts) -> ConditionResult:
 
 
 def _check_4b(facts: DeviceFacts) -> ConditionResult:
-    """4b — Particulars of the device provided."""
-    basis = [
-        f"Device make: '{facts.device_make}'.",
-        f"Device model: '{facts.device_model}'.",
-    ]
+    """4b — Particulars of the device provided (make and model must be non-blank)."""
+    make = (facts.device_make or "").strip()
+    model = (facts.device_model or "").strip()
+    met = bool(make and model)
+
+    basis: list[str] = []
+    remedies: list[str] = []
+
+    if make:
+        basis.append(f"Device make provided: '{make}'.")
+    else:
+        basis.append("Device make is missing or blank.")
+        remedies.append("Provide the device make (e.g. Samsung, Apple, Tecno).")
+
+    if model:
+        basis.append(f"Device model provided: '{model}'.")
+    else:
+        basis.append("Device model is missing or blank.")
+        remedies.append("Provide the device model (e.g. Galaxy A32, iPhone 12).")
+
     if facts.phone_number_last4:
-        basis.append(f"Phone number last 4 digits supplied (stored masked as ******{facts.phone_number_last4}).")
+        basis.append(
+            f"Phone number last 4 digits supplied "
+            f"(stored masked as ******{facts.phone_number_last4})."
+        )
+
+    remedy = " ".join(dict.fromkeys(remedies)) if remedies else None
     return ConditionResult(
         code="4b",
         title="Particulars of the device",
-        met=True,
+        met=met,
         basis=basis,
-        remedy=None,
+        remedy=remedy,
     )
 
 
@@ -276,17 +296,18 @@ def _check_integrity(snapshot: dict) -> ConditionResult:
     remedies: list[str] = []
     met = True
 
-    quotes_ok = verification.get("quotes_grounded", True)
-    if not quotes_ok:
+    # Phase 10: prefer refs_grounded (v2) over quotes_grounded (v1 compat)
+    refs_ok = verification.get("refs_grounded", verification.get("quotes_grounded", True))
+    if not refs_ok:
         met = False
-        ungrounded = verification.get("ungrounded_quotes") or []
+        ungrounded = verification.get("ungrounded_refs") or verification.get("ungrounded_quotes") or []
         basis.append(
-            f"Evidence integrity: {len(ungrounded)} quote(s) could not be traced back "
-            "to source messages (quotes_grounded=False)."
+            f"Evidence integrity: {len(ungrounded)} reference(s) could not be traced back "
+            "to source messages (refs_grounded=False)."
         )
         remedies.append("Upload the complete, unedited conversation.")
     else:
-        basis.append("All quotes traced back to source messages (quotes_grounded=True).")
+        basis.append("All evidence references traced back to source messages (refs_grounded=True).")
 
     mpesa_check = verification.get("mpesa_cross_check") or {}
     consistent = mpesa_check.get("consistent", True)

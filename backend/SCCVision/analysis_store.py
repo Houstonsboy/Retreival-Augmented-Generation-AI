@@ -55,9 +55,12 @@ def save_analysis_snapshot(
     """Write a stripped analysis snapshot; return analysis_id or None on error.
 
     ``analysis`` is the dict returned by pipeline.analyze_case().  We store:
-    - result fields (all AnalystResult fields)
-    - verification block
-    - prompt_version, model
+    - result fields (AnalystResult-compat for s106B gate)
+    - verification block (quotes_grounded, refs_grounded, mpesa_cross_check)
+    - v2 fields: input_hash, derived_statuses, cert_eligibility, confidence
+    - prompt_version, rules_version, model, calls_used
+    - guided_follow_ups (capped list of FollowUpRequestV2 dicts)
+    - case tracking: case_id, round, parent_analysis_id
     - evidence list stripped to: evidence_id, type, file_name, sha256,
       server_sha256, hash_match, added_at  (no OCR text, no images)
 
@@ -65,7 +68,6 @@ def save_analysis_snapshot(
     """
     analysis_id = uuid.uuid4().hex
 
-    # Build evidence schedule (no OCR payloads)
     _KEEP = {"evidence_id", "type", "file_name", "sha256", "server_sha256", "hash_match", "added_at"}
     raw_evidence = analysis.get("analysis_input", {}).get("evidence") or []
     evidence_schedule = [
@@ -73,16 +75,47 @@ def save_analysis_snapshot(
         for item in raw_evidence
     ]
 
+    # Strip very large fields from follow-ups for Firestore (keep first 6, drop `how` if huge)
+    guided_raw = analysis.get("guided_follow_ups") or []
+    guided_stored = []
+    for req in guided_raw[:6]:
+        r = dict(req)
+        if len(r.get("how", "")) > 400:
+            r["how"] = r["how"][:400] + "…"
+        guided_stored.append(r)
+
     doc = {
-        "analysis_id":   analysis_id,
-        "prompt_version": analysis.get("prompt_version"),
-        "model":          analysis.get("model"),
-        "result":         analysis.get("result") or {},
-        "verification":   analysis.get("verification") or {},
-        "evidence":       evidence_schedule,
-        "created_at":     fb_firestore.SERVER_TIMESTAMP,
-        "schema_version": 1,
-        "truncated":      False,
+        "analysis_id":        analysis_id,
+        "input_hash":         analysis.get("input_hash"),
+        "prompt_version":     analysis.get("prompt_version"),
+        "verify_prompt_version": analysis.get("verify_prompt_version"),
+        "rules_version":      analysis.get("rules_version"),
+        "model":              analysis.get("model"),
+        "calls_used":         analysis.get("calls_used"),
+        "trigger_fired":      analysis.get("trigger_fired"),
+        # v2 deterministic fields
+        "derived_statuses":   analysis.get("derived_statuses") or {},
+        "cert_eligibility":   analysis.get("cert_eligibility") or {},
+        "confidence":         analysis.get("confidence"),
+        "verdict":            analysis.get("verdict"),
+        "integrity_rating":   analysis.get("integrity_rating"),
+        "unstable_fields":    analysis.get("unstable_fields") or [],
+        "model_disagreements": analysis.get("model_disagreements") or {},
+        "timestamp_info":     analysis.get("timestamp_info") or {},
+        "confidence_breakdown": analysis.get("confidence_breakdown") or {},
+        # Guided follow-ups
+        "guided_follow_ups":  guided_stored,
+        # Case tracking
+        "case_id":            analysis.get("case_id") or "",
+        "round":              analysis.get("round") or 1,
+        "parent_analysis_id": analysis.get("parent_analysis_id"),
+        # Legacy fields (kept for s106B gate)
+        "result":             analysis.get("result") or {},
+        "verification":       analysis.get("verification") or {},
+        "evidence":           evidence_schedule,
+        "created_at":         fb_firestore.SERVER_TIMESTAMP,
+        "schema_version":     3,
+        "truncated":          False,
     }
     doc = _size_guard(doc)
 
@@ -103,4 +136,32 @@ def get_analysis_snapshot(uid: str, analysis_id: str) -> dict | None:
         return snap.to_dict()
     except Exception as exc:
         logger.warning("analysis_store: get failed uid=%s id=%s: %s", uid, analysis_id, exc)
+        return None
+
+
+def get_analysis_by_hash(uid: str, input_hash: str) -> dict | None:
+    """Return the most-recent analysis snapshot matching input_hash, or None.
+
+    Used by the pipeline to serve cached results (0 Groq calls) when the
+    same canonical input has been analyzed before.
+    """
+    try:
+        docs = (
+            _db()
+            .collection("users")
+            .document(uid)
+            .collection("analyses")
+            .where("input_hash", "==", input_hash)
+            .order_by("created_at", direction="DESCENDING")
+            .limit(1)
+            .get()
+        )
+        for doc in docs:
+            if doc.exists:
+                data = doc.to_dict()
+                data["analysis_id"] = doc.id
+                return data
+        return None
+    except Exception as exc:
+        logger.warning("analysis_store: hash lookup failed uid=%s hash=%s: %s", uid, input_hash, exc)
         return None

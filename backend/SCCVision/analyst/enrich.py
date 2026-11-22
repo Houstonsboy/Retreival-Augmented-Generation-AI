@@ -11,6 +11,7 @@ sent to the analyst as the (untrusted) data block.
 from __future__ import annotations
 
 import re
+from datetime import datetime, timezone
 from typing import Any
 
 # ---------------------------------------------------------------------------
@@ -629,50 +630,105 @@ def build_analysis_input_from_case(
     raw_messages: list[dict] = []
     raw_events: list[dict] = []
     chat_count = 0
+    # For evidence_manifest
+    ev_msg_start: dict[str, int] = {}
+    ev_msg_end: dict[str, int] = {}
+    ev_mpesa_codes: dict[str, list[str]] = {}
 
     evidence_items = case_file.get("evidence") or []
 
     for ev in evidence_items:
+        eid = ev.get("evidence_id")
+        ev_type = ev.get("type") or ""
         evidence_list.append({
-            "evidence_id": ev.get("evidence_id"),
-            "type": ev.get("type"),
+            "evidence_id": eid,
+            "type": ev_type,
             "label": ev.get("label") or ev.get("file_name"),
         })
-        if ev.get("type") != "chat_screenshot":
-            continue
-        chat_count += 1
-        ocr = ev.get("ocr") or {}
-        if contact is None and (ocr.get("contact") or {}).get("name"):
-            contact = ocr["contact"]
-        eid = ev.get("evidence_id")
-        for m in _effective_chat_messages(ev):
-            raw_messages.append(m)
-            idx = len(messages) + 1
-            sender, sender_name = normalize_sender(m, contact)
-            text_raw = m.get("text") or ""
-            messages.append({
-                "index": idx,
-                "evidence_id": eid,
-                "sender": sender,
-                "sender_name": mask_pii(sender_name),
-                "text": _trim_text(mask_pii(text_raw)),
-                "date": None,
-                "time": m.get("timestamp") or m.get("time"),
-                "edited": bool(m.get("edited")),
-                "ocr_confidence": (
-                    m.get("avg_confidence")
-                    if "avg_confidence" in m
-                    else m.get("ocr_confidence")
-                ),
-                "sender_confidence": m.get("sender_confidence"),
-            })
-        for se in ocr.get("system_events") or []:
-            raw_events.append(se)
-            system_events.append({
-                "evidence_id": eid,
-                "after_message_index": se.get("after_message_index"),
-                "text": mask_pii(se.get("text") or ""),
-            })
+
+        if ev_type == "chat_screenshot":
+            chat_count += 1
+            ocr = ev.get("ocr") or {}
+            if contact is None and (ocr.get("contact") or {}).get("name"):
+                contact = ocr["contact"]
+            first_idx = len(messages) + 1
+            for m in _effective_chat_messages(ev):
+                raw_messages.append(m)
+                idx = len(messages) + 1
+                sender, sender_name = normalize_sender(m, contact)
+                text_raw = m.get("text") or ""
+                messages.append({
+                    "index": idx,
+                    "evidence_id": eid,
+                    "sender": sender,
+                    "sender_name": mask_pii(sender_name),
+                    "text": _trim_text(mask_pii(text_raw)),
+                    "date": None,
+                    "time": m.get("timestamp") or m.get("time"),
+                    "edited": bool(m.get("edited")),
+                    "ocr_confidence": (
+                        m.get("avg_confidence")
+                        if "avg_confidence" in m
+                        else m.get("ocr_confidence")
+                    ),
+                    "sender_confidence": m.get("sender_confidence"),
+                })
+            for se in ocr.get("system_events") or []:
+                raw_events.append(se)
+                system_events.append({
+                    "evidence_id": eid,
+                    "after_message_index": se.get("after_message_index"),
+                    "text": mask_pii(se.get("text") or ""),
+                })
+            last_idx = len(messages)
+            if last_idx >= first_idx:
+                ev_msg_start[eid] = first_idx
+                ev_msg_end[eid] = last_idx
+
+        elif ev_type in ("mpesa_screenshot", "bank_sms", "bank_screenshot"):
+            # Part E: M-Pesa/bank confirmation screenshots also produce message entries
+            # so the LLM can see party identity info (e.g. "Dear Kristein Gichuhi Mwaura")
+            source_name = "M-PESA" if "mpesa" in ev_type else (ev.get("bank_name") or "BANK")
+            first_idx = len(messages) + 1
+            codes_in_ev: list[str] = []
+            for p in ev.get("parsed") or []:
+                idx = len(messages) + 1
+                # Build a readable confirmation string from parsed fields
+                sms_parts: list[str] = []
+                recipient = p.get("recipient") or p.get("account_name")
+                if recipient:
+                    sms_parts.append(f"Dear {mask_pii(recipient)}")
+                code = p.get("code")
+                amount = p.get("amount_kes")
+                if code:
+                    codes_in_ev.append(str(code).upper())
+                    sms_parts.append(f"{code} Confirmed")
+                if amount is not None:
+                    sms_parts.append(f"KES {int(amount):,} received")
+                if p.get("till_or_paybill"):
+                    sms_parts.append(f"from {p['till_or_paybill']}")
+                if p.get("datetime"):
+                    sms_parts.append(f"on {p['datetime']}")
+                sms_text = ". ".join(sms_parts) + "." if sms_parts else f"{source_name} confirmation."
+                raw_messages.append({"text": sms_text, "sender": "system"})
+                messages.append({
+                    "index": idx,
+                    "evidence_id": eid,
+                    "sender": "system",
+                    "sender_name": source_name,
+                    "text": sms_text,
+                    "date": p.get("datetime"),
+                    "time": None,
+                    "edited": False,
+                    "ocr_confidence": p.get("parse_confidence"),
+                    "sender_confidence": 1.0,
+                    "msg_kind": "SYSTEM_SMS",
+                })
+            ev_mpesa_codes[eid] = codes_in_ev
+            last_idx = len(messages)
+            if last_idx >= first_idx:
+                ev_msg_start[eid] = first_idx
+                ev_msg_end[eid] = last_idx
 
     # M-Pesa extracted from every source: chat text, M-Pesa screenshots, manual.
     mpesa_extracted: list[dict] = []
@@ -695,6 +751,11 @@ def build_analysis_input_from_case(
     payment_hints: list[dict] = []
     mentioned_amounts: list[dict] = []
     for m in messages:
+        # SYSTEM_SMS entries are synthesised from evidence already in mpesa_extracted —
+        # re-parsing them here would add the same code a second time, causing false
+        # DUPLICATE_CONFLICT findings in check_mpesa_cross_match.
+        if m.get("msg_kind") == "SYSTEM_SMS":
+            continue
         text_raw = m["text"]
         idx = m["index"]
         parsed = parse_mpesa_message(text_raw, idx)
@@ -735,18 +796,47 @@ def build_analysis_input_from_case(
             "status": f.get("status", "user-stated"),
         })
 
+    capped_messages = _cap_messages(messages)
+    _assign_timestamp_quality(capped_messages, system_events)
+    candidates = _tag_candidates(capped_messages, mpesa_extracted)
+
+    # Build evidence_manifest (per-file tracking for round diffs)
+    seen_hashes: dict[str, str] = {}
+    evidence_manifest: list[dict] = []
+    for ev in evidence_items:
+        eid = ev.get("evidence_id")
+        file_hash = ev.get("file_hash")
+        duplicate_of = None
+        if file_hash:
+            if file_hash in seen_hashes:
+                duplicate_of = seen_hashes[file_hash]
+            else:
+                seen_hashes[file_hash] = eid
+        entry: dict = {
+            "evidence_id": eid,
+            "file_hash": file_hash,
+            "uploaded_round": ev.get("uploaded_round") or ev.get("round") or 1,
+            "request_id": ev.get("answers_request_id") or ev.get("request_id"),
+            "message_index_range": [ev_msg_start.get(eid), ev_msg_end.get(eid)],
+            "mpesa_codes": ev_mpesa_codes.get(eid) or [],
+        }
+        if duplicate_of:
+            entry["duplicate_of"] = duplicate_of
+        evidence_manifest.append(entry)
+
     return {
         "case_context": {
             "user_role": user_role,
             "user_account": mask_pii(context.get("user_account") or ""),
-            "analysis_date": date_checks.get("analysis_date"),
+            "analysis_date": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         },
         "evidence": evidence_list,
+        "evidence_manifest": evidence_manifest,
         "contact": {
             "name": mask_pii(contact.get("name")) if contact and contact.get("name") else None,
             "presence": contact.get("presence") if contact else None,
         },
-        "messages": _cap_messages(messages),
+        "messages": capped_messages,
         "system_events": system_events,
         "mpesa_extracted": mpesa_extracted,
         "mentioned_amounts": mentioned_amounts,
@@ -754,4 +844,151 @@ def build_analysis_input_from_case(
         "integrity_flags": integrity_flags,
         "user_provided_facts": user_provided_facts,
         "previous_analysis": _previous_analysis(case_file),
+        "candidates": candidates,
     }
+
+
+# ---------------------------------------------------------------------------
+# Phase 2b — Per-message timestamp quality
+# ---------------------------------------------------------------------------
+
+_DATE_FULL_RE = re.compile(
+    r"(?:"
+    # Day/month/year patterns
+    r"\d{1,2}[/\-]\d{1,2}[/\-]\d{2,4}"
+    r"|"
+    r"\d{1,2}\s+(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|Jun(?:e)?|"
+    r"Jul(?:y)?|Aug(?:ust)?|Sep(?:tember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)"
+    r"\s+\d{2,4}"
+    r")",
+    re.IGNORECASE,
+)
+_TIME_RE = re.compile(
+    r"\b\d{1,2}:\d{2}(?:\s?(?:AM|PM|am|pm))?\b"
+)
+_RELATIVE_RE = re.compile(
+    r"\b(Today|Yesterday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday)\b",
+    re.IGNORECASE,
+)
+
+
+def _assign_timestamp_quality(
+    messages: list[dict],
+    system_events: list[dict] | None,
+) -> None:
+    """Assign timestamp_quality to each message in-place (Phase 2b).
+
+    Applies WhatsApp date-separator chips (system events) to following messages.
+    """
+    # Build a date_chip_at_index map from system_events
+    chip_dates: dict[int, str] = {}  # after_message_index → date chip text
+    for ev in (system_events or []):
+        text = ev.get("text") or ""
+        if _DATE_FULL_RE.search(text) or _RELATIVE_RE.search(text):
+            after = ev.get("after_message_index") or 0
+            chip_dates[after] = text
+
+    current_chip: str | None = None
+    has_chip_date = False
+
+    for m in messages:
+        idx = m.get("index") or 0
+        # Apply chip if one starts at this index
+        if idx - 1 in chip_dates:
+            current_chip = chip_dates[idx - 1]
+            has_chip_date = bool(_DATE_FULL_RE.search(current_chip))
+
+        msg_time = m.get("time") or ""
+        has_time = bool(_TIME_RE.search(msg_time))
+
+        if has_chip_date and has_time:
+            tq = "FULL"
+        elif has_chip_date:
+            tq = "DATE_ONLY"
+        elif current_chip and not has_chip_date:
+            tq = "RELATIVE"
+        elif has_time:
+            tq = "TIME_ONLY"
+        else:
+            tq = "NONE"
+
+        m["timestamp_quality"] = tq
+
+
+# ---------------------------------------------------------------------------
+# Phase 4a — Candidate pre-tagging
+# ---------------------------------------------------------------------------
+
+_KES_AMOUNT_RE = re.compile(
+    r"(?:ksh|kes|k\b|/=)\s*[\d,]+|[\d,]+\s*(?:ksh|kes|/=|\bk\b)|"
+    r"(?:Ksh|KSh|KSHS|KES|Kes)\s*[\d,]+",
+    re.IGNORECASE,
+)
+_ACCEPTANCE_KW_RE = re.compile(
+    r"\b(ok|okay|sawa|deal|done|agreed|nimekubali|poa|accepted?|confirm|ntakuja"
+    r"|niko|perfect)\b|👍",
+    re.IGNORECASE,
+)
+_QUESTION_RE = re.compile(
+    r"\?$|\b(how much|bei gani|ngapi|kiasi gani|lini|when|what.*price)\b",
+    re.IGNORECASE,
+)
+_DEADLINE_RE = re.compile(
+    r"\b(by Friday|by Monday|kesho|leo|tomorrow|by \d|wiki ijayo|next week|"
+    r"by end|EOM|by \d{1,2}[/\-])",
+    re.IGNORECASE,
+)
+_EDIT_DELETE_RE = re.compile(
+    r"(this message was edited|this message was deleted|<this message was edited>)",
+    re.IGNORECASE,
+)
+
+
+def _tag_candidates(
+    messages: list[dict],
+    mpesa_extracted: list[dict] | None,
+) -> dict[str, list[int]]:
+    """Tag messages with code-detected roles for the inspect prompt (Phase 4a).
+
+    Returns a candidates dict: {role: [msg_index, ...]}.
+    """
+    amount_msgs: list[int] = []
+    acceptance_msgs: list[int] = []
+    question_msgs: list[int] = []
+    deadline_msgs: list[int] = []
+    edit_delete_msgs: list[int] = []
+    mpesa_msg_indices: set[int] = {
+        p.get("msg_index") for p in (mpesa_extracted or []) if p.get("msg_index")
+    }
+    mpesa_msgs: list[int] = []
+
+    for m in messages:
+        idx = m.get("index") or m.get("msg_index")
+        text = m.get("text") or ""
+        if _KES_AMOUNT_RE.search(text):
+            amount_msgs.append(idx)
+        if _ACCEPTANCE_KW_RE.search(text):
+            acceptance_msgs.append(idx)
+        if _QUESTION_RE.search(text.rstrip()):
+            question_msgs.append(idx)
+        if _DEADLINE_RE.search(text):
+            deadline_msgs.append(idx)
+        if _EDIT_DELETE_RE.search(text):
+            edit_delete_msgs.append(idx)
+        if idx in mpesa_msg_indices:
+            mpesa_msgs.append(idx)
+
+    out: dict[str, list[int]] = {}
+    if amount_msgs:
+        out["amount_msgs"] = amount_msgs
+    if acceptance_msgs:
+        out["acceptance_keyword_msgs"] = acceptance_msgs
+    if question_msgs:
+        out["question_msgs"] = question_msgs
+    if deadline_msgs:
+        out["date_or_deadline_msgs"] = deadline_msgs
+    if edit_delete_msgs:
+        out["edit_delete_labels"] = edit_delete_msgs
+    if mpesa_msgs:
+        out["mpesa_msgs"] = mpesa_msgs
+    return out

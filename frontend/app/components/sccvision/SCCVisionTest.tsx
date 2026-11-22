@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import {
   Upload, X, ScanText, Loader2, Copy, Check, AlertCircle, Download,
   Scale, ShieldCheck, FileWarning, ChevronDown, ChevronRight, Save,
-  FolderOpen, CalendarDays, Award, Printer, ZoomIn,
+  FolderOpen, CalendarDays, Award, Printer, ZoomIn, Sparkles,
 } from "lucide-react";
 import { apiFetch } from "@/app/lib/api";
 import type { CertificateRecord } from "@/app/lib/evidenceTypes";
@@ -22,7 +22,8 @@ const MUTED   = "#6B6660";
 const SURFACE = "#FFFDF8";
 
 const MAX_BYTES = 10 * 1024 * 1024; // 10 MB
-const CERT_THRESHOLD = 0.83;
+// Certificate eligibility is now computed on the backend (Phase 9).
+// CERT_THRESHOLD removed — use analysis.cert_eligibility.eligible instead.
 const ACCEPTED = [".png", ".jpg", ".jpeg", ".webp"];
 const SCHEMA_VERSION = 1;
 
@@ -65,7 +66,6 @@ interface CaseFile {
   case_context: {
     user_role: string;
     user_account: string;
-    analysis_date_override: string | null;
   };
   evidence: CaseEvidence[];
   user_provided_facts: UserFact[];
@@ -148,6 +148,38 @@ interface Verification {
   verdict_downgraded: boolean;
   downgrade_reasons: string[];
 }
+interface CertEligibility {
+  eligible: boolean;
+  reasons: string[];
+}
+
+interface FollowUpInputField {
+  key: string;
+  label: string;
+  type: string;
+  required?: boolean;
+  options?: { msg_index?: number; preview?: string; source?: string }[] | null;
+  help?: string | null;
+}
+
+interface GuidedFollowUp {
+  id: string;
+  gap_code: string;
+  elements: string[];
+  priority: number;
+  blocks_certificate: boolean;
+  kind: "UPLOAD" | "INPUT" | "CHOICE" | "CONFIRM";
+  title: string;
+  why: string;
+  how: string;
+  upload_types: string[];
+  fields: FollowUpInputField[];
+  example?: string | null;
+  related_msg_indices: number[];
+  status: string;
+  expected_effect: string;
+}
+
 interface AnalystResponse {
   analysis_input: unknown;
   result: AnalystResult;
@@ -155,6 +187,22 @@ interface AnalystResponse {
   prompt_version: string;
   model: string;
   analysis_id?: string | null;
+  // v2 deterministic fields
+  cert_eligibility?: CertEligibility;
+  confidence?: number;
+  confidence_breakdown?: Record<string, unknown>;
+  verdict?: string;
+  derived_statuses?: Record<string, string>;
+  unstable_fields?: string[];
+  model_disagreements?: Record<string, { model_status: string; derived_status: string; model_reason: string }>;
+  integrity_rating?: string;
+  calls_used?: number;
+  trigger_fired?: string | null;
+  from_cache?: boolean;
+  // v2.2 guided follow-ups
+  guided_follow_ups?: GuidedFollowUp[];
+  round?: number;
+  round_diff?: Record<string, unknown>;
 }
 
 const ELEMENT_LABELS: Record<string, string> = {
@@ -162,6 +210,91 @@ const ELEMENT_LABELS: Record<string, string> = {
   E: "Consideration", F: "Intention", G: "Certainty", H: "Genuine consent",
   I: "Legality", J: "Formalities", K: "Performance & breach",
 };
+
+const ELEMENT_FIX: Record<string, string> = {
+  C: "Identify the message where one party proposed the specific terms of the agreement.",
+  D: "Identify where the other party agreed to those terms — a clear 'yes', 'okay', or equivalent.",
+  E: "Upload the original M-Pesa confirmation screenshot or bank statement that shows payment for this specific contract.",
+  G: "Clarify what exactly was being purchased or provided — the subject matter must be unambiguous in the conversation.",
+};
+
+function explainCertReason(reason: string): { title: string; detail: string } {
+  const elemMatch = reason.match(/^element ([A-K]) not established \((\w+)\)/);
+  if (elemMatch) {
+    const letter = elemMatch[1];
+    const status = elemMatch[2];
+    const label = ELEMENT_LABELS[letter] ?? `Element ${letter}`;
+    return {
+      title: `${label} (${letter}) not established — currently ${status}`,
+      detail: ELEMENT_FIX[letter] ?? "Provide additional evidence to establish this element.",
+    };
+  }
+  if (reason.includes("element G absent")) {
+    return {
+      title: "Contract scope (G) not established",
+      detail: ELEMENT_FIX["G"]!,
+    };
+  }
+  const unstableMatch = reason.match(/inconsistent across independent inspections: \[(.+)\]/);
+  if (unstableMatch) {
+    const letters = unstableMatch[1].replace(/['\s]/g, "").split(",");
+    const names = letters.map(l => `${ELEMENT_LABELS[l] ?? l} (${l})`).join(", ");
+    return {
+      title: `Two reads disagreed on: ${names}`,
+      detail: "The same evidence produced different conclusions on two independent passes. Upload clearer screenshots for the disputed element(s) or retry — a persistent conflict means the evidence is ambiguous.",
+    };
+  }
+  if (reason.startsWith("verdict: LIKELY NOT VALID")) {
+    return {
+      title: "Contract appears not valid",
+      detail: "Core elements (offer, acceptance, or payment) are missing or directly contradicted by the evidence. Address the element gaps above first.",
+    };
+  }
+  if (reason.startsWith("verdict: INSUFFICIENT EVIDENCE")) {
+    return {
+      title: "Insufficient evidence",
+      detail: "Not enough conversation or documents were provided to assess whether a valid contract exists. Upload more of the conversation or relevant supporting documents.",
+    };
+  }
+  if (reason.includes("M-Pesa cross-check")) {
+    return {
+      title: "M-Pesa confirmation mismatch",
+      detail: "The M-Pesa codes or amounts cited by the analysis don't match what was found in the uploaded screenshots. Upload the original, unedited M-Pesa confirmation screenshot.",
+    };
+  }
+  if (reason.includes("record integrity weak")) {
+    return {
+      title: "Conversation integrity is weak",
+      detail: "Messages appear to have been edited or deleted after sending. Upload original, unaltered screenshots. If edits are legitimate, provide the original text as a user-stated fact.",
+    };
+  }
+  if (reason.includes("ungrounded evidence references")) {
+    return {
+      title: "Evidence references could not be verified",
+      detail: "The analysis cited message indices that don't exist in the uploaded conversation. This is a system issue — click Retry.",
+    };
+  }
+  if (reason.includes("analysis incomplete")) {
+    return {
+      title: "Analysis did not complete",
+      detail: "The pipeline did not finish successfully. Click Retry to run the analysis again.",
+    };
+  }
+  if (reason.includes("not independently verified")) {
+    return {
+      title: "Facts not yet independently verified",
+      detail: "A second independent inspection is needed to confirm the key findings. Click Retry to run the full two-pass analysis.",
+    };
+  }
+  const confMatch = reason.match(/confidence ([\d.]+)% below minimum ([\d.]+)%/);
+  if (confMatch) {
+    return {
+      title: `Overall confidence too low (${confMatch[1]}% — minimum ${confMatch[2]}%)`,
+      detail: "Provide additional evidence to strengthen the weaker contract elements shown in the element grid below.",
+    };
+  }
+  return { title: reason, detail: "" };
+}
 
 function verdictTone(v: string): { bg: string; fg: string; border: string } {
   if (v === "LIKELY VALID") return { bg: "#F0FDF4", fg: "#15803D", border: "#BBF7D0" };
@@ -182,10 +315,13 @@ function statusTone(s: string): { bg: string; fg: string } {
 }
 
 function isCertEligible(a: AnalystResponse): boolean {
-  const v = a.verification.verdict_after ?? a.result.overall_verdict;
+  // Phase 9: use backend-computed eligibility when available.
+  if (a.cert_eligibility != null) return a.cert_eligibility.eligible;
+  // Legacy fallback for old API responses.
+  const v = a.verification?.verdict_after ?? a.result.overall_verdict;
   return (
     a.result.confidence != null &&
-    a.result.confidence >= CERT_THRESHOLD &&
+    a.result.confidence >= 0.83 &&
     v !== "LIKELY NOT VALID" &&
     v !== "INSUFFICIENT EVIDENCE"
   );
@@ -240,7 +376,7 @@ function newCaseFile(): CaseFile {
     schema_version: SCHEMA_VERSION,
     case_id: `case-${Date.now().toString(36)}`,
     created_at: new Date().toISOString(),
-    case_context: { user_role: "unknown", user_account: "", analysis_date_override: null },
+    case_context: { user_role: "unknown", user_account: "" },
     evidence: [],
     user_provided_facts: [],
     rejected_facts: [],
@@ -294,6 +430,15 @@ export function SCCVisionTest() {
   const [answerUploadPreview, setAnswerUploadPreview] = useState("");
   const [answerUploadLoading, setAnswerUploadLoading] = useState(false);
 
+  // Guided follow-up state
+  const [guidedTarget, setGuidedTarget] = useState<GuidedFollowUp | null>(null);
+  const [guidedFieldValues, setGuidedFieldValues] = useState<Record<string, string>>({});
+  const guidedUploadRef = useRef<HTMLInputElement>(null);
+  const [guidedUploadFile, setGuidedUploadFile] = useState<File | null>(null);
+  const [guidedUploadPreview, setGuidedUploadPreview] = useState("");
+  const [guidedSubmitting, setGuidedSubmitting] = useState(false);
+  const [showAllGuided, setShowAllGuided] = useState(false);
+
   // Persist the case file locally (client-side "memory" only).
   useEffect(() => {
     try {
@@ -321,7 +466,7 @@ export function SCCVisionTest() {
     return () => document.getElementById("scc-print-style")?.remove();
   }, [showCertificate]);
 
-  const asOf = caseFile.case_context.analysis_date_override || todayISO();
+  const asOf = todayISO();
 
   const pickFiles = useCallback((incoming: FileList | File[]) => {
     setError(null);
@@ -338,12 +483,12 @@ export function SCCVisionTest() {
       }
       valid.push(f);
     }
-    previewUrls.forEach((u) => URL.revokeObjectURL(u));
-    const urls = valid.map((f) => URL.createObjectURL(f));
-    setFiles(valid);
-    setPreviewUrls(urls);
-    setLabels(valid.map(() => ""));
-  }, [previewUrls]);
+    // Append to existing selection — don't replace.
+    const newUrls = valid.map((f) => URL.createObjectURL(f));
+    setFiles((prev) => [...prev, ...valid]);
+    setPreviewUrls((prev) => [...prev, ...newUrls]);
+    setLabels((prev) => [...prev, ...valid.map((): EvidenceType | "" => "")]);
+  }, []);
 
   const removeFile = useCallback((i: number) => {
     setFiles((prev) => prev.filter((_, idx) => idx !== i));
@@ -594,6 +739,134 @@ export function SCCVisionTest() {
     closeAnswerModal();
   };
 
+  const closeGuidedModal = () => {
+    setGuidedTarget(null);
+    setGuidedFieldValues({});
+    if (guidedUploadPreview) URL.revokeObjectURL(guidedUploadPreview);
+    setGuidedUploadFile(null);
+    setGuidedUploadPreview("");
+  };
+
+  const submitGuidedAnswer = async () => {
+    if (!guidedTarget || !analysis) return;
+    const req = guidedTarget;
+    setGuidedSubmitting(true);
+    setError(null);
+
+    try {
+      const newFiles: CaseEvidence[] = [];
+      const statements: { field_key: string; value: string; request_id: string; label: string }[] = [];
+
+      // If UPLOAD kind and a file was chosen, OCR it
+      if (req.kind === "UPLOAD" && guidedUploadFile) {
+        const fd = new FormData();
+        fd.append("file", guidedUploadFile);
+        const extractRes = await apiFetch(`/sccvision/extract?invert=${invert}&upscale=${upscale}`, {
+          method: "POST", body: fd,
+        });
+        const ocr = await extractRes.json().catch(() => null);
+        if (!extractRes.ok) throw new Error(ocr?.error || `OCR failed (${extractRes.status})`);
+
+        const hash = await sha256Hex(await guidedUploadFile.arrayBuffer());
+        const classification: EvidenceType =
+          req.upload_types?.[0]?.toLowerCase().includes("mpesa") ? "mpesa_screenshot" :
+          req.upload_types?.[0]?.toLowerCase().includes("chat") ? "chat_screenshot" : "other";
+
+        const procRes = await apiFetch("/sccvision/evidence/process", {
+          method: "POST",
+          body: JSON.stringify({
+            ocr_result: ocr,
+            classification,
+            file_name: guidedUploadFile.name,
+            sha256: hash,
+          }),
+        });
+        const proc = await procRes.json().catch(() => null);
+        if (!procRes.ok) throw new Error(proc?.error || `Processing failed (${procRes.status})`);
+        newFiles.push(proc.evidence as CaseEvidence);
+
+        // Keep preview for the evidence list
+        const previewUrl = URL.createObjectURL(guidedUploadFile);
+        previewsByHash.current.set(hash, previewUrl);
+        filesByHash.current.set(hash, { file: guidedUploadFile, evidenceType: classification });
+      }
+
+      // Collect typed field answers as statements
+      for (const [key, value] of Object.entries(guidedFieldValues)) {
+        if (value.trim()) {
+          const field = req.fields.find((f) => f.key === key);
+          statements.push({
+            field_key: key,
+            value: value.trim(),
+            request_id: req.id,
+            label: field?.label || key,
+          });
+        }
+      }
+
+      if (!newFiles.length && !statements.length) {
+        setError("Please upload a file or fill in at least one field.");
+        setGuidedSubmitting(false);
+        return;
+      }
+
+      // --- Call supplement endpoint ---
+      const supplementBody = {
+        case_file: caseFile,
+        supplement: { files: newFiles, statements },
+        parent_analysis_id: analysis.analysis_id ?? null,
+        force_rerun: true,
+      };
+
+      const res = await apiFetch("/sccvision/case/supplement", {
+        method: "POST",
+        body: JSON.stringify(supplementBody),
+      });
+      const body = await res.json().catch(() => null);
+      if (!res.ok) {
+        if (res.status === 429) {
+          const wait = body?.retry_after_seconds ? ` Try again in ~${body.retry_after_seconds}s.` : "";
+          throw new Error(`${body?.error || "Rate limit reached"}.${wait}`);
+        }
+        throw new Error(body?.error || `Supplement failed (${res.status})`);
+      }
+
+      setAnalysis(body as AnalystResponse);
+      setRunCount((n) => n + 1);
+      setShowAllGuided(false);
+
+      // Merge new evidence into case file and mark request answered
+      setCaseFile((prev) => {
+        const updatedRequests = [
+          ...prev.requests.filter((r) => r.id !== req.id),
+          { id: req.id, status: "answered" as const, last_seen_run: runCount + 1 },
+        ];
+        const { analysis_input: _ai, verification: _v, ...slimBody } = body;
+        return {
+          ...prev,
+          evidence: [...prev.evidence, ...newFiles],
+          requests: updatedRequests,
+          analyses: [...prev.analyses, slimBody],
+        };
+      });
+      closeGuidedModal();
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Supplement failed.");
+    } finally {
+      setGuidedSubmitting(false);
+    }
+  };
+
+  const dismissGuidedRequest = (req: GuidedFollowUp) => {
+    setCaseFile((prev) => ({
+      ...prev,
+      requests: [
+        ...prev.requests.filter((r) => r.id !== req.id),
+        { id: req.id, status: "dismissed", last_seen_run: runCount },
+      ],
+    }));
+  };
+
   const openSaveModal = async () => {
     if (!caseFile.evidence.length || saving || !user) return;
     setTitleModalOpen(true);
@@ -708,31 +981,19 @@ export function SCCVisionTest() {
         law. The analysis is automated and is not legal advice.
       </p>
 
-      {/* ── Analysis date + Role ──────────────────────────────────── */}
-      <div className="grid sm:grid-cols-2 gap-3 mb-4">
-        <div>
-          <label className="block text-xs font-semibold mb-1.5" style={{ color: MUTED }}>
-            Analysis date
-            <span className="font-normal ml-1" style={{ color: `${MUTED}99` }}>· defaults to today</span>
-          </label>
-          <input type="date" value={caseFile.case_context.analysis_date_override ?? ""}
-            onChange={(e) => setCaseFile((p) => ({ ...p, case_context: { ...p.case_context, analysis_date_override: e.target.value || null } }))}
-            className="w-full rounded-xl px-3 py-2.5 text-sm focus:outline-none"
-            style={{ background: CREAM2, border: `1px solid ${BORDER}`, color: INK }} />
-        </div>
-        <div>
-          <label className="block text-xs font-semibold mb-1.5" style={{ color: MUTED }}>
-            Your role in this case
-          </label>
-          <select value={caseFile.case_context.user_role}
-            onChange={(e) => setCaseFile((p) => ({ ...p, case_context: { ...p.case_context, user_role: e.target.value } }))}
-            className="w-full rounded-xl px-3 py-2.5 text-sm focus:outline-none appearance-none"
-            style={{ background: CREAM2, border: `1px solid ${BORDER}`, color: INK }}>
-            <option value="unknown">Not sure / not stated</option>
-            <option value="claimant">Claimant (I am suing)</option>
-            <option value="respondent">Respondent (I am being sued)</option>
-          </select>
-        </div>
+      {/* ── Role ──────────────────────────────────── */}
+      <div className="mb-4">
+        <label className="block text-xs font-semibold mb-1.5" style={{ color: MUTED }}>
+          Your role in this case
+        </label>
+        <select value={caseFile.case_context.user_role}
+          onChange={(e) => setCaseFile((p) => ({ ...p, case_context: { ...p.case_context, user_role: e.target.value } }))}
+          className="w-full rounded-xl px-3 py-2.5 text-sm focus:outline-none appearance-none"
+          style={{ background: CREAM2, border: `1px solid ${BORDER}`, color: INK }}>
+          <option value="unknown">Not sure / not stated</option>
+          <option value="claimant">Claimant (I am suing)</option>
+          <option value="respondent">Respondent (I am being sued)</option>
+        </select>
       </div>
 
       {/* ── Case description ──────────────────────────────────────── */}
@@ -773,13 +1034,13 @@ export function SCCVisionTest() {
       <div
         role="button"
         tabIndex={0}
-        aria-label="Upload screenshots — click or drag and drop"
+        aria-label={files.length > 0 ? "Add more screenshots — click or drag and drop" : "Upload screenshots — click or drag and drop"}
         onClick={() => inputRef.current?.click()}
         onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") inputRef.current?.click(); }}
         onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
         onDragLeave={() => setIsDragging(false)}
         onDrop={handleDrop}
-        className="flex flex-col items-center justify-center rounded-2xl border-2 border-dashed transition-all py-10 px-6 cursor-pointer focus:outline-none focus:ring-2 focus:ring-brand-gold focus:ring-offset-2"
+        className="flex flex-col items-center justify-center rounded-2xl border-2 border-dashed transition-all py-8 px-6 cursor-pointer focus:outline-none focus:ring-2 focus:ring-brand-gold focus:ring-offset-2"
         style={{ borderColor: isDragging ? GOLD : BORDER, background: isDragging ? "#F6E7B833" : CREAM2 }}
       >
         <input
@@ -791,14 +1052,16 @@ export function SCCVisionTest() {
           onChange={(e) => { if (e.target.files?.length) pickFiles(e.target.files); e.target.value = ""; }}
           aria-hidden="true"
         />
-        <div className="h-12 w-12 rounded-full flex items-center justify-center mb-4" style={{ background: `${GOLD}18` }} aria-hidden="true">
-          <Upload className="h-6 w-6" style={{ color: GOLD }} />
+        <div className="h-10 w-10 rounded-full flex items-center justify-center mb-3" style={{ background: `${GOLD}18` }} aria-hidden="true">
+          <Upload className="h-5 w-5" style={{ color: GOLD }} />
         </div>
         <p className="text-sm font-semibold text-center" style={{ color: INK }}>
-          Drop files here or click to browse
+          {files.length > 0 ? "Add more files" : "Drop files here or click to browse"}
         </p>
-        <p className="text-xs mt-1.5 text-center" style={{ color: MUTED }}>
-          PNG, JPG, WEBP · multiple allowed · max {formatBytes(MAX_BYTES)} each
+        <p className="text-xs mt-1 text-center" style={{ color: MUTED }}>
+          {files.length > 0
+            ? "New files are added to the list below"
+            : `PNG, JPG, WEBP · multiple allowed · max ${formatBytes(MAX_BYTES)} each`}
         </p>
       </div>
 
@@ -832,9 +1095,24 @@ export function SCCVisionTest() {
               />
             ))}
           </ul>
-          <p className="mt-2 text-xs text-right" style={{ color: MUTED }}>
-            {files.length} file{files.length !== 1 ? "s" : ""} selected
-          </p>
+          <div className="mt-2 flex items-center justify-between">
+            <button
+              type="button"
+              onClick={() => {
+                previewUrls.forEach((u) => URL.revokeObjectURL(u));
+                setFiles([]);
+                setPreviewUrls([]);
+                setLabels([]);
+              }}
+              className="text-xs font-semibold rounded-lg px-2.5 py-1 transition-colors hover:bg-red-50"
+              style={{ color: "#B91C1C", border: `1px solid #FECACA` }}
+            >
+              Clear all
+            </button>
+            <p className="text-xs" style={{ color: MUTED }}>
+              {files.length} file{files.length !== 1 ? "s" : ""} queued
+            </p>
+          </div>
           <div className="mt-4 flex flex-wrap gap-3 items-center">
             <label className="flex items-center gap-2 text-xs font-medium cursor-pointer select-none" style={{ color: MUTED }}>
               <input type="checkbox" checked={invert} onChange={(e) => setInvert(e.target.checked)}
@@ -1086,6 +1364,154 @@ export function SCCVisionTest() {
         </div>
       )}
 
+      {/* ── Guided follow-up modal ───────────────────────────────── */}
+      {guidedTarget && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          style={{ background: "#00000055" }} role="dialog" aria-modal="true">
+          <div className="w-full max-w-lg rounded-2xl p-5 max-h-[90vh] overflow-y-auto"
+            style={{ background: SURFACE, border: `1px solid ${BORDER}` }}>
+            <div className="flex items-start gap-2 mb-1">
+              {guidedTarget.blocks_certificate && (
+                <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" style={{ color: "#B91C1C" }} />
+              )}
+              <p className="text-sm font-bold" style={{ color: INK }}>{guidedTarget.title}</p>
+            </div>
+            {guidedTarget.why && (
+              <p className="text-xs mb-1" style={{ color: MUTED }}>{guidedTarget.why}</p>
+            )}
+            {guidedTarget.how && (
+              <p className="text-xs mb-3 leading-relaxed" style={{ color: INK }}>{guidedTarget.how}</p>
+            )}
+            {guidedTarget.example && (
+              <p className="text-xs italic mb-3 rounded-lg px-3 py-2"
+                style={{ background: CREAM2, color: MUTED, border: `1px solid ${BORDER}` }}>
+                Example: {guidedTarget.example}
+              </p>
+            )}
+
+            {/* File upload slot */}
+            {guidedTarget.kind === "UPLOAD" && (
+              <div className="mb-3">
+                <input
+                  ref={guidedUploadRef}
+                  type="file"
+                  accept=".png,.jpg,.jpeg,.webp"
+                  className="sr-only"
+                  onChange={(e) => {
+                    const f = e.target.files?.[0];
+                    if (!f) return;
+                    if (!isAccepted(f.name)) { setError("Allowed: .png .jpg .jpeg .webp"); return; }
+                    if (f.size > MAX_BYTES) { setError("File too large (max 10 MB)."); return; }
+                    if (guidedUploadPreview) URL.revokeObjectURL(guidedUploadPreview);
+                    setGuidedUploadFile(f);
+                    setGuidedUploadPreview(URL.createObjectURL(f));
+                  }}
+                />
+                {guidedUploadFile ? (
+                  <div className="relative rounded-xl overflow-hidden" style={{ border: `1px solid ${BORDER}` }}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={guidedUploadPreview} alt="Preview"
+                      className="w-full max-h-48 object-contain" style={{ background: CREAM2 }} />
+                    <div className="flex items-center justify-between gap-2 px-3 py-2"
+                      style={{ background: SURFACE, borderTop: `1px solid ${BORDER}` }}>
+                      <span className="text-xs truncate" style={{ color: MUTED }}>{guidedUploadFile.name}</span>
+                      <button type="button" onClick={() => { setGuidedUploadFile(null); setGuidedUploadPreview(""); }}
+                        className="shrink-0 rounded-full p-1 hover:bg-gray-100">
+                        <X className="h-3.5 w-3.5" style={{ color: MUTED }} />
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <button type="button" onClick={() => guidedUploadRef.current?.click()}
+                    className="w-full flex flex-col items-center gap-2 rounded-xl py-6 transition-colors hover:brightness-95"
+                    style={{ background: CREAM2, border: `2px dashed ${BORDER}` }}>
+                    <Upload className="h-6 w-6" style={{ color: GOLD }} />
+                    <span className="text-sm font-semibold" style={{ color: INK }}>
+                      Tap to upload {guidedTarget.upload_types[0]?.toLowerCase().replace(/_/g, " ") || "screenshot"}
+                    </span>
+                    <span className="text-xs" style={{ color: MUTED }}>PNG, JPG, WEBP · max 10 MB</span>
+                  </button>
+                )}
+              </div>
+            )}
+
+            {/* Text / date input fields */}
+            {guidedTarget.fields.length > 0 && (
+              <div className="space-y-3 mb-3">
+                {guidedTarget.fields.map((field) => (
+                  <div key={field.key}>
+                    <label className="block text-xs font-semibold mb-1" style={{ color: MUTED }}>
+                      {field.label}
+                      {field.required && <span style={{ color: "#B91C1C" }}> *</span>}
+                    </label>
+                    {field.type === "DATE" ? (
+                      <input type="date"
+                        value={guidedFieldValues[field.key] || ""}
+                        onChange={(e) => setGuidedFieldValues((v) => ({ ...v, [field.key]: e.target.value }))}
+                        className="w-full rounded-xl px-3 py-2 text-sm focus:outline-none"
+                        style={{ background: CREAM2, border: `1px solid ${BORDER}`, color: INK }} />
+                    ) : field.type === "YES_NO" ? (
+                      <div className="flex gap-2">
+                        {["Yes", "No"].map((opt) => (
+                          <button key={opt} type="button"
+                            onClick={() => setGuidedFieldValues((v) => ({ ...v, [field.key]: opt }))}
+                            className="flex-1 text-sm rounded-xl px-3 py-2 transition-colors"
+                            style={{
+                              background: guidedFieldValues[field.key] === opt ? `${GOLD}22` : CREAM2,
+                              border: `1px solid ${guidedFieldValues[field.key] === opt ? GOLD : BORDER}`,
+                              color: INK,
+                            }}>
+                            {opt}
+                          </button>
+                        ))}
+                      </div>
+                    ) : field.type === "PHONE" ? (
+                      <input type="tel"
+                        value={guidedFieldValues[field.key] || ""}
+                        onChange={(e) => setGuidedFieldValues((v) => ({ ...v, [field.key]: e.target.value }))}
+                        placeholder="+254 7XX XXX XXX"
+                        className="w-full rounded-xl px-3 py-2 text-sm focus:outline-none"
+                        style={{ background: CREAM2, border: `1px solid ${BORDER}`, color: INK }} />
+                    ) : (
+                      <textarea
+                        value={guidedFieldValues[field.key] || ""}
+                        onChange={(e) => setGuidedFieldValues((v) => ({ ...v, [field.key]: e.target.value }))}
+                        rows={3}
+                        placeholder={field.help || ""}
+                        className="w-full rounded-xl px-3 py-2 text-sm focus:outline-none resize-none"
+                        style={{ background: CREAM2, border: `1px solid ${BORDER}`, color: INK }} />
+                    )}
+                    {field.help && field.type !== "TEXT" && (
+                      <p className="text-[11px] mt-0.5" style={{ color: MUTED }}>{field.help}</p>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {guidedTarget.expected_effect && (
+              <p className="text-[11px] italic mb-3" style={{ color: "#15803D" }}>
+                ↑ {guidedTarget.expected_effect}
+              </p>
+            )}
+
+            <div className="flex justify-end gap-2">
+              <button type="button" onClick={closeGuidedModal}
+                className="text-xs font-semibold rounded-lg px-3 py-1.5" style={{ color: MUTED }}>
+                Cancel
+              </button>
+              <button type="button" onClick={submitGuidedAnswer}
+                disabled={guidedSubmitting}
+                className="flex items-center gap-1.5 text-xs font-semibold rounded-lg px-4 py-1.5 disabled:opacity-60"
+                style={{ background: GOLD_DK, color: "white" }}>
+                {guidedSubmitting && <Loader2 className="h-3 w-3 animate-spin" />}
+                {guidedSubmitting ? "Submitting…" : "Submit & Re-analyse"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* ── Certificate modal ─────────────────────────────────────── */}
       {showCertificate && analysis && (
         <CertificateModal
@@ -1146,7 +1572,7 @@ export function SCCVisionTest() {
                   <Award className="h-4 w-4 shrink-0" style={{ color: "#15803D" }} aria-hidden="true" />
                   <div className="flex-1 min-w-0">
                     <p className="text-xs font-bold" style={{ color: "#15803D" }}>
-                      Evidence meets the {Math.round(CERT_THRESHOLD * 100)}% threshold
+                      Evidence is eligible for a Section 106B certificate
                     </p>
                     <p className="text-[11px]" style={{ color: "#166534" }}>
                       Print a visual summary or prepare a signed Section 106B certificate for court.
@@ -1187,7 +1613,151 @@ export function SCCVisionTest() {
                 )}
               </div>
             )}
+            {/* Ineligibility reasons (Phase 9) */}
+            {analysis.cert_eligibility && !analysis.cert_eligibility.eligible && (
+              <div className="mt-3 rounded-xl px-3 py-2.5"
+                style={{ background: "#FEF9EC", border: "1px solid #FDE68A" }}>
+                <p className="text-xs font-bold mb-2" style={{ color: "#92400E" }}>
+                  Not yet eligible for a Section 106B certificate
+                </p>
+                <div className="space-y-2">
+                  {analysis.cert_eligibility.reasons.map((r, i) => {
+                    const ex = explainCertReason(r);
+                    return (
+                      <div key={i} className="rounded-lg px-2.5 py-2"
+                        style={{ background: "#FFF7ED", border: "1px solid #FED7AA" }}>
+                        <p className="text-[11px] font-semibold" style={{ color: "#92400E" }}>
+                          {ex.title}
+                        </p>
+                        {ex.detail && (
+                          <p className="text-[11px] mt-0.5 leading-relaxed" style={{ color: "#78350F" }}>
+                            {ex.detail}
+                          </p>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+                {(analysis.result.confidence ?? 0) >= 0.9 && (
+                  <p className="text-[10px] mt-2.5 leading-relaxed" style={{ color: "#A16207" }}>
+                    Why is confidence {Math.round((analysis.result.confidence ?? 0) * 100)}% if the certificate is blocked?
+                    Confidence scores how well the overall contract is evidenced across all elements.
+                    The certificate additionally requires each key element (C, D, E, G) to be individually
+                    established and stable across two independent reads — a single unclear or disputed element blocks it.
+                  </p>
+                )}
+              </div>
+            )}
+            {/* Needs-human-look items (unstable fields, model disagreements) */}
+            {((analysis.unstable_fields?.length ?? 0) > 0 ||
+              Object.keys(analysis.model_disagreements ?? {}).length > 0) && (
+              <div className="mt-3 rounded-xl px-3 py-2.5"
+                style={{ background: "#F0F9FF", border: "1px solid #BAE6FD" }}>
+                <p className="text-xs font-bold mb-1" style={{ color: "#0369A1" }}>
+                  Needs a human look
+                </p>
+                {(analysis.unstable_fields?.length ?? 0) > 0 && (
+                  <p className="text-[11px]" style={{ color: "#0C4A6E" }}>
+                    Independent inspections disagreed on: {analysis.unstable_fields?.join(", ")}
+                  </p>
+                )}
+                {Object.entries(analysis.model_disagreements ?? {}).map(([el, d]) => (
+                  <p key={el} className="text-[11px]" style={{ color: "#0C4A6E" }}>
+                    Model raised a concern on {el}: "{d.model_reason}" (model: {d.model_status}, derived: {d.derived_status})
+                  </p>
+                ))}
+              </div>
+            )}
+            {/* Cache/call info */}
+            {analysis.calls_used != null && (
+              <p className="text-[10px] mt-2" style={{ color: MUTED }}>
+                {analysis.from_cache
+                  ? "Served from cache (0 Groq calls)"
+                  : `${analysis.calls_used} Groq call${analysis.calls_used !== 1 ? "s" : ""} used${
+                      analysis.trigger_fired ? ` · trigger ${analysis.trigger_fired}` : ""
+                    }`}
+              </p>
+            )}
           </div>
+
+          {/* Guided follow-ups — Strengthen your evidence */}
+          {(analysis.guided_follow_ups?.length ?? 0) > 0 && (() => {
+            const all = analysis.guided_follow_ups!;
+            const dismissedIds = new Set(caseFile.requests.filter((r) => r.status === "dismissed").map((r) => r.id));
+            const visible = all.filter((r) => !dismissedIds.has(r.id));
+            const shown = showAllGuided ? visible : visible.slice(0, 3);
+            if (!visible.length) return null;
+            return (
+              <div className="rounded-2xl p-4" style={{ background: "#FFFBEB", border: `1px solid #FDE68A` }}>
+                <div className="flex items-center gap-2 mb-3">
+                  <Sparkles className="h-4 w-4 shrink-0" style={{ color: "#92400E" }} aria-hidden="true" />
+                  <p className="text-sm font-bold" style={{ color: "#92400E" }}>Strengthen your evidence</p>
+                  <span className="ml-auto text-[10px] font-semibold rounded-full px-2 py-0.5"
+                    style={{ background: "#FDE68A", color: "#78350F" }}>
+                    {visible.length} gap{visible.length !== 1 ? "s" : ""}
+                  </span>
+                </div>
+                <div className="space-y-2">
+                  {shown.map((req) => (
+                    <div key={req.id} className="rounded-xl p-3"
+                      style={{ background: "#FFFDF8", border: `1px solid #FDE68A` }}>
+                      <div className="flex items-start gap-2">
+                        {req.blocks_certificate && (
+                          <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" style={{ color: "#B91C1C" }} aria-hidden="true" />
+                        )}
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 flex-wrap mb-0.5">
+                            <p className="text-sm font-semibold" style={{ color: INK }}>{req.title}</p>
+                            {req.priority === 1 && (
+                              <span className="text-[9px] font-bold uppercase rounded-full px-1.5 py-0.5"
+                                style={{ background: "#FEE2E2", color: "#B91C1C" }}>blocks cert</span>
+                            )}
+                            {req.elements.length > 0 && (
+                              <span className="text-[9px] font-mono rounded-full px-1.5 py-0.5"
+                                style={{ background: "#F1F5F9", color: "#475569" }}>
+                                {req.elements.join(" · ")}
+                              </span>
+                            )}
+                          </div>
+                          {req.why && <p className="text-xs" style={{ color: MUTED }}>{req.why}</p>}
+                          {req.expected_effect && (
+                            <p className="text-[11px] mt-0.5 font-medium" style={{ color: "#15803D" }}>
+                              ↑ {req.expected_effect}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2 mt-2 flex-wrap">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setGuidedTarget(req);
+                            setGuidedFieldValues({});
+                            setGuidedUploadFile(null);
+                            setGuidedUploadPreview("");
+                          }}
+                          className="text-xs font-semibold rounded-lg px-3 py-1.5"
+                          style={{ background: GOLD_DK, color: "white" }}>
+                          {req.kind === "UPLOAD" ? "Upload" : req.kind === "INPUT" ? "Provide" : "Answer"}
+                        </button>
+                        <button type="button" onClick={() => dismissGuidedRequest(req)}
+                          className="text-xs font-semibold rounded-lg px-3 py-1.5" style={{ color: MUTED }}>
+                          Dismiss
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                {visible.length > 3 && (
+                  <button type="button" onClick={() => setShowAllGuided((v) => !v)}
+                    className="mt-2 text-xs font-semibold w-full text-center py-1 rounded-lg hover:bg-amber-100 transition-colors"
+                    style={{ color: "#92400E" }}>
+                    {showAllGuided ? "Show fewer" : `Show all ${visible.length} gaps`}
+                  </button>
+                )}
+              </div>
+            );
+          })()}
 
           {/* Record integrity */}
           <InfoCard
@@ -1202,9 +1772,10 @@ export function SCCVisionTest() {
             )}
             {analysis.verification.mpesa_cross_check && !analysis.verification.mpesa_cross_check.consistent && (
               <p className="text-xs mt-2" style={{ color: "#B45309" }}>
-                M-Pesa cross-check discrepancy: {analysis.verification.mpesa_cross_check.codes_llm_only.length} code(s) only in analysis,{" "}
-                {analysis.verification.mpesa_cross_check.codes_parsed_only.length} only parsed,{" "}
-                {analysis.verification.mpesa_cross_check.reclassified.length} reclassified to CLAIMED ONLY.
+                M-Pesa cross-check discrepancy:{" "}
+                {(analysis.verification.mpesa_cross_check.codes_llm_only?.length ?? 0)} code(s) cited only in analysis,{" "}
+                {(analysis.verification.mpesa_cross_check.codes_parsed_only?.length ?? 0)} only in screenshots.{" "}
+                {(analysis.verification.mpesa_cross_check.findings?.filter((f: {blocks_certificate: boolean}) => f.blocks_certificate).length ?? 0)} blocking finding(s).
               </p>
             )}
           </InfoCard>
@@ -1590,7 +2161,7 @@ function CertificateModal({
                   <div className="h-full rounded-full transition-all" style={{ width: `${confPct}%`, background: tone.fg }} />
                 </div>
                 <p className="text-[10px] mt-1.5 font-semibold" style={{ color: tone.fg }}>
-                  ✓ Meets the {Math.round(CERT_THRESHOLD * 100)}% evidence threshold
+                  Confidence score (display only — eligibility decided by rules)
                 </p>
               </div>
             )}

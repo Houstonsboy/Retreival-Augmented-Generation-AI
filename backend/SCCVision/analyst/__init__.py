@@ -1,31 +1,41 @@
 """SCCVision Contract Evidence Analyst package.
 
-Loads the analyst system prompt once at import time and exposes helpers used by
-the pipeline (prompt version, prompt text). The prompt is the only instruction
-content; conversation data is always supplied separately in the user message.
+Loads the inspect and verify prompts once at import time. The prompts use the
+ContractFacts schema (v2). Legacy SYSTEM_PROMPT alias kept for any code that
+imports it directly.
 """
 
 from __future__ import annotations
 
-import hashlib
 from pathlib import Path
 
-_PROMPT_PATH = Path(__file__).resolve().parent / "system_prompt.md"
+from .versions import PROMPT_VERSION, VERIFY_PROMPT_VERSION  # noqa: F401
+
+_PROMPTS_DIR = Path(__file__).resolve().parent / "prompts"
+_INSPECT_PATH = _PROMPTS_DIR / "inspect.md"
+_VERIFY_PATH = _PROMPTS_DIR / "verify.md"
 
 
-def load_system_prompt() -> str:
-    """Return the analyst system prompt, loaded fresh from disk."""
-    return _PROMPT_PATH.read_text(encoding="utf-8")
+def load_inspect_prompt() -> str:
+    return _INSPECT_PATH.read_text(encoding="utf-8")
 
 
-def prompt_version(prompt_text: str | None = None) -> str:
-    """First 8 hex chars of the sha256 of the system prompt."""
-    text = prompt_text if prompt_text is not None else load_system_prompt()
-    return hashlib.sha256(text.encode("utf-8")).hexdigest()[:8]
+def load_verify_prompt() -> str:
+    return _VERIFY_PATH.read_text(encoding="utf-8")
 
 
-# Loaded once at import; used by the pipeline and by tests.
-SYSTEM_PROMPT = load_system_prompt()
-PROMPT_VERSION = prompt_version(SYSTEM_PROMPT)
+INSPECT_PROMPT: str = load_inspect_prompt()
+VERIFY_PROMPT: str = load_verify_prompt()
 
-__all__ = ["SYSTEM_PROMPT", "PROMPT_VERSION", "load_system_prompt", "prompt_version"]
+# Legacy alias — kept so older imports don't break.
+SYSTEM_PROMPT: str = INSPECT_PROMPT
+
+__all__ = [
+    "INSPECT_PROMPT",
+    "VERIFY_PROMPT",
+    "SYSTEM_PROMPT",
+    "PROMPT_VERSION",
+    "VERIFY_PROMPT_VERSION",
+    "load_inspect_prompt",
+    "load_verify_prompt",
+]
