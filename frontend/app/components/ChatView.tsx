@@ -7,6 +7,7 @@ import {
   Scale, FileText, ChevronDown, ChevronUp, AlertCircle,
   ExternalLink, BookOpen, X, Grid2X2, Copy, LayoutGrid,
   Menu, Plus, Pin, Trash2, Pencil, Check, RotateCcw, Clock,
+  Target,
 } from "lucide-react";
 import dynamic from "next/dynamic";
 import { apiFetch } from "@/app/lib/api";
@@ -71,6 +72,8 @@ interface ChunkSource {
   pdf_url?: string | null;
   snippet?: string | null;
 }
+
+interface PinnedDocEntry { title: string; type: "case" | "statute"; dbKey: string; }
 
 interface Message {
   id: string; role: "user" | "assistant"; content: string; timestamp: Date;
@@ -193,6 +196,7 @@ export function ChatView({ initialConversationId }: { initialConversationId?: st
   const [panelMessage,  setPanelMessage]  = useState<Message | null>(null);
   const [activeChunkId, setActiveChunkId] = useState<string | null>(null);
   const [activeDocKey,  setActiveDocKey]  = useState<string | null>(null);
+  const [pinnedDocs,    setPinnedDocs]    = useState<Map<string, PinnedDocEntry>>(new Map());
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef       = useRef<HTMLTextAreaElement>(null);
 
@@ -332,7 +336,7 @@ export function ChatView({ initialConversationId }: { initialConversationId?: st
       }
       setMessages(msgs);
     } catch (e: any) {
-      if (e?.status === 404) router.replace("/");
+      if (e?.status === 404) router.replace("/research");
       else console.error("[History] loadConversation failed:", e);
     } finally {
       setIsConversationLoading(false);
@@ -372,6 +376,19 @@ export function ChatView({ initialConversationId }: { initialConversationId?: st
   }, []);
 
   // ── Conversation management ───────────────────────────────────────────────────
+  const handleToggleDocPin = useCallback((doc: { key: string; title: string; kind: string; dbKey: string }) => {
+    setPinnedDocs(prev => {
+      const next = new Map(prev);
+      if (next.has(doc.key)) next.delete(doc.key);
+      else next.set(doc.key, {
+        title: doc.title,
+        type: doc.kind === "JUDGMENT" ? "case" : "statute",
+        dbKey: doc.dbKey,
+      });
+      return next;
+    });
+  }, []);
+
   const handleNewChat = useCallback(() => {
     abortControllerRef.current?.abort();
     titleUnsubscribeRef.current?.();
@@ -382,7 +399,8 @@ export function ChatView({ initialConversationId }: { initialConversationId?: st
     setNotSavedNote(false);
     setInput("");
     setSidebarOpen(false);
-    if (initialConversationId) router.push("/");
+    setPinnedDocs(new Map());
+    if (initialConversationId) router.push("/research");
   }, [initialConversationId, router]);
 
   const handleSelectConversation = useCallback((cid: string) => {
@@ -461,9 +479,10 @@ export function ChatView({ initialConversationId }: { initialConversationId?: st
     setNotSavedNote(false);
 
     try {
+      const pinned_docs = [...pinnedDocs.values()].map(d => ({ type: d.type, id: d.dbKey }));
       const response = await apiFetch("/api/qretrieve", {
         method: "POST",
-        body: JSON.stringify({ query }),
+        body: JSON.stringify({ query, ...(pinned_docs.length > 0 ? { pinned_docs } : {}) }),
         signal: controller.signal,
       });
       const data = await response.json();
@@ -980,10 +999,33 @@ export function ChatView({ initialConversationId }: { initialConversationId?: st
           {/* Composer */}
           {hasMessages && (
             <div className="shrink-0" style={{ borderTop: `1px solid ${BORDER}`, background: "white" }}>
-              <div className="px-4 py-3">
+              <div className="px-4 pt-3 pb-2">
+                {/* Probe mode indicator */}
+                {pinnedDocs.size > 0 && (
+                  <div className="flex items-center gap-2 rounded-xl px-3 py-2 mb-2 flex-wrap"
+                    style={{ background: "#FFF8E6", border: `1px solid ${HIGHLIGHT}` }}>
+                    <Target className="h-3.5 w-3.5 shrink-0" style={{ color: GOLD }} />
+                    <span className="text-xs font-semibold" style={{ color: GOLD_DK }}>
+                      Probing {pinnedDocs.size} pinned doc{pinnedDocs.size > 1 ? "s" : ""}:
+                    </span>
+                    <div className="flex gap-1.5 flex-wrap">
+                      {[...pinnedDocs.values()].map((d, i) => (
+                        <span key={i} className="text-[11px] rounded-full px-2 py-0.5"
+                          style={{ background: HIGHLIGHT, color: GOLD_DK, border: `1px solid #E2C673` }}>
+                          {d.title.split(" ").slice(0, 4).join(" ")}{d.title.split(" ").length > 4 ? "…" : ""}
+                        </span>
+                      ))}
+                    </div>
+                    <button onClick={() => setPinnedDocs(new Map())} className="ml-auto"
+                      title="Clear all pinned documents" aria-label="Clear probe mode">
+                      <X className="h-3.5 w-3.5" style={{ color: MUTED }} />
+                    </button>
+                  </div>
+                )}
                 <InputArea inputRef={inputRef} value={input} onChange={setInput}
                   onKeyDown={handleKeyDown} onInput={autoResize} onSubmit={handleSubmit}
-                  isLoading={isLoading} placeholder="Ask a follow-up question…" />
+                  isLoading={isLoading}
+                  placeholder={pinnedDocs.size > 0 ? `Ask about the ${pinnedDocs.size} pinned doc${pinnedDocs.size > 1 ? "s" : ""}…` : "Ask a follow-up question…"} />
                 {isLoading && (
                   <p className="text-[10px] mt-1.5 text-center" style={{ color: MUTED }}>
                     Send is disabled while an answer is generating.
@@ -1025,13 +1067,15 @@ export function ChatView({ initialConversationId }: { initialConversationId?: st
             <DocumentViewerSkeleton />
           )}
           {hasSources && panelMessage && (
-            <Reveal>
+            <Reveal className="h-full flex flex-col">
             <WorkspaceColumn
               message={panelMessage}
               activeDocKey={activeDocKey}
               onSelectDoc={setActiveDocKey}
               activeChunkId={activeChunkId}
               onChunkClick={setActiveChunkId}
+              pinnedDocKeys={new Set(pinnedDocs.keys())}
+              onToggleDocPin={handleToggleDocPin}
             />
             </Reveal>
           )}
@@ -1386,11 +1430,13 @@ function CoverageCard({ coverage, removed }: { coverage?: Coverage; removed?: st
 }
 
 // ── Workspace column ────────────────────────────────────────────────────────────
-function WorkspaceColumn({ message, activeDocKey, onSelectDoc, activeChunkId, onChunkClick }: {
+function WorkspaceColumn({ message, activeDocKey, onSelectDoc, activeChunkId, onChunkClick, pinnedDocKeys, onToggleDocPin }: {
   message: Message; activeDocKey: string | null;
   onSelectDoc: (k: string) => void;
   activeChunkId: string | null;
   onChunkClick: (id: string) => void;
+  pinnedDocKeys: Set<string>;
+  onToggleDocPin: (doc: { key: string; title: string; kind: string; dbKey: string }) => void;
 }) {
   const [readerTab, setReaderTab] = useState<"reader" | "pdf">("reader");
   const evidence = message.evidence || [];
@@ -1450,7 +1496,13 @@ function WorkspaceColumn({ message, activeDocKey, onSelectDoc, activeChunkId, on
           <p className="text-[9px] font-bold tracking-[.2em] uppercase mb-0.5" style={{ color: GOLD }}>RETRIEVED AUTHORITIES</p>
           <p className="text-xs font-medium" style={{ color: MUTED }}>{matterTitle}</p>
         </div>
-        <ClusterWidget docs={clusterDocs} activeDocKey={activeDoc?.key ?? null} onSelectDoc={(key) => { onSelectDoc(key); }} />
+        <ClusterWidget
+          docs={clusterDocs}
+          activeDocKey={activeDoc?.key ?? null}
+          onSelectDoc={(key) => { onSelectDoc(key); }}
+          pinnedDocKeys={pinnedDocKeys}
+          onToggleDocPin={onToggleDocPin}
+        />
       </div>
       {activeDoc && (
         <div className="shrink-0 flex items-center gap-2 px-5 py-2" style={{ borderBottom: `1px solid ${BORDER}`, background: WS_BG }}>
@@ -1463,6 +1515,19 @@ function WorkspaceColumn({ message, activeDocKey, onSelectDoc, activeChunkId, on
               </button>
             ))}
           </div>
+          {/* Probe toggle for active document */}
+          <button
+            onClick={() => onToggleDocPin({ key: activeDoc.key, title: activeDoc.title, kind: activeDoc.kind, dbKey: activeDoc.dbKey })}
+            className="flex items-center gap-1.5 text-xs font-semibold rounded-full px-3 py-1.5 transition-all"
+            title={pinnedDocKeys.has(activeDoc.key) ? "Remove from probe" : "Pin to probe mode"}
+            style={{
+              background: pinnedDocKeys.has(activeDoc.key) ? `${GOLD}22` : "transparent",
+              color: pinnedDocKeys.has(activeDoc.key) ? GOLD_DK : MUTED,
+              border: `1px solid ${pinnedDocKeys.has(activeDoc.key) ? GOLD : BORDER}`,
+            }}>
+            <Target className="h-3 w-3" />
+            {pinnedDocKeys.has(activeDoc.key) ? "Probing" : "Probe"}
+          </button>
           {activeDoc.pdfUrl && readerTab === "reader" && (
             <a href={activeDoc.pdfUrl} target="_blank" rel="noopener noreferrer"
               className="ml-auto flex items-center gap-1 text-xs rounded-full px-3 py-1 transition-colors hover:bg-amber-50"
@@ -1488,9 +1553,11 @@ function WorkspaceColumn({ message, activeDocKey, onSelectDoc, activeChunkId, on
 }
 
 // ── Cluster widget ──────────────────────────────────────────────────────────────
-function ClusterWidget({ docs, activeDocKey, onSelectDoc }: {
-  docs: Array<{ key: string; title: string; subtitle: string; kind: string; court: string; year: string; relevance: number }>;
+function ClusterWidget({ docs, activeDocKey, onSelectDoc, pinnedDocKeys, onToggleDocPin }: {
+  docs: Array<{ key: string; title: string; subtitle: string; kind: string; court: string; year: string; relevance: number; dbKey: string }>;
   activeDocKey: string | null; onSelectDoc: (k: string) => void;
+  pinnedDocKeys: Set<string>;
+  onToggleDocPin: (doc: { key: string; title: string; kind: string; dbKey: string }) => void;
 }) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -1512,53 +1579,92 @@ function ClusterWidget({ docs, activeDocKey, onSelectDoc }: {
     <div ref={ref} className="relative">
       <button onClick={() => setOpen((p) => !p)} onMouseEnter={() => setOpen(true)}
         className="flex items-center gap-2 rounded-full px-3 py-1.5 transition-all hover:shadow-sm"
-        style={{ background: "white", border: `1px solid ${BORDER}`, boxShadow: "0 1px 4px rgba(0,0,0,.05)" }}>
+        style={{
+          background: pinnedDocKeys.size > 0 ? "#FFF8E6" : "white",
+          border: `1px solid ${pinnedDocKeys.size > 0 ? GOLD : BORDER}`,
+          boxShadow: "0 1px 4px rgba(0,0,0,.05)"
+        }}>
         <div className="relative flex" style={{ width: 16 + Math.min(docs.length - 1, 3) * 6, height: 20 }}>
           {docs.slice(0, 4).map((d, i) => (
             <div key={i} className="absolute w-5 h-5 rounded flex items-center justify-center shadow-sm"
-              style={{ left: i * 6, background: d.kind === "JUDGMENT" ? HIGHLIGHT : CREAM_2, border: `1px solid ${BORDER}`, zIndex: i }}>
+              style={{ left: i * 6, background: pinnedDocKeys.has(d.key) ? `${GOLD}33` : d.kind === "JUDGMENT" ? HIGHLIGHT : CREAM_2, border: `1px solid ${pinnedDocKeys.has(d.key) ? GOLD : BORDER}`, zIndex: i }}>
               {d.kind === "JUDGMENT" ? <FileText className="h-2.5 w-2.5" style={{ color: GOLD_DK }} /> : <Scale className="h-2.5 w-2.5" style={{ color: MUTED }} />}
             </div>
           ))}
         </div>
         <div className="flex flex-col items-start ml-1">
           <span className="text-[11px] font-bold leading-none" style={{ color: INK }}>{docs.length} sources</span>
-          <span className="text-[9px] leading-none mt-0.5" style={{ color: MUTED }}>
-            Reading: {reading?.title.split(" ").slice(0, 3).join(" ")}{reading?.title.split(" ").length > 3 ? "…" : ""}
+          <span className="text-[9px] leading-none mt-0.5" style={{ color: pinnedDocKeys.size > 0 ? GOLD_DK : MUTED }}>
+            {pinnedDocKeys.size > 0 ? `${pinnedDocKeys.size} pinned · click to manage` : `Reading: ${reading?.title.split(" ").slice(0, 3).join(" ")}${(reading?.title.split(" ").length ?? 0) > 3 ? "…" : ""}`}
           </span>
         </div>
-        <span className="ml-1 rounded-full text-[9px] font-bold w-4 h-4 flex items-center justify-center"
-          style={{ background: GOLD, color: "white" }}>{docs.length}</span>
+        {pinnedDocKeys.size > 0
+          ? <Target className="ml-1 h-3.5 w-3.5" style={{ color: GOLD }} />
+          : <span className="ml-1 rounded-full text-[9px] font-bold w-4 h-4 flex items-center justify-center" style={{ background: GOLD, color: "white" }}>{docs.length}</span>
+        }
       </button>
       {open && (
         <div className="absolute right-0 top-12 z-50 rounded-2xl shadow-2xl"
-          style={{ width: 520, background: "white", border: `1px solid ${BORDER}`, boxShadow: "0 16px 48px rgba(60,45,10,0.15)" }}
+          style={{ width: 540, background: "white", border: `1px solid ${BORDER}`, boxShadow: "0 16px 48px rgba(60,45,10,0.15)" }}
           onMouseLeave={() => setOpen(false)}>
           <div className="flex items-center justify-between px-4 py-3" style={{ borderBottom: `1px solid ${BORDER}` }}>
             <span className="text-[9px] font-bold tracking-[.2em] uppercase" style={{ color: GOLD }}>RANKED BY RELEVANCE</span>
-            <span className="text-[10px]" style={{ color: MUTED }}>Click a source to read it</span>
+            <span className="text-[10px]" style={{ color: MUTED }}>
+              {pinnedDocKeys.size > 0
+                ? <><Target className="inline h-3 w-3 mr-1" style={{ color: GOLD }} />{pinnedDocKeys.size} pinned for probing</>
+                : "Click a source to read · pin to probe"
+              }
+            </span>
           </div>
           <div className="p-3 grid grid-cols-3 gap-2 max-h-96 overflow-y-auto">
             {docs.map((doc, i) => {
               const isActive = doc.key === activeDocKey;
+              const isPinned = pinnedDocKeys.has(doc.key);
               return (
-                <button key={i} onClick={() => { onSelectDoc(doc.key); setOpen(false); }}
-                  className="text-left rounded-xl p-3 transition-all hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400"
-                  style={{ background: isActive ? HIGHLIGHT : SURFACE, border: `1.5px solid ${isActive ? GOLD : BORDER}`, boxShadow: isActive ? `0 0 0 2px ${GOLD}33` : undefined }}>
-                  <div className="flex items-start justify-between mb-1.5 gap-1">
-                    <span className="text-[9px] font-bold tracking-[.12em] uppercase px-1.5 py-0.5 rounded-md" style={kindBg(doc.kind)}>{doc.kind}</span>
-                    <span className="text-[10px] font-bold tabular-nums shrink-0" style={{ color: isActive ? GOLD_DK : MUTED }}>{Math.round(doc.relevance * 100)}</span>
-                  </div>
-                  <p className="text-xs font-semibold leading-snug line-clamp-2 mb-1" style={{ fontFamily: NR, color: INK }}>{doc.title}</p>
-                  {doc.subtitle && <p className="text-[10px] line-clamp-1 mb-2" style={{ color: MUTED }}>{doc.subtitle}</p>}
-                  {(doc.court || doc.year) && <p className="text-[9px] line-clamp-1 mb-2" style={{ color: MUTED }}>{[doc.court, doc.year].filter(Boolean).join(" · ")}</p>}
-                  <div className="h-0.5 rounded-full overflow-hidden" style={{ background: BORDER }}>
-                    <div className="h-full rounded-full" style={{ width: `${Math.round(doc.relevance * 100)}%`, background: GOLD }} />
-                  </div>
-                </button>
+                <div key={i} className="relative group/card">
+                  <button onClick={() => { onSelectDoc(doc.key); setOpen(false); }}
+                    className="w-full text-left rounded-xl p-3 transition-all hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400"
+                    style={{
+                      background: isPinned ? "#FFF8E6" : isActive ? HIGHLIGHT : SURFACE,
+                      border: `1.5px solid ${isPinned ? GOLD : isActive ? GOLD : BORDER}`,
+                      boxShadow: isPinned ? `0 0 0 2px ${GOLD}44` : isActive ? `0 0 0 2px ${GOLD}33` : undefined,
+                    }}>
+                    <div className="flex items-start justify-between mb-1.5 gap-1">
+                      <span className="text-[9px] font-bold tracking-[.12em] uppercase px-1.5 py-0.5 rounded-md" style={kindBg(doc.kind)}>{doc.kind}</span>
+                      <span className="text-[10px] font-bold tabular-nums shrink-0" style={{ color: isPinned ? GOLD : isActive ? GOLD_DK : MUTED }}>{Math.round(doc.relevance * 100)}</span>
+                    </div>
+                    <p className="text-xs font-semibold leading-snug line-clamp-2 mb-1" style={{ fontFamily: NR, color: INK }}>{doc.title}</p>
+                    {doc.subtitle && <p className="text-[10px] line-clamp-1 mb-2" style={{ color: MUTED }}>{doc.subtitle}</p>}
+                    {(doc.court || doc.year) && <p className="text-[9px] line-clamp-1 mb-2" style={{ color: MUTED }}>{[doc.court, doc.year].filter(Boolean).join(" · ")}</p>}
+                    <div className="h-0.5 rounded-full overflow-hidden" style={{ background: BORDER }}>
+                      <div className="h-full rounded-full" style={{ width: `${Math.round(doc.relevance * 100)}%`, background: isPinned ? GOLD : GOLD }} />
+                    </div>
+                  </button>
+                  {/* Pin toggle — always visible when pinned, hover-visible otherwise */}
+                  <button
+                    onClick={(e) => { e.stopPropagation(); onToggleDocPin({ key: doc.key, title: doc.title, kind: doc.kind, dbKey: doc.dbKey }); }}
+                    className={`absolute top-2 right-2 h-5 w-5 rounded-md flex items-center justify-center transition-all ${isPinned ? "" : "opacity-0 group-hover/card:opacity-100"}`}
+                    title={isPinned ? "Remove from probe" : "Pin to probe"}
+                    style={{ background: isPinned ? GOLD : CREAM_2, border: `1px solid ${isPinned ? GOLD_DK : BORDER}` }}>
+                    <Target className="h-2.5 w-2.5" style={{ color: isPinned ? "white" : MUTED }} />
+                  </button>
+                </div>
               );
             })}
           </div>
+          {pinnedDocKeys.size > 0 && (
+            <div className="px-4 py-2.5 flex items-center gap-2" style={{ borderTop: `1px solid ${BORDER}`, background: "#FFF8E6" }}>
+              <Target className="h-3.5 w-3.5 shrink-0" style={{ color: GOLD }} />
+              <span className="text-[11px] font-semibold flex-1" style={{ color: GOLD_DK }}>
+                Next question will search only pinned docs
+              </span>
+              <button onClick={() => { docs.forEach(d => { if (pinnedDocKeys.has(d.key)) onToggleDocPin({ key: d.key, title: d.title, kind: d.kind, dbKey: d.dbKey }); }); }}
+                className="text-[10px] font-semibold rounded-full px-2.5 py-1 transition-colors hover:bg-amber-50"
+                style={{ color: MUTED, border: `1px solid ${BORDER}` }}>
+                Clear all pins
+              </button>
+            </div>
+          )}
         </div>
       )}
     </div>

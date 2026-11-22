@@ -313,6 +313,45 @@ def case_analyze():
     return jsonify(analysis), 200
 
 
+@sccvision_bp.route("/sccvision/case/title", methods=["POST"])
+@require_auth
+def case_title():
+    """Generate a short LLM case title from the user's account of the matter.
+
+    Request body: { "user_account": "..." }
+    Response:     { "title": "..." }
+    """
+    data = request.get_json(silent=True) or {}
+    user_account = str(data.get("user_account", "")).strip()
+    if not user_account:
+        return jsonify({"title": "Untitled Case"}), 200
+
+    try:
+        msgs = [
+            {
+                "role": "system",
+                "content": (
+                    "You are a legal case assistant. "
+                    "Generate a short, descriptive case title (3–8 words) based on "
+                    "the user's description. Output ONLY the title — no punctuation "
+                    "at the end, no quotes, no explanation."
+                ),
+            },
+            {
+                "role": "user",
+                "content": f"Case description:\n{user_account[:600]}\n\nCase title:",
+            },
+        ]
+        title = call_groq(msgs, max_tokens=40, temperature=0)
+        return jsonify({"title": title.strip().strip('"').strip("'")}), 200
+    except GroqRateLimitError as exc:
+        return jsonify({"error": str(exc), "retry_after_seconds": 30}), 429
+    except GroqPayloadTooLargeError as exc:
+        return jsonify({"error": str(exc)}), 413
+    except Exception:
+        return jsonify({"title": "Untitled Case"}), 200
+
+
 def _parse_case_context(raw) -> dict | None:
     if not raw:
         return None

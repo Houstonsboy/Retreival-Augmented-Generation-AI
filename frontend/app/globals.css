@@ -5,6 +5,17 @@
   --background: #ffffff;
   --foreground: #171717;
 
+  /* ── Brand palette (shared by Chat, Research, and Litigant areas) ───── */
+  --brand-bg:        #FAF7F0;   /* warm cream page background              */
+  --brand-surface:   #FFFDF8;   /* white cards                             */
+  --brand-gold:      #C9971A;   /* gold accent — logo, buttons, highlights */
+  --brand-gold-dk:   #A87A0C;   /* darker gold for hover/text              */
+  --brand-highlight: #F6E7B8;   /* gold tint — active rows, quotes         */
+  --brand-border:    #ECE6D8;   /* warm thin border                        */
+  --brand-cream2:    #F5F0E4;   /* secondary cream — sidebar, tags         */
+  --brand-ink:       #151515;   /* near-black body text                    */
+  --brand-muted:     #6B6660;   /* muted label / secondary text            */
+
   /* ── Skeleton tokens (spec-aligned, warm off-white palette) ─────────── */
   --skeleton-base:              #ECEAE5;
   --skeleton-highlight:         #F7F6F2;
@@ -30,6 +41,8 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  /* Expose brand gold as a Tailwind colour so ring-brand-gold works everywhere */
+  --color-brand-gold: var(--brand-gold);
 }
 
 @media (prefers-color-scheme: dark) {

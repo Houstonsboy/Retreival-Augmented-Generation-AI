@@ -561,7 +561,8 @@ def format_output(top_parents: List[tuple], query_params: Dict, stats: Dict, ver
 # ============================================================================
 
 def retrieve_relevant_cases(classifier_output: Any, verbose: bool = True,
-                            skip_summaries: bool = False, top_n: int = None) -> Dict:
+                            skip_summaries: bool = False, top_n: int = None,
+                            pinned_case_ids: list = None) -> Dict:
     """
     Main retrieval function with LLM-enhanced summaries.
     Returns data in frontend-compatible format.
@@ -628,62 +629,96 @@ def retrieve_relevant_cases(classifier_output: Any, verbose: bool = True,
         print(f"  ✓ Embedding dimension: {len(query_embedding)}")
     
     # ---- STEP 5: Hybrid Search (BM25 + Vector → RRF → Cross-encoder) ----
-    if verbose:
-        print("\n[5/7] Hybrid search: BM25 + vector + cross-encoder...")
-
     query_str = query_params['vector_query']
-
-    # 5a. BM25 over all case chunks
-    _ensure_cases_bm25()
-    bm25_ranked_ids: list = []
-    if _CASES_BM25["index"] is not None:
-        bm25_raw = _CASES_BM25["index"].get_scores(query_str.split())
-        bm25_order = sorted(range(len(bm25_raw)), key=lambda i: -bm25_raw[i])[:50]
-        bm25_ranked_ids = [_CASES_BM25["ids"][i] for i in bm25_order]
-
-    # 5b. Vector search (top 50)
-    n_vec = min(50, collection.count())
-    vec_raw = collection.query(
-        query_embeddings=[query_embedding],
-        n_results=n_vec,
-        include=['documents', 'metadatas', 'distances']
-    )
-    vec_ranked_ids = vec_raw['ids'][0]
-
-    if verbose:
-        print(f"  ✓ Vector: {len(vec_ranked_ids)} | BM25: {len(bm25_ranked_ids)} chunks")
-
-    # 5c. RRF fusion → top 30
-    fused_ids = _rrf_fuse_c(vec_ranked_ids, bm25_ranked_ids, k=60, n=30)
-
-    # 5d. Build id→(doc, meta) lookup
-    id_to_data: dict = {}
-    for i, cid in enumerate(vec_ranked_ids):
-        id_to_data[cid] = (vec_raw['documents'][0][i], vec_raw['metadatas'][0][i])
-    if _CASES_BM25["index"] is not None:
-        for i, cid in enumerate(_CASES_BM25["ids"]):
-            if cid not in id_to_data:
-                id_to_data[cid] = (_CASES_BM25["docs"][i], _CASES_BM25["metas"][i])
-
-    # 5e. Cross-encoder rerank
-    cand_ids = [cid for cid in fused_ids if cid in id_to_data]
-    cand_docs = [id_to_data[cid][0] for cid in cand_ids]
-    cand_metas = [id_to_data[cid][1] for cid in cand_ids]
-
     ce_model = _ensure_cases_ce()
-    ce_raw_scores = ce_model.predict([(query_str, doc) for doc in cand_docs])
-    ce_sigmoid = [_sigmoid_c(float(s)) for s in ce_raw_scores]
 
-    # Sort descending by CE score
-    order = sorted(range(len(cand_ids)), key=lambda i: -ce_sigmoid[i])
-    cand_ids = [cand_ids[i] for i in order]
-    cand_docs = [cand_docs[i] for i in order]
-    cand_metas = [cand_metas[i] for i in order]
-    ce_sigmoid = [ce_sigmoid[i] for i in order]
+    if pinned_case_ids:
+        # ── Probe mode: fetch ALL chunks from pinned docs, then rerank ──────────
+        # Uses collection.get() (no embedding required) so it is immune to any
+        # future embedding-model dimension changes.
+        if verbose:
+            print(f"\n[5/7] Probe mode: fetching all chunks for {len(pinned_case_ids)} pinned doc(s)...")
+        where_filter = (
+            {"case_identifier": pinned_case_ids[0]}
+            if len(pinned_case_ids) == 1
+            else {"case_identifier": {"$in": pinned_case_ids}}
+        )
+        pinned_raw = collection.get(where=where_filter, include=["documents", "metadatas"])
+        cand_ids   = pinned_raw["ids"]
+        cand_docs  = pinned_raw["documents"]
+        cand_metas = pinned_raw["metadatas"]
 
-    if verbose and ce_sigmoid:
-        print(f"  ✓ Cross-encoder done. CE-sigmoid: "
-              f"min={min(ce_sigmoid):.3f}  median={_stats.median(ce_sigmoid):.3f}  max={max(ce_sigmoid):.3f}")
+        if cand_ids:
+            ce_raw_scores = ce_model.predict([(query_str, doc) for doc in cand_docs])
+            ce_sigmoid    = [_sigmoid_c(float(s)) for s in ce_raw_scores]
+            order = sorted(range(len(cand_ids)), key=lambda i: -ce_sigmoid[i])
+            cand_ids   = [cand_ids[i]   for i in order]
+            cand_docs  = [cand_docs[i]  for i in order]
+            cand_metas = [cand_metas[i] for i in order]
+            ce_sigmoid = [ce_sigmoid[i] for i in order]
+        else:
+            ce_sigmoid = []
+
+        if verbose:
+            print(f"  ✓ Probe: {len(cand_ids)} chunks fetched from pinned doc(s)")
+            if ce_sigmoid:
+                print(f"  ✓ Cross-encoder done. CE-sigmoid: "
+                      f"min={min(ce_sigmoid):.3f}  max={max(ce_sigmoid):.3f}")
+
+    else:
+        # ── Normal mode: BM25 + vector + RRF → cross-encoder ────────────────────
+        if verbose:
+            print("\n[5/7] Hybrid search: BM25 + vector + cross-encoder...")
+
+        # 5a. BM25 over all case chunks
+        _ensure_cases_bm25()
+        bm25_ranked_ids: list = []
+        if _CASES_BM25["index"] is not None:
+            bm25_raw = _CASES_BM25["index"].get_scores(query_str.split())
+            bm25_order = sorted(range(len(bm25_raw)), key=lambda i: -bm25_raw[i])[:50]
+            bm25_ranked_ids = [_CASES_BM25["ids"][i] for i in bm25_order]
+
+        # 5b. Vector search (top 50)
+        n_vec = min(50, collection.count())
+        vec_raw = collection.query(
+            query_embeddings=[query_embedding],
+            n_results=n_vec,
+            include=['documents', 'metadatas', 'distances'],
+        )
+        vec_ranked_ids = vec_raw['ids'][0]
+
+        if verbose:
+            print(f"  ✓ Vector: {len(vec_ranked_ids)} | BM25: {len(bm25_ranked_ids)} chunks")
+
+        # 5c. RRF fusion → top 30
+        fused_ids = _rrf_fuse_c(vec_ranked_ids, bm25_ranked_ids, k=60, n=30)
+
+        # 5d. Build id→(doc, meta) lookup
+        id_to_data: dict = {}
+        for i, cid in enumerate(vec_ranked_ids):
+            id_to_data[cid] = (vec_raw['documents'][0][i], vec_raw['metadatas'][0][i])
+        if _CASES_BM25["index"] is not None:
+            for i, cid in enumerate(_CASES_BM25["ids"]):
+                if cid not in id_to_data:
+                    id_to_data[cid] = (_CASES_BM25["docs"][i], _CASES_BM25["metas"][i])
+
+        # 5e. Cross-encoder rerank
+        cand_ids = [cid for cid in fused_ids if cid in id_to_data]
+        cand_docs = [id_to_data[cid][0] for cid in cand_ids]
+        cand_metas = [id_to_data[cid][1] for cid in cand_ids]
+
+        ce_raw_scores = ce_model.predict([(query_str, doc) for doc in cand_docs])
+        ce_sigmoid = [_sigmoid_c(float(s)) for s in ce_raw_scores]
+
+        order = sorted(range(len(cand_ids)), key=lambda i: -ce_sigmoid[i])
+        cand_ids   = [cand_ids[i]   for i in order]
+        cand_docs  = [cand_docs[i]  for i in order]
+        cand_metas = [cand_metas[i] for i in order]
+        ce_sigmoid = [ce_sigmoid[i] for i in order]
+
+        if verbose and ce_sigmoid:
+            print(f"  ✓ Cross-encoder done. CE-sigmoid: "
+                  f"min={min(ce_sigmoid):.3f}  median={_stats.median(ce_sigmoid):.3f}  max={max(ce_sigmoid):.3f}")
 
     # ---- STEP 6: Build score_info dicts and group by parent ----
     if verbose:

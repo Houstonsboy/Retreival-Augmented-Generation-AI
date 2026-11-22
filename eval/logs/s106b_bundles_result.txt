@@ -1,0 +1,16 @@
+---------------------------------------------------------------------------------------------------
+Bundle   | Expected               | Actual                 | Failing conditions             | Match
+---------------------------------------------------------------------------------------------------
+TB-001   | certificate_ready      | certificate_ready      | (none)                         | Y
+TB-002   | weak                   | weak                   | 4a                             | Y
+TB-003   | needs_strengthening    | needs_strengthening    | 2a                             | Y
+TB-004   | needs_strengthening    | needs_strengthening    | 2d                             | Y
+TB-005   | needs_strengthening    | needs_strengthening    | 2c                             | Y
+TB-006   | certificate_ready      | certificate_ready      | (none)                         | Y
+TB-007   | weak                   | weak                   | INTEGRITY                      | Y
+TB-008   | weak                   | weak                   | INTEGRITY                      | Y
+TB-009   | needs_strengthening    | needs_strengthening    | 4d                             | Y
+TB-010   | needs_strengthening    | needs_strengthening    | 2d                             | Y
+---------------------------------------------------------------------------------------------------
+
+Overall: ALL PASS

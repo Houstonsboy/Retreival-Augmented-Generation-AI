@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard } from "lucide-react";
+import { LayoutDashboard, FileSearch } from "lucide-react";
 import { useAuth } from "@/app/context/AuthContext";
 import { UserMenu } from "@/app/components/UserMenu";
 
@@ -36,7 +36,13 @@ export default function Navigation() {
           </div>
 
           <div className="flex items-center gap-2">
-            <Link href="/" className={linkClass("/")}>Chat</Link>
+            <Link href="/research" className={linkClass("/research")}>Research</Link>
+            <Link href="/litigant/analysis" className={linkClass("/litigant")}>
+              <span className="flex items-center gap-1">
+                <FileSearch className="h-3.5 w-3.5" aria-hidden="true" />
+                Evidence tools
+              </span>
+            </Link>
 
             {isAdmin && (
               <>

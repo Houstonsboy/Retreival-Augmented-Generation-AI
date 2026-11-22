@@ -119,6 +119,25 @@ service cloud.firestore {
       allow write: if false;
     }
 
+    // Evidence library — uploaded directly from the browser via Firebase Storage.
+    // Each document records the Storage path, download URL, sha256, and case metadata.
+    // - create: owner only; must include the required fields; update is denied (immutable).
+    // - delete: owner may remove their own evidence.
+    match /users/{uid}/evidence/{evidenceId} {
+      allow read, delete: if request.auth != null && request.auth.uid == uid;
+      allow create: if request.auth != null
+        && request.auth.uid == uid
+        && request.resource.data.keys().hasAll([
+             'sha256', 'fileName', 'fileSize', 'mimeType',
+             'evidenceType', 'storageRef', 'downloadUrl',
+             'caseId', 'caseTitle', 'uploadedAt'
+           ])
+        && request.resource.data.sha256 is string
+        && request.resource.data.downloadUrl is string
+        && request.resource.data.caseId is string;
+      allow update: if false;
+    }
+
     match /{document=**} {
       allow read, write: if false;
     }

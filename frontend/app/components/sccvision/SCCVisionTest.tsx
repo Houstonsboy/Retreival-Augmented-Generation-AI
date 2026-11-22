@@ -4,11 +4,13 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import {
   Upload, X, ScanText, Loader2, Copy, Check, AlertCircle, Download,
   Scale, ShieldCheck, FileWarning, ChevronDown, ChevronRight, Save,
-  FolderOpen, CalendarDays, Award, Printer,
+  FolderOpen, CalendarDays, Award, Printer, ZoomIn,
 } from "lucide-react";
 import { apiFetch } from "@/app/lib/api";
 import type { CertificateRecord } from "@/app/lib/evidenceTypes";
 import { DeviceQuestionnaire } from "./DeviceQuestionnaire";
+import { useAuth } from "@/app/context/AuthContext";
+import { uploadEvidenceFile, generateCaseTitle } from "@/app/lib/storageService";
 
 // ── Design tokens ──────────────────────────────────────────────────────────
 const GOLD    = "#C9971A";
@@ -249,7 +251,12 @@ function newCaseFile(): CaseFile {
 }
 
 export function SCCVisionTest() {
+  const { user } = useAuth();
   const inputRef = useRef<HTMLInputElement>(null);
+  // Maps sha256 → original File so we can upload to Firebase after OCR
+  const filesByHash = useRef<Map<string, { file: File; evidenceType: string }>>(new Map());
+  // Maps sha256 → object URL so the evidence list can still show thumbnails after OCR
+  const previewsByHash = useRef<Map<string, string>>(new Map());
   const [isDragging, setIsDragging] = useState(false);
   const [files, setFiles] = useState<File[]>([]);
   const [previewUrls, setPreviewUrls] = useState<string[]>([]);
@@ -271,6 +278,13 @@ export function SCCVisionTest() {
   const [showCertificate, setShowCertificate] = useState(false);
   const [showQuestionnaire, setShowQuestionnaire] = useState(false);
   const [certResult, setCertResult] = useState<CertificateRecord | null>(null);
+
+  const [saving, setSaving] = useState(false);
+  const [saveResult, setSaveResult] = useState<{ saved: number; deduped: number } | null>(null);
+  const [pendingPreview, setPendingPreview] = useState<{ url: string; name: string } | null>(null);
+  const [titleModalOpen, setTitleModalOpen] = useState(false);
+  const [pendingTitle, setPendingTitle] = useState("");
+  const [titleLoading, setTitleLoading] = useState(false);
 
   const [answerTarget, setAnswerTarget] = useState<FollowUpRequest | null>(null);
   const [answerText, setAnswerText] = useState("");
@@ -363,6 +377,10 @@ export function SCCVisionTest() {
         if (!extractRes.ok) throw new Error(ocr?.error || `OCR failed (${extractRes.status})`);
 
         const hash = await sha256Hex(await f.arrayBuffer());
+        // Keep original file so we can upload to Firebase Storage later
+        filesByHash.current.set(hash, { file: f, evidenceType: labels[i] || "" });
+        // Keep preview URL so the evidence list can show thumbnails after OCR
+        if (previewUrls[i]) previewsByHash.current.set(hash, previewUrls[i]);
         const procRes = await apiFetch("/sccvision/evidence/process", {
           method: "POST",
           body: JSON.stringify({
@@ -378,7 +396,9 @@ export function SCCVisionTest() {
         setCaseFile((prev) => ({ ...prev, evidence: [...prev.evidence, proc.evidence as CaseEvidence] }));
       }
       setFiles([]);
-      previewUrls.forEach((u) => URL.revokeObjectURL(u));
+      // Only revoke URLs not kept in previewsByHash for the evidence list
+      const keptUrls = new Set(previewsByHash.current.values());
+      previewUrls.forEach((u) => { if (!keptUrls.has(u)) URL.revokeObjectURL(u); });
       setPreviewUrls([]);
       setLabels([]);
     } catch (e) {
@@ -389,7 +409,14 @@ export function SCCVisionTest() {
   };
 
   const removeEvidence = useCallback((id: string) => {
-    setCaseFile((prev) => ({ ...prev, evidence: prev.evidence.filter((e) => e.evidence_id !== id) }));
+    setCaseFile((prev) => {
+      const ev = prev.evidence.find((e) => e.evidence_id === id);
+      if (ev?.sha256) {
+        const url = previewsByHash.current.get(ev.sha256);
+        if (url) { URL.revokeObjectURL(url); previewsByHash.current.delete(ev.sha256); }
+      }
+      return { ...prev, evidence: prev.evidence.filter((e) => e.evidence_id !== id) };
+    });
     setAnalysis(null);
   }, []);
 
@@ -567,6 +594,48 @@ export function SCCVisionTest() {
     closeAnswerModal();
   };
 
+  const openSaveModal = async () => {
+    if (!caseFile.evidence.length || saving || !user) return;
+    setTitleModalOpen(true);
+    setPendingTitle("");
+    setTitleLoading(true);
+    const suggestion = await generateCaseTitle(caseFile.case_context.user_account);
+    setPendingTitle(suggestion);
+    setTitleLoading(false);
+  };
+
+  const handleSaveEvidence = async (title: string) => {
+    if (!caseFile.evidence.length || saving || !user) return;
+    setTitleModalOpen(false);
+    setSaving(true);
+    setSaveResult(null);
+    setError(null);
+    try {
+      let saved = 0;
+      let deduped = 0;
+      for (const ev of caseFile.evidence) {
+        if (!ev.sha256) continue;
+        const entry = filesByHash.current.get(ev.sha256);
+        if (!entry) continue;
+        const { wasDedup } = await uploadEvidenceFile(
+          user.uid,
+          entry.file,
+          ev.sha256,
+          ev.type,
+          caseFile.case_id,
+          title,
+        );
+        if (wasDedup) deduped++;
+        else saved++;
+      }
+      setSaveResult({ saved, deduped });
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Save to Firebase failed.");
+    } finally {
+      setSaving(false);
+    }
+  };
+
   const saveCaseFile = () => {
     const blob = new Blob([JSON.stringify(caseFile, null, 2)], { type: "application/json" });
     const url = URL.createObjectURL(blob);
@@ -623,7 +692,7 @@ export function SCCVisionTest() {
   return (
     <section
       aria-labelledby="sccvision-heading"
-      className="mt-12 rounded-2xl p-5 sm:p-6"
+      className="rounded-2xl p-5 sm:p-6"
       style={{ background: SURFACE, border: `1px solid ${BORDER}` }}
     >
       <div className="flex items-center gap-2 mb-1 flex-wrap">
@@ -639,89 +708,65 @@ export function SCCVisionTest() {
         law. The analysis is automated and is not legal advice.
       </p>
 
-      {/* ── Case bar ──────────────────────────────────────────────── */}
-      <div className="rounded-xl p-4 mb-4 space-y-4" style={{ background: CREAM2, border: `1px solid ${BORDER}` }}>
-
-        {/* Row 1: Role + Date */}
-        <div className="grid sm:grid-cols-2 gap-3">
-          <div>
-            <label className="block text-xs font-semibold mb-1.5" style={{ color: MUTED }}>
-              Your role in this case
-            </label>
-            <select value={caseFile.case_context.user_role}
-              onChange={(e) => setCaseFile((p) => ({ ...p, case_context: { ...p.case_context, user_role: e.target.value } }))}
-              className="w-full rounded-xl px-3 py-2.5 text-sm focus:outline-none appearance-none"
-              style={{ background: SURFACE, border: `1px solid ${BORDER}`, color: INK }}>
-              <option value="unknown">Not sure / not stated</option>
-              <option value="claimant">Claimant (I am suing)</option>
-              <option value="respondent">Respondent (I am being sued)</option>
-            </select>
-          </div>
-          <div>
-            <label className="block text-xs font-semibold mb-1.5" style={{ color: MUTED }}>
-              Analysis date
-              <span className="font-normal ml-1" style={{ color: `${MUTED}99` }}>· defaults to today</span>
-            </label>
-            <input type="date" value={caseFile.case_context.analysis_date_override ?? ""}
-              onChange={(e) => setCaseFile((p) => ({ ...p, case_context: { ...p.case_context, analysis_date_override: e.target.value || null } }))}
-              className="w-full rounded-xl px-3 py-2.5 text-sm focus:outline-none"
-              style={{ background: SURFACE, border: `1px solid ${BORDER}`, color: INK }} />
-          </div>
-        </div>
-
-        {/* Row 2: Account (full width) */}
+      {/* ── Analysis date + Role ──────────────────────────────────── */}
+      <div className="grid sm:grid-cols-2 gap-3 mb-4">
         <div>
-          <div className="flex items-baseline justify-between mb-1.5">
-            <label className="text-xs font-semibold" style={{ color: MUTED }}>
-              Your account of the matter
-            </label>
-            <span className="text-[10px]" style={{ color: `${MUTED}99` }}>
-              unverified · used only to guide the analysis
-            </span>
-          </div>
-          <textarea
-            value={caseFile.case_context.user_account}
-            onChange={(e) => {
-              const el = e.target;
-              el.style.height = "auto";
-              el.style.height = `${el.scrollHeight}px`;
-              setCaseFile((p) => ({ ...p, case_context: { ...p.case_context, user_account: e.target.value } }));
-            }}
-            rows={4}
-            placeholder={
-              "Describe what happened in your own words — when you agreed, what was paid or promised, what went wrong, and what outcome you are seeking.\n\nThe analyst will not treat this as proven fact, but uses it to understand your perspective and ask better follow-up questions."
-            }
-            className="w-full rounded-xl px-3 py-2.5 text-sm focus:outline-none leading-relaxed"
-            style={{
-              background: SURFACE,
-              border: `1px solid ${BORDER}`,
-              color: INK,
-              resize: "vertical",
-              minHeight: "5.5rem",
-              overflow: "hidden",
-            }}
-          />
+          <label className="block text-xs font-semibold mb-1.5" style={{ color: MUTED }}>
+            Analysis date
+            <span className="font-normal ml-1" style={{ color: `${MUTED}99` }}>· defaults to today</span>
+          </label>
+          <input type="date" value={caseFile.case_context.analysis_date_override ?? ""}
+            onChange={(e) => setCaseFile((p) => ({ ...p, case_context: { ...p.case_context, analysis_date_override: e.target.value || null } }))}
+            className="w-full rounded-xl px-3 py-2.5 text-sm focus:outline-none"
+            style={{ background: CREAM2, border: `1px solid ${BORDER}`, color: INK }} />
         </div>
+        <div>
+          <label className="block text-xs font-semibold mb-1.5" style={{ color: MUTED }}>
+            Your role in this case
+          </label>
+          <select value={caseFile.case_context.user_role}
+            onChange={(e) => setCaseFile((p) => ({ ...p, case_context: { ...p.case_context, user_role: e.target.value } }))}
+            className="w-full rounded-xl px-3 py-2.5 text-sm focus:outline-none appearance-none"
+            style={{ background: CREAM2, border: `1px solid ${BORDER}`, color: INK }}>
+            <option value="unknown">Not sure / not stated</option>
+            <option value="claimant">Claimant (I am suing)</option>
+            <option value="respondent">Respondent (I am being sued)</option>
+          </select>
+        </div>
+      </div>
 
-        {/* Row 3: Save / Load / Consent */}
-        <div className="flex items-center gap-3 flex-wrap pt-1" style={{ borderTop: `1px solid ${BORDER}` }}>
-          <button type="button" onClick={saveCaseFile}
-            className="flex items-center gap-1.5 text-xs font-semibold rounded-lg px-3 py-1.5 hover:bg-amber-50 transition-colors"
-            style={{ color: GOLD_DK, border: `1px solid ${BORDER}`, background: SURFACE }}>
-            <Save className="h-3.5 w-3.5" aria-hidden="true" /> Save case file
-          </button>
-          <label className="flex items-center gap-1.5 text-xs font-semibold rounded-lg px-3 py-1.5 cursor-pointer hover:bg-amber-50 transition-colors"
-            style={{ color: GOLD_DK, border: `1px solid ${BORDER}`, background: SURFACE }}>
-            <FolderOpen className="h-3.5 w-3.5" aria-hidden="true" /> Load case file
-            <input type="file" accept="application/json" className="hidden"
-              onChange={(e) => { const f = e.target.files?.[0]; if (f) loadCaseFile(f); e.target.value = ""; }} />
+      {/* ── Case description ──────────────────────────────────────── */}
+      <div className="mb-5">
+        <div className="flex items-baseline justify-between mb-1.5">
+          <label className="text-xs font-semibold" style={{ color: MUTED }}>
+            Your account of the matter
           </label>
-          <label className="flex items-center gap-2 text-xs font-medium cursor-pointer select-none ml-auto" style={{ color: MUTED }}>
-            <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)}
-              className="rounded" style={{ accentColor: GOLD }} />
-            I consent to send this case to the automated analyst.
-          </label>
+          <span className="text-[10px]" style={{ color: `${MUTED}99` }}>
+            unverified · used only to guide the analysis
+          </span>
         </div>
+        <textarea
+          value={caseFile.case_context.user_account}
+          onChange={(e) => {
+            const el = e.target;
+            el.style.height = "auto";
+            el.style.height = `${el.scrollHeight}px`;
+            setCaseFile((p) => ({ ...p, case_context: { ...p.case_context, user_account: e.target.value } }));
+          }}
+          rows={4}
+          placeholder={
+            "Describe what happened in your own words — when you agreed, what was paid or promised, what went wrong, and what outcome you are seeking.\n\nThe analyst will not treat this as proven fact, but uses it to understand your perspective and ask better follow-up questions."
+          }
+          className="w-full rounded-xl px-3 py-2.5 text-sm focus:outline-none leading-relaxed"
+          style={{
+            background: CREAM2,
+            border: `1px solid ${BORDER}`,
+            color: INK,
+            resize: "vertical",
+            minHeight: "5.5rem",
+            overflow: "hidden",
+          }}
+        />
       </div>
 
       {/* ── Drop zone ──────────────────────────────────────────────── */}
@@ -734,7 +779,7 @@ export function SCCVisionTest() {
         onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
         onDragLeave={() => setIsDragging(false)}
         onDrop={handleDrop}
-        className="flex flex-col items-center justify-center rounded-2xl border-2 border-dashed transition-all py-8 px-6 cursor-pointer focus:outline-none focus:ring-2 focus:ring-brand-gold focus:ring-offset-2"
+        className="flex flex-col items-center justify-center rounded-2xl border-2 border-dashed transition-all py-10 px-6 cursor-pointer focus:outline-none focus:ring-2 focus:ring-brand-gold focus:ring-offset-2"
         style={{ borderColor: isDragging ? GOLD : BORDER, background: isDragging ? "#F6E7B833" : CREAM2 }}
       >
         <input
@@ -746,11 +791,11 @@ export function SCCVisionTest() {
           onChange={(e) => { if (e.target.files?.length) pickFiles(e.target.files); e.target.value = ""; }}
           aria-hidden="true"
         />
-        <div className="h-11 w-11 rounded-full flex items-center justify-center mb-3" style={{ background: `${GOLD}18` }} aria-hidden="true">
-          <Upload className="h-5 w-5" style={{ color: GOLD }} />
+        <div className="h-12 w-12 rounded-full flex items-center justify-center mb-4" style={{ background: `${GOLD}18` }} aria-hidden="true">
+          <Upload className="h-6 w-6" style={{ color: GOLD }} />
         </div>
         <p className="text-sm font-semibold text-center" style={{ color: INK }}>
-          Drop WhatsApp or M-Pesa screenshots here
+          Drop files here or click to browse
         </p>
         <p className="text-xs mt-1.5 text-center" style={{ color: MUTED }}>
           PNG, JPG, WEBP · multiple allowed · max {formatBytes(MAX_BYTES)} each
@@ -765,58 +810,44 @@ export function SCCVisionTest() {
         </div>
       )}
 
-      {/* ── Pending files ─────────────────────────────────────────── */}
+      {/* ── Pending files (card list) ─────────────────────────────── */}
       {files.length > 0 && (
-        <div className="mt-5 space-y-4">
-          <div className="flex flex-wrap gap-3">
+        <div className="mt-4">
+          <ul className="space-y-3" aria-label="Selected files">
             {files.map((f, i) => (
-              <div key={i} className="w-32 shrink-0 rounded-xl overflow-hidden" style={{ border: `1px solid ${BORDER}`, background: SURFACE }}>
-                <div className="relative">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={previewUrls[i]} alt={f.name} className="w-full h-auto" />
-                  <button type="button" onClick={() => removeFile(i)}
-                    className="absolute top-1 right-1 h-6 w-6 rounded-lg flex items-center justify-center bg-black/55 hover:bg-black/75 transition-colors"
-                    aria-label={`Remove ${f.name}`}>
-                    <X className="h-3.5 w-3.5 text-white" aria-hidden="true" />
-                  </button>
-                </div>
-                <div className="px-2 pb-2 pt-1.5">
-                  <label className="block">
-                    <span className="block text-[10px] font-semibold mb-1" style={{ color: MUTED }}>
-                      Label this image
-                    </span>
-                    <select
-                      value={labels[i] ?? ""}
-                      onChange={(e) => setLabels((prev) => {
-                        const next = [...prev];
-                        next[i] = e.target.value as EvidenceType | "";
-                        return next;
-                      })}
-                      className="w-full rounded-lg px-1.5 py-1 text-xs focus:outline-none"
-                      style={{ background: CREAM2, border: `1px solid ${BORDER}`, color: INK }}>
-                      <option value="">Auto-detect</option>
-                      <option value="chat_screenshot">WhatsApp / SMS chat</option>
-                      <option value="mpesa_screenshot">M-Pesa screenshot</option>
-                      <option value="other">Other</option>
-                    </select>
-                  </label>
-                </div>
-              </div>
+              <PendingFileCard
+                key={i}
+                file={f}
+                previewUrl={previewUrls[i]}
+                label={labels[i] ?? ""}
+                onRemove={() => removeFile(i)}
+                onView={() => setPendingPreview({ url: previewUrls[i], name: f.name })}
+                onLabelChange={(val) =>
+                  setLabels((prev) => {
+                    const next = [...prev];
+                    next[i] = val as EvidenceType | "";
+                    return next;
+                  })
+                }
+              />
             ))}
-          </div>
-          <div className="flex flex-wrap gap-3 items-center">
-            <label className="flex items-center gap-2 text-sm font-medium cursor-pointer select-none" style={{ color: INK }}>
+          </ul>
+          <p className="mt-2 text-xs text-right" style={{ color: MUTED }}>
+            {files.length} file{files.length !== 1 ? "s" : ""} selected
+          </p>
+          <div className="mt-4 flex flex-wrap gap-3 items-center">
+            <label className="flex items-center gap-2 text-xs font-medium cursor-pointer select-none" style={{ color: MUTED }}>
               <input type="checkbox" checked={invert} onChange={(e) => setInvert(e.target.checked)}
                 className="rounded" style={{ accentColor: GOLD }} />
               Invert dark mode
             </label>
-            <label className="flex items-center gap-2 text-sm font-medium cursor-pointer select-none" style={{ color: INK }}>
+            <label className="flex items-center gap-2 text-xs font-medium cursor-pointer select-none" style={{ color: MUTED }}>
               <input type="checkbox" checked={upscale} onChange={(e) => setUpscale(e.target.checked)}
                 className="rounded" style={{ accentColor: GOLD }} />
               Upscale small images
             </label>
             <button type="button" onClick={handleAddEvidence} disabled={ocrLoading}
-              className="flex items-center justify-center gap-2 rounded-xl px-5 py-2.5 text-sm font-bold transition-all hover:brightness-110 disabled:opacity-40 disabled:cursor-not-allowed"
+              className="ml-auto flex items-center justify-center gap-2 rounded-xl px-5 py-2.5 text-sm font-bold transition-all hover:brightness-110 disabled:opacity-40 disabled:cursor-not-allowed"
               style={{ background: `linear-gradient(135deg, ${GOLD_DK}, ${GOLD})`, color: "white" }}>
               {ocrLoading ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" /> : <ScanText className="h-4 w-4" aria-hidden="true" />}
               {ocrLoading ? "Adding…" : "Add to case"}
@@ -828,20 +859,31 @@ export function SCCVisionTest() {
       {/* ── Evidence list ─────────────────────────────────────────── */}
       {caseFile.evidence.length > 0 && (
         <div className="mt-5">
-          <div className="flex items-center justify-between mb-2">
-            <p className="text-xs font-bold tracking-[.14em] uppercase" style={{ color: MUTED }}>
-              Evidence ({caseFile.evidence.length})
-            </p>
-            <button type="button" onClick={runAnalysis} disabled={analyzing}
-              className="flex items-center justify-center gap-2 rounded-xl px-5 py-2.5 text-sm font-bold transition-all hover:brightness-110 disabled:opacity-40 disabled:cursor-not-allowed"
-              style={{ background: `linear-gradient(135deg, ${GOLD_DK}, ${GOLD})`, color: "white" }}>
-              {analyzing ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" /> : <Scale className="h-4 w-4" aria-hidden="true" />}
-              {analyzing ? "Analyzing…" : runCount > 0 ? "Re-run analysis" : "Run analysis"}
-            </button>
-          </div>
+          <p className="text-xs font-bold tracking-[.14em] uppercase mb-2" style={{ color: MUTED }}>
+            Evidence ({caseFile.evidence.length})
+          </p>
           <div className="space-y-2">
-            {caseFile.evidence.map((ev) => (
+            {caseFile.evidence.map((ev) => {
+              const thumbUrl = ev.sha256 ? previewsByHash.current.get(ev.sha256) : undefined;
+              return (
               <div key={ev.evidence_id} className="flex items-center gap-3 rounded-xl px-3 py-2" style={{ background: CREAM2, border: `1px solid ${BORDER}` }}>
+                {thumbUrl ? (
+                  <button
+                    type="button"
+                    onClick={() => setPendingPreview({ url: thumbUrl, name: ev.file_name || ev.evidence_id })}
+                    className="group shrink-0 relative h-10 w-10 rounded-lg overflow-hidden focus:outline-none focus:ring-2 focus:ring-brand-gold"
+                    style={{ background: SURFACE }}
+                    aria-label={`Preview ${ev.file_name}`}
+                    title="Click to preview"
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={thumbUrl} alt={ev.file_name} className="h-full w-full object-contain" style={{ background: CREAM2 }} />
+                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                      style={{ background: "rgba(21,21,21,0.45)" }} aria-hidden="true">
+                      <ZoomIn className="h-3 w-3 text-white" />
+                    </div>
+                  </button>
+                ) : null}
                 <span className="text-[10px] font-bold uppercase rounded-full px-2 py-0.5"
                   style={{ background: ev.type === "mpesa_screenshot" ? "#DCFCE7" : ev.type === "chat_screenshot" ? "#DBEAFE" : "#F1F5F9",
                            color: ev.type === "mpesa_screenshot" ? "#166534" : ev.type === "chat_screenshot" ? "#1E40AF" : "#475569" }}>
@@ -856,7 +898,65 @@ export function SCCVisionTest() {
                   <X className="h-3.5 w-3.5" style={{ color: MUTED }} aria-hidden="true" />
                 </button>
               </div>
-            ))}
+              );
+            })}
+          </div>
+
+          {/* Save to Firebase Evidence Library */}
+          <div className="mt-4">
+            <button
+              type="button"
+              onClick={openSaveModal}
+              disabled={saving || !user}
+              className="w-full flex items-center justify-center gap-2 rounded-2xl py-3 text-sm font-bold transition-all hover:brightness-110 disabled:opacity-40 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-brand-gold focus:ring-offset-2"
+              style={{
+                background: saving ? CREAM2 : `linear-gradient(135deg, ${GOLD_DK}, ${GOLD})`,
+                color: saving ? MUTED : "white",
+                border: saving ? `1px solid ${BORDER}` : "none",
+              }}
+            >
+              {saving ? (
+                <><Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" /> Saving to Evidence Library…</>
+              ) : (
+                <><FolderOpen className="h-4 w-4" aria-hidden="true" /> Save to Evidence Library</>
+              )}
+            </button>
+            {saveResult && (
+              <p className="mt-2 text-xs text-center" style={{ color: MUTED }}>
+                {saveResult.saved > 0 && <span style={{ color: "#15803D" }}>{saveResult.saved} file{saveResult.saved !== 1 ? "s" : ""} saved. </span>}
+                {saveResult.deduped > 0 && <span>{saveResult.deduped} already in library (skipped). </span>}
+                {saveResult.saved === 0 && saveResult.deduped === 0 && <span>No files with originals to save.</span>}
+                {(saveResult.saved > 0 || saveResult.deduped > 0) && (
+                  <a href="/litigant/evidence" className="underline font-semibold" style={{ color: GOLD_DK }}>View Evidence History →</a>
+                )}
+              </p>
+            )}
+          </div>
+
+          {/* Save / Load / Consent + Run analysis */}
+          <div className="mt-4 pt-4 flex items-center gap-3 flex-wrap" style={{ borderTop: `1px solid ${BORDER}` }}>
+            <button type="button" onClick={saveCaseFile}
+              className="flex items-center gap-1.5 text-xs font-semibold rounded-lg px-3 py-1.5 hover:bg-amber-50 transition-colors"
+              style={{ color: GOLD_DK, border: `1px solid ${BORDER}`, background: SURFACE }}>
+              <Save className="h-3.5 w-3.5" aria-hidden="true" /> Save case file
+            </button>
+            <label className="flex items-center gap-1.5 text-xs font-semibold rounded-lg px-3 py-1.5 cursor-pointer hover:bg-amber-50 transition-colors"
+              style={{ color: GOLD_DK, border: `1px solid ${BORDER}`, background: SURFACE }}>
+              <FolderOpen className="h-3.5 w-3.5" aria-hidden="true" /> Load case file
+              <input type="file" accept="application/json" className="hidden"
+                onChange={(e) => { const f = e.target.files?.[0]; if (f) loadCaseFile(f); e.target.value = ""; }} />
+            </label>
+            <label className="flex items-center gap-2 text-xs font-medium cursor-pointer select-none" style={{ color: MUTED }}>
+              <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)}
+                className="rounded" style={{ accentColor: GOLD }} />
+              I consent to send this case to the automated analyst.
+            </label>
+            <button type="button" onClick={runAnalysis} disabled={analyzing}
+              className="ml-auto flex items-center justify-center gap-2 rounded-xl px-5 py-2.5 text-sm font-bold transition-all hover:brightness-110 disabled:opacity-40 disabled:cursor-not-allowed"
+              style={{ background: `linear-gradient(135deg, ${GOLD_DK}, ${GOLD})`, color: "white" }}>
+              {analyzing ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" /> : <Scale className="h-4 w-4" aria-hidden="true" />}
+              {analyzing ? "Analyzing…" : runCount > 0 ? "Re-run analysis" : "Run analysis"}
+            </button>
           </div>
         </div>
       )}
@@ -1249,6 +1349,121 @@ export function SCCVisionTest() {
           </div>
         </div>
       )}
+
+      {/* ── Case title modal (shown before saving to Firebase) ───── */}
+      {titleModalOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          style={{ background: "rgba(21,21,21,0.65)" }}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Name this case"
+        >
+          <div
+            className="w-full max-w-sm rounded-2xl p-5"
+            style={{ background: SURFACE, border: `1px solid ${BORDER}` }}
+          >
+            <h3 className="text-sm font-bold mb-0.5" style={{ color: INK }}>
+              Name this case
+            </h3>
+            <p className="text-xs mb-4" style={{ color: MUTED }}>
+              This title groups your evidence in Evidence History. You can edit the suggestion below.
+            </p>
+
+            <div className="relative">
+              <input
+                type="text"
+                value={pendingTitle}
+                onChange={(e) => setPendingTitle(e.target.value)}
+                placeholder={titleLoading ? "Generating suggestion…" : "Enter a case title"}
+                disabled={titleLoading}
+                autoFocus
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && pendingTitle.trim())
+                    handleSaveEvidence(pendingTitle.trim());
+                }}
+                className="w-full rounded-xl px-3 py-2.5 text-sm focus:outline-none pr-9"
+                style={{
+                  background: CREAM2,
+                  border: `1px solid ${titleLoading ? BORDER : GOLD}`,
+                  color: INK,
+                }}
+              />
+              {titleLoading && (
+                <Loader2
+                  className="absolute right-3 top-2.5 h-4 w-4 animate-spin"
+                  style={{ color: MUTED }}
+                  aria-hidden="true"
+                />
+              )}
+            </div>
+
+            <div className="flex justify-end gap-2 mt-4">
+              <button
+                type="button"
+                onClick={() => setTitleModalOpen(false)}
+                className="text-xs font-semibold rounded-lg px-3 py-1.5 hover:bg-amber-50 transition-colors"
+                style={{ color: MUTED }}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={() => handleSaveEvidence(pendingTitle.trim() || "Untitled Case")}
+                disabled={titleLoading}
+                className="flex items-center gap-1.5 text-xs font-semibold rounded-lg px-4 py-1.5 disabled:opacity-50 hover:brightness-110 transition-all"
+                style={{ background: `linear-gradient(135deg, ${GOLD_DK}, ${GOLD})`, color: "white" }}
+              >
+                {titleLoading
+                  ? <><Loader2 className="h-3 w-3 animate-spin" aria-hidden="true" /> Generating…</>
+                  : <><FolderOpen className="h-3 w-3" aria-hidden="true" /> Save Evidence</>}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── Pending file preview lightbox ─────────────────────────── */}
+      {pendingPreview && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          style={{ background: "rgba(21,21,21,0.80)" }}
+          role="dialog"
+          aria-modal="true"
+          aria-label={`Previewing ${pendingPreview.name}`}
+        >
+          <div className="absolute inset-0" onClick={() => setPendingPreview(null)} aria-hidden="true" />
+          <div
+            className="relative z-10 max-w-2xl w-full rounded-2xl overflow-hidden"
+            style={{ background: SURFACE, border: `1px solid ${BORDER}` }}
+          >
+            <div
+              className="flex items-center justify-between gap-3 px-4 py-3"
+              style={{ background: CREAM2, borderBottom: `1px solid ${BORDER}` }}
+            >
+              <p className="text-xs font-semibold truncate" style={{ color: INK }}>{pendingPreview.name}</p>
+              <button
+                type="button"
+                onClick={() => setPendingPreview(null)}
+                className="shrink-0 h-7 w-7 rounded-lg flex items-center justify-center hover:bg-black/5 transition-colors"
+                aria-label="Close preview"
+              >
+                <X className="h-4 w-4" style={{ color: MUTED }} />
+              </button>
+            </div>
+            <div className="p-4 flex items-center justify-center overflow-auto max-h-[75vh]"
+              style={{ background: CREAM2 }}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={pendingPreview.url}
+                alt={pendingPreview.name}
+                className="max-w-full max-h-[70vh] rounded-xl object-contain"
+                style={{ boxShadow: "0 4px 24px rgba(0,0,0,0.18)" }}
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
@@ -1506,6 +1721,75 @@ function CertificateModal({
         </div>
       </div>
     </div>
+  );
+}
+
+function PendingFileCard({
+  file, previewUrl, label, onRemove, onLabelChange, onView,
+}: {
+  file: File;
+  previewUrl: string;
+  label: string;
+  onRemove: () => void;
+  onLabelChange: (val: string) => void;
+  onView: () => void;
+}) {
+  return (
+    <li className="rounded-2xl p-4" style={{ background: SURFACE, border: `1px solid ${BORDER}` }}>
+      <div className="flex items-start gap-3">
+        {/* Clickable thumbnail */}
+        <button
+          type="button"
+          onClick={onView}
+          className="group shrink-0 relative h-14 w-14 rounded-xl overflow-hidden focus:outline-none focus:ring-2 focus:ring-brand-gold"
+          style={{ background: CREAM2 }}
+          aria-label={`Preview ${file.name}`}
+          title="Click to preview"
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={previewUrl} alt={file.name} className="h-full w-full object-contain" style={{ background: CREAM2 }} />
+          <div
+            className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+            style={{ background: "rgba(21,21,21,0.45)" }}
+            aria-hidden="true"
+          >
+            <ZoomIn className="h-4 w-4 text-white" />
+          </div>
+        </button>
+        <div className="flex-1 min-w-0">
+          <p className="text-sm font-semibold truncate" style={{ color: INK }}>{file.name}</p>
+          <p className="text-xs mt-0.5" style={{ color: MUTED }}>{formatBytes(file.size)}</p>
+        </div>
+        <button
+          type="button"
+          onClick={onRemove}
+          className="shrink-0 h-7 w-7 rounded-lg flex items-center justify-center transition-colors hover:bg-red-50 focus:outline-none"
+          aria-label={`Remove ${file.name}`}
+        >
+          <X className="h-4 w-4" style={{ color: "#B91C1C" }} aria-hidden="true" />
+        </button>
+      </div>
+      <div className="mt-3">
+        <label className="block text-xs font-semibold mb-1" style={{ color: MUTED }}>
+          Evidence type <span style={{ color: "#EF4444" }}>*</span>
+        </label>
+        <select
+          value={label}
+          onChange={(e) => onLabelChange(e.target.value)}
+          className="w-full rounded-xl px-3 py-2 text-sm focus:outline-none"
+          style={{
+            background: "white",
+            border: `1px solid ${label ? GOLD : BORDER}`,
+            color: label ? INK : MUTED,
+          }}
+        >
+          <option value="">Auto-detect</option>
+          <option value="chat_screenshot">WhatsApp / SMS chat</option>
+          <option value="mpesa_screenshot">M-Pesa screenshot</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+    </li>
   );
 }
 
