@@ -36,6 +36,45 @@ _PRODUCTION_METHOD_LABELS = {
     "other":                "Other (not specified)",
 }
 
+# Contract element labels (matches frontend ELEMENT_LABELS)
+_ELEMENT_LABELS: dict = {
+    "A": "Parties & identity",
+    "B": "Capacity",
+    "C": "Offer",
+    "D": "Acceptance",
+    "E": "Consideration",
+    "F": "Intention",
+    "G": "Certainty",
+    "H": "Genuine consent",
+    "I": "Legality",
+    "J": "Formalities",
+    "K": "Performance & breach",
+}
+
+_ELEMENT_DESC: dict = {
+    "A": "Identity of both parties to the agreement",
+    "B": "Legal capacity of both parties to contract",
+    "C": "A specific proposal to contract on defined terms",
+    "D": "Unambiguous agreement to those terms",
+    "E": "The price, payment, or value exchanged",
+    "F": "An intention to create a binding legal relationship",
+    "G": "The subject matter of the contract is sufficiently clear",
+    "H": "No duress, fraud, or misrepresentation",
+    "I": "The agreement is for a lawful purpose",
+    "J": "Any required formalities (e.g. writing, witnesses)",
+    "K": "What was performed and whether obligations were met",
+}
+
+# (display label, (R, G, B) fill colour) per derived status code
+_STATUS_DISPLAY: dict = {
+    "PRESENT":            ("PRESENT",  (200, 240, 200)),
+    "PARTIAL":            ("PARTIAL",  (255, 235, 160)),
+    "ABSENT":             ("ABSENT",   (255, 200, 200)),
+    "UNCLEAR":            ("UNCLEAR",  (255, 235, 160)),
+    "NO_ISSUE_INDICATED": ("OK",       (230, 230, 230)),
+    "NOT_REQUIRED":       ("N/A",      (230, 230, 230)),
+}
+
 
 # ---------------------------------------------------------------------------
 # Latin-1 sanitisation (fpdf2 core fonts are Latin-1)
@@ -153,6 +192,77 @@ def _add_evidence_schedule(pdf: _CertPDF, evidence: list[dict]):
 
 
 # ---------------------------------------------------------------------------
+# Contract analysis section (shared by both document types)
+# ---------------------------------------------------------------------------
+
+def _add_contract_analysis_section(pdf: _CertPDF, record: dict):
+    """Add an element-by-element contract analysis table to the PDF."""
+    derived  = record.get("derived_statuses") or {}
+    result_e = (record.get("result") or {}).get("elements") or {}
+    confidence = record.get("confidence")
+    verdict    = record.get("verdict") or ""
+
+    # Build a unified status map: prefer derived_statuses (authoritative)
+    statuses: dict = {}
+    for letter in _ELEMENT_LABELS:
+        if letter in derived:
+            statuses[letter] = derived[letter]
+        elif letter in result_e:
+            statuses[letter] = (result_e[letter].get("status") or "")
+        else:
+            statuses[letter] = ""
+
+    conf_pct    = f"{round((confidence or 0) * 100)}%" if confidence is not None else "N/A"
+    verdict_str = _safe(verdict) if verdict else "N/A"
+
+    pdf.section_heading("Contract Analysis")
+    pdf.set_font(FONT, style="I", size=9)
+    pdf.set_text_color(100, 100, 100)
+    pdf.multi_cell(
+        0, 5,
+        _safe(
+            "This shows whether the contract elements were found in the conversation. "
+            "A strong contract analysis does NOT automatically produce a s.106B "
+            "certificate - the certificate separately requires the electronic records "
+            "(screenshots) to pass a file-integrity check (see section above)."
+        ),
+    )
+    pdf.set_text_color(0, 0, 0)
+    pdf.ln(2)
+
+    # Verdict + confidence headline
+    pdf.set_font(FONT, style="B", size=10)
+    pdf.cell(
+        0, 7,
+        f"Contract verdict: {verdict_str}   |   Confidence: {conf_pct}",
+        new_x="LMARGIN", new_y="NEXT",
+    )
+    pdf.ln(2)
+
+    # Element table
+    col_w = [10, 48, 22, 90]
+    pdf.set_font(FONT, style="B", size=8)
+    pdf.set_fill_color(240, 235, 215)
+    for heading, width in zip(["", "Element", "Status", "Description"], col_w):
+        pdf.cell(width, 7, heading, border=1, fill=True)
+    pdf.ln()
+
+    pdf.set_font(FONT, size=8)
+    for letter in ("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K"):
+        raw = statuses.get(letter, "")
+        disp_label, fill_rgb = _STATUS_DISPLAY.get(raw, (raw[:7] or "?", (245, 245, 245)))
+        pdf.set_fill_color(*fill_rgb)
+        pdf.cell(col_w[0], 6, letter, border=1)
+        pdf.cell(col_w[1], 6, _safe(_ELEMENT_LABELS.get(letter, letter)), border=1)
+        pdf.cell(col_w[2], 6, disp_label, border=1, fill=True)
+        pdf.cell(col_w[3], 6, _safe(_ELEMENT_DESC.get(letter, "")), border=1)
+        pdf.ln()
+
+    pdf.set_fill_color(255, 255, 255)
+    pdf.ln(3)
+
+
+# ---------------------------------------------------------------------------
 # CERTIFICATE layout
 # ---------------------------------------------------------------------------
 
@@ -206,6 +316,9 @@ def _render_certificate(record: dict) -> FPDF:
     )
     _add_evidence_schedule(pdf, evidence)
     pdf.body(f"Manner of production: {prod_label}.")
+
+    # Contract element summary
+    _add_contract_analysis_section(pdf, record)
 
     # --- Part B: s.106B(4)(b) ---
     pdf.section_heading("Part B — Particulars of the Device (s.106B(4)(b))")
@@ -320,16 +433,22 @@ def _render_deficiency_report(record: dict) -> FPDF:
     pdf.section_heading("Summary")
     if outcome == "needs_strengthening":
         pdf.body(
-            "Your evidence satisfies the technical integrity checks but some "
-            "information about the device that produced the evidence is missing "
-            "or could not be confirmed. Address the items listed below before "
-            "submitting your evidence to the court."
+            "The contract analysis found that the agreement is established — offer, "
+            "acceptance, and the key terms are present in your conversation. However, "
+            "some information about the device or recording method is missing. "
+            "These gaps prevent a Section 106B certificate from being issued right now. "
+            "Address the items listed in the requirements table below and re-analyse "
+            "to unlock the certificate."
         )
     else:
         pdf.body(
-            "Your evidence could not pass the Section 106B admissibility check "
-            "because one or more fundamental integrity requirements were not met. "
-            "Review the items below carefully."
+            "The contract analysis found strong evidence of an agreement (see the "
+            "'Contract Analysis' section below). However, the Section 106B "
+            "admissibility check requires more than a valid contract — it also "
+            "requires proof that the electronic records (your screenshots) are "
+            "genuine and unaltered. One or more integrity requirements were not met, "
+            "which is why no certificate can be issued. Review the requirements table "
+            "below, then re-upload original, unedited screenshots and re-analyse."
         )
 
     # Conditions table
@@ -358,6 +477,9 @@ def _render_deficiency_report(record: dict) -> FPDF:
         # multi_cell already moved to next line
 
     pdf.ln(3)
+
+    # Contract analysis element table
+    _add_contract_analysis_section(pdf, record)
 
     # Other evidence gaps from analysis
     missing = _safe_list(summary.get("missing_information") or [])[:10]

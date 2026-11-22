@@ -641,9 +641,14 @@ def build_analysis_input_from_case(
         eid = ev.get("evidence_id")
         ev_type = ev.get("type") or ""
         evidence_list.append({
-            "evidence_id": eid,
-            "type": ev_type,
-            "label": ev.get("label") or ev.get("file_name"),
+            "evidence_id":   eid,
+            "type":          ev_type,
+            "file_name":     ev.get("file_name") or "",
+            "label":         ev.get("label") or ev.get("file_name") or "",
+            "sha256":        ev.get("sha256"),
+            "server_sha256": ev.get("server_sha256"),
+            "hash_match":    ev.get("hash_match"),
+            "added_at":      ev.get("added_at"),
         })
 
         if ev_type == "chat_screenshot":
