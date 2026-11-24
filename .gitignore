@@ -1,8 +1,11 @@
-# Neo4j runtime data and binaries (too large for GitHub)
-neo4j-community-*/data/
+# Neo4j — binary moved to ~/opt/, run via Docker (infra/graph/docker-compose.yml)
+neo4j-community-*/
 neo4j-community-*.tar.gz
 neo4j-community-*.zip
-neo4j-java/target/
+legacy/neo4j-java/target/
+
+# Graph layer secrets
+infra/graph/.env
 
 # Environment variables
 .env

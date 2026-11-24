@@ -1,0 +1,140 @@
+{
+  "acts": [
+    {
+      "act_slug": "small_claims_court_act",
+      "act_title": "Small Claims Court Act",
+      "aliases": [
+        "Small Claims Court Act",
+        "Small Claims Court Act 2016",
+        "Small Claims Court Act, 2016",
+        "SCC Act"
+      ]
+    },
+    {
+      "act_slug": "small_claims_court_rules",
+      "act_title": "Small Claims Court (Procedure) Rules",
+      "aliases": [
+        "Small Claims Court (Procedure) Rules",
+        "Small Claims Court Rules",
+        "SCC Rules",
+        "SCC Procedure Rules"
+      ]
+    },
+    {
+      "act_slug": "civil_procedure_act",
+      "act_title": "Civil Procedure Act",
+      "aliases": [
+        "Civil Procedure Act",
+        "Civil Procedure Act Cap 21",
+        "CPA"
+      ]
+    },
+    {
+      "act_slug": "evidence_act",
+      "act_title": "Evidence Act",
+      "aliases": [
+        "Evidence Act",
+        "Evidence Act Cap 80",
+        "Kenya Evidence Act"
+      ]
+    },
+    {
+      "act_slug": "limitation_of_actions_act",
+      "act_title": "Limitation of Actions Act",
+      "aliases": [
+        "Limitation of Actions Act",
+        "Limitation of Actions Act Cap 22",
+        "Limitation Act"
+      ]
+    },
+    {
+      "act_slug": "judicature_act",
+      "act_title": "Judicature Act",
+      "aliases": [
+        "Judicature Act",
+        "Judicature Act Cap 8"
+      ]
+    },
+    {
+      "act_slug": "employment_act",
+      "act_title": "Employment Act",
+      "aliases": [
+        "Employment Act",
+        "Employment Act 2007",
+        "Kenya Employment Act"
+      ]
+    },
+    {
+      "act_slug": "consumer_protection_act",
+      "act_title": "Consumer Protection Act",
+      "aliases": [
+        "Consumer Protection Act",
+        "Consumer Protection Act 2012"
+      ]
+    },
+    {
+      "act_slug": "sale_of_goods_act",
+      "act_title": "Sale of Goods Act",
+      "aliases": [
+        "Sale of Goods Act",
+        "Sale of Goods Act Cap 31"
+      ]
+    },
+    {
+      "act_slug": "bills_of_exchange_act",
+      "act_title": "Bills of Exchange Act",
+      "aliases": [
+        "Bills of Exchange Act",
+        "Bills of Exchange Act Cap 27"
+      ]
+    },
+    {
+      "act_slug": "kenya_information_and_communications_act",
+      "act_title": "Kenya Information and Communications Act",
+      "aliases": [
+        "Kenya Information and Communications Act",
+        "Kenya ICT Act",
+        "KICA",
+        "Information and Communications Act"
+      ]
+    },
+    {
+      "act_slug": "stamp_duty_act",
+      "act_title": "Stamp Duty Act",
+      "aliases": [
+        "Stamp Duty Act",
+        "Stamp Duty Act Cap 480"
+      ]
+    },
+    {
+      "act_slug": "landlord_and_tenant_act",
+      "act_title": "Landlord and Tenant (Shops, Hotels and Catering Establishments) Act",
+      "aliases": [
+        "Landlord and Tenant (Shops, Hotels and Catering Establishments) Act",
+        "Landlord and Tenant Act",
+        "Distress for Rent Act"
+      ]
+    },
+    {
+      "act_slug": "law_of_contract_act",
+      "act_title": "Law of Contract Act",
+      "aliases": [
+        "Law of Contract Act",
+        "Law of Contract Act Cap 23",
+        "Contract Act"
+      ]
+    }
+  ],
+  "constitution_fallback": {
+    "collection": "master_rules",
+    "document_type": "constitution",
+    "aliases": [
+      "Constitution of Kenya",
+      "Constitution of Kenya 2010",
+      "Constitution of Kenya, 2010",
+      "Constitution",
+      "The Constitution",
+      "Kenya Constitution"
+    ]
+  }
+}

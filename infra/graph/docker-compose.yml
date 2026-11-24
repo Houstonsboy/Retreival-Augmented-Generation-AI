@@ -1,0 +1,39 @@
+services:
+  neo4j:
+    image: neo4j:5.26-community
+    container_name: legalai-neo4j
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:7474:7474"
+      - "127.0.0.1:7687:7687"
+    environment:
+      NEO4J_AUTH: neo4j/${NEO4J_PASSWORD:?set NEO4J_PASSWORD in infra/graph/.env}
+      NEO4J_PLUGINS: '["apoc"]'
+      NEO4J_server_memory_heap_initial__size: 512m
+      NEO4J_server_memory_heap_max__size: 1G
+      NEO4J_server_memory_pagecache_size: 512m
+      NEO4J_dbms_security_procedures_unrestricted: apoc.*
+    volumes:
+      - legalai_neo4j_data:/data
+      - legalai_neo4j_logs:/logs
+    healthcheck:
+      test: ["CMD-SHELL", "cypher-shell -u neo4j -p $${NEO4J_PASSWORD} 'RETURN 1' || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+
+  neo4j-test:
+    image: neo4j:5.26-community
+    container_name: legalai-neo4j-test
+    profiles: ["test"]
+    ports:
+      - "127.0.0.1:7688:7687"
+    environment:
+      NEO4J_AUTH: neo4j/${NEO4J_TEST_PASSWORD:-testpassword}
+      NEO4J_server_memory_heap_max__size: 512m
+    tmpfs:
+      - /data
+
+volumes:
+  legalai_neo4j_data:
+  legalai_neo4j_logs:

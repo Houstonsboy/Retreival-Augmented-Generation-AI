@@ -1,0 +1,150 @@
+# A5 — Case-law retrieval regression questions
+# Used by scripts/eval_caselaw_retrieval.py
+# Format:
+#   question: natural-language query string
+#   expected_hits:
+#     - case_key: canonical case key
+#       para_range: [min_para_no, max_para_no]  (inclusive; 0 = any paragraph)
+#   note: optional explanation
+
+questions:
+
+  - question: "Is a s.106B certificate required for WhatsApp evidence?"
+    expected_hits:
+      - case_key: "KEHC-2024-15763"   # Ogembo
+        para_range: [38, 46]
+      - case_key: "KEHC-2011-1481"    # Barisa
+        para_range: [0, 999]
+    note: "Core s.106B WhatsApp admissibility question"
+
+  - question: "Who must sign a s.106B certificate?"
+    expected_hits:
+      - case_key: "KEHC-2011-1481"    # Barisa
+        para_range: [0, 999]
+      - case_key: "KEHC-2024-17038"   # Obado
+        para_range: [29, 29]
+    note: "Responsible official / signer requirement"
+
+  - question: "Can a s.106B certificate be filed late or after the trial begins?"
+    expected_hits:
+      - case_key: "KEHC-2014-6468"    # Nonny
+        para_range: [13, 13]
+      - case_key: "KEHC-2024-15763"   # Ogembo
+        para_range: [44, 44]
+    note: "Late filing of certificate"
+
+  - question: "Is an expert affidavit a valid s.106B certificate?"
+    expected_hits:
+      - case_key: "KEHC-2024-17038"   # Obado
+        para_range: [28, 29]
+    note: "Expert affidavit as certificate substitute"
+
+  - question: "Are emails admissible if the maker of the email testifies personally?"
+    expected_hits:
+      - case_key: "KEHC-2020-8905"    # PNN
+        para_range: [13, 13]
+    note: "Email admissibility via oral testimony"
+
+  - question: "Does the Small Claims Court have jurisdiction over employment claims?"
+    expected_hits:
+      - case_key: "SCC-2026-235"      # New Titanic
+        para_range: [10, 12]
+    note: "SCC jurisdiction exclusion for employment"
+
+  - question: "When will the court set aside a regular default judgment?"
+    expected_hits:
+      - case_key: "SCC-2026-241"      # Ndeti
+        para_range: [32, 38]
+      - case_key: "KECA-2001-154"     # Express
+        para_range: [0, 999]
+    note: "Setting aside default judgment — Express/Ndeti"
+
+  - question: "Is service via WhatsApp valid service of court process?"
+    expected_hits:
+      - case_key: "SCC-2026-241"      # Ndeti
+        para_range: [25, 26]
+    note: "WhatsApp service of process"
+
+  - question: "Adverse inference for failing to call a witness"
+    expected_hits:
+      - case_key: "SCC-2026-242"      # Umoja
+        para_range: [9, 9]
+    note: "Adverse inference rule"
+
+  - question: "Is the Small Claims Court bound by strict rules of evidence?"
+    expected_hits:
+      - case_key: "SCC-2026-242"      # Umoja
+        para_range: [12, 12]
+      - case_key: "KEHC-2024-15763"   # Ogembo
+        para_range: [38, 38]
+    note: "SCC informality of procedure"
+
+  - question: "What are the conditions for admitting M-Pesa statements as evidence?"
+    expected_hits:
+      - case_key: "SCC-2026-241"      # Ndeti
+        para_range: [15, 20]
+    note: "M-Pesa / electronic payment record admissibility"
+
+  - question: "What does section 106B(4)(d) require for electronic records?"
+    expected_hits:
+      - case_key: "KEHC-2011-1481"    # Barisa
+        para_range: [0, 999]
+      - case_key: "KEHC-2024-15763"   # Ogembo
+        para_range: [38, 46]
+    note: "s.106B(4)(d) specific requirements"
+
+  - question: "Can a defendant set aside a judgment obtained without notice?"
+    expected_hits:
+      - case_key: "KECA-2001-154"     # Express
+        para_range: [0, 999]
+      - case_key: "SCC-2026-241"      # Ndeti
+        para_range: [32, 38]
+    note: "Setting aside judgment — no service"
+
+  - question: "What is the standard for granting a stay of arbitral proceedings?"
+    expected_hits:
+      - case_key: "KECA-2010-346"     # Safaricom
+        para_range: [0, 999]
+    note: "Arbitration stay standard"
+
+  - question: "What is the evidential value of CCTV footage in court?"
+    expected_hits:
+      - case_key: "KEHC-2024-15763"   # Ogembo
+        para_range: [38, 50]
+    note: "CCTV as electronic evidence"
+
+  - question: "Who bears the burden of proof for admissibility of electronic evidence?"
+    expected_hits:
+      - case_key: "KEHC-2011-1481"    # Barisa
+        para_range: [0, 999]
+      - case_key: "KEHC-2024-15763"   # Ogembo
+        para_range: [38, 46]
+    note: "Burden on party tendering electronic evidence"
+
+  - question: "Can a court draw an adverse inference from deletion of messages?"
+    expected_hits:
+      - case_key: "KEHC-2024-15763"   # Ogembo
+        para_range: [38, 50]
+    note: "Adverse inference from destroyed/deleted evidence"
+
+  - question: "What is the jurisdiction of the Small Claims Court in commercial cases?"
+    expected_hits:
+      - case_key: "SCC-2026-235"      # New Titanic
+        para_range: [5, 15]
+      - case_key: "SCC-2026-242"      # Umoja
+        para_range: [0, 10]
+    note: "SCC commercial jurisdiction"
+
+  - question: "What must a defamation claimant prove regarding publication?"
+    expected_hits:
+      - case_key: "KEHC-2020-8905"    # PNN
+        para_range: [0, 999]
+    note: "Defamation publication requirement"
+
+  - question: "Must a party calling a document exhibit it formally or is production sufficient?"
+    expected_hits:
+      - case_key: "KEHC-2014-6468"    # Nonny
+        para_range: [0, 999]
+      - case_key: "KEHC-2020-8905"    # PNN
+        para_range: [13, 13]
+    note: "Document production vs formal exhibit"

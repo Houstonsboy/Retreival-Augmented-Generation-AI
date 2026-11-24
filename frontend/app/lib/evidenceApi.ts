@@ -45,3 +45,8 @@ export async function downloadCertificate(certId: string, certNumber: string): P
   a.click();
   document.body.removeChild(a);
 }
+
+export async function viewCertificate(certId: string): Promise<void> {
+  const blobUrl = await fetchProtectedFile(`/api/evidence/certificates/${certId}/download`);
+  window.open(blobUrl, "_blank", "noopener,noreferrer");
+}

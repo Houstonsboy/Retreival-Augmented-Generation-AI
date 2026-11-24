@@ -45,3 +45,11 @@ groq==0.35.0
 rapidocr==3.10.0
 onnxruntime==1.23.2
 opencv-python-headless==5.0.0.93
+
+# Graph layer (Neo4j, disabled by default — GRAPH_ENABLED=false)
+neo4j>=5.18,<6
+pydantic>=2
+
+# Case-law ingest pipeline (ingest/caselaw/)
+rapidfuzz>=3.0
+PyYAML>=6.0

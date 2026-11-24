@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { ScrollText, Download, FileSearch } from "lucide-react";
-import { downloadCertificate, listCertificates } from "@/app/lib/evidenceApi";
+import { downloadCertificate, listCertificates, viewCertificate } from "@/app/lib/evidenceApi";
 import type { CertificateRecord, CertificateOutcome } from "@/app/lib/evidenceTypes";
 
 // ── Design tokens ──────────────────────────────────────────────────────────
@@ -19,10 +19,19 @@ const NR      = "var(--font-newsreader), Georgia, 'Times New Roman', serif";
 
 type Filter = "all" | CertificateOutcome;
 
-const OUTCOME_STYLES: Record<CertificateOutcome, { bg: string; color: string; label: string }> = {
-  certificate_ready:    { bg: "#ECFDF5", color: "#065F46", label: "Certificate ready"  },
-  needs_strengthening:  { bg: "#FFF8E6", color: GOLD_DK,  label: "Needs strengthening" },
-  weak:                 { bg: "#FEF2F2", color: "#B91C1C", label: "Weak"                },
+const OUTCOME_STYLES: Record<CertificateOutcome, { bg: string; color: string; label: string; explain: string }> = {
+  certificate_ready: {
+    bg: "#ECFDF5", color: "#065F46", label: "Certificate ready",
+    explain: "All checks passed. The evidence is strong enough to generate a Section 106B certificate for court.",
+  },
+  needs_strengthening: {
+    bg: "#FFF8E6", color: GOLD_DK, label: "Needs strengthening",
+    explain: "The core contract elements are established, but some supporting details (e.g. device questionnaire, delivery confirmation) are missing. Answer the follow-up questions in the Evidence Analysis page to unlock the certificate.",
+  },
+  weak: {
+    bg: "#FEF2F2", color: "#B91C1C", label: "Weak",
+    explain: "The evidence record has an integrity problem — messages appear edited or deleted, the OCR confidence is low, or a file hash mismatch was detected. This means the system cannot verify that the screenshots are unaltered. Upload original, unedited screenshots to resolve this.",
+  },
 };
 
 const FILTERS: { key: Filter; label: string }[] = [
@@ -73,6 +82,7 @@ export default function CertificatesPage() {
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<Filter>("all");
   const [downloading, setDownloading] = useState<string | null>(null);
+  const [viewing, setViewing] = useState<string | null>(null);
 
   useEffect(() => {
     listCertificates()
@@ -90,9 +100,21 @@ export default function CertificatesPage() {
     try {
       await downloadCertificate(rec.cert_id, rec.certificate_number);
     } catch {
-      // silent — browser will show no dialog if the fetch fails
+      // silent
     } finally {
       setDownloading(null);
+    }
+  };
+
+  const handleView = async (rec: CertificateRecord) => {
+    if (viewing) return;
+    setViewing(rec.cert_id);
+    try {
+      await viewCertificate(rec.cert_id);
+    } catch {
+      // silent
+    } finally {
+      setViewing(null);
     }
   };
 
@@ -203,51 +225,67 @@ export default function CertificatesPage() {
               </thead>
               <tbody>
                 {filtered.map((rec, i) => (
-                  <tr
-                    key={rec.cert_id}
-                    style={{
-                      background: i % 2 === 0 ? SURFACE : "white",
-                      borderBottom: `1px solid ${BORDER}`,
-                    }}
-                  >
-                    <td className="px-4 py-3 font-medium font-mono text-xs" style={{ color: INK }}>
-                      {rec.certificate_number}
-                    </td>
-                    <td className="px-4 py-3 truncate max-w-[180px] text-xs" style={{ color: MUTED }}>
-                      {rec.document_type === "CERTIFICATE" ? "Certificate" : "Deficiency Report"}
-                    </td>
-                    <td className="px-4 py-3">
-                      <OutcomePill outcome={rec.outcome} />
-                    </td>
-                    <td className="px-4 py-3" style={{ color: MUTED }}>
-                      {formatDate(rec.created_at)}
-                    </td>
-                    <td className="px-4 py-3">
-                      <div className="flex items-center gap-2">
-                        <button
-                          type="button"
-                          onClick={() => handleDownload(rec)}
-                          disabled={downloading === rec.cert_id}
-                          title="Download PDF"
-                          className="flex items-center gap-1 text-xs font-medium px-2.5 py-1 rounded-lg disabled:opacity-60 hover:opacity-80 transition-opacity"
-                          style={{ background: GOLD, color: "white" }}
-                          aria-label={`Download certificate ${rec.certificate_number}`}
-                        >
-                          <Download className="h-3.5 w-3.5" aria-hidden="true" />
-                          {downloading === rec.cert_id ? "…" : "Download"}
-                        </button>
-                        <Link
-                          href={`/litigant/certificates/${rec.cert_id}`}
-                          className="flex items-center gap-1 text-xs font-medium px-2.5 py-1 rounded-lg hover:opacity-80 transition-opacity"
-                          style={{ background: CREAM2, color: MUTED }}
-                          aria-label={`View report for certificate ${rec.certificate_number}`}
-                        >
-                          <FileSearch className="h-3.5 w-3.5" aria-hidden="true" />
-                          View report
-                        </Link>
-                      </div>
-                    </td>
-                  </tr>
+                  <>
+                    <tr
+                      key={rec.cert_id}
+                      style={{
+                        background: i % 2 === 0 ? SURFACE : "white",
+                        borderBottom: `1px solid ${BORDER}`,
+                      }}
+                    >
+                      <td className="px-4 py-3 font-medium font-mono text-xs" style={{ color: INK }}>
+                        {rec.certificate_number}
+                      </td>
+                      <td className="px-4 py-3 truncate max-w-[180px] text-xs" style={{ color: MUTED }}>
+                        {rec.document_type === "CERTIFICATE" ? "Certificate" : "Deficiency Report"}
+                      </td>
+                      <td className="px-4 py-3">
+                        <OutcomePill outcome={rec.outcome} />
+                      </td>
+                      <td className="px-4 py-3" style={{ color: MUTED }}>
+                        {formatDate(rec.created_at)}
+                      </td>
+                      <td className="px-4 py-3">
+                        <div className="flex items-center gap-2">
+                          <button
+                            type="button"
+                            onClick={() => handleDownload(rec)}
+                            disabled={!!downloading}
+                            title="Download PDF"
+                            className="flex items-center gap-1 text-xs font-medium px-2.5 py-1 rounded-lg disabled:opacity-60 hover:opacity-80 transition-opacity"
+                            style={{ background: GOLD, color: "white" }}
+                            aria-label={`Download certificate ${rec.certificate_number}`}
+                          >
+                            <Download className="h-3.5 w-3.5" aria-hidden="true" />
+                            {downloading === rec.cert_id ? "…" : "Download"}
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleView(rec)}
+                            disabled={!!viewing}
+                            title="Open PDF in new tab"
+                            className="flex items-center gap-1 text-xs font-medium px-2.5 py-1 rounded-lg hover:opacity-80 transition-opacity disabled:opacity-60"
+                            style={{ background: CREAM2, color: MUTED }}
+                            aria-label={`View report for certificate ${rec.certificate_number}`}
+                          >
+                            <FileSearch className="h-3.5 w-3.5" aria-hidden="true" />
+                            {viewing === rec.cert_id ? "Opening…" : "View report"}
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                    {rec.outcome !== "certificate_ready" && (
+                      <tr key={`${rec.cert_id}-reason`} style={{ background: i % 2 === 0 ? SURFACE : "white", borderBottom: `1px solid ${BORDER}` }}>
+                        <td colSpan={5} className="px-4 pb-3 pt-0">
+                          <p className="text-[11px] leading-relaxed rounded-lg px-2.5 py-2"
+                            style={{ background: OUTCOME_STYLES[rec.outcome].bg, color: OUTCOME_STYLES[rec.outcome].color }}>
+                            <span className="font-semibold">Why {OUTCOME_STYLES[rec.outcome].label.toLowerCase()}? </span>
+                            {OUTCOME_STYLES[rec.outcome].explain}
+                          </p>
+                        </td>
+                      </tr>
+                    )}
+                  </>
                 ))}
               </tbody>
             </table>
@@ -279,22 +317,31 @@ export default function CertificatesPage() {
                   <button
                     type="button"
                     onClick={() => handleDownload(rec)}
-                    disabled={downloading === rec.cert_id}
+                    disabled={!!downloading}
                     className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg disabled:opacity-60 hover:opacity-80 transition-opacity"
                     style={{ background: GOLD, color: "white" }}
                   >
                     <Download className="h-3.5 w-3.5" aria-hidden="true" />
                     {downloading === rec.cert_id ? "…" : "Download"}
                   </button>
-                  <Link
-                    href={`/litigant/certificates/${rec.cert_id}`}
-                    className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg hover:opacity-80 transition-opacity"
+                  <button
+                    type="button"
+                    onClick={() => handleView(rec)}
+                    disabled={!!viewing}
+                    className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg hover:opacity-80 transition-opacity disabled:opacity-60"
                     style={{ background: CREAM2, color: MUTED }}
                   >
                     <FileSearch className="h-3.5 w-3.5" aria-hidden="true" />
-                    View report
-                  </Link>
+                    {viewing === rec.cert_id ? "Opening…" : "View report"}
+                  </button>
                 </div>
+                {rec.outcome !== "certificate_ready" && (
+                  <p className="text-[11px] leading-relaxed rounded-lg px-2.5 py-2 mt-2"
+                    style={{ background: OUTCOME_STYLES[rec.outcome].bg, color: OUTCOME_STYLES[rec.outcome].color }}>
+                    <span className="font-semibold">Why {OUTCOME_STYLES[rec.outcome].label.toLowerCase()}? </span>
+                    {OUTCOME_STYLES[rec.outcome].explain}
+                  </p>
+                )}
               </li>
             ))}
           </ul>

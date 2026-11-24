@@ -1,0 +1,25 @@
+
+> frontend@0.1.0 build
+> next build
+
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+   ▲ Next.js 16.0.3 (Turbopack)
+   - Environments: .env.local
+
+   Creating an optimized production build ...
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+ ✓ Compiled successfully in 8.6s
+   Running TypeScript ...
+Failed to compile.
+
+./app/components/sccvision/SCCVisionTest.tsx:1835:59
+Type error: Property 'findings' does not exist on type '{ llm_payment_count: number; parsed_payment_count: number; codes_llm_only: string[]; codes_parsed_only: string[]; reclassified: { code: string | null; amount_kes: number | null; before: string; after: string; }[]; till_mismatches: unknown[]; amount_mismatches: unknown[]; duplicate_codes: string[]; consistent: boolea...'.
+
+[0m [90m 1833 |[39m                 {(analysis[33m.[39mverification[33m.[39mmpesa_cross_check[33m.[39mcodes_llm_only[33m?[39m[33m.[39mlength [33m?[39m[33m?[39m [35m0[39m)} code(s) cited only [36min[39m analysis[33m,[39m{[32m" "[39m}
+ [90m 1834 |[39m                 {(analysis[33m.[39mverification[33m.[39mmpesa_cross_check[33m.[39mcodes_parsed_only[33m?[39m[33m.[39mlength [33m?[39m[33m?[39m [35m0[39m)} only [36min[39m screenshots[33m.[39m{[32m" "[39m}
+[31m[1m>[22m[39m[90m 1835 |[39m                 {(analysis[33m.[39mverification[33m.[39mmpesa_cross_check[33m.[39mfindings[33m?[39m[33m.[39mfilter((f[33m:[39m {blocks_certificate[33m:[39m boolean}) [33m=>[39m f[33m.[39mblocks_certificate)[33m.[39mlength [33m?[39m[33m?[39m [35m0[39m)} blocking finding(s)[33m.[39m
+ [90m      |[39m                                                           [31m[1m^[22m[39m
+ [90m 1836 |[39m               [33m<[39m[33m/[39m[33mp[39m[33m>[39m
+ [90m 1837 |[39m             )}
+ [90m 1838 |[39m           [33m<[39m[33m/[39m[33mInfoCard[39m[33m>[39m[0m
+Next.js build worker exited with code: 1 and signal: null

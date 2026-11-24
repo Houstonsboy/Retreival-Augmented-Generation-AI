@@ -18,7 +18,12 @@ const STEPS = [
   { Icon: ScrollText,    label: "Certificate or guidance",desc: "Signed draft or next steps" },
 ];
 
-export default function EvidenceAnalysisPage() {
+export default function EvidenceAnalysisPage({
+  searchParams,
+}: {
+  searchParams?: { caseId?: string };
+}) {
+  const initialCaseId = searchParams?.caseId;
   return (
     <div className="px-5 py-8 max-w-2xl mx-auto" style={{ fontFamily: MNR }}>
 
@@ -74,7 +79,7 @@ export default function EvidenceAnalysisPage() {
       </div>
 
       {/* ── SCC Analyst ──────────────────────────────────────────── */}
-      <SCCVisionTest />
+      <SCCVisionTest initialCaseId={initialCaseId} />
     </div>
   );
 }

@@ -43,6 +43,13 @@ app.register_blueprint(history_bp)
 app.register_blueprint(sccvision_bp)
 app.register_blueprint(s106b_bp)
 
+# Graph layer — only imported when GRAPH_ENABLED=true; safe to import always (no connection).
+try:
+    from graph.health import graph_health_bp
+    app.register_blueprint(graph_health_bp)
+except ImportError:
+    pass  # neo4j driver not installed in this environment
+
 # Path to the Repo directory
 REPO_DIR = Path(__file__).resolve().parent / "Repo"
 RES_IPSA_LOQUITUR_DIR = REPO_DIR / "Res_ipsa_loquitur"

@@ -1,0 +1,95 @@
+# Curated Issue list — seed from scc_caselaw_seed_graph.json (18 issues).
+# LLM call 2 matches existing issues by ID before proposing new ones.
+# status: approved | proposed
+# domain: primary legal area
+
+issues:
+  - issue_id: "issue:e-evidence-cert-required"
+    question: "Is a s.106B certificate required for electronic evidence to be admissible?"
+    domain: "Evidence Law"
+    status: approved
+
+  - issue_id: "issue:cert-signer"
+    question: "Who must sign a s.106B certificate?"
+    domain: "Evidence Law"
+    status: approved
+
+  - issue_id: "issue:cert-late-filing"
+    question: "Can a s.106B certificate be filed late or after the trial has commenced?"
+    domain: "Evidence Law"
+    status: approved
+
+  - issue_id: "issue:cert-expert-affidavit"
+    question: "Is an expert affidavit a valid substitute for a s.106B certificate?"
+    domain: "Evidence Law"
+    status: approved
+
+  - issue_id: "issue:email-maker-testifies"
+    question: "Are emails admissible if the maker of the email testifies in person?"
+    domain: "Evidence Law"
+    status: approved
+
+  - issue_id: "issue:scc-jurisdiction-employment"
+    question: "Does the Small Claims Court have jurisdiction over employment-founded claims?"
+    domain: "Civil Procedure"
+    status: approved
+
+  - issue_id: "issue:default-judgment-set-aside"
+    question: "When will the court set aside a regular default judgment?"
+    domain: "Civil Procedure"
+    status: approved
+
+  - issue_id: "issue:whatsapp-service"
+    question: "Is service of court process via WhatsApp valid?"
+    domain: "Civil Procedure"
+    status: approved
+
+  - issue_id: "issue:adverse-inference-witness"
+    question: "When will the court draw an adverse inference for failure to call a witness?"
+    domain: "Evidence Law"
+    status: approved
+
+  - issue_id: "issue:scc-strict-rules-evidence"
+    question: "Is the Small Claims Court bound by strict rules of evidence?"
+    domain: "Evidence Law"
+    status: approved
+
+  - issue_id: "issue:whatsapp-admissibility"
+    question: "What conditions must be met for WhatsApp evidence to be admissible?"
+    domain: "Evidence Law"
+    status: approved
+
+  - issue_id: "issue:mpesa-admissibility"
+    question: "What is required for M-Pesa statements to be admitted as evidence?"
+    domain: "Evidence Law"
+    status: approved
+
+  - issue_id: "issue:cert-responsible-official"
+    question: "Who qualifies as a 'responsible official' for purposes of s.106B(4)(a)?"
+    domain: "Evidence Law"
+    status: approved
+
+  - issue_id: "issue:cert-computer-identity"
+    question: "What must the s.106B certificate state about the computer that produced the record?"
+    domain: "Evidence Law"
+    status: approved
+
+  - issue_id: "issue:binding-authority-hierarchy"
+    question: "Which courts are bound by decisions of the Court of Appeal and Supreme Court in Kenya?"
+    domain: "Constitutional Law"
+    status: approved
+
+  - issue_id: "issue:scc-jurisdiction-amount"
+    question: "What is the monetary jurisdiction of the Small Claims Court?"
+    domain: "Civil Procedure"
+    status: approved
+
+  - issue_id: "issue:arbitration-stay-conditions"
+    question: "What conditions must be satisfied for a court to stay proceedings in favour of arbitration?"
+    domain: "Arbitration"
+    status: approved
+
+  - issue_id: "issue:defamation-publication"
+    question: "What constitutes publication of defamatory material in the digital age?"
+    domain: "Defamation"
+    status: approved

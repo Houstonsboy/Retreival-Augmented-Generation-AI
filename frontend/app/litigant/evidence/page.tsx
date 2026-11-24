@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useMemo } from "react";
 import Link from "next/link";
-import { FolderOpen, X, ZoomIn, RefreshCw, Trash2 } from "lucide-react";
+import { FolderOpen, X, ZoomIn, RefreshCw, Trash2, FlaskConical } from "lucide-react";
 import { useAuth } from "@/app/context/AuthContext";
 import { listUserEvidence, deleteEvidenceFile, type EvidenceStorageRecord } from "@/app/lib/storageService";
 
@@ -230,22 +230,33 @@ function CaseCard({
       style={{ background: SURFACE, border: `1px solid ${BORDER}` }}
     >
       {/* header */}
-      <div className="mb-4">
-        <h2 className="text-base font-bold leading-snug mb-0.5" style={{ color: INK, fontFamily: NR }}>
-          {group.caseTitle}
-        </h2>
-        <div className="flex items-center gap-2 flex-wrap">
-          <span className="text-[10px] font-mono rounded px-1.5 py-0.5"
-            style={{ background: CREAM2, color: MUTED }}>
-            {group.caseId}
-          </span>
-          <span className="text-xs" style={{ color: MUTED }}>
-            · {group.items.length} file{group.items.length !== 1 ? "s" : ""}
-          </span>
-          <span className="text-xs" style={{ color: MUTED }}>
-            · {formatDate(group.latestUpload)}
-          </span>
+      <div className="flex items-start justify-between gap-3 mb-4">
+        <div className="min-w-0">
+          <h2 className="text-base font-bold leading-snug mb-0.5" style={{ color: INK, fontFamily: NR }}>
+            {group.caseTitle}
+          </h2>
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="text-[10px] font-mono rounded px-1.5 py-0.5"
+              style={{ background: CREAM2, color: MUTED }}>
+              {group.caseId}
+            </span>
+            <span className="text-xs" style={{ color: MUTED }}>
+              · {group.items.length} file{group.items.length !== 1 ? "s" : ""}
+            </span>
+            <span className="text-xs" style={{ color: MUTED }}>
+              · {formatDate(group.latestUpload)}
+            </span>
+          </div>
         </div>
+        <Link
+          href={`/litigant/analysis?caseId=${encodeURIComponent(group.caseId)}`}
+          className="shrink-0 flex items-center gap-1.5 text-xs font-semibold rounded-xl px-3 py-2 transition-colors hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-brand-gold"
+          style={{ background: `linear-gradient(135deg, ${GOLD_DK}, ${GOLD})`, color: "white" }}
+          title="Open this case in Evidence Analysis to re-run or update the analysis"
+        >
+          <FlaskConical className="h-3.5 w-3.5" aria-hidden="true" />
+          Analyse
+        </Link>
       </div>
 
       {/* thumbnails */}

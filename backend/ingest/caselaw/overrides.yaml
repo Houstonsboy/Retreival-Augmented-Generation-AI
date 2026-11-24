@@ -1,0 +1,148 @@
+# Manual overrides for cases where regex header parsing fails.
+# These are applied AFTER regex parsing; any field here wins over the regex result.
+# Do NOT use this for fields that can be reliably parsed from the document.
+
+cases:
+  - source_file: "Ndeti v Kaguchwa (Civil Case E075of2026) 2026SCC241(KLR) (21September2026) (Ruling).docx"
+    case_key: "SCC-2026-241"
+    name: "Ndeti v Kaguchwa"
+    citation: "[2026] SCC 241 (KLR)"
+    court_code: "SCC"
+    court_level: "SCC"
+    station: "Nairobi"
+    case_number: "Civil Case E075 of 2026"
+    decision_date: "2026-09-21"
+    decision_type: "Ruling"
+    judges: ["Magistrate (SCC)"]
+    parties: "Ndeti (Claimant) v Kaguchwa (Respondent)"
+    domains:
+      - "Civil Procedure"
+      - "Insurance"
+
+  - source_file: "Republic v Barisa Wayu Mataguda 2011KEHC1481(KLR).pdf"
+    case_key: "KEHC-2011-1481"
+    name: "Republic v Barisa Wayu Mataguda"
+    citation: "[2011] KEHC 1481 (KLR)"
+    court_code: "KEHC"
+    court_level: "HC"
+    station: "Mombasa"
+    case_number: "Criminal Case 1481 of 2011"
+    decision_date: "2011-07-22"
+    decision_type: "Ruling"
+    aliases:
+      - "Republic v Mataguda"
+      - "Republic v Matuguda"
+      - "Republic v Matriguda"
+      - "Republic v Berisa Wayu Mataguda"
+
+  - source_file: "Nonny Gathoni Njenga  another v Catherine Masitsa  another 2014KEHC6468(KLR).pdf"
+    case_key: "KEHC-2014-6468"
+    name: "Nonny Gathoni Njenga & another v Catherine Masitsa & another"
+    citation: "[2014] KEHC 6468 (KLR)"
+    court_code: "KEHC"
+    court_level: "HC"
+    case_number: "Civil Case 490 of 2013"
+    decision_type: "Judgment"
+    aliases:
+      - "Nonny v Masitsa"
+      - "Civil Case 490 of 2013"
+    domains:
+      - "Evidence Law"
+      - "Intellectual Property"
+
+  - source_file: "Peter Ngethe Ngari ta PNN Funeral Services v Standard Group Limited PLC  another 2020KEHC8905(KLR).pdf"
+    case_key: "KEHC-2020-8905"
+    name: "Peter Ngethe Ngari t/a PNN Funeral Services v Standard Group Limited PLC & another"
+    citation: "[2020] KEHC 8905 (KLR)"
+    court_code: "KEHC"
+    court_level: "HC"
+    decision_type: "Judgment"
+    domains:
+      - "Evidence Law"
+      - "Defamation"
+
+  - source_file: "Obado v Anayo (Civil Suit E005of2022) 2024KEHC17038(KLR) (30May2024) (Ruling).pdf"
+    case_key: "KEHC-2024-17038"
+    name: "Obado v Anayo"
+    citation: "[2024] KEHC 17038 (KLR)"
+    court_code: "KEHC"
+    court_level: "HC"
+    case_number: "Civil Suit E005 of 2022"
+    decision_date: "2024-05-30"
+    decision_type: "Ruling"
+    domains:
+      - "Evidence Law"
+      - "Civil Procedure"
+
+  - source_file: "Ogembo v Yongo (Civil Appeal E200of2023) 2024KEHC15763(KLR) (9December2024) (Judgment).pdf"
+    case_key: "KEHC-2024-15763"
+    name: "Ogembo v Yongo"
+    citation: "[2024] KEHC 15763 (KLR)"
+    court_code: "KEHC"
+    court_level: "HC"
+    case_number: "Civil Appeal E200 of 2023"
+    decision_date: "2024-12-09"
+    decision_type: "Judgment"
+    domains:
+      - "Evidence Law"
+      - "Defamation"
+
+  - source_file: "Express (Kenya) Limited v Manju Patel 2001KECA154(KLR).pdf"
+    case_key: "KECA-2001-154"
+    name: "Express (Kenya) Limited v Manju Patel"
+    citation: "[2001] KECA 154 (KLR)"
+    court_code: "KECA"
+    court_level: "CoA"
+    decision_type: "Judgment"
+    domains:
+      - "Civil Procedure"
+
+  - source_file: "Safaricom Limited v Ocean View Beach Hotel Limited  2 others 2010KECA346(KLR).pdf"
+    case_key: "KECA-2010-346"
+    name: "Safaricom Limited v Ocean View Beach Hotel Limited & 2 others"
+    citation: "[2010] KECA 346 (KLR)"
+    court_code: "KECA"
+    court_level: "CoA"
+    decision_type: "Ruling"
+    domains:
+      - "Arbitration"
+      - "Civil Procedure"
+
+  - source_file: "Republic v Director Land Administration Ministry of Lands Aand Physical Planning  2 others Ex Parte Roysa Community Development Society Ltd 2021KEELC220(KLR).pdf"
+    case_key: "KEELC-2021-220"
+    name: "Republic v Director Land Administration & 2 others ex parte Roysa Community Development Society Ltd"
+    citation: "[2021] KEELC 220 (KLR)"
+    court_code: "KEELC"
+    court_level: "ELC"
+    decision_type: "Judgment"
+    domains:
+      - "Land Law"
+      - "Civil Procedure"
+
+  - source_file: "New Titanic Jacaranda General Spares v Omil  another (Commercial Case E095of2026) 2026SCC235(KLR) (31August2026) (Ruling).pdf"
+    case_key: "SCC-2026-235"
+    name: "New Titanic Jacaranda General Spares v Omil & another"
+    citation: "[2026] SCC 235 (KLR)"
+    court_code: "SCC"
+    court_level: "SCC"
+    station: "Nairobi"
+    case_number: "Commercial Case E095 of 2026"
+    decision_date: "2026-08-31"
+    decision_type: "Ruling"
+    domains:
+      - "Civil Procedure"
+      - "Contract Law"
+
+  - source_file: "Umoja Magharibi (K) Ltd v Lubano (Commercial Case E091of2026) 2026SCC242(KLR) (18September2026) (Judgment).pdf"
+    case_key: "SCC-2026-242"
+    name: "Umoja Magharibi (K) Ltd v Lubano"
+    citation: "[2026] SCC 242 (KLR)"
+    court_code: "SCC"
+    court_level: "SCC"
+    station: "Nairobi"
+    case_number: "Commercial Case E091 of 2026"
+    decision_date: "2026-09-18"
+    decision_type: "Judgment"
+    domains:
+      - "Evidence Law"
+      - "Contract Law"
