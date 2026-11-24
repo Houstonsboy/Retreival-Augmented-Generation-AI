@@ -107,7 +107,7 @@ class TestSaveAnalysisSnapshot:
         for field in ("analysis_id", "result", "verification", "evidence",
                       "prompt_version", "model", "schema_version"):
             assert field in written_doc, f"missing field: {field}"
-        assert written_doc["schema_version"] == 1
+        assert written_doc["schema_version"] == 3  # schema version bumped intentionally
 
     def test_ocr_text_stripped_from_evidence(self):
         from SCCVision.analysis_store import save_analysis_snapshot

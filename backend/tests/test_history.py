@@ -617,7 +617,7 @@ def client():
 
 class TestHistoryEndpoints:
     def test_list_conversations_200(self, client):
-        with patch("history_store.list_conversations",
+        with patch("history_routes.list_conversations",
                    return_value={"conversations": [], "next_cursor": None}):
             resp = client.get("/api/conversations",
                               headers={"Authorization": "Bearer token"})
@@ -633,7 +633,7 @@ class TestHistoryEndpoints:
         assert resp.status_code in (200, 400)
 
     def test_get_conversation_not_found(self, client):
-        with patch("history_store.get_conversation",
+        with patch("history_routes.get_conversation",
                    side_effect=LookupError("not found")):
             resp = client.get("/api/conversations/bad-id",
                               headers={"Authorization": "Bearer token"})
@@ -669,13 +669,13 @@ class TestHistoryEndpoints:
     def test_delete_conversation_ok(self, client):
         with patch("history_store.get_or_create_conversation",
                    return_value=(MagicMock(), False)), \
-             patch("history_store.delete_conversation"):
+             patch("history_routes.delete_conversation"):
             resp = client.delete("/api/conversations/conv-1",
                                  headers={"Authorization": "Bearer token"})
             assert resp.status_code == 200
 
     def test_regen_title_not_found(self, client):
-        with patch("history_store.regenerate_title",
+        with patch("history_routes.regenerate_title",
                    side_effect=LookupError("not found")):
             resp = client.post("/api/conversations/bad-id/regenerate-title",
                                json={},
