@@ -273,3 +273,173 @@ def from_paragraphs(para_keys: list[str], max_hops: int = 2, cap: int = 12) -> l
                 })
 
     return expanded[:cap]
+
+
+# ---------------------------------------------------------------------------
+# expand_for_answer(case_identifiers, query_text, forum, cap)
+# ---------------------------------------------------------------------------
+
+def expand_for_answer(
+    case_identifiers: list[str],
+    query_text: str,
+    forum: str = "SCC",
+    cap: int = 5,
+) -> list[dict]:
+    """Return graph-authority dicts for anchor cases + query-time expansion.
+
+    Parameters
+    ----------
+    case_identifiers : Chroma case_identifier strings from the retriever
+        (e.g. ["2024KEHC15763(KLR)", "2014KEHC6468(KLR)"]).
+    query_text : the user's query, used for full-text case-name expansion.
+    forum : court code for authority-binding check (default "SCC").
+    cap : maximum items to return.
+
+    Returns
+    -------
+    [] when GRAPH_ENABLED=false.
+    Otherwise a list (len ≤ cap) of dicts:
+        case_key, case_name, chroma_case_identifier,
+        principle_key, principle_text, kind,
+        rel_type, court_code, is_binding,
+        related_principles (list of {rel, key, text}),
+        path_explanation
+    Sorted: binding first, then ratio > obiter, then by court rank.
+    """
+    if not _graph_enabled():
+        return []
+    client = _client()
+    from .authority import is_binding
+
+    # -- Step 1: anchor by chroma_case_identifier (exact match) ---------------
+    anchor_rows = client.read(
+        """
+        UNWIND $ids AS chroma_id
+        MATCH (c:Case {chroma_case_identifier: chroma_id})
+        RETURN c.case_key AS case_key
+        """,
+        ids=case_identifiers,
+    )
+    anchor_keys = [r["case_key"] for r in anchor_rows]
+
+    # -- Step 2: full-text search for additional cases in query text ----------
+    ft_keys: list[str] = []
+    if query_text and query_text.strip():
+        # Build a Lucene query from the text; use the first 128 chars
+        ft_query = " ".join(
+            w for w in query_text[:128].split() if len(w) >= 3
+        )[:128]
+        if ft_query:
+            try:
+                ft_rows = client.read(
+                    "CALL db.index.fulltext.queryNodes('case_names_ft', $q) "
+                    "YIELD node AS c, score "
+                    "WHERE c.chroma_case_identifier IS NOT NULL "
+                    "RETURN c.case_key AS case_key LIMIT 3",
+                    q=ft_query,
+                )
+                ft_keys = [r["case_key"] for r in ft_rows]
+            except Exception as exc:
+                logger.debug("Full-text case search failed (non-fatal): %s", exc)
+
+    all_keys = list(dict.fromkeys(anchor_keys + ft_keys))  # dedup, preserve order
+    if not all_keys:
+        return []
+
+    # -- Step 3: collect principles (HOLDS / STATES_OBITER / via DECIDES+ANSWERS) --
+    rows = client.read(
+        """
+        UNWIND $ck_list AS ck
+        MATCH (c:Case {case_key: ck})
+        MATCH (c)-[:DECIDED_IN]->(court:Court)
+        // Direct principle assertions
+        MATCH (c)-[r:HOLDS|STATES_OBITER]->(p:Principle)
+        // Related principles (QUALIFIES / CONFLICTS_WITH)
+        OPTIONAL MATCH (p)-[rel2:QUALIFIES|CONFLICTS_WITH]->(p2:Principle)
+        WITH c, court, r, p,
+             collect(DISTINCT {rel: type(rel2), key: p2.principle_key,
+                               text: p2.text}) AS related
+        RETURN
+          c.case_key                   AS case_key,
+          c.name                       AS case_name,
+          c.chroma_case_identifier     AS chroma_case_identifier,
+          court.code                   AS court_code,
+          court.rank                   AS court_rank,
+          type(r)                      AS rel_type,
+          p.principle_key              AS principle_key,
+          p.text                       AS principle_text,
+          p.kind                       AS kind,
+          related                      AS related_principles
+        """,
+        ck_list=all_keys,
+    )
+
+    # -- Step 4: also pull principles reached through Issue (DECIDES→ANSWERS) --
+    via_issue_rows = client.read(
+        """
+        UNWIND $ck_list AS ck
+        MATCH (c:Case {case_key: ck})
+        MATCH (c)-[:DECIDED_IN]->(court:Court)
+        MATCH (c)-[:DECIDES]->(iss:Issue)<-[:ANSWERS]-(p:Principle)
+        OPTIONAL MATCH (p)-[rel2:QUALIFIES|CONFLICTS_WITH]->(p2:Principle)
+        WITH c, court, p,
+             collect(DISTINCT {rel: type(rel2), key: p2.principle_key,
+                               text: p2.text}) AS related
+        RETURN
+          c.case_key                   AS case_key,
+          c.name                       AS case_name,
+          c.chroma_case_identifier     AS chroma_case_identifier,
+          court.code                   AS court_code,
+          court.rank                   AS court_rank,
+          'ANSWERS'                    AS rel_type,
+          p.principle_key              AS principle_key,
+          p.text                       AS principle_text,
+          p.kind                       AS kind,
+          related                      AS related_principles
+        """,
+        ck_list=all_keys,
+    )
+
+    # -- Step 5: deduplicate on (case_key, principle_key) ---------------------
+    seen: set[tuple] = set()
+    combined: list[dict] = []
+    for row in list(rows) + list(via_issue_rows):
+        dedup_key = (row.get("case_key", ""), row.get("principle_key", ""))
+        if dedup_key in seen:
+            continue
+        seen.add(dedup_key)
+
+        court_code = row.get("court_code", "")
+        binding = is_binding(court_code, forum)
+        kind = row.get("kind") or "obiter"
+        related = [r for r in (row.get("related_principles") or []) if r.get("key")]
+
+        combined.append({
+            "case_key": row.get("case_key", ""),
+            "case_name": row.get("case_name", ""),
+            "chroma_case_identifier": row.get("chroma_case_identifier"),
+            "principle_key": row.get("principle_key", ""),
+            "principle_text": row.get("principle_text", ""),
+            "kind": kind,
+            "rel_type": row.get("rel_type", "HOLDS"),
+            "court_code": court_code,
+            "court_rank": row.get("court_rank", 99),
+            "is_binding": binding,
+            "related_principles": related,
+            "path_explanation": (
+                f"{row.get('case_key','')} -[{row.get('rel_type','HOLDS')}]-> "
+                f"{row.get('principle_key','')} ({kind})"
+                + (" [binding]" if binding else "")
+            ),
+        })
+
+    # -- Step 6: rank and cap --------------------------------------------------
+    def _rank_key(item: dict) -> tuple:
+        return (
+            0 if item["is_binding"] else 1,       # binding first
+            0 if item["kind"] == "ratio" else 1,   # ratio before obiter
+            item["court_rank"],                     # higher court (lower rank) first
+        )
+
+    combined.sort(key=_rank_key)
+    return combined[:cap]
