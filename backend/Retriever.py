@@ -11,8 +11,9 @@ import re
 import statistics as _stats
 import chromadb
 from pathlib import Path
-from sentence_transformers import SentenceTransformer, CrossEncoder
+from sentence_transformers import CrossEncoder
 from rank_bm25 import BM25Okapi
+from embeddings import get_embedder
 from typing import Dict, List, Any, Optional
 import sys
 import os
@@ -598,7 +599,7 @@ def retrieve_relevant_cases(classifier_output: Any, verbose: bool = True,
         print("\n[2/7] Loading embedding model...")
     
     try:
-        embedding_model = SentenceTransformer(EMBEDDING_MODEL_NAME)
+        embedding_model = get_embedder(EMBEDDING_MODEL_NAME)
         if verbose:
             print(f"  ✓ Loaded: {EMBEDDING_MODEL_NAME}")
     except Exception as e:

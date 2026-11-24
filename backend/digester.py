@@ -8,7 +8,7 @@ import numpy as np
 from langchain_core.documents import Document
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from pypdf import PdfReader
-from sentence_transformers import SentenceTransformer
+from embeddings import get_embedder
 
 import hashlib
 
@@ -243,7 +243,7 @@ def chunk_text(documents: List[Document]) -> Tuple[List[str], List[Document]]:
 
 
 # ===== 3. EMBEDDING CREATION =====
-def create_embeddings(chunks: List[str], model: SentenceTransformer) -> np.ndarray:
+def create_embeddings(chunks: List[str], model) -> np.ndarray:
     """
     Create semantic embeddings for each chunk using the provided model.
     """
@@ -269,7 +269,7 @@ def create_embeddings(chunks: List[str], model: SentenceTransformer) -> np.ndarr
 
 
 # ===== 4. INGESTION PIPELINE =====
-def ingest_file(file_path: Path, collection, model: SentenceTransformer) -> None:
+def ingest_file(file_path: Path, collection, model) -> None:
     """
     Process a single file and store its chunks in the ChromaDB collection.
     """
@@ -348,7 +348,7 @@ def digest_repo(repo_dir: Path = REPO_DIR) -> None:
     client = chromadb.PersistentClient(path=str(CHROMA_DB_DIR))
     collection = client.get_or_create_collection(name=CHROMA_COLLECTION_NAME, metadata={"hnsw:space": "cosine"})
 
-    model = SentenceTransformer(EMBEDDING_MODEL_NAME)
+    model = get_embedder(EMBEDDING_MODEL_NAME)
 
     supported_extensions = {".txt", ".pdf"}
     files_processed = 0
