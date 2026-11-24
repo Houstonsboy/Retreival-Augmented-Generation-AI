@@ -31,7 +31,8 @@ _RULE_RE = re.compile(
     re.IGNORECASE,
 )
 _CAP_RE = re.compile(r'\bcap\.?\s*(\d+[A-Z]?)\b', re.IGNORECASE)
-_KLR_RE = re.compile(r'\d{4}(?:KEHC|KECA|SCC|KEELC)\d+\(KLR\)')
+_KLR_RE   = re.compile(r'\d{4}(?:KEHC|KECA|SCC|KEELC)\d+\(KLR\)')
+_GRAPH_RE = re.compile(r'\[G(\d+(?:\.\d+)?)\]')
 _CASE_RE = re.compile(
     r'\b([A-Z][^\s,;(]{1,30}(?:\s+[A-Z&][^\s,;(]{0,30}){0,4})'
     r'\s+v\.?\s+'
@@ -53,6 +54,7 @@ def extract_citations(text: str) -> Dict[str, List[str]]:
         "caps":      [m.group(1) for m in _CAP_RE.finditer(text)],
         "klr":       _KLR_RE.findall(text),
         "cases":     [f"{m.group(1)} v {m.group(2)}" for m in _CASE_RE.finditer(text)],
+        "graph":     [m.group(1) for m in _GRAPH_RE.finditer(text)],
     }
 
 
@@ -61,7 +63,7 @@ def extract_citations(text: str) -> Dict[str, List[str]]:
 def _valid_refs(sources: list) -> Dict[str, set]:
     v: Dict[str, set] = {
         "sections": set(), "articles": set(), "rules": set(),
-        "caps": set(), "klr": set(), "cases": set(),
+        "caps": set(), "klr": set(), "cases": set(), "graph": set(),
     }
     for s in sources:
         an = str(s.get("article_number", "")).strip()
@@ -97,6 +99,13 @@ def _valid_refs(sources: list) -> Dict[str, set]:
                 v["klr"].add(m.group(0))
             for m in _CASE_RE.finditer(ct):
                 v["cases"].add(f"{m.group(1)} v {m.group(2)}".lower())
+
+        # Graph authority sources: register both G# and G#.1 as valid
+        alias_id = s.get("_alias_id", "")
+        if alias_id.startswith("G"):
+            num = alias_id[1:]          # "1" from "G1"
+            v["graph"].add(num)         # matches [G1]
+            v["graph"].add(f"{num}.1")  # matches [G1.1]
     return v
 
 
@@ -111,6 +120,8 @@ def _supported(ref: str, ctype: str, valid: Dict[str, set]) -> bool:
     if ctype == "cases":
         rl = ref.lower()
         return any(rl in v or v in rl for v in valid["cases"])
+    if ctype == "graph":
+        return ref in valid["graph"]
     return False
 
 

@@ -1338,6 +1338,25 @@ def QRetriever():
             result["retrieval"]["rules"] = []
             result["retrieval"]["rules_count"] = 0
 
+        # ── Graph fast-path (flag-guarded, never raises) ──────────────────────
+        try:
+            from graph import config as _graph_config
+            if _graph_config.GRAPH_ENABLED:
+                from graph.queries import expand_for_answer
+                _case_ids = [
+                    c.get("case_name", "")
+                    for c in result.get("retrieval", {}).get("results", [])
+                    if c.get("case_name")
+                ]
+                result["retrieval"]["graph_authorities"] = expand_for_answer(
+                    _case_ids, user_query, cap=5
+                )
+            else:
+                result["retrieval"]["graph_authorities"] = []
+        except Exception as _ge:
+            print(f"[WARN] Graph expansion failed (non-fatal): {_ge}")
+            result["retrieval"]["graph_authorities"] = []
+
         status_code = 200 if result.get("success") else 500
         return jsonify(result), status_code
 
@@ -1539,6 +1558,47 @@ def generate_legal_answer():
                 f"[{cid_base}] {cn} ({year}, {court})\n" + "\n".join(chunk_lines)
             )
 
+        # ── G-alias loop: graph authority principles (flag-guarded) ──────────
+        graph_authorities = retrieval_data.get("graph_authorities", [])
+        for gi, ga in enumerate(graph_authorities[:5], 1):
+            gid_base   = f"G{gi}"
+            ga_case    = ga.get("case_name", ga.get("case_key", "Unknown"))
+            pk         = ga.get("principle_key", "")
+            pt         = ga.get("principle_text", "")
+            kind       = ga.get("kind", "ratio")
+            is_binding = ga.get("is_binding", False)
+            chroma_id  = ga.get("chroma_case_identifier") or pk
+            rel_type   = ga.get("rel_type", "HOLDS")
+            related    = ga.get("related_principles") or []
+
+            binding_tag  = " [BINDING on this forum]" if is_binding else " [persuasive]"
+            related_line = ""
+            if related:
+                related_line = "\n  Related: " + "; ".join(
+                    f"{r['rel']} {r['key']}" for r in related[:3] if r.get("key")
+                )
+
+            block = (
+                f"[{gid_base}] {ga_case} — {kind.upper()} PRINCIPLE ({rel_type})\n"
+                f"  [{gid_base}.1] {pt}{binding_tag}{related_line}"
+            )
+            alias_map[gid_base] = {
+                "chunk_id": chroma_id,
+                "label": f"{ga_case} — {pk}",
+                "type": "graph",
+            }
+            alias_map[f"{gid_base}.1"] = {
+                "chunk_id": chroma_id,
+                "label": f"{pk} ({kind})",
+                "type": "graph",
+            }
+            sources.append({
+                "id": gid_base, "type": "graph",
+                "label": f"{ga_case} — {pk}",
+                "data": {**ga, "_alias_id": gid_base},
+            })
+            source_blocks.append(block)
+
         if not source_blocks:
             _try_save_failed_turn(
                 g.uid, conversation_id, client_turn_id, user_query,
@@ -1568,7 +1628,10 @@ def generate_legal_answer():
             "6. Use ONLY sources you mark relevant=true. After marking a source irrelevant, "
             "   do not reference it anywhere else.\n"
             "7. A short, accurate answer is better than a complete-looking one. "
-            "   If sources are insufficient, say so and stop.\n\n"
+            "   If sources are insufficient, say so and stop.\n"
+            "8. Graph authority blocks [G#] are court-confirmed holdings extracted from the graph. "
+            "   Cite [G#.1] for the principle text. A BINDING tag means the ruling court binds the forum. "
+            "   Do not restate graph principles beyond what [G#.1] says.\n\n"
             "OUTPUT SCHEMA (all fields required, empty string if not applicable):\n"
             "{\n"
             '  "source_review": [\n'
@@ -1707,7 +1770,7 @@ def generate_legal_answer():
         answer = _build_answer(parsed)
 
         # Determine which chunk aliases appear in the answer text
-        _alias_pat = re.compile(r"\[([CS]\d+(?:\.\d+)?)\]")
+        _alias_pat = re.compile(r"\[([CSG]\d+(?:\.\d+)?)\]")
         _used_aliases = set(_alias_pat.findall(answer))
         # Also check all parsed text fields
         for _field in ("applicable_law", "case_law_discussion", "application",

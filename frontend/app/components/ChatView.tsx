@@ -57,7 +57,7 @@ interface Coverage   { in_corpus: string[]; not_in_corpus: string[] }
 interface Prospect   { label: string; rating: "Strong" | "Moderate" | "Weak" | string }
 interface ChunkSource {
   alias: string; chunk_id: string; label: string;
-  type: "case" | "statute" | "knowledge" | "constitution";
+  type: "case" | "statute" | "knowledge" | "constitution" | "graph";
   used: boolean; precision?: "chunk" | "document";
   display_title?: string; short_label?: string;
   doc_type?: string; court?: string; year?: string; relevance?: number;
@@ -163,7 +163,7 @@ function buildEvidenceFromSources(sources: ChunkSource[]): { evidence: any[]; ru
         id: src.chunk_id,
         text: src.snippet || "(text not stored in history)",
       });
-    } else {
+    } else if (src.type !== "graph") {
       const key = src.document_label || src.label || src.chunk_id;
       if (!ruleMap.has(key)) {
         ruleMap.set(key, {
@@ -1547,6 +1547,50 @@ function WorkspaceColumn({ message, activeDocKey, onSelectDoc, activeChunkId, on
           <OriginalPane cases={caseList} selectedCaseId={selectedPdfCase}
             onSelectCase={setSelectedPdfCase} sources={sources} scrollToChunkId={activeChunkId} />
         )}
+        <GraphAuthoritiesPanel sources={sources} />
+      </div>
+    </div>
+  );
+}
+
+// ── Graph authority panel ───────────────────────────────────────────────────────
+function GraphAuthoritiesPanel({ sources }: { sources: ChunkSource[] }) {
+  const graphSrcs = sources.filter((s) => s.type === "graph");
+  if (!graphSrcs.length) return null;
+  return (
+    <div className="mx-4 mb-4 mt-2 rounded-xl overflow-hidden"
+      style={{ background: "#F9F5EC", border: "1px solid #E8D99A", borderLeft: "3px solid #C9971A" }}>
+      <div className="flex items-center gap-2 px-3 py-2" style={{ borderBottom: "1px solid #E8D99A" }}>
+        <span className="text-[9px] font-bold tracking-[.18em] uppercase" style={{ color: "#8B6914" }}>
+          GRAPH AUTHORITIES
+        </span>
+        <span className="ml-auto text-[9px] font-semibold rounded-full px-2 py-0.5"
+          style={{ background: "#E8D99A", color: "#8B6914" }}>
+          {graphSrcs.length}
+        </span>
+      </div>
+      <div className="divide-y" style={{ borderColor: "#E8D99A" }}>
+        {graphSrcs.map((s) => {
+          const isBinding = s.label?.includes("binding") || false;
+          return (
+            <div key={s.alias} className="px-3 py-2.5">
+              <div className="flex items-start gap-2">
+                <span className="shrink-0 text-[9px] font-bold rounded px-1.5 py-0.5 mt-0.5"
+                  style={{ background: s.used ? "#C9971A" : "#E8D99A", color: s.used ? "white" : "#8B6914" }}>
+                  [{s.alias}]
+                </span>
+                <div className="min-w-0">
+                  <p className="text-xs font-semibold leading-snug" style={{ color: "#2D1B00" }}>
+                    {s.label}
+                  </p>
+                  {!s.used && (
+                    <p className="text-[9px] mt-0.5" style={{ color: "#A0896A" }}>not cited</p>
+                  )}
+                </div>
+              </div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
