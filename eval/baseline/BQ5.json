@@ -1,0 +1,22 @@
+{
+  "id": "BQ5",
+  "query": "Who is a bailee liable to when goods are stolen by their own employees?",
+  "chunk_ids": [
+    "2001KECA154KLR_4",
+    "2001KECA154KLR_5",
+    "2001KECA154KLR_3",
+    "2026SCC235KLR_1",
+    "2026SCC235KLR_0",
+    "2026SCC235KLR_3",
+    "2026SCC242KLR_3",
+    "2026SCC242KLR_0",
+    "2026SCC242KLR_2"
+  ],
+  "case_identifiers": [
+    "2001KECA154(KLR)",
+    "2026SCC235(KLR)",
+    "2026SCC242(KLR)"
+  ],
+  "latency_ms": 7616,
+  "results_count": 3
+}

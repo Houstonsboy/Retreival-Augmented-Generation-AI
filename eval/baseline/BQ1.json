@@ -1,0 +1,22 @@
+{
+  "id": "BQ1",
+  "query": "Is a s.106B certificate required for WhatsApp evidence in court?",
+  "chunk_ids": [
+    "2014KEHC6468KLR_2",
+    "2014KEHC6468KLR_1",
+    "2014KEHC6468KLR_0",
+    "2024KEHC15763KLR_6",
+    "2024KEHC15763KLR_7",
+    "2024KEHC15763KLR_8",
+    "2020KEHC8905KLR_3",
+    "2020KEHC8905KLR_2",
+    "2020KEHC8905KLR_1"
+  ],
+  "case_identifiers": [
+    "2014KEHC6468(KLR)",
+    "2024KEHC15763(KLR)",
+    "2020KEHC8905(KLR)"
+  ],
+  "latency_ms": 13232,
+  "results_count": 3
+}

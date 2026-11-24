@@ -1,0 +1,112 @@
+[
+  {
+    "id": "BQ1",
+    "query": "Is a s.106B certificate required for WhatsApp evidence in court?",
+    "chunk_ids": [
+      "2014KEHC6468KLR_2",
+      "2014KEHC6468KLR_1",
+      "2014KEHC6468KLR_0",
+      "2024KEHC15763KLR_6",
+      "2024KEHC15763KLR_7",
+      "2024KEHC15763KLR_8",
+      "2020KEHC8905KLR_3",
+      "2020KEHC8905KLR_2",
+      "2020KEHC8905KLR_1"
+    ],
+    "case_identifiers": [
+      "2014KEHC6468(KLR)",
+      "2024KEHC15763(KLR)",
+      "2020KEHC8905(KLR)"
+    ],
+    "latency_ms": 13232,
+    "results_count": 3
+  },
+  {
+    "id": "BQ2",
+    "query": "When will a default judgment be set aside in the Small Claims Court?",
+    "chunk_ids": [
+      "2026SCC241KLR_3",
+      "2026SCC241KLR_0",
+      "2026SCC241KLR_5",
+      "2001KECA154KLR_3",
+      "2001KECA154KLR_2",
+      "2001KECA154KLR_5",
+      "2026SCC242KLR_3",
+      "2026SCC242KLR_0",
+      "2026SCC242KLR_1"
+    ],
+    "case_identifiers": [
+      "2026SCC241(KLR)",
+      "2001KECA154(KLR)",
+      "2026SCC242(KLR)"
+    ],
+    "latency_ms": 9319,
+    "results_count": 3
+  },
+  {
+    "id": "BQ3",
+    "query": "Can a certificate under s.106B be filed late after trial?",
+    "chunk_ids": [
+      "2020KEHC8905KLR_2",
+      "2020KEHC8905KLR_3",
+      "2020KEHC8905KLR_1",
+      "2014KEHC6468KLR_2",
+      "2014KEHC6468KLR_1",
+      "2014KEHC6468KLR_0",
+      "2024KEHC17038KLR_2",
+      "2024KEHC17038KLR_3",
+      "2024KEHC17038KLR_5"
+    ],
+    "case_identifiers": [
+      "2020KEHC8905(KLR)",
+      "2014KEHC6468(KLR)",
+      "2024KEHC17038(KLR)"
+    ],
+    "latency_ms": 9489,
+    "results_count": 3
+  },
+  {
+    "id": "BQ4",
+    "query": "Is the Small Claims Court bound by strict rules of evidence?",
+    "chunk_ids": [
+      "2024KEHC15763KLR_7",
+      "2024KEHC15763KLR_6",
+      "2024KEHC15763KLR_3",
+      "2026SCC242KLR_3",
+      "2026SCC242KLR_0",
+      "2026SCC242KLR_2",
+      "2026SCC235KLR_3",
+      "2026SCC235KLR_0",
+      "2026SCC235KLR_2"
+    ],
+    "case_identifiers": [
+      "2024KEHC15763(KLR)",
+      "2026SCC242(KLR)",
+      "2026SCC235(KLR)"
+    ],
+    "latency_ms": 7019,
+    "results_count": 3
+  },
+  {
+    "id": "BQ5",
+    "query": "Who is a bailee liable to when goods are stolen by their own employees?",
+    "chunk_ids": [
+      "2001KECA154KLR_4",
+      "2001KECA154KLR_5",
+      "2001KECA154KLR_3",
+      "2026SCC235KLR_1",
+      "2026SCC235KLR_0",
+      "2026SCC235KLR_3",
+      "2026SCC242KLR_3",
+      "2026SCC242KLR_0",
+      "2026SCC242KLR_2"
+    ],
+    "case_identifiers": [
+      "2001KECA154(KLR)",
+      "2026SCC235(KLR)",
+      "2026SCC242(KLR)"
+    ],
+    "latency_ms": 7616,
+    "results_count": 3
+  }
+]
