@@ -10,7 +10,7 @@ import { apiFetch } from "@/app/lib/api";
 import type { CertificateRecord } from "@/app/lib/evidenceTypes";
 import { DeviceQuestionnaire } from "./DeviceQuestionnaire";
 import { useAuth } from "@/app/context/AuthContext";
-import { uploadEvidenceFile, generateCaseTitle } from "@/app/lib/storageService";
+import { uploadEvidenceFile, generateCaseTitle, listUserEvidence } from "@/app/lib/storageService";
 
 // ── Design tokens ──────────────────────────────────────────────────────────
 const GOLD    = "#C9971A";
@@ -40,6 +40,7 @@ interface CaseEvidence {
   parse_layout?: string;
   raw_text?: string;
   user_edits: Record<string, string>;
+  download_url?: string;
 }
 
 interface UserFact {
@@ -135,11 +136,15 @@ interface Verification {
     parsed_payment_count: number;
     codes_llm_only: string[];
     codes_parsed_only: string[];
-    reclassified: { code: string | null; amount_kes: number | null; before: string; after: string }[];
-    till_mismatches: unknown[];
-    amount_mismatches: unknown[];
-    duplicate_codes: string[];
     consistent: boolean;
+    blocks_certificate: boolean;
+    findings: {
+      code: string | null;
+      kind: string;
+      amount_kes: number | null;
+      detail: string;
+      blocks_certificate: boolean;
+    }[];
   };
   status_issues: { element: string; issue: string }[];
   premature_breach: { premature_breach_claim: boolean; notice: string } | null;
@@ -386,7 +391,7 @@ function newCaseFile(): CaseFile {
   };
 }
 
-export function SCCVisionTest() {
+export function SCCVisionTest({ initialCaseId }: { initialCaseId?: string } = {}) {
   const { user } = useAuth();
   const inputRef = useRef<HTMLInputElement>(null);
   // Maps sha256 → original File so we can upload to Firebase after OCR
@@ -400,7 +405,15 @@ export function SCCVisionTest() {
   const [invert, setInvert] = useState(true);
   const [upscale, setUpscale] = useState(true);
 
-  const [caseFile, setCaseFile] = useState<CaseFile>(() => newCaseFile());
+  const [caseFile, setCaseFile] = useState<CaseFile>(() => {
+    if (initialCaseId) {
+      try {
+        const stored = localStorage.getItem(`sccvision-case-${initialCaseId}`);
+        if (stored) return JSON.parse(stored) as CaseFile;
+      } catch { /* ignore */ }
+    }
+    return newCaseFile();
+  });
   const [consent, setConsent] = useState(false);
 
   const [ocrLoading, setOcrLoading] = useState(false);
@@ -439,12 +452,44 @@ export function SCCVisionTest() {
   const [guidedSubmitting, setGuidedSubmitting] = useState(false);
   const [showAllGuided, setShowAllGuided] = useState(false);
 
-  // Persist the case file locally (client-side "memory" only).
+  // Persist the case file locally keyed by case_id so Evidence History can restore it.
   useEffect(() => {
     try {
-      localStorage.setItem("sccvision-case", JSON.stringify(caseFile));
+      localStorage.setItem(`sccvision-case-${caseFile.case_id}`, JSON.stringify(caseFile));
     } catch { /* storage unavailable */ }
   }, [caseFile]);
+
+  // Firestore fallback: when navigated from Evidence History with an initialCaseId
+  // that isn't in localStorage (different device / cleared storage), reconstruct
+  // a stub case file from the saved evidence records so images are still visible.
+  useEffect(() => {
+    if (!initialCaseId || !user) return;
+    // If localStorage already restored a matching case with evidence, skip.
+    if (caseFile.case_id === initialCaseId && caseFile.evidence.length > 0) return;
+    listUserEvidence(user.uid).then((records) => {
+      const caseRecords = records.filter((r) => r.caseId === initialCaseId);
+      if (!caseRecords.length) return;
+      const stub = newCaseFile();
+      stub.case_id = initialCaseId;
+      stub.created_at = caseRecords[0].uploadedAt.toISOString();
+      stub.evidence = caseRecords.map((r) => ({
+        evidence_id: r.id,
+        type: r.evidenceType as EvidenceType,
+        file_name: r.fileName,
+        sha256: r.sha256,
+        added_at: r.uploadedAt.toISOString(),
+        ocr: null,
+        parsed: null,
+        user_edits: {},
+        download_url: r.downloadUrl,
+      }));
+      // Seed preview cache so thumbnails appear immediately
+      for (const r of caseRecords) {
+        if (r.sha256) previewsByHash.current.set(r.sha256, r.downloadUrl);
+      }
+      setCaseFile(stub);
+    }).catch(() => { /* ignore — user will see empty form */ });
+  }, [initialCaseId, user]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Inject print-only CSS when the certificate modal is open so window.print()
   // renders only the certificate and nothing else on the page.
@@ -886,11 +931,12 @@ export function SCCVisionTest() {
     try {
       let saved = 0;
       let deduped = 0;
+      const downloadUrls = new Map<string, string>();
       for (const ev of caseFile.evidence) {
         if (!ev.sha256) continue;
         const entry = filesByHash.current.get(ev.sha256);
         if (!entry) continue;
-        const { wasDedup } = await uploadEvidenceFile(
+        const { record, wasDedup } = await uploadEvidenceFile(
           user.uid,
           entry.file,
           ev.sha256,
@@ -898,9 +944,24 @@ export function SCCVisionTest() {
           caseFile.case_id,
           title,
         );
+        downloadUrls.set(ev.sha256, record.downloadUrl);
+        // Also keep it in previewsByHash so thumbnails work in this session
+        if (!previewsByHash.current.has(ev.sha256)) {
+          previewsByHash.current.set(ev.sha256, record.downloadUrl);
+        }
         if (wasDedup) deduped++;
         else saved++;
       }
+      // Persist download URLs back into the case file so they survive localStorage restore
+      setCaseFile((prev) => ({
+        ...prev,
+        evidence: prev.evidence.map((ev) => ({
+          ...ev,
+          download_url: ev.sha256
+            ? (downloadUrls.get(ev.sha256) ?? ev.download_url)
+            : ev.download_url,
+        })),
+      }));
       setSaveResult({ saved, deduped });
     } catch (e) {
       setError(e instanceof Error ? e.message : "Save to Firebase failed.");
@@ -1142,7 +1203,7 @@ export function SCCVisionTest() {
           </p>
           <div className="space-y-2">
             {caseFile.evidence.map((ev) => {
-              const thumbUrl = ev.sha256 ? previewsByHash.current.get(ev.sha256) : undefined;
+              const thumbUrl = (ev.sha256 ? previewsByHash.current.get(ev.sha256) : undefined) ?? ev.download_url;
               return (
               <div key={ev.evidence_id} className="flex items-center gap-3 rounded-xl px-3 py-2" style={{ background: CREAM2, border: `1px solid ${BORDER}` }}>
                 {thumbUrl ? (
@@ -2196,24 +2257,36 @@ function CertificateModal({
                   </tr>
                 </thead>
                 <tbody>
-                  {Object.entries(result.elements).map(([key, el], i) => {
+                  {Object.entries(result.elements).map(([key, el]) => {
                     const st = statusTone(el.status);
+                    const needsAttention = el.status !== "PRESENT" && el.status !== "NO_ISSUE_INDICATED" && el.status !== "NOT_REQUIRED";
                     return (
-                      <tr key={key} style={{ borderTop: `1px solid ${BORDER}`, background: SURFACE }}>
-                        <td className="px-3 py-2.5" style={{ color: INK }}>
-                          <span className="font-extrabold mr-1.5" style={{ color: GOLD }}>{key}</span>
-                          {ELEMENT_LABELS[key] ?? key}
-                        </td>
-                        <td className="px-3 py-2.5">
-                          <span className="inline-block text-[10px] font-semibold rounded-full px-2 py-0.5"
-                            style={{ background: st.bg, color: st.fg }}>
-                            {el.status}
-                          </span>
-                        </td>
-                        <td className="px-3 py-2.5 text-right font-mono" style={{ color: MUTED }}>
-                          {el.confidence != null ? `${Math.round(el.confidence * 100)}%` : "—"}
-                        </td>
-                      </tr>
+                      <>
+                        <tr key={key} style={{ borderTop: `1px solid ${BORDER}`, background: SURFACE }}>
+                          <td className="px-3 py-2.5" style={{ color: INK }}>
+                            <span className="font-extrabold mr-1.5" style={{ color: GOLD }}>{key}</span>
+                            {ELEMENT_LABELS[key] ?? key}
+                          </td>
+                          <td className="px-3 py-2.5">
+                            <span className="inline-block text-[10px] font-semibold rounded-full px-2 py-0.5"
+                              style={{ background: st.bg, color: st.fg }}>
+                              {el.status}
+                            </span>
+                          </td>
+                          <td className="px-3 py-2.5 text-right font-mono" style={{ color: MUTED }}>
+                            {el.confidence != null ? `${Math.round(el.confidence * 100)}%` : "—"}
+                          </td>
+                        </tr>
+                        {el.reasoning && (
+                          <tr key={`${key}-reason`} style={{ borderTop: "none", background: needsAttention ? "#FFFBEB" : SURFACE }}>
+                            <td colSpan={3} className="px-3 pb-2.5 pt-0">
+                              <p className="text-[11px] leading-relaxed" style={{ color: needsAttention ? "#78350F" : MUTED }}>
+                                {el.reasoning}
+                              </p>
+                            </td>
+                          </tr>
+                        )}
+                      </>
                     );
                   })}
                 </tbody>
