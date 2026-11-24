@@ -70,6 +70,19 @@ Thumbs.db
 
 # Logs
 *.log
+backend/logs/*.jsonl
+
+# ChromaDB runtime files (read-only at query time; not source-controlled)
+backend/CaseLawDB/**/chroma.sqlite3
+backend/CaseLawDB/**/chroma.sqlite3-wal
+backend/CaseLawDB/**/chroma.sqlite3-shm
+backend/CaseLawDB/**/*.bin
+backend/MasterRulesDB/**/chroma.sqlite3
+backend/MasterRulesDB/**/chroma.sqlite3-wal
+backend/MasterRulesDB/**/chroma.sqlite3-shm
+backend/MasterRulesDB/**/*.bin
+backend/constitutionlogic/MasterRulesDB/**/chroma.sqlite3
+backend/constitutionlogic/MasterRulesDB/**/*.bin
 
 # Data files (optional - uncomment if you want to ignore PDFs/txt files)
 # *.pdf

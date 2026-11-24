@@ -1,7 +1,7 @@
 # backend/graph — Python-native Neo4j layer
 
-**Status: schema installed, ingestion not yet wired.**
-**Default: `GRAPH_ENABLED=false` — the RAG pipeline is unchanged.**
+**Status: seed graph loaded, fast-path wired into advocate flow.**
+**Default: `GRAPH_ENABLED=false` — the RAG pipeline is unchanged without the flag.**
 
 ## Quick start
 
@@ -32,6 +32,11 @@ curl http://localhost:5000/graph/health
 | `repository.py` | Abstract + Neo4j impl; `upsert_node`, `upsert_edge`, `neighbors` |
 | `admin.py` | CLI: `init` / `status` / `migrate` / `reset --confirm-wipe` |
 | `health.py` | Flask blueprint: `GET /graph/health` |
+| `seed_loader.py` | CLI: `python -m graph.seed_loader load [--dry-run] [--file PATH]` |
+| `queries.py` | Query helpers: `expand_for_answer()`, `doctrinal()`, `from_paragraphs()` |
+| `authority.py` | `is_binding(court_code, forum)` via transitive BINDS closure |
+| `seed/scc_caselaw_graph.json` | Seed graph: 149 nodes, 269 edges (seed-0.1) |
+| `seed/case_identifier_overrides.yaml` | Manual Chroma ID overrides (empty for seed-0.1) |
 
 ## Conventions
 
@@ -49,6 +54,40 @@ refuses if a file's checksum has changed.
 
 **Security** — `client.py` uses only parameterised Cypher (`$param`). Never format user
 input into query strings.
+
+## Fast path (seed graph)
+
+The fast-path is active when `GRAPH_ENABLED=true`. It adds graph-confirmed legal
+principles to every `/api/qretrieve` response under `retrieval.graph_authorities`.
+
+### How it works
+
+1. `/api/qretrieve` calls `expand_for_answer(case_identifiers, query_text, forum="SCC", cap=5)`
+   after case-law retrieval.
+2. `expand_for_answer` anchors on the retrieved `chroma_case_identifier` values, follows
+   `HOLDS` / `STATES_OBITER` edges to `Principle` nodes, pulls `QUALIFIES` / `CONFLICTS_WITH`
+   relations, and ranks by authority (binding first, ratio > obiter).
+3. `/api/generate-legal-answer` injects the results as G-alias source blocks (`[G1]` / `[G1.1]`)
+   alongside case (`[C#]`) and statute (`[S#]`) sources.
+4. The LLM cites `[G1.1]` for the principle text; the citation verifier validates G-aliases.
+
+### Load the seed graph
+
+```bash
+# From backend/
+GRAPH_ENABLED=true NEO4J_PASSWORD=<password> python -m graph.seed_loader load [--dry-run]
+```
+
+Outputs `docs/graph/seed_load_report.md` with node counts and Chroma mappings.
+
+### On/off evaluation
+
+```bash
+cd backend
+GRAPH_ENABLED=true NEO4J_PASSWORD=<password> venv/bin/python ../eval/run_graph_eval.py
+```
+
+Results: `eval/results/graph_eval_summary.md`
 
 ## Roadmap (do not build yet)
 
