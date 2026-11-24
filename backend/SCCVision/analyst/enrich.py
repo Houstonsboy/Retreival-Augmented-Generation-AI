@@ -843,6 +843,7 @@ def build_analysis_input_from_case(
         },
         "messages": capped_messages,
         "system_events": system_events,
+        "payment_hints": payment_hints,
         "mpesa_extracted": mpesa_extracted,
         "mentioned_amounts": mentioned_amounts,
         "date_checks": date_checks,
