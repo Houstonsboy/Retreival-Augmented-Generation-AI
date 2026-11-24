@@ -18,7 +18,6 @@ import types
 # Env-var stubs: prevent module-level raises when env vars are absent
 # ---------------------------------------------------------------------------
 os.environ.setdefault("GROQ_API_KEY", "test-key-stub")
-os.environ.setdefault("GOOGLE_APPLICATION_CREDENTIALS", "/dev/null")
 
 
 def _stub(name: str, **attrs):
@@ -42,31 +41,34 @@ ro_mod = _stub("rapidocr_onnxruntime")
 ro_mod.RapidOCR = object  # type: ignore[attr-defined]
 
 # ---------------------------------------------------------------------------
-# firebase_admin — installed but requires credentials at import time;
-# stub to avoid 503/credential errors in unit tests that don't hit Firestore
+# firebase_admin — only stub when the Firestore emulator is NOT running.
+# When FIRESTORE_EMULATOR_HOST is set, emulator integration tests need the
+# real SDK; when it isn't, unit tests that import app.py need a stub so
+# init_firebase_admin() doesn't fail due to missing credentials.
 # ---------------------------------------------------------------------------
-fa = _stub("firebase_admin")
-fa._apps = {}
-fa.initialize_app = lambda *a, **kw: None  # type: ignore[attr-defined]
+if not os.environ.get("FIRESTORE_EMULATOR_HOST"):
+    fa = _stub("firebase_admin")
+    fa._apps = {}
+    fa.initialize_app = lambda *a, **kw: None  # type: ignore[attr-defined]
 
-fa_creds = _pkg("firebase_admin.credentials")
+    fa_creds = _pkg("firebase_admin.credentials")
 
-class _Certificate:
-    def __init__(self, *args, **kwargs): pass
+    class _Certificate:
+        def __init__(self, *args, **kwargs): pass
 
-fa_creds.Certificate = _Certificate
-fa.credentials = fa_creds
+    fa_creds.Certificate = _Certificate
+    fa.credentials = fa_creds
 
-fa_auth_mod = _pkg("firebase_admin.auth")
-fa_auth_mod.verify_id_token = lambda *a, **kw: {}  # type: ignore[attr-defined]
-fa_auth_mod.ExpiredIdTokenError = Exception
-fa.auth = fa_auth_mod
+    fa_auth_mod = _pkg("firebase_admin.auth")
+    fa_auth_mod.verify_id_token = lambda *a, **kw: {}  # type: ignore[attr-defined]
+    fa_auth_mod.ExpiredIdTokenError = Exception
+    fa.auth = fa_auth_mod
 
-fa_fs = _pkg("firebase_admin.firestore")
-fa_fs.SERVER_TIMESTAMP = None
-fa_fs.client = lambda: None  # type: ignore[attr-defined]
-fa.firestore = fa_fs
+    fa_fs = _pkg("firebase_admin.firestore")
+    fa_fs.SERVER_TIMESTAMP = None
+    fa_fs.client = lambda: None  # type: ignore[attr-defined]
+    fa.firestore = fa_fs
 
-fa_storage = _pkg("firebase_admin.storage")
-fa_storage.bucket = lambda *a, **kw: None  # type: ignore[attr-defined]
-fa.storage = fa_storage
+    fa_storage = _pkg("firebase_admin.storage")
+    fa_storage.bucket = lambda *a, **kw: None  # type: ignore[attr-defined]
+    fa.storage = fa_storage

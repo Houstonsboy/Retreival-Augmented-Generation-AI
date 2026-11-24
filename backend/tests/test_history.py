@@ -851,11 +851,26 @@ class TestEmulatorIntegration:
     @pytest.fixture(autouse=True)
     def setup_firebase(self):
         import firebase_admin
-        from firebase_admin import firestore as fb_firestore
-        # Use emulator credentials
+        from firebase_admin import firestore as fb_firestore, credentials as fb_creds
         os.environ["FIRESTORE_EMULATOR_HOST"] = EMULATOR
         if not firebase_admin._apps:
-            firebase_admin.initialize_app(options={"projectId": "test-project"})
+            # The emulator doesn't verify tokens; supply a static fake token
+            # that never expires so the SDK skips any HTTP refresh call.
+            class _EmulatorCred(fb_creds.Base):
+                def get_credential(self):
+                    from datetime import datetime, timezone, timedelta
+                    import google.oauth2.credentials
+                    cred = google.oauth2.credentials.Credentials(
+                        token="ya29.emulator-test-token",
+                        token_uri="http://localhost/unused",
+                    )
+                    # Mark as valid so google-auth skips refresh
+                    cred.expiry = datetime.now(timezone.utc) + timedelta(hours=1)
+                    return cred
+            firebase_admin.initialize_app(
+                credential=_EmulatorCred(),
+                options={"projectId": "test-project"},
+            )
         self.db = fb_firestore.client()
         self.uid = f"test-{uuid.uuid4().hex[:8]}"
         yield
