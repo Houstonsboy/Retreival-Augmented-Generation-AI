@@ -1,0 +1,7 @@
+# Manual overrides for Chroma case_identifier matching.
+# Used by seed_loader.py when the regex cannot derive the identifier automatically.
+# Format: seed_id: chroma_case_identifier
+#
+# As of seed-0.1, all in-corpus cases are matched by regex.
+# Barisa (case:2011KEHC1481) and Roysa (case:2021KEELC220) are not in Chroma.
+# No overrides needed.

@@ -59,6 +59,9 @@ class RelType(str, Enum):
     SUPPORTS = "SUPPORTS"
     BEARS_ON = "BEARS_ON"
     GROUNDED_IN = "GROUNDED_IN"
+    # Argument / consideration
+    ARGUED_BY_PARTY = "ARGUED_BY_PARTY"
+    CONSIDERED = "CONSIDERED"
     # Evidence
     RULED_ON_EVIDENCE = "RULED_ON_EVIDENCE"
     INVOLVES = "INVOLVES"
