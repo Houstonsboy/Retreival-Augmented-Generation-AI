@@ -35,12 +35,19 @@ def _checksum(path: pathlib.Path) -> str:
 
 
 def _statement_split(cypher: str) -> list[str]:
-    """Split on semicolons, skip blank/comment-only chunks."""
+    """Split on statement-ending semicolons, skip blank/comment-only chunks.
+
+    Semicolons that appear inside a // comment line are not statement
+    terminators; strip comment lines first, then split on semicolons.
+    """
+    # Remove comment lines before splitting so that semicolons in comments
+    # (e.g. "// foo[]; see bar") do not produce spurious empty statements.
+    no_comments = "\n".join(
+        line for line in cypher.splitlines() if not line.strip().startswith("//")
+    )
     stmts = []
-    for chunk in cypher.split(";"):
-        clean = "\n".join(
-            line for line in chunk.splitlines() if not line.strip().startswith("//")
-        ).strip()
+    for chunk in no_comments.split(";"):
+        clean = chunk.strip()
         if clean:
             stmts.append(clean)
     return stmts

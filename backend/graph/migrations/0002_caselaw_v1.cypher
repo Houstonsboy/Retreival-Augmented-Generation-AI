@@ -131,29 +131,29 @@ MERGE (et_dc:EvidenceType {code: "document"})    SET et_dc.label = "Electronic d
 // ==========================================================================
 // Seed: Outcome codes
 // ==========================================================================
-MERGE (:Outcome {code: "ALLOWED"})               SET (:Outcome {code: "ALLOWED"}).label               = "Appeal/Application allowed";
-MERGE (:Outcome {code: "DISMISSED"})             SET (:Outcome {code: "DISMISSED"}).label             = "Dismissed";
-MERGE (:Outcome {code: "STRUCK_OUT"})            SET (:Outcome {code: "STRUCK_OUT"}).label            = "Struck out";
-MERGE (:Outcome {code: "SET_ASIDE_REFUSED"})     SET (:Outcome {code: "SET_ASIDE_REFUSED"}).label     = "Set aside refused";
-MERGE (:Outcome {code: "SET_ASIDE_GRANTED"})     SET (:Outcome {code: "SET_ASIDE_GRANTED"}).label     = "Set aside granted";
-MERGE (:Outcome {code: "OBJECTION_UPHELD"})      SET (:Outcome {code: "OBJECTION_UPHELD"}).label      = "Objection upheld";
-MERGE (:Outcome {code: "OBJECTION_DISMISSED"})   SET (:Outcome {code: "OBJECTION_DISMISSED"}).label   = "Objection dismissed";
-MERGE (:Outcome {code: "PARTLY_ALLOWED"})        SET (:Outcome {code: "PARTLY_ALLOWED"}).label        = "Partly allowed";
-MERGE (:Outcome {code: "GRANTED"})               SET (:Outcome {code: "GRANTED"}).label               = "Granted";
-MERGE (:Outcome {code: "REFUSED"})               SET (:Outcome {code: "REFUSED"}).label               = "Refused";
+MERGE (o1:Outcome {code: "ALLOWED"})            SET o1.label = "Appeal/Application allowed";
+MERGE (o2:Outcome {code: "DISMISSED"})          SET o2.label = "Dismissed";
+MERGE (o3:Outcome {code: "STRUCK_OUT"})         SET o3.label = "Struck out";
+MERGE (o4:Outcome {code: "SET_ASIDE_REFUSED"})  SET o4.label = "Set aside refused";
+MERGE (o5:Outcome {code: "SET_ASIDE_GRANTED"})  SET o5.label = "Set aside granted";
+MERGE (o6:Outcome {code: "OBJECTION_UPHELD"})   SET o6.label = "Objection upheld";
+MERGE (o7:Outcome {code: "OBJECTION_DISMISSED"}) SET o7.label = "Objection dismissed";
+MERGE (o8:Outcome {code: "PARTLY_ALLOWED"})     SET o8.label = "Partly allowed";
+MERGE (o9:Outcome {code: "GRANTED"})            SET o9.label = "Granted";
+MERGE (o10:Outcome {code: "REFUSED"})           SET o10.label = "Refused";
 
 // ==========================================================================
 // Seed: ClaimType
 // ==========================================================================
-MERGE (:ClaimType {code: "money_lent"})             SET (:ClaimType {code: "money_lent"}).label             = "Money lent";
-MERGE (:ClaimType {code: "sale_goods_services"})    SET (:ClaimType {code: "sale_goods_services"}).label    = "Sale of goods / services";
-MERGE (:ClaimType {code: "property_damage_tort"})   SET (:ClaimType {code: "property_damage_tort"}).label   = "Property damage (tort)";
-MERGE (:ClaimType {code: "personal_injury"})        SET (:ClaimType {code: "personal_injury"}).label        = "Personal injury";
-MERGE (:ClaimType {code: "subrogation_recovery"})   SET (:ClaimType {code: "subrogation_recovery"}).label   = "Subrogation recovery";
-MERGE (:ClaimType {code: "employment_founded"})     SET (:ClaimType {code: "employment_founded"}).label     = "Employment founded claim";
-MERGE (:ClaimType {code: "defamation"})             SET (:ClaimType {code: "defamation"}).label             = "Defamation";
-MERGE (:ClaimType {code: "bailment"})               SET (:ClaimType {code: "bailment"}).label               = "Bailment";
-MERGE (:ClaimType {code: "other"})                  SET (:ClaimType {code: "other"}).label                  = "Other";
+MERGE (ct1:ClaimType {code: "money_lent"})            SET ct1.label = "Money lent";
+MERGE (ct2:ClaimType {code: "sale_goods_services"})  SET ct2.label = "Sale of goods / services";
+MERGE (ct3:ClaimType {code: "property_damage_tort"}) SET ct3.label = "Property damage (tort)";
+MERGE (ct4:ClaimType {code: "personal_injury"})      SET ct4.label = "Personal injury";
+MERGE (ct5:ClaimType {code: "subrogation_recovery"}) SET ct5.label = "Subrogation recovery";
+MERGE (ct6:ClaimType {code: "employment_founded"})   SET ct6.label = "Employment founded claim";
+MERGE (ct7:ClaimType {code: "defamation"})           SET ct7.label = "Defamation";
+MERGE (ct8:ClaimType {code: "bailment"})             SET ct8.label = "Bailment";
+MERGE (ct9:ClaimType {code: "other"})                SET ct9.label = "Other";
 
 MERGE (emp_ct:ClaimType {code: "employment_founded"})
 MERGE (s13_5p:Provision {provision_key: "scc-act/s13/5"})
@@ -162,8 +162,8 @@ MERGE (emp_ct)-[:EXCLUDED_BY]->(s13_5p);
 // ==========================================================================
 // Seed: PartyType
 // ==========================================================================
-MERGE (:PartyType {code: "individual"})  SET (:PartyType {code: "individual"}).label  = "Individual";
-MERGE (:PartyType {code: "company"})     SET (:PartyType {code: "company"}).label     = "Company";
-MERGE (:PartyType {code: "insurer"})     SET (:PartyType {code: "insurer"}).label     = "Insurance company";
-MERGE (:PartyType {code: "employer"})    SET (:PartyType {code: "employer"}).label    = "Employer";
-MERGE (:PartyType {code: "government"})  SET (:PartyType {code: "government"}).label  = "Government / public body";
+MERGE (pt1:PartyType {code: "individual"})  SET pt1.label = "Individual";
+MERGE (pt2:PartyType {code: "company"})    SET pt2.label = "Company";
+MERGE (pt3:PartyType {code: "insurer"})    SET pt3.label = "Insurance company";
+MERGE (pt4:PartyType {code: "employer"})   SET pt4.label = "Employer";
+MERGE (pt5:PartyType {code: "government"}) SET pt5.label = "Government / public body";
