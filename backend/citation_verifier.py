@@ -127,6 +127,24 @@ def _supported(ref: str, ctype: str, valid: Dict[str, set]) -> bool:
 
 # ── Logging ──────────────────────────────────────────────────────────────────
 
+CITATION_LOG = LOGS_DIR / "citation_checks.jsonl"
+
+
+def log_citation_check(query: str, total_checked: int, total_unsupported: int) -> None:
+    """Record per-answer citation totals for hallucination-rate computation.
+
+    Rate = total_unsupported / total_checked (across all answers in the log).
+    """
+    LOGS_DIR.mkdir(exist_ok=True)
+    with open(CITATION_LOG, "a") as f:
+        f.write(json.dumps({
+            "timestamp": datetime.datetime.utcnow().isoformat(),
+            "query": query,
+            "total_checked": total_checked,
+            "total_unsupported": total_unsupported,
+        }) + "\n")
+
+
 def log_hallucination(query: str, claim: str) -> None:
     LOGS_DIR.mkdir(exist_ok=True)
     with open(HALL_LOG, "a") as f:
@@ -185,6 +203,9 @@ def verify_and_clean(
             if not _supported(ref, ctype, valid):
                 type_label = ctype[:-1].upper() if ctype not in ("klr", "cases") else ctype.upper()
                 unsupported.append(f"{type_label} {ref}")
+
+    total_checked = sum(len(refs) for refs in cits.values())
+    log_citation_check(query, total_checked, len(unsupported))
 
     if not unsupported:
         return {"text": analysis_text, "unverified_claims_removed": []}
