@@ -1,0 +1,61 @@
+# Root-level .gcloudignore for gcloud builds submit .
+# Build context = repo root (Dockerfile needs backend/ + data/)
+# Everything else is excluded to keep the upload small.
+
+# Include only what the build needs:
+#   backend/   — application code
+#   data/      — manifest.json and processed files for RulesRetriever
+# Everything below is excluded.
+
+frontend/
+e2e/
+docs/
+infra/
+tests/
+scripts/
+eval/
+legacy/
+backups/
+SCCImages/
+hosting-public/
+firestore-tests/
+
+# Large or generated files at root
+*.pdf
+*.zip
+*.ipynb
+*.txt
+*.md
+*.json
+*.log
+*.sh
+*.py
+locations.db
+Makefile
+firebase.json
+firestore.rules
+firestore.indexes.json
+storage.rules
+
+# Python / venv
+backend/venv/
+backend/__pycache__/
+backend/*.pyc
+backend/*.pyo
+backend/.env
+backend/debug_highlights/
+backend/logs/
+backend/backups/
+backend/ChunkDB_backup_20261031/
+backend/LegalSummariesDB.bak/
+backend/constitutionlogic/MasterRulesDB.bak/
+backend/constitutionlogic/MasterRulesDB_backup_20261031/
+backend/Const_IntepretationLaws/
+backend/legalai-scc-firebase-adminsdk-fbsvc-73bde27853.json
+backend/legalai-service-account.json
+backend/*.zip
+
+# Git
+.git/
+.gitignore
+.gcloudignore

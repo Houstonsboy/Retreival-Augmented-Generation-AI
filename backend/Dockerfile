@@ -15,7 +15,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 WORKDIR /app
 
 # Install Python deps (layer-cached before code copy)
-COPY requirements.txt .
+# Build context is repo root; requirements.txt lives in backend/
+COPY backend/requirements.txt .
 RUN pip install --no-cache-dir gunicorn && \
     pip install --no-cache-dir -r requirements.txt
 
@@ -25,8 +26,11 @@ from sentence_transformers import SentenceTransformer, CrossEncoder; \
 SentenceTransformer('intfloat/e5-base-v2'); \
 CrossEncoder('cross-encoder/ms-marco-MiniLM-L-6-v2')"
 
-# Copy application code and data
-COPY . .
+# Copy application code
+COPY backend/ .
+
+# Copy repo-root data directory (config.py resolves DATA_DIR to /app/../data = /data)
+COPY data/ /data/
 
 ENV PYTHONUNBUFFERED=1 \
     PORT=8080
