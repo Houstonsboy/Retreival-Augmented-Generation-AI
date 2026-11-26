@@ -1910,6 +1910,7 @@ function OriginalPane({ cases, selectedCaseId, onSelectCase, sources, scrollToCh
 }) {
   const [ocrInfo, setOcrInfo] = useState<Record<string, boolean>>({});
   const [locations, setLocations] = useState<ChunkLocation[]>([]);
+  const [pdfBlobUrl, setPdfBlobUrl] = useState<string | null>(null);
   const active = cases.find((c) => c.caseId === selectedCaseId) ?? cases[0] ?? null;
 
   useEffect(() => {
@@ -1927,8 +1928,31 @@ function OriginalPane({ cases, selectedCaseId, onSelectCase, sources, scrollToCh
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sources.map((s) => s.chunk_id).join(",")]);
 
+  // Load PDF via authenticated fetch so the Authorization header is sent.
+  // react-pdf's <Document file={url}> does not send headers on direct URLs.
+  // We manage the blob URL lifecycle here (revoke on cleanup) rather than using
+  // fetchProtectedFile's 60 s auto-revoke, which is too short for reading a PDF.
+  useEffect(() => {
+    if (!active) { setPdfBlobUrl(null); return; }
+    const apiPath = active.pdfUrl ?? `/api/case-pdf?case_id=${encodeURIComponent(active.caseId)}`;
+    let blobUrl: string | null = null;
+    let cancelled = false;
+    apiFetch(apiPath)
+      .then((res) => { if (!res.ok) throw new Error(`HTTP ${res.status}`); return res.blob(); })
+      .then((blob) => {
+        if (cancelled) return;
+        blobUrl = URL.createObjectURL(blob);
+        setPdfBlobUrl(blobUrl);
+      })
+      .catch(() => { if (!cancelled) setPdfBlobUrl(null); });
+    return () => {
+      cancelled = true;
+      if (blobUrl) URL.revokeObjectURL(blobUrl);
+    };
+  }, [active?.caseId, active?.pdfUrl]);
+
   if (!cases.length) return <div className="flex items-center justify-center h-64 text-sm" style={{ color: MUTED }}>No PDF available.</div>;
-  const pdfSrc = active?.pdfUrl ? `${API_BASE}${active.pdfUrl}` : active ? `${API_BASE}/api/case-pdf?case_id=${encodeURIComponent(active.caseId)}` : null;
+  const pdfSrc = pdfBlobUrl;
   const isOcr = active ? ocrInfo[active.caseId] : false;
   const citedChunkIds  = new Set(sources.filter((s) => s.used && s.type === "case").map((s) => s.chunk_id));
   const unusedChunkIds = new Set(sources.filter((s) => !s.used && s.type === "case").map((s) => s.chunk_id));

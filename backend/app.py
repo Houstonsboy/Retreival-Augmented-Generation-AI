@@ -962,6 +962,7 @@ def reset_constitution():
 
 
 @app.route('/api/case-pdf', methods=['GET'])
+@require_role("advocate", "admin")
 def serve_case_pdf():
     """
     Serve a case PDF by case_identifier.
@@ -1078,6 +1079,7 @@ def serve_case_pdf():
 
 
 @app.route('/api/chunks/<chunk_id>/location', methods=['GET'])
+@require_role("advocate", "admin")
 def chunk_location(chunk_id):
     """
     Return page + bounding-box location data for a chunk.
@@ -1111,6 +1113,7 @@ def chunk_location(chunk_id):
 
 
 @app.route('/api/documents/<path:doc_key>/chunks', methods=['GET'])
+@require_role("advocate", "admin")
 def document_chunks(doc_key):
     """
     List all chunks recorded in locations.db whose source path contains doc_key.
@@ -1136,6 +1139,7 @@ def document_chunks(doc_key):
 
 
 @app.route('/api/cases/<path:case_identifier>/all-chunks', methods=['GET'])
+@require_role("advocate", "admin")
 def case_all_chunks(case_identifier):
     """
     Return every chunk for a case, sorted by chunk_index.
@@ -1169,6 +1173,7 @@ def case_all_chunks(case_identifier):
 
 
 @app.route('/api/statutes/<path:source_document>/all-chunks', methods=['GET'])
+@require_role("advocate", "admin")
 def statute_all_chunks(source_document):
     """
     Return every chunk for a statute source document, sorted by chunk_index.
@@ -1203,6 +1208,7 @@ def statute_all_chunks(source_document):
 
 
 @app.route('/api/rule-pdf', methods=['GET'])
+@require_role("advocate", "admin")
 def serve_rule_pdf():
     """
     Serve statutory document PDFs (Constitution or Evidence Act).
