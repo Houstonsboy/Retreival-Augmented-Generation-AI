@@ -232,7 +232,7 @@ export function EvidenceDropzone({
             : "Drop files here or click to browse"}
         </p>
         <p className="text-xs mt-1.5 text-center" style={{ color: MUTED }}>
-          PDF, PNG, JPG, WEBP, HEIC, EML · max{" "}
+          PNG, JPG, JPEG, WEBP · max{" "}
           {formatBytes(MAX_FILE_SIZE_BYTES)} per file
         </p>
         {!isFull && (
