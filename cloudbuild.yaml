@@ -1,0 +1,14 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'build'
+      - '-t'
+      - 'africa-south1-docker.pkg.dev/legalai-scc/legalai/backend:latest'
+      - '-f'
+      - 'backend/Dockerfile'
+      - '.'
+
+images:
+  - 'africa-south1-docker.pkg.dev/legalai-scc/legalai/backend:latest'
+
+timeout: '3600s'
