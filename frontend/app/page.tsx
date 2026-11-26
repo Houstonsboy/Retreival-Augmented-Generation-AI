@@ -5,6 +5,7 @@ import { Scale, BookOpen, Smartphone, ArrowRight } from "lucide-react";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/app/context/AuthContext";
+import { UserMenu } from "@/app/components/UserMenu";
 
 // ── Design tokens (match ChatView exactly) ────────────────────────────────
 const BG      = "#FAF7F0";
@@ -78,6 +79,23 @@ export default function LandingPage() {
             <span style={{ color: GOLD }}>RAG</span>
           </span>
         </div>
+
+        {/* Right side: avatar when signed in, sign-in link when not */}
+        {user ? (
+          <UserMenu />
+        ) : (
+          <Link
+            href="/auth/sign-in"
+            className="text-sm font-semibold px-4 py-1.5 rounded-lg transition-colors"
+            style={{
+              color: GOLD_DK,
+              border: `1px solid ${GOLD}50`,
+              background: `${GOLD}10`,
+            }}
+          >
+            Sign in
+          </Link>
+        )}
       </header>
 
       {/* ── Hero ─────────────────────────────────────────────────────── */}

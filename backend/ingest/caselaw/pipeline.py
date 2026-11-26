@@ -309,12 +309,7 @@ def _write_graph(doc: ParsedDocument, findings, llm1: dict, llm2: dict,
             cit_id = cit_data.get("citation_id", "")
             treatment = cit_data.get("treatment", "CONSIDERED")
             reason = cit_data.get("reason_span", "")
-            # Ensure stub case exists
-            repo.upsert_node("Case", "case_key", {
-                "case_key": cit_id, "in_corpus": False,
-                "citation": cit_id, "name": cit_id,
-                "extractor": "regex",
-            })
+            repo.ensure_citation_stub(cit_id)
             repo.upsert_edge_by_keys("Paragraph", "para_key", para.para_key,
                                      "CITES", "Case", "case_key", cit_id,
                                      {"treatment": treatment, "reason_span": reason,
@@ -349,6 +344,12 @@ def _write_graph(doc: ParsedDocument, findings, llm1: dict, llm2: dict,
     if not outcome_data.get("code") and findings.outcome_code:
         outcome_data = {"code": findings.outcome_code}
     if outcome_data.get("code"):
+        locator = str(outcome_data.get("para", "")).removeprefix("p")
+        supporting = next((p for p in doc.paragraphs if f"{p.para_no}{p.para_sub}" == locator), None)
+        if supporting and llm1_para_map.get(f"p{locator}", {}).get("firac", "") in ("conclusion", "orders"):
+            repo.upsert_edge_by_keys("Case", "case_key", case_key, "SUPPORTED_BY",
+                                     "Paragraph", "para_key", supporting.para_key,
+                                     {"kind": "outcome", "source_doc_hash": doc.meta.doc_hash})
         repo.upsert_edge_by_keys("Case", "case_key", case_key,
                                  "HAS_OUTCOME", "Outcome", "code", outcome_data["code"], {})
 
@@ -503,8 +504,13 @@ def run_pipeline(
     if not scc_dir.exists():
         raise FileNotFoundError(f"SCCCases directory not found: {scc_dir}")
 
-    all_files = sorted(scc_dir.glob("*"))
-    all_files = [f for f in all_files if f.suffix.lower() in (".pdf", ".docx", ".doc")]
+    from direct_retrieval import CASE_MANIFEST
+    import json
+
+    manifest = json.loads(CASE_MANIFEST.read_text())
+    approved = {row["file_name_on_disk"]: row["case_identifier"]
+                for row in manifest if not row.get("exclude")}
+    all_files = sorted(f for f in scc_dir.iterdir() if f.name in approved)
 
     # Sort oldest first (by decision year from filename)
     import re as _re
@@ -641,15 +647,19 @@ def run_pipeline(
             )
 
             for doc in parsed_docs:
-                # Delete previous edges for this doc before rewriting
-                client.write(
-                    "MATCH (n {source_doc_hash: $h})-[r]-() DELETE r",
-                    h=doc.meta.doc_hash,
-                )
                 llm1 = llm1_results.get(doc.meta.case_key, {})
                 llm2 = llm2_results.get(doc.meta.case_key, {})
                 findings = all_findings[doc.meta.case_key]
                 _write_graph(doc, findings, llm1, llm2, ingest_run_id, repo)
+                client.write(
+                    "MATCH (c:Case {case_key:$key}) SET c.chroma_case_identifier=$ident",
+                    key=doc.meta.case_key, ident=approved[doc.meta.source_file],
+                )
+                client.write(
+                    "MATCH (c:Case {case_key:$key})-[:HAS_PARAGRAPH]->(p:Paragraph) "
+                    "WHERE NOT p.para_key IN $keys DETACH DELETE p",
+                    key=doc.meta.case_key, keys=[p.para_key for p in doc.paragraphs],
+                )
 
             client.write(
                 "MERGE (r:IngestRun {run_id: $rid}) SET r.finished_at = datetime(), r.status = 'done'",
@@ -678,6 +688,13 @@ class _GraphRepoAdapter:
 
     def upsert_node(self, label, key_field, node):
         self._inner.upsert_node(label, key_field, node)
+
+    def ensure_citation_stub(self, case_key: str) -> None:
+        self._inner._c.write(
+            "MERGE (c:Case {case_key: $key}) "
+            "ON CREATE SET c.name=$key, c.citation=$key, c.in_corpus=false, c.extractor='regex'",
+            key=case_key,
+        )
 
     def upsert_edge_by_keys(
         self,

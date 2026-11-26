@@ -93,7 +93,9 @@ def _check_4b(facts: DeviceFacts) -> ConditionResult:
         basis.append("Device model is missing or blank.")
         remedies.append("Provide the device model (e.g. Galaxy A32, iPhone 12).")
 
-    if facts.phone_number_last4:
+    if getattr(facts, "phone_number", None):
+        basis.append("Phone number supplied with international calling code.")
+    elif facts.phone_number_last4:
         basis.append(
             f"Phone number last 4 digits supplied "
             f"(stored masked as ******{facts.phone_number_last4})."

@@ -1,6 +1,5 @@
 import os
 import json
-import requests
 import numpy as np
 from typing import List, Dict, Any, Tuple
 import time
@@ -11,17 +10,14 @@ from sentence_transformers import CrossEncoder  # IMPROVEMENT: Added CrossEncode
 from embeddings import get_embedder
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.feature_extraction.text import TfidfVectorizer  # IMPROVEMENT: Added for hybrid search
-from groq import Groq  # UPDATED: Using Groq instead of HuggingFace
+from groq_client import call_groq
+from groq_budget import ACTIVE
 from langchain_core.documents import Document
 
 # Load environment variables from .env file
 load_dotenv(dotenv_path=Path(__file__).resolve().parent / ".env", override=True)
 
 # ===== CONFIGURATION ===== 
-GROQ_API_KEY = os.getenv("GROQ_API_KEY")
-if not GROQ_API_KEY:
-    raise ValueError("GROQ_API_KEY not found in environment variables. Please set it in your .env file.")
-
 # UPDATED: Using Groq's models instead of HuggingFace
 # Available Groq models: llama-3.3-70b-versatile, llama-3.1-70b-versatile, mixtral-8x7b-32768, gemma2-9b-it
 MODEL_NAME = "qwen/qwen3.8-27b"
@@ -101,7 +97,7 @@ def prepare_retrieval_resources() -> Tuple[List[str], List[Document], np.ndarray
     return chunks, chunk_documents, embeddings, model, reranker
 
 # ===== 3.5. QUERY EXPANSION =====
-def expand_query(query: str, groq_client: Groq) -> str:
+def expand_query(query: str, groq_client: bool) -> str:
     """
     IMPROVEMENT: Added query expansion to improve retrieval
     UPDATED: Now uses Groq instead of HuggingFace
@@ -128,17 +124,14 @@ Generate an expanded version that includes:
 
 Return ONLY the expanded query text, no explanation."""
 
-        response = groq_client.chat.completions.create(
-            messages=[
-                {"role": "system", "content": "You are a helpful assistant that expands search queries with synonyms and related terms."},
-                {"role": "user", "content": expansion_prompt}
+        expanded_query = call_groq(
+            [
+                {"role": "system", "content": "Expand for retrieval. Preserve named authorities and the question's intent."},
+                {"role": "user", "content": expansion_prompt},
             ],
-            model=MODEL_NAME,
-            max_tokens=150,
-            temperature=0.3,  # Low temperature for consistent expansion
+            model=MODEL_NAME, max_tokens=150, temperature=0.3,
+            stage="classification" if ACTIVE.get() else None,
         )
-        
-        expanded_query = response.choices[0].message.content.strip()
         
         # If expansion failed or is same, use original
         if not expanded_query or len(expanded_query) < len(query):
@@ -256,7 +249,7 @@ def hybrid_search(query: str, model, embeddings, chunks: List[str], semantic_wei
 
 def process_query(query: str, model, embeddings, chunks: List[str], 
                   reranker=None, chunk_documents: List[Document] = None,
-                  top_k: int = TOP_K, groq_client: Groq = None) -> Tuple[List[str], List[float], List[int]]:
+                  top_k: int = TOP_K, groq_client: bool = None) -> Tuple[List[str], List[float], List[int]]:
     """
     IMPROVEMENT: Enhanced query processing with expansion, hybrid search, and reranking
     UPDATED: Added groq_client parameter for query expansion
@@ -445,7 +438,7 @@ def prepare_context(relevant_chunks: List[str], scores: List[float],
     return context, citation_info
 
 # ===== 6. LLM RESPONSE GENERATION =====
-def generate_response(query: str, context: str, groq_client: Groq, citation_info: Dict = None) -> str:
+def generate_response(query: str, context: str, groq_client: bool, citation_info: Dict = None) -> str:
     """
     IMPROVEMENT: Enhanced response generation with better prompting and citations
     UPDATED: Now uses Groq instead of HuggingFace
@@ -499,19 +492,12 @@ Please provide your answer now:"""
 
     try:
         # UPDATED: Use Groq client for chat completion
-        response = groq_client.chat.completions.create(
-            messages=[
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": user_message}
-            ],
-            model=MODEL_NAME,
-            max_tokens=800,  # Increased from 500 for better answers
-            temperature=0.3,  # IMPROVEMENT: Lower temperature (0.3 vs 0.7) for more focused, factual answers
+        answer = call_groq(
+            [{"role": "system", "content": system_prompt}, {"role": "user", "content": user_message}],
+            model=MODEL_NAME, max_tokens=800, temperature=0.3,
+            stage="generation" if ACTIVE.get() else None,
         )
-        
-        # Extract the assistant's response
-        answer = response.choices[0].message.content
-        
+
         # IMPROVEMENT: Add citation information if available
         if citation_info:
             answer += "\n\n---\nCitation Sources:\n"
@@ -524,7 +510,7 @@ Please provide your answer now:"""
         
     except Exception as e:
         print(f"Error generating response: {e}")
-        return f"Error: {str(e)}"
+        return "Answer generation is unavailable. Retrieved excerpts follow.\n\n" + context
 
 # ===== 7. MAIN RAG PIPELINE =====
 def run_rag_pipeline(query: str):
@@ -547,7 +533,7 @@ def run_rag_pipeline(query: str):
     print("\n===== STARTING ENHANCED RAG PIPELINE =====")
     
     # Initialize Groq client
-    groq_client = Groq(api_key=GROQ_API_KEY)
+    groq_client = True
     
     try:
         chunks, chunk_documents, embeddings, model, reranker = prepare_retrieval_resources()
@@ -597,7 +583,7 @@ def interactive_mode():
     print("\n===== STARTING ENHANCED INTERACTIVE MODE =====")
     
     # Initialize Groq client
-    groq_client = Groq(api_key=GROQ_API_KEY)
+    groq_client = True
     
     try:
         chunks, chunk_documents, embeddings, model, reranker = prepare_retrieval_resources()

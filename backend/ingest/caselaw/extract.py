@@ -183,9 +183,12 @@ def extract_pdf(path: Path) -> list[tuple[int, str]]:
         import fitz
 
     doc = fitz.open(str(path))
+    from legal_text import pdf_ligature_map
+
     lines: list[tuple[int, str]] = []
+    glyphs = pdf_ligature_map("\n".join(page.get_text() for page in doc))
     for page in doc:
-        page_text = page.get_text("text")
+        page_text = page.get_text("text").translate(glyphs)
         # Rejoin fi-ligature fragments before line splitting
         page_text = _rejoin_fi_fragments(page_text)
         for line in page_text.splitlines():

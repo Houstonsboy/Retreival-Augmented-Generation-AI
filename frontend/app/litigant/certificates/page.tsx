@@ -133,7 +133,7 @@ export default function CertificatesPage() {
           className="text-2xl font-bold"
           style={{ color: INK, fontFamily: NR }}
         >
-          Certificate History
+          Certificates
         </h1>
         <p className="text-sm mt-1" style={{ color: MUTED }}>
           Section 106B certificate drafts generated from your uploaded evidence.

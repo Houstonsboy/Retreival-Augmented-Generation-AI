@@ -108,61 +108,95 @@ def doctrinal(
 # case_lookup(case_key)
 # ---------------------------------------------------------------------------
 
+def find_case_names(query: str) -> list[dict]:
+    """Return bounded full-text candidates, including graph-only cases."""
+    if not _graph_enabled():
+        return []
+    import re
+    words = re.findall(r"[^\W_]+", query[:256])
+    if not words:
+        return []
+    lucene = " OR ".join(f'"{word}"' for word in words if len(word) >= 3)
+    if not lucene:
+        return []
+    return _client().read(
+        """CALL db.index.fulltext.queryNodes('case_names_ft', $query)
+           YIELD node AS c, score
+           RETURN c.case_key AS case_key, c.name AS name, c.aliases AS aliases,
+                  c.citation AS citation ORDER BY score DESC LIMIT 10""",
+        query=lucene,
+    )
+
+
 def case_lookup(case_key: str) -> dict:
-    """
-    Return holdings, outgoing citations with treatment, and incoming citations
-    for a case.
-    """
+    """Read canonical identity and bounded case/paragraph-level authority paths."""
     if not _graph_enabled():
         return {}
     client = _client()
-
-    # Holdings / principles
-    holdings = client.read(
-        """
-        MATCH (c:Case {case_key: $ck})
-        OPTIONAL MATCH (para:Paragraph)-[:HAS_PARAGRAPH|NEXT*0..]->(para)
-        WHERE para.case_key = $ck
-        MATCH (para)-[:STATES]->(p:Principle)
-        RETURN para.para_key AS para_key, p.text AS principle, p.kind AS kind
-        LIMIT 20
-        """,
-        ck=case_key,
+    identities = client.read(
+        """MATCH (c:Case {case_key:$ck})
+           RETURN c.case_key AS case_key, c.name AS name, c.citation AS citation,
+                  c.outcome AS outcome, c.source AS source,
+                  c.chroma_case_identifier AS chroma_case_identifier""", ck=case_key,
     )
-
-    # Outgoing citations (this case cites others)
-    out_cites = client.read(
-        """
-        MATCH (para:Paragraph {case_key: $ck})-[r:CITES]->(cited:Case)
-        RETURN cited.case_key AS cited_key, cited.name AS cited_name,
-               r.treatment AS treatment, para.para_key AS para_key
-        ORDER BY cited.year ASC
-        """,
-        ck=case_key,
+    if not identities:
+        return {}
+    authorities = client.read(
+        """MATCH (c:Case {case_key:$ck})-[r:HOLDS|STATES_OBITER|DECIDES|INTERPRETS|RULED_ON_EVIDENCE|HAS_OUTCOME]->(n)
+           RETURN type(r) AS relationship, labels(n) AS labels,
+                  n.principle_key AS principle_key, n.kind AS kind,
+                  coalesce(n.text,n.question,n.title,n.name,n.label) AS text,
+                  n.provision_key AS provision_key, r.result AS result, r.para AS locator
+           ORDER BY relationship,text LIMIT 30""", ck=case_key,
     )
-
-    # Incoming citations (others cite this case)
-    in_cites = client.read(
-        """
-        MATCH (para:Paragraph)-[r:CITES]->(c:Case {case_key: $ck})
-        RETURN para.case_key AS citing_case, r.treatment AS treatment,
-               para.para_key AS para_key
-        ORDER BY r.treatment
-        """,
-        ck=case_key,
+    paragraphs = client.read(
+        """MATCH (c:Case {case_key:$ck})-[:HAS_PARAGRAPH]->(p:Paragraph)
+           OPTIONAL MATCH (p)-[r:STATES|RULED_ON_EVIDENCE|APPLIES|INTERPRETS]->(n)
+           RETURN p.para_key AS para_key, p.para_no AS para_no, p.text AS text,
+                  p.page_start AS page_start, p.page_end AS page_end, p.firac AS passage_role,
+                  p.source_doc_hash AS source_document_hash,
+                  type(r) AS relationship, r.result AS result,
+                  coalesce(n.principle_key,n.provision_key,n.code) AS target
+           ORDER BY p.para_no LIMIT 30""", ck=case_key,
     )
-
-    return {
-        "case_key": case_key,
-        "holdings": holdings,
-        "outgoing_citations": out_cites,
-        "incoming_citations": in_cites,
-    }
+    holdings = [
+        {**p, "principle": p["text"]} for p in authorities
+        if p["relationship"] in ("HOLDS", "STATES_OBITER")
+    ]
+    holdings.extend({**p, "principle": p["text"]} for p in paragraphs if p["relationship"] == "STATES")
+    citations = {}
+    for outgoing in (True, False):
+        path = "(source)-[r:CITES]->(cited)"
+        predicate = "source.case_key=$ck" if outgoing else "cited.case_key=$ck"
+        citations["outgoing_citations" if outgoing else "incoming_citations"] = client.read(
+            f"""MATCH {path} WHERE {predicate}
+                OPTIONAL MATCH (owner:Case {{case_key:source.case_key}})
+                RETURN DISTINCT source.case_key AS citing_case, cited.case_key AS cited_key,
+                       cited.name AS cited_name, source.para_key AS para_key, r.para AS locator,
+                       r.treatment AS treatment, owner.chroma_case_identifier AS citing_chroma_id,
+                       cited.chroma_case_identifier AS cited_chroma_id
+                ORDER BY treatment, citing_case LIMIT 20""", ck=case_key,
+        )
+    return {**identities[0], "holdings": holdings, "authorities": authorities,
+            "paragraphs": paragraphs, **citations}
 
 
 # ---------------------------------------------------------------------------
 # provision(provision_key)
 # ---------------------------------------------------------------------------
+
+def provision_lookup(key: str) -> list[dict]:
+    if not _graph_enabled():
+        return []
+    return _client().read(
+        """MATCH (p:Provision {provision_key:$key})
+           OPTIONAL MATCH (authority)-[r:INTERPRETS|APPLIES|MENTIONS]->(p)
+           RETURN p.provision_key AS key, p.title AS title, p.section AS section,
+                  authority.case_key AS case_key, authority.para_key AS para_key,
+                  type(r) AS relationship LIMIT 12""",
+        key=key,
+    )
+
 
 def provision(provision_key: str) -> list[dict]:
     """
@@ -334,7 +368,6 @@ def expand_for_answer(
                 ft_rows = client.read(
                     "CALL db.index.fulltext.queryNodes('case_names_ft', $q) "
                     "YIELD node AS c, score "
-                    "WHERE c.chroma_case_identifier IS NOT NULL "
                     "RETURN c.case_key AS case_key LIMIT 3",
                     q=ft_query,
                 )

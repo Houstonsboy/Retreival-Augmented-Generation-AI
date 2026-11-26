@@ -10,6 +10,7 @@ import os
 import sys
 
 import pytest
+from pydantic import ValidationError
 
 _BACKEND = os.path.dirname(os.path.dirname(__file__))
 if _BACKEND not in sys.path:
@@ -347,6 +348,11 @@ class TestDeviceFactsValidation:
     def test_whitespace_device_make_raises(self):
         with pytest.raises(Exception):
             _good_facts(device_make="   ")
+
+    def test_full_phone_requires_international_format(self):
+        assert _good_facts(phone_number="+254712345678").phone_number == "+254712345678"
+        with pytest.raises(ValidationError):
+            _good_facts(phone_number="0712345678")
 
     def test_bad_last4_raises(self):
         with pytest.raises(Exception):

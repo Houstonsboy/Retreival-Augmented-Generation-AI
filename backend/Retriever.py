@@ -12,12 +12,12 @@ import statistics as _stats
 import chromadb
 from pathlib import Path
 from sentence_transformers import CrossEncoder
+from direct_retrieval import normal, excluded_case_ids
 from rank_bm25 import BM25Okapi
-from embeddings import get_embedder
+from embeddings import get_embedder, index_revision, query_embedding as cached_query_embedding
 from typing import Dict, List, Any, Optional
 import sys
 import os
-import requests
 import urllib.parse
 from dotenv import load_dotenv
 
@@ -35,14 +35,6 @@ from config import (
     CASELAW_COLLECTION_NAME as CHROMA_COLLECTION_NAME,
     EMBEDDING_MODEL_NAME,
 )
-
-# Groq API Configuration
-GROQ_API_KEY = os.getenv("GROQ_API_KEY")
-if not GROQ_API_KEY:
-    raise ValueError("GROQ_API_KEY not found in environment variables. Please set it in your .env file.")
-
-MODEL_NAME = "qwen/qwen3.8-27b"
-GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
 
 # How many parent documents to return
 TOP_N_PARENTS = 3
@@ -64,7 +56,8 @@ def _sigmoid_c(x: float) -> float:
 
 
 def _ensure_cases_bm25() -> None:
-    if _CASES_BM25["index"] is not None:
+    revision = index_revision(CHROMA_DB_DIR)
+    if _CASES_BM25.get("revision") == revision:
         return
     if not CHROMA_DB_DIR.exists():
         return
@@ -72,12 +65,14 @@ def _ensure_cases_bm25() -> None:
         _c = chromadb.PersistentClient(path=str(CHROMA_DB_DIR))
         _col = _c.get_collection(name=CHROMA_COLLECTION_NAME)
         _d = _col.get(include=["documents", "metadatas"])
-        _CASES_BM25["ids"] = _d["ids"]
-        _CASES_BM25["docs"] = _d["documents"]
-        _CASES_BM25["metas"] = _d["metadatas"]
-        _CASES_BM25["index"] = BM25Okapi([doc.split() for doc in _d["documents"]])
+        _CASES_BM25.update(
+            ids=_d["ids"], docs=_d["documents"], metas=_d["metadatas"],
+            index=BM25Okapi([normal(doc).split() for doc in _d["documents"]]) if _d["documents"] else None,
+            revision=revision,
+        )
     except Exception:
-        pass
+        _CASES_BM25.update(index=None, ids=[], docs=[], metas=[])
+
 
 
 def _ensure_cases_ce() -> CrossEncoder:
@@ -160,32 +155,12 @@ Keep your response clear, professional, and focused on practical legal insights.
 
     # Make API call
     try:
-        headers = {
-            "Authorization": f"Bearer {GROQ_API_KEY}",
-            "Content-Type": "application/json"
-        }
-        
-        payload = {
-            "model": MODEL_NAME,
-            "messages": [
-                {
-                    "role": "system",
-                    "content": "You are an expert Kenyan legal analyst who provides clear, insightful case summaries for lawyers and legal researchers."
-                },
-                {
-                    "role": "user",
-                    "content": prompt
-                }
-            ],
-            "temperature": 0.3,
-            "max_tokens": 1000
-        }
-        
-        response = requests.post(GROQ_API_URL, headers=headers, json=payload, timeout=30, proxies={"http": None, "https": None})
-        response.raise_for_status()
-        
-        result = response.json()
-        summary = result['choices'][0]['message']['content'].strip()
+        from groq_budget import ACTIVE
+        from groq_client import call_groq
+        summary = call_groq(
+            [{"role": "user", "content": prompt}], max_tokens=1000, temperature=0.3,
+            stage="generation" if ACTIVE.get() else None,
+        )
         
         if verbose:
             print(f"    ✓ Summary generated ({len(summary)} characters)")
@@ -195,7 +170,7 @@ Keep your response clear, professional, and focused on practical legal insights.
             'generated': True
         }
         
-    except requests.exceptions.RequestException as e:
+    except Exception as e:
         if verbose:
             print(f"    ⚠️  API call failed: {str(e)}")
         
@@ -415,6 +390,9 @@ def group_by_parent(results: Dict, scores: List[Dict], target_components: List[s
             'domain_boost': score_info['domain_boost'],
             'match_reasons': score_info['match_reasons'],
             'chunk_index': int(metadata.get('chunk_index', 0)),
+            'source_document_hash': metadata.get('source_document_hash'),
+            'page_start': metadata.get('page_start'),
+            'page_end': metadata.get('page_end'),
             'prev_chunk_id': str(metadata.get('prev_chunk_id', '')),
             'next_chunk_id': str(metadata.get('next_chunk_id', '')),
         }
@@ -459,7 +437,7 @@ def select_best_chunks_per_parent(parent_data: Dict, target_components: List[str
     return selected_chunks
 
 
-def format_output(top_parents: List[tuple], query_params: Dict, stats: Dict, verbose: bool = True, skip_summaries: bool = False) -> Dict:
+def format_output(top_parents: List[tuple], query_params: Dict, stats: Dict, verbose: bool = True, skip_summaries: bool = False, direct: bool = False) -> Dict:
     """
     Format final output with LLM-generated summaries in frontend-compatible structure.
     
@@ -487,7 +465,8 @@ def format_output(top_parents: List[tuple], query_params: Dict, stats: Dict, ver
             summary_result = generate_case_summary(case_info, query_params, verbose)
         
         # Select best chunks for evidence
-        evidence_chunks = select_best_chunks_per_parent(parent_data, query_params['target_components'])
+        evidence_chunks = (parent_data['chunks'] if direct else
+                           select_best_chunks_per_parent(parent_data, query_params['target_components']))
         
         # Format result in FRONTEND-COMPATIBLE STRUCTURE
         results.append({
@@ -531,7 +510,11 @@ def format_output(top_parents: List[tuple], query_params: Dict, stats: Dict, ver
                     'base_similarity': round(chunk['base_similarity'], 3),
                     'domain_boost': round(chunk['domain_boost'], 3),
                     'match_reasons': ', '.join(chunk['match_reasons']),
-                    'chunk_id': chunk['chunk_id']
+                    'chunk_id': chunk['chunk_id'],
+                    'chunk_index': chunk['chunk_index'],
+                    'source_document_hash': chunk.get('source_document_hash'),
+                    'page_start': chunk.get('page_start'),
+                    'page_end': chunk.get('page_end')
                 }
                 for chunk in evidence_chunks
             ],
@@ -563,7 +546,7 @@ def format_output(top_parents: List[tuple], query_params: Dict, stats: Dict, ver
 
 def retrieve_relevant_cases(classifier_output: Any, verbose: bool = True,
                             skip_summaries: bool = False, top_n: int = None,
-                            pinned_case_ids: list = None) -> Dict:
+                            pinned_case_ids: list = None, direct: bool = False) -> Dict:
     """
     Main retrieval function with LLM-enhanced summaries.
     Returns data in frontend-compatible format.
@@ -599,7 +582,7 @@ def retrieve_relevant_cases(classifier_output: Any, verbose: bool = True,
         print("\n[2/7] Loading embedding model...")
     
     try:
-        embedding_model = get_embedder(EMBEDDING_MODEL_NAME)
+        embedding_model = None if pinned_case_ids else get_embedder(EMBEDDING_MODEL_NAME)
         if verbose:
             print(f"  ✓ Loaded: {EMBEDDING_MODEL_NAME}")
     except Exception as e:
@@ -624,14 +607,18 @@ def retrieve_relevant_cases(classifier_output: Any, verbose: bool = True,
     if verbose:
         print("\n[4/7] Embedding vector query...")
     
-    query_embedding = embedding_model.encode("query: " + query_params['vector_query']).tolist()
+    query_embedding = list(cached_query_embedding(EMBEDDING_MODEL_NAME, query_params["vector_query"])) if embedding_model else []
     
     if verbose:
         print(f"  ✓ Embedding dimension: {len(query_embedding)}")
     
     # ---- STEP 5: Hybrid Search (BM25 + Vector → RRF → Cross-encoder) ----
     query_str = query_params['vector_query']
-    ce_model = _ensure_cases_ce()
+    denied = excluded_case_ids()
+    if pinned_case_ids and not (set(pinned_case_ids) - denied):
+        return {'results': [], 'retrieval_stats': {'excluded_pins': sorted(set(pinned_case_ids) & denied)}}
+    if pinned_case_ids:
+        pinned_case_ids = [cid for cid in pinned_case_ids if cid not in denied]
 
     if pinned_case_ids:
         # ── Probe mode: fetch ALL chunks from pinned docs, then rerank ──────────
@@ -650,7 +637,7 @@ def retrieve_relevant_cases(classifier_output: Any, verbose: bool = True,
         cand_metas = pinned_raw["metadatas"]
 
         if cand_ids:
-            ce_raw_scores = ce_model.predict([(query_str, doc) for doc in cand_docs])
+            ce_raw_scores = _ensure_cases_ce().predict([(query_str, doc) for doc in cand_docs])
             ce_sigmoid    = [_sigmoid_c(float(s)) for s in ce_raw_scores]
             order = sorted(range(len(cand_ids)), key=lambda i: -ce_sigmoid[i])
             cand_ids   = [cand_ids[i]   for i in order]
@@ -673,11 +660,15 @@ def retrieve_relevant_cases(classifier_output: Any, verbose: bool = True,
 
         # 5a. BM25 over all case chunks
         _ensure_cases_bm25()
+        bm25_index = _CASES_BM25.copy()
         bm25_ranked_ids: list = []
-        if _CASES_BM25["index"] is not None:
-            bm25_raw = _CASES_BM25["index"].get_scores(query_str.split())
-            bm25_order = sorted(range(len(bm25_raw)), key=lambda i: -bm25_raw[i])[:50]
-            bm25_ranked_ids = [_CASES_BM25["ids"][i] for i in bm25_order]
+        bm25_order = []
+        bm25_raw = []
+        if bm25_index["index"] is not None:
+            bm25_raw = bm25_index["index"].get_scores(normal(query_str).split())
+            eligible = (i for i, m in enumerate(bm25_index["metas"]) if m.get("case_identifier") not in denied)
+            bm25_order = sorted(eligible, key=lambda i: -bm25_raw[i])[:50]
+            bm25_ranked_ids = [bm25_index["ids"][i] for i in bm25_order]
 
         # 5b. Vector search (top 50)
         n_vec = min(50, collection.count())
@@ -685,6 +676,7 @@ def retrieve_relevant_cases(classifier_output: Any, verbose: bool = True,
             query_embeddings=[query_embedding],
             n_results=n_vec,
             include=['documents', 'metadatas', 'distances'],
+            **({'where': {'case_identifier': {'$nin': sorted(denied)}}} if denied else {}),
         )
         vec_ranked_ids = vec_raw['ids'][0]
 
@@ -698,17 +690,17 @@ def retrieve_relevant_cases(classifier_output: Any, verbose: bool = True,
         id_to_data: dict = {}
         for i, cid in enumerate(vec_ranked_ids):
             id_to_data[cid] = (vec_raw['documents'][0][i], vec_raw['metadatas'][0][i])
-        if _CASES_BM25["index"] is not None:
-            for i, cid in enumerate(_CASES_BM25["ids"]):
+        if bm25_index["index"] is not None:
+            for i, cid in enumerate(bm25_index["ids"]):
                 if cid not in id_to_data:
-                    id_to_data[cid] = (_CASES_BM25["docs"][i], _CASES_BM25["metas"][i])
+                    id_to_data[cid] = (bm25_index["docs"][i], bm25_index["metas"][i])
 
         # 5e. Cross-encoder rerank
         cand_ids = [cid for cid in fused_ids if cid in id_to_data]
         cand_docs = [id_to_data[cid][0] for cid in cand_ids]
         cand_metas = [id_to_data[cid][1] for cid in cand_ids]
 
-        ce_raw_scores = ce_model.predict([(query_str, doc) for doc in cand_docs])
+        ce_raw_scores = _ensure_cases_ce().predict([(query_str, doc) for doc in cand_docs])
         ce_sigmoid = [_sigmoid_c(float(s)) for s in ce_raw_scores]
 
         order = sorted(range(len(cand_ids)), key=lambda i: -ce_sigmoid[i])
@@ -767,6 +759,8 @@ def retrieve_relevant_cases(classifier_output: Any, verbose: bool = True,
 
     stats = {
         'total_candidates': len(cand_ids),
+        'distances_are': 'Chroma cosine distance',
+        'rank_scores_are': 'Cross-encoder sigmoid',
         'after_component_filter': len(cand_ids),  # no filter needed post-CE
         'unique_parents_found': len(parents),
         'returned_parents': len(top_parents),
@@ -777,7 +771,14 @@ def retrieve_relevant_cases(classifier_output: Any, verbose: bool = True,
         },
     }
     
-    output = format_output(top_parents, query_params, stats, verbose, skip_summaries)
+    if os.environ.get("LEGAL_RETRIEVAL_TRACE") == "1":
+        stats["trace"] = {
+            "vector_cosine_distance": dict(zip(vec_ranked_ids, vec_raw["distances"][0])) if not pinned_case_ids else {},
+            "bm25": {cid: float(bm25_raw[i]) for cid, i in zip(bm25_ranked_ids, bm25_order)} if not pinned_case_ids else {},
+            "cross_encoder_sigmoid": dict(zip(cand_ids, ce_sigmoid)),
+            "excluded_manifest_ids": sorted(denied),
+        }
+    output = format_output(top_parents, query_params, stats, verbose, skip_summaries, direct)
 
     if top_parents and top_parents[0][1]['best_score'] < LOW_CONFIDENCE_THRESHOLD:
         output['warning'] = "Low confidence results — CE score below threshold; consider refining query"

@@ -392,6 +392,29 @@ class TestDownloadCertificate:
         assert resp.content_type == "application/pdf"
         assert resp.data.startswith(b"%PDF")
 
+    def test_legacy_certificate_download_uses_saved_analysis_statuses(self):
+        from io import BytesIO
+
+        from pypdf import PdfReader
+
+        p1, p2 = _auth_patches()
+        client = _get_client()
+        record = _saved_cert_record()
+        snapshot = _good_snapshot()
+        snapshot["derived_statuses"] = {"A": "PRESENT", "B": "ABSENT"}
+
+        with p1, p2, \
+             patch("SCCVision.s106b.routes.get_certificate", return_value=record), \
+             patch("SCCVision.s106b.routes.get_analysis_snapshot", return_value=snapshot) as lookup:
+            resp = client.get("/api/evidence/certificates/cert-xyz/download")
+
+        assert resp.status_code == 200
+        lookup.assert_called_once_with(record["uid"], record["analysis_id"])
+        reader = PdfReader(BytesIO(resp.data))
+        appendix = reader.pages[-1].extract_text()
+        assert "Parties & identity ✓" in appendix
+        assert "Capacity ✗" in appendix
+
     def test_pdf_filename_uses_cert_number(self):
         p1, p2 = _auth_patches()
         client = _get_client()

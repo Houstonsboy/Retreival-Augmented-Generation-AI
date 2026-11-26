@@ -185,6 +185,7 @@ def verify_and_clean(
     relevant_sources: list,
     query: str,
     regen_fn: Optional[Callable[[List[str]], Optional[str]]],
+    *, log: bool = True,
 ) -> Dict:
     """
     Verify citations in analysis_text against relevant_sources.
@@ -205,13 +206,15 @@ def verify_and_clean(
                 unsupported.append(f"{type_label} {ref}")
 
     total_checked = sum(len(refs) for refs in cits.values())
-    log_citation_check(query, total_checked, len(unsupported))
+    if log:
+        log_citation_check(query, total_checked, len(unsupported))
 
     if not unsupported:
         return {"text": analysis_text, "unverified_claims_removed": []}
 
-    for claim in unsupported:
-        log_hallucination(query, claim)
+    if log:
+        for claim in unsupported:
+            log_hallucination(query, claim)
 
     # Attempt one regeneration
     regen_text: Optional[str] = None

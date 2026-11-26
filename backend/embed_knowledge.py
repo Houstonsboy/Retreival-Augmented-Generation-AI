@@ -2,8 +2,7 @@
 """
 Step 5 — Embed statute and case chunks into ChromaDB.
 
-Resumable: chunks already present in the collection are skipped by ID.
-Hand the full command to the user; do not run the embedding automatically.
+Resumable: skip unchanged content/model pairs and update changed records.
 
 Usage:
     # Embed statutes only
@@ -23,6 +22,7 @@ Usage:
 """
 
 import argparse
+from hashlib import sha256
 import json
 import sys
 import time
@@ -85,12 +85,23 @@ def embed_chunks(chunks, collection, model, source_label: str, limit=None, verbo
     Embed chunks into collection; skip IDs already present (resumable).
     Returns number of newly embedded chunks.
     """
-    # Fetch all existing IDs in one call for efficiency
-    existing = set(collection.get(include=[])["ids"])
-    if verbose:
-        print(f"  Collection already contains {len(existing)} embeddings")
-
-    todo = [c for c in chunks if c["chunk_id"] not in existing]
+    ids = [c["chunk_id"] for c in chunks]
+    if len(set(ids)) != len(ids):
+        raise ValueError("Duplicate chunk ID in staging data")
+    stored = collection.get(include=["metadatas"])
+    existing = dict(zip(stored["ids"], stored["metadatas"]))
+    prepared = []
+    for chunk in chunks:
+        meta = to_chroma_meta(chunk)
+        meta["embedding_hash"] = sha256(
+            f"{EMBEDDING_MODEL_NAME}\0passage: {chunk['text']}".encode()
+        ).hexdigest()
+        old = existing.get(chunk["chunk_id"]) or {}
+        if old.get("embedding_hash") != meta["embedding_hash"]:
+            prepared.append((chunk, meta))
+        elif old != meta:
+            collection.update(ids=[chunk["chunk_id"]], metadatas=[meta])
+    todo = prepared
     if limit:
         todo = todo[:limit]
 
@@ -107,14 +118,14 @@ def embed_chunks(chunks, collection, model, source_label: str, limit=None, verbo
     embedded = 0
     for i in range(0, len(todo), EMBED_BATCH):
         batch = todo[i : i + EMBED_BATCH]
-        texts = ["passage: " + c["text"] for c in batch]
+        texts = ["passage: " + c["text"] for c, _ in batch]
         embeddings = model.encode(texts, normalize_embeddings=True, batch_size=EMBED_BATCH)
 
-        collection.add(
-            ids=[c["chunk_id"] for c in batch],
+        collection.upsert(
+            ids=[c["chunk_id"] for c, _ in batch],
             embeddings=embeddings.tolist(),
-            documents=[c["text"] for c in batch],
-            metadatas=[to_chroma_meta(c) for c in batch],
+            documents=[c["text"] for c, _ in batch],
+            metadatas=[meta for _, meta in batch],
         )
         embedded += len(batch)
         if verbose:
@@ -134,20 +145,27 @@ def main():
                         help="Append suffix to collection name, e.g. _test for a temp collection")
     parser.add_argument("--dry-run", action="store_true",
                         help="Load JSONL and print plan without embedding anything")
+    parser.add_argument("--db-root", type=Path)
+    parser.add_argument("--cases-jsonl", type=Path, default=CASES_JSONL)
+    parser.add_argument("--statutes-jsonl", type=Path, default=STATUTES_JSONL)
+    parser.add_argument("--sync", action="store_true", help="Remove IDs absent from a complete staging collection")
     args = parser.parse_args()
+    if args.sync and (args.limit is not None or not args.db_root):
+        parser.error("--sync requires an explicit --db-root and a complete run")
+
 
     sources = []
     if args.source in ("statutes", "both"):
         sources.append({
             "label": "statutes",
-            "jsonl": STATUTES_JSONL,
+            "jsonl": args.statutes_jsonl,
             "db_dir": STATUTES_DB_DIR,
             "collection": STATUTES_COLLECTION_NAME + args.suffix,
         })
     if args.source in ("cases", "both"):
         sources.append({
             "label": "cases",
-            "jsonl": CASES_JSONL,
+            "jsonl": args.cases_jsonl,
             "db_dir": CASELAW_DB_DIR,
             "collection": CASELAW_COLLECTION_NAME + args.suffix,
         })
@@ -160,11 +178,14 @@ def main():
     else:
         model = None
 
-    LOG_DIR.mkdir(exist_ok=True)
-    log_path = LOG_DIR / f"embed_{int(time.time())}.log"
+    log_dir = args.db_root if args.db_root else LOG_DIR
+    log_dir.mkdir(parents=True, exist_ok=True)
+    log_path = log_dir / f"embed_{int(time.time())}.log"
     total_embedded = 0
 
     for src in sources:
+        if args.db_root:
+            src["db_dir"] = args.db_root / src["db_dir"].name
         print(f"\n{'='*64}")
         print(f"Source   : {src['label']}")
         print(f"JSONL    : {src['jsonl']}")
@@ -194,6 +215,10 @@ def main():
 
         n = embed_chunks(chunks, collection, model, src["label"], limit=args.limit)
         total_embedded += n
+        if args.sync:
+            stale = set(collection.get(include=[])["ids"]) - {c["chunk_id"] for c in chunks}
+            if stale:
+                collection.delete(ids=sorted(stale))
 
         with open(log_path, "a") as lf:
             lf.write(json.dumps({

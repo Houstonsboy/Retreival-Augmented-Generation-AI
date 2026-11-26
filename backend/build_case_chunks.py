@@ -20,11 +20,15 @@ Usage:
 import argparse
 import hashlib
 import json
+import re
 import sqlite3
 import subprocess
 import sys
 from collections import defaultdict
 from pathlib import Path
+
+from legal_text import pdf_ligature_map
+from graph.keys import case_key
 
 BASE_DIR = Path(__file__).resolve().parent
 SCC_CASES_DIR = BASE_DIR / "SCCCases"
@@ -138,10 +142,13 @@ def _is_header_block(text: str, y0: float, y1: float, page_h: float) -> bool:
     t = text.strip()
     if not t:
         return True
-    if t.isdigit():         # bare page number
-        return True
-    near_edge = y0 < _HEADER_Y_MARGIN or y1 > page_h - _HEADER_Y_MARGIN
-    return near_edge and len(t) < 120
+    if y0 >= _HEADER_Y_MARGIN and y1 <= page_h - _HEADER_Y_MARGIN:
+        return False
+    return bool(re.fullmatch(
+        r"(?:\d{1,3}|page\s+\d+(?:\s+of\s+\d+)?|"
+        r"https?://[^\s]*kenyalaw\.[^\s]+(?:\s+\d+)?|"
+        r"Judgment SCCCOMM No\..+?pg\.\s*\d+)", t, re.IGNORECASE
+    ))
 
 
 def extract_paragraphs_pdf(path: Path) -> list:
@@ -158,6 +165,7 @@ def extract_paragraphs_pdf(path: Path) -> list:
 
     doc = fitz.open(str(path))
     paragraphs = []
+    glyphs = pdf_ligature_map("\n".join(page.get_text() for page in doc))
 
     for page_num, page in enumerate(doc):
         pw = page.rect.width
@@ -172,7 +180,7 @@ def extract_paragraphs_pdf(path: Path) -> list:
                 span["text"]
                 for line in block.get("lines", [])
                 for span in line.get("spans", [])
-            ).strip()
+            ).strip().translate(glyphs)
 
             if not block_text:
                 continue
@@ -288,6 +296,7 @@ def main():
     parser.add_argument("--meta", default=str(DEFAULT_META))
     parser.add_argument("--output", default=str(DEFAULT_OUTPUT))
     parser.add_argument("--cases-dir", default=str(SCC_CASES_DIR))
+    parser.add_argument("--locations", default=str(LOCATIONS_DB))
     args = parser.parse_args()
 
     meta_path = Path(args.meta)
@@ -314,8 +323,11 @@ def main():
             print(f"  {fn}")
         print()
 
-    conn = _init_locations_db(LOCATIONS_DB)
+    if len({e["case_identifier"] for e in meta_list}) != len(meta_list):
+        parser.error("Duplicate case_identifier in manifest")
+    conn = _init_locations_db(Path(args.locations))
     all_chunks = []
+    source_hashes = set()
 
     for entry in meta_list:
         if entry.get("exclude", False):
@@ -323,10 +335,13 @@ def main():
             continue
 
         original_path = cases_dir / entry["file_name_on_disk"]
-        if not original_path.exists():
-            print(f"  WARNING: file not found, skipping: {original_path}", file=sys.stderr)
-            continue
+        if not original_path.is_file():
+            raise FileNotFoundError(f"Approved source missing: {original_path}")
 
+        source_hash = hashlib.sha256(original_path.read_bytes()).hexdigest()
+        if source_hash in source_hashes:
+            raise ValueError(f"Duplicate source document: {original_path.name}")
+        source_hashes.add(source_hash)
         suffix = original_path.suffix.lower()
         print(f"  Extracting: {original_path.name}")
 
@@ -337,21 +352,14 @@ def main():
             file_path, ocr_used = _maybe_ocr_pdf(original_path)
             paragraphs = extract_paragraphs_pdf(file_path)
             if not paragraphs:
-                print(
-                    f"  WARNING: no text paragraphs from {file_path.name}"
-                    f"{' (even after OCR)' if ocr_used else ''} — skipping",
-                    file=sys.stderr,
-                )
-                continue
+                raise ValueError(f"No text extracted from approved PDF: {file_path.name}")
             coord_chunks = split_paras_into_chunks(paragraphs)
 
         elif suffix == ".docx":
             file_path = original_path
             full_text = extract_text_docx(file_path)
             if not full_text.strip():
-                print(f"  WARNING: no text extracted from {file_path.name} — skipping",
-                      file=sys.stderr)
-                continue
+                raise ValueError(f"No text extracted from approved DOCX: {file_path.name}")
             coord_chunks = [
                 {"text": t, "page_start": None, "page_end": None,
                  "boxes": [], "page_dims": {}, "label": ""}
@@ -359,8 +367,7 @@ def main():
             ]
 
         else:
-            print(f"  WARNING: unsupported extension '{suffix}', skipping", file=sys.stderr)
-            continue
+            raise ValueError(f"Unsupported format for approved source: {original_path.name}")
 
         doc_hash = hashlib.sha256(
             "".join(c["text"] for c in coord_chunks).encode("utf-8")
@@ -391,6 +398,8 @@ def main():
 
                 # Additional fields
                 "document_hash": doc_hash,
+                "source_document_hash": source_hash,
+                "case_key": case_key(entry["case_identifier"], entry.get("parties", "")),
                 "chunk_index": i,
                 "chunk_total": chunk_total,
                 "content_length": len(cd["text"]),
@@ -435,7 +444,7 @@ def main():
             f.write(json.dumps(chunk) + "\n")
 
     print(f"\nWrote {len(all_chunks)} chunks → {output_path}")
-    print(f"Location data      → {LOCATIONS_DB}")
+    print(f"Location data      → {args.locations}")
 
     cases_seen = set(c["case_identifier"] for c in all_chunks)
     for case_id in sorted(cases_seen):

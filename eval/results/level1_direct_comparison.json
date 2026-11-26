@@ -1,0 +1,3216 @@
+{
+  "A": [
+    {
+      "suite": "diagnostics",
+      "id": "A",
+      "query": "Why was the CCTV evidence rejected in Republic v Barisa Wayu Mataguda?",
+      "mode": "CASE_REASONING_LOOKUP",
+      "case_id": "2011KEHC1481(KLR)",
+      "expected_case": "2011KEHC1481(KLR)",
+      "category": "reasoning",
+      "ranks": [
+        "2020KEHC8905(KLR)",
+        "2024KEHC15763(KLR)",
+        "2014KEHC6468(KLR)"
+      ],
+      "gold_anchors": [
+        "without the required certificate"
+      ],
+      "found_primary_anchors": [],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": null,
+      "authority_status": null,
+      "origin": null,
+      "selected": [
+        "2020KEHC8905KLR_2",
+        "2020KEHC8905KLR_0",
+        "2020KEHC8905KLR_1",
+        "2024KEHC15763KLR_5",
+        "2024KEHC15763KLR_2",
+        "2024KEHC15763KLR_8",
+        "2014KEHC6468KLR_1",
+        "2014KEHC6468KLR_0",
+        "2014KEHC6468KLR_2"
+      ],
+      "retrieval_ms": 28390
+    },
+    {
+      "suite": "diagnostics",
+      "id": "B",
+      "query": "What was the ruling in Republic v Barisa Wayu Mataguda, 2011 KEHC 1481 (KLR)?",
+      "mode": "CASE_OUTCOME_LOOKUP",
+      "case_id": "2011KEHC1481(KLR)",
+      "expected_case": "2011KEHC1481(KLR)",
+      "category": "outcome",
+      "ranks": [
+        "2020KEHC8905(KLR)",
+        "2024KEHC15763(KLR)",
+        "2014KEHC6468(KLR)"
+      ],
+      "gold_anchors": [
+        "this CD is inadmissible"
+      ],
+      "found_primary_anchors": [],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": null,
+      "authority_status": null,
+      "origin": null,
+      "selected": [
+        "2020KEHC8905KLR_2",
+        "2020KEHC8905KLR_0",
+        "2020KEHC8905KLR_1",
+        "2024KEHC15763KLR_5",
+        "2024KEHC15763KLR_6",
+        "2024KEHC15763KLR_2",
+        "2014KEHC6468KLR_1",
+        "2014KEHC6468KLR_0",
+        "2014KEHC6468KLR_2"
+      ],
+      "retrieval_ms": 23185
+    },
+    {
+      "suite": "diagnostics",
+      "id": "C",
+      "query": "Who were PW11 and PW4 in Republic v Barisa Wayu Mataguda, and what were their roles in the production of CCTV evidence?",
+      "mode": "CASE_FACT_LOOKUP",
+      "case_id": "2011KEHC1481(KLR)",
+      "expected_case": "2011KEHC1481(KLR)",
+      "category": "fact",
+      "ranks": [
+        "2020KEHC8905(KLR)",
+        "2024KEHC15763(KLR)",
+        "2014KEHC6468(KLR)"
+      ],
+      "gold_anchors": [
+        "Michael Oduor",
+        "Lydia Kaguna Japeth"
+      ],
+      "found_primary_anchors": [],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": null,
+      "authority_status": null,
+      "origin": null,
+      "selected": [
+        "2020KEHC8905KLR_2",
+        "2020KEHC8905KLR_0",
+        "2020KEHC8905KLR_3",
+        "2024KEHC15763KLR_5",
+        "2024KEHC15763KLR_2",
+        "2024KEHC15763KLR_8",
+        "2014KEHC6468KLR_1",
+        "2014KEHC6468KLR_0",
+        "2014KEHC6468KLR_2"
+      ],
+      "retrieval_ms": 26411
+    },
+    {
+      "suite": "diagnostics",
+      "id": "D",
+      "query": "What happened to the original CCTV footage in Republic v Barisa Wayu Mataguda?",
+      "mode": "CASE_FACT_LOOKUP",
+      "case_id": "2011KEHC1481(KLR)",
+      "expected_case": "2011KEHC1481(KLR)",
+      "category": "fact",
+      "ranks": [
+        "2020KEHC8905(KLR)",
+        "2024KEHC15763(KLR)",
+        "2014KEHC6468(KLR)"
+      ],
+      "gold_anchors": [
+        "footage was erased"
+      ],
+      "found_primary_anchors": [],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": null,
+      "authority_status": null,
+      "origin": null,
+      "selected": [
+        "2020KEHC8905KLR_2",
+        "2020KEHC8905KLR_3",
+        "2020KEHC8905KLR_1",
+        "2024KEHC15763KLR_5",
+        "2024KEHC15763KLR_2",
+        "2024KEHC15763KLR_4",
+        "2014KEHC6468KLR_1",
+        "2014KEHC6468KLR_0",
+        "2014KEHC6468KLR_2"
+      ],
+      "retrieval_ms": 22955
+    },
+    {
+      "suite": "diagnostics",
+      "id": "E",
+      "query": "Did the court admit or reject the CD containing CCTV footage in Republic v Barisa Wayu Mataguda?",
+      "mode": "CASE_OUTCOME_LOOKUP",
+      "case_id": "2011KEHC1481(KLR)",
+      "expected_case": "2011KEHC1481(KLR)",
+      "category": "outcome",
+      "ranks": [
+        "2020KEHC8905(KLR)",
+        "2024KEHC15763(KLR)",
+        "2014KEHC6468(KLR)"
+      ],
+      "gold_anchors": [
+        "this CD is inadmissible"
+      ],
+      "found_primary_anchors": [],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": null,
+      "authority_status": null,
+      "origin": null,
+      "selected": [
+        "2020KEHC8905KLR_2",
+        "2020KEHC8905KLR_0",
+        "2020KEHC8905KLR_3",
+        "2024KEHC15763KLR_5",
+        "2024KEHC15763KLR_8",
+        "2024KEHC15763KLR_6",
+        "2014KEHC6468KLR_1",
+        "2014KEHC6468KLR_2",
+        "2014KEHC6468KLR_0"
+      ],
+      "retrieval_ms": 23976
+    },
+    {
+      "suite": "diagnostics",
+      "id": "F",
+      "query": "2011 KEHC 1481 (KLR)",
+      "mode": "DIRECT_CASE_LOOKUP",
+      "case_id": "2011KEHC1481(KLR)",
+      "expected_case": "2011KEHC1481(KLR)",
+      "category": "excluded_identity",
+      "ranks": [
+        "2026SCC235(KLR)",
+        "2024KEHC15763(KLR)",
+        "2024KEHC17038(KLR)"
+      ],
+      "gold_anchors": [],
+      "found_primary_anchors": [],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": null,
+      "authority_status": null,
+      "origin": null,
+      "selected": [
+        "2026SCC235KLR_1",
+        "2026SCC235KLR_2",
+        "2026SCC235KLR_0",
+        "2024KEHC15763KLR_0",
+        "2024KEHC15763KLR_5",
+        "2024KEHC15763KLR_6",
+        "2024KEHC17038KLR_0",
+        "2024KEHC17038KLR_1",
+        "2024KEHC17038KLR_4"
+      ],
+      "retrieval_ms": 33240
+    },
+    {
+      "suite": "diagnostics",
+      "id": "G",
+      "query": "What did the court decide regarding electronic evidence in Republic v Barisa Wayu Matriguda?",
+      "mode": "CASE_OUTCOME_LOOKUP",
+      "case_id": "2011KEHC1481(KLR)",
+      "expected_case": "2011KEHC1481(KLR)",
+      "category": "outcome",
+      "ranks": [
+        "2024KEHC15763(KLR)",
+        "2020KEHC8905(KLR)",
+        "2014KEHC6468(KLR)"
+      ],
+      "gold_anchors": [
+        "this CD is inadmissible"
+      ],
+      "found_primary_anchors": [],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": null,
+      "authority_status": null,
+      "origin": null,
+      "selected": [
+        "2024KEHC15763KLR_5",
+        "2024KEHC15763KLR_6",
+        "2024KEHC15763KLR_8",
+        "2020KEHC8905KLR_2",
+        "2020KEHC8905KLR_0",
+        "2020KEHC8905KLR_1",
+        "2014KEHC6468KLR_1",
+        "2014KEHC6468KLR_2",
+        "2014KEHC6468KLR_0"
+      ],
+      "retrieval_ms": 22729
+    },
+    {
+      "suite": "diagnostics",
+      "id": "H",
+      "query": "What are the requirements for admissibility of electronic evidence under Section 106B(4) of the Kenyan Evidence Act?",
+      "mode": "DIRECT_STATUTE_LOOKUP",
+      "case_id": null,
+      "expected_case": null,
+      "category": "statute",
+      "ranks": [],
+      "gold_anchors": [
+        "identifying the electronic record",
+        "particulars of any device",
+        "conditions mentioned in subsection (2)",
+        "person occupying a responsible position"
+      ],
+      "found_primary_anchors": [
+        "identifying the electronic record"
+      ],
+      "expected_statute": "Evidence Act",
+      "statute_matches": [
+        "106B"
+      ],
+      "graph_case": null,
+      "authority_status": null,
+      "origin": null,
+      "selected": [
+        "evidence_act__2023-12-11__s106B__0__c0",
+        "evidence_act__2023-12-11__s106B__1",
+        "evidence_act__2023-12-11__s106B__0__c1"
+      ],
+      "retrieval_ms": 5765
+    },
+    {
+      "suite": "benchmark",
+      "id": "L01",
+      "query": "What amount did the court award in costs in Umoja Magharibi (K) Ltd v Lubano?",
+      "mode": "CASE_FACT_LOOKUP",
+      "case_id": "2026SCC242(KLR)",
+      "expected_case": "2026SCC242(KLR)",
+      "category": "fact",
+      "ranks": [
+        "2026SCC242(KLR)",
+        "2026SCC235(KLR)",
+        "2024KEHC15763(KLR)"
+      ],
+      "gold_anchors": [
+        "20,000"
+      ],
+      "found_primary_anchors": [],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": null,
+      "authority_status": null,
+      "origin": null,
+      "selected": [
+        "2026SCC242KLR_0",
+        "2026SCC242KLR_3",
+        "2026SCC242KLR_1",
+        "2026SCC235KLR_1",
+        "2026SCC235KLR_0",
+        "2026SCC235KLR_3",
+        "2024KEHC15763KLR_2",
+        "2024KEHC15763KLR_0",
+        "2024KEHC15763KLR_4"
+      ],
+      "retrieval_ms": 20344
+    },
+    {
+      "suite": "benchmark",
+      "id": "L02",
+      "query": "Why was the suit struck out in New Titanic Jacaranda General Spares v Omil & another?",
+      "mode": "CASE_REASONING_LOOKUP",
+      "case_id": "2026SCC235(KLR)",
+      "expected_case": "2026SCC235(KLR)",
+      "category": "reasoning",
+      "ranks": [
+        "2026SCC235(KLR)",
+        "2010KECA346(KLR)",
+        "2024KEHC17038(KLR)"
+      ],
+      "gold_anchors": [
+        "lacks jurisdiction",
+        "struck out"
+      ],
+      "found_primary_anchors": [],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": null,
+      "authority_status": null,
+      "origin": null,
+      "selected": [
+        "2026SCC235KLR_3",
+        "2026SCC235KLR_2",
+        "2026SCC235KLR_1",
+        "2010KECA346KLR_5",
+        "2010KECA346KLR_11",
+        "2010KECA346KLR_6",
+        "2024KEHC17038KLR_4",
+        "2024KEHC17038KLR_0",
+        "2024KEHC17038KLR_1"
+      ],
+      "retrieval_ms": 19070
+    },
+    {
+      "suite": "benchmark",
+      "id": "L03",
+      "query": "What did the court decide about the setting-aside application in [2026] SCC 241 (KLR)?",
+      "mode": "CASE_OUTCOME_LOOKUP",
+      "case_id": "2026SCC241(KLR)",
+      "expected_case": "2026SCC241(KLR)",
+      "category": "outcome",
+      "ranks": [
+        "2026SCC241(KLR)",
+        "2026SCC235(KLR)",
+        "2001KECA154(KLR)"
+      ],
+      "gold_anchors": [
+        "dismiss his application",
+        "10,000"
+      ],
+      "found_primary_anchors": [],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": null,
+      "authority_status": null,
+      "origin": null,
+      "selected": [
+        "2026SCC241KLR_3",
+        "2026SCC241KLR_2",
+        "2026SCC241KLR_4",
+        "2026SCC235KLR_1",
+        "2026SCC235KLR_2",
+        "2026SCC235KLR_0",
+        "2001KECA154KLR_1",
+        "2001KECA154KLR_2",
+        "2001KECA154KLR_0"
+      ],
+      "retrieval_ms": 15597
+    },
+    {
+      "suite": "benchmark",
+      "id": "L04",
+      "query": "Why did Shah JA dismiss the appeal in Express (Kenya) Limited v Manju Patel?",
+      "mode": "CASE_REASONING_LOOKUP",
+      "case_id": "2001KECA154(KLR)",
+      "expected_case": "2001KECA154(KLR)",
+      "category": "reasoning",
+      "ranks": [
+        "2001KECA154(KLR)",
+        "2026SCC235(KLR)",
+        "2010KECA346(KLR)"
+      ],
+      "gold_anchors": [
+        "nonexplanation of the delay",
+        "no good defence"
+      ],
+      "found_primary_anchors": [],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": null,
+      "authority_status": null,
+      "origin": null,
+      "selected": [
+        "2001KECA154KLR_0",
+        "2001KECA154KLR_6",
+        "2001KECA154KLR_3",
+        "2026SCC235KLR_1",
+        "2026SCC235KLR_2",
+        "2026SCC235KLR_0",
+        "2010KECA346KLR_1",
+        "2010KECA346KLR_0",
+        "2010KECA346KLR_9"
+      ],
+      "retrieval_ms": 15823
+    },
+    {
+      "suite": "benchmark",
+      "id": "L05",
+      "query": "Did the court allow the plaintiffs to produce a certificate later in 2014KEHC6468(KLR)?",
+      "mode": "CASE_OUTCOME_LOOKUP",
+      "case_id": "2014KEHC6468(KLR)",
+      "expected_case": "2014KEHC6468(KLR)",
+      "category": "outcome",
+      "ranks": [
+        "2014KEHC6468(KLR)",
+        "2026SCC241(KLR)",
+        "2024KEHC17038(KLR)"
+      ],
+      "gold_anchors": [
+        "at liberty to produce",
+        "certificate for the admissibility"
+      ],
+      "found_primary_anchors": [],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": null,
+      "authority_status": null,
+      "origin": null,
+      "selected": [
+        "2014KEHC6468KLR_2",
+        "2014KEHC6468KLR_1",
+        "2014KEHC6468KLR_0",
+        "2026SCC241KLR_2",
+        "2026SCC241KLR_0",
+        "2026SCC241KLR_5",
+        "2024KEHC17038KLR_0",
+        "2024KEHC17038KLR_1",
+        "2024KEHC17038KLR_5"
+      ],
+      "retrieval_ms": 18369
+    },
+    {
+      "suite": "benchmark",
+      "id": "L06",
+      "query": "Who managed the phone identified by the court in Obado v Anayo, and whom did the court say should sign the certificate?",
+      "mode": "CASE_FACT_LOOKUP",
+      "case_id": "2024KEHC17038(KLR)",
+      "expected_case": "2024KEHC17038(KLR)",
+      "category": "fact",
+      "ranks": [
+        "2024KEHC17038(KLR)",
+        "2020KEHC8905(KLR)",
+        "2014KEHC6468(KLR)"
+      ],
+      "gold_anchors": [
+        "person who manages the device",
+        "Scarlet Susan Okoth"
+      ],
+      "found_primary_anchors": [],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": null,
+      "authority_status": null,
+      "origin": null,
+      "selected": [
+        "2024KEHC17038KLR_0",
+        "2024KEHC17038KLR_7",
+        "2024KEHC17038KLR_6",
+        "2020KEHC8905KLR_2",
+        "2020KEHC8905KLR_3",
+        "2020KEHC8905KLR_1",
+        "2014KEHC6468KLR_1",
+        "2014KEHC6468KLR_0",
+        "2014KEHC6468KLR_2"
+      ],
+      "retrieval_ms": 20501
+    },
+    {
+      "suite": "benchmark",
+      "id": "L07",
+      "query": "What was the court's order about costs in Ogembo v Yongo?",
+      "mode": "CASE_FACT_LOOKUP",
+      "case_id": "2024KEHC15763(KLR)",
+      "expected_case": "2024KEHC15763(KLR)",
+      "category": "outcome",
+      "ranks": [
+        "2024KEHC15763(KLR)",
+        "2026SCC235(KLR)",
+        "2010KECA346(KLR)"
+      ],
+      "gold_anchors": [
+        "each bear their own costs"
+      ],
+      "found_primary_anchors": [],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": null,
+      "authority_status": null,
+      "origin": null,
+      "selected": [
+        "2024KEHC15763KLR_0",
+        "2024KEHC15763KLR_9",
+        "2024KEHC15763KLR_4",
+        "2026SCC235KLR_3",
+        "2026SCC235KLR_2",
+        "2026SCC235KLR_1",
+        "2010KECA346KLR_9",
+        "2010KECA346KLR_27",
+        "2010KECA346KLR_28"
+      ],
+      "retrieval_ms": 17955
+    },
+    {
+      "suite": "benchmark",
+      "id": "L08",
+      "query": "Which marked exhibit was the only one whose objection the court sustained in 2020 KEHC 8905 (KLR)?",
+      "mode": "CASE_FACT_LOOKUP",
+      "case_id": "2020KEHC8905(KLR)",
+      "expected_case": "2020KEHC8905(KLR)",
+      "category": "outcome",
+      "ranks": [
+        "2020KEHC8905(KLR)",
+        "2026SCC235(KLR)",
+        "2024KEHC17038(KLR)"
+      ],
+      "gold_anchors": [
+        "objection is therefore only sustainable with regard to DMFI 7"
+      ],
+      "found_primary_anchors": [
+        "objection is therefore only sustainable with regard to DMFI 7"
+      ],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": null,
+      "authority_status": null,
+      "origin": null,
+      "selected": [
+        "2020KEHC8905KLR_4",
+        "2020KEHC8905KLR_0",
+        "2020KEHC8905KLR_2",
+        "2026SCC235KLR_1",
+        "2026SCC235KLR_2",
+        "2026SCC235KLR_0",
+        "2024KEHC17038KLR_0",
+        "2024KEHC17038KLR_1",
+        "2024KEHC17038KLR_5"
+      ],
+      "retrieval_ms": 15453
+    },
+    {
+      "suite": "benchmark",
+      "id": "L09",
+      "query": "For what period did the court grant interim protection in Safaricom Limited v Ocean View Beach Hotel Limited & 2 others?",
+      "mode": "CASE_FACT_LOOKUP",
+      "case_id": "2010KECA346(KLR)",
+      "expected_case": "2010KECA346(KLR)",
+      "category": "fact",
+      "ranks": [
+        "2010KECA346(KLR)",
+        "2001KECA154(KLR)",
+        "2026SCC241(KLR)"
+      ],
+      "gold_anchors": [
+        "28 days"
+      ],
+      "found_primary_anchors": [],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": null,
+      "authority_status": null,
+      "origin": null,
+      "selected": [
+        "2010KECA346KLR_4",
+        "2010KECA346KLR_10",
+        "2010KECA346KLR_0",
+        "2001KECA154KLR_3",
+        "2001KECA154KLR_0",
+        "2001KECA154KLR_6",
+        "2026SCC241KLR_2",
+        "2026SCC241KLR_4",
+        "2026SCC241KLR_1"
+      ],
+      "retrieval_ms": 12858
+    },
+    {
+      "suite": "benchmark",
+      "id": "L10",
+      "query": "What does section 78A(2) of the Evidence Act say about original form?",
+      "mode": "DIRECT_STATUTE_LOOKUP",
+      "case_id": null,
+      "expected_case": null,
+      "category": "statute",
+      "ranks": [],
+      "gold_anchors": [
+        "not in its original form"
+      ],
+      "found_primary_anchors": [
+        "not in its original form"
+      ],
+      "expected_statute": "Evidence Act",
+      "statute_matches": [
+        "78A"
+      ],
+      "graph_case": null,
+      "authority_status": null,
+      "origin": null,
+      "selected": [
+        "evidence_act__2023-12-11__s78A__0"
+      ],
+      "retrieval_ms": 711
+    },
+    {
+      "suite": "benchmark",
+      "id": "L11",
+      "query": "What does section 13(5) of the SCC Act exclude?",
+      "mode": "DIRECT_STATUTE_LOOKUP",
+      "case_id": null,
+      "expected_case": null,
+      "category": "statute",
+      "ranks": [],
+      "gold_anchors": [
+        "employment and labour relations"
+      ],
+      "found_primary_anchors": [],
+      "expected_statute": "Small Claims Court Act",
+      "statute_matches": [
+        "13"
+      ],
+      "graph_case": null,
+      "authority_status": null,
+      "origin": null,
+      "selected": [
+        "small_claims_court_act__2022-12-31__s13__0"
+      ],
+      "retrieval_ms": 528
+    },
+    {
+      "suite": "benchmark",
+      "id": "L12",
+      "query": "Under section 34(1) of the CPA, which court decides questions about execution of a decree?",
+      "mode": "DIRECT_STATUTE_LOOKUP",
+      "case_id": null,
+      "expected_case": null,
+      "category": "statute",
+      "ranks": [],
+      "gold_anchors": [
+        "court executing the decree",
+        "not by a separate suit"
+      ],
+      "found_primary_anchors": [
+        "court executing the decree",
+        "not by a separate suit"
+      ],
+      "expected_statute": "Civil Procedure Act",
+      "statute_matches": [
+        "34"
+      ],
+      "graph_case": null,
+      "authority_status": null,
+      "origin": null,
+      "selected": [
+        "civil_procedure_act__2022-12-31__s34__0"
+      ],
+      "retrieval_ms": 508
+    },
+    {
+      "suite": "benchmark",
+      "id": "L13",
+      "query": "What is the appellant’s personal telephone number in Ogembo v Yongo?",
+      "mode": "CASE_FACT_LOOKUP",
+      "case_id": "2024KEHC15763(KLR)",
+      "expected_case": "2024KEHC15763(KLR)",
+      "category": "insufficient",
+      "ranks": [
+        "2024KEHC15763(KLR)",
+        "2026SCC241(KLR)",
+        "2020KEHC8905(KLR)"
+      ],
+      "gold_anchors": [],
+      "found_primary_anchors": [],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": null,
+      "authority_status": null,
+      "origin": null,
+      "selected": [
+        "2024KEHC15763KLR_0",
+        "2024KEHC15763KLR_4",
+        "2024KEHC15763KLR_9",
+        "2026SCC241KLR_2",
+        "2026SCC241KLR_1",
+        "2026SCC241KLR_0",
+        "2020KEHC8905KLR_2",
+        "2020KEHC8905KLR_3",
+        "2020KEHC8905KLR_1"
+      ],
+      "retrieval_ms": 14184
+    },
+    {
+      "suite": "benchmark",
+      "id": "L14",
+      "query": "[2024] KEHC 17038 (KLR)",
+      "mode": "DIRECT_CASE_LOOKUP",
+      "case_id": "2024KEHC17038(KLR)",
+      "expected_case": "2024KEHC17038(KLR)",
+      "category": "identifier",
+      "ranks": [
+        "2024KEHC17038(KLR)",
+        "2024KEHC15763(KLR)",
+        "2026SCC235(KLR)"
+      ],
+      "gold_anchors": [],
+      "found_primary_anchors": [],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": null,
+      "authority_status": null,
+      "origin": null,
+      "selected": [
+        "2024KEHC17038KLR_0",
+        "2024KEHC17038KLR_1",
+        "2024KEHC17038KLR_5",
+        "2024KEHC15763KLR_0",
+        "2024KEHC15763KLR_6",
+        "2024KEHC15763KLR_5",
+        "2026SCC235KLR_1",
+        "2026SCC235KLR_2",
+        "2026SCC235KLR_0"
+      ],
+      "retrieval_ms": 13307
+    },
+    {
+      "suite": "benchmark",
+      "id": "L15",
+      "query": "What costs did the court award in Ogemboo v Yongo?",
+      "mode": null,
+      "case_id": null,
+      "expected_case": "2024KEHC15763(KLR)",
+      "category": "fuzzy",
+      "ranks": [
+        "2024KEHC15763(KLR)",
+        "2026SCC235(KLR)",
+        "2024KEHC17038(KLR)"
+      ],
+      "gold_anchors": [
+        "each bear their own costs"
+      ],
+      "found_primary_anchors": [],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": null,
+      "authority_status": null,
+      "origin": null,
+      "selected": [
+        "2024KEHC15763KLR_0",
+        "2024KEHC15763KLR_2",
+        "2024KEHC15763KLR_4",
+        "2026SCC235KLR_3",
+        "2026SCC235KLR_1",
+        "2026SCC235KLR_0",
+        "2024KEHC17038KLR_0",
+        "2024KEHC17038KLR_4",
+        "2024KEHC17038KLR_7"
+      ],
+      "retrieval_ms": 13774
+    },
+    {
+      "suite": "benchmark",
+      "id": "L16",
+      "query": "2026SCC235(KLR)",
+      "mode": "DIRECT_CASE_LOOKUP",
+      "case_id": "2026SCC235(KLR)",
+      "expected_case": "2026SCC235(KLR)",
+      "category": "identifier",
+      "ranks": [
+        "2026SCC235(KLR)",
+        "2024KEHC15763(KLR)",
+        "2024KEHC17038(KLR)"
+      ],
+      "gold_anchors": [],
+      "found_primary_anchors": [],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": null,
+      "authority_status": null,
+      "origin": null,
+      "selected": [
+        "2026SCC235KLR_1",
+        "2026SCC235KLR_2",
+        "2026SCC235KLR_0",
+        "2024KEHC15763KLR_0",
+        "2024KEHC15763KLR_6",
+        "2024KEHC15763KLR_5",
+        "2024KEHC17038KLR_0",
+        "2024KEHC17038KLR_1",
+        "2024KEHC17038KLR_6"
+      ],
+      "retrieval_ms": 12465
+    }
+  ],
+  "B": [
+    {
+      "suite": "diagnostics",
+      "id": "A",
+      "query": "Why was the CCTV evidence rejected in Republic v Barisa Wayu Mataguda?",
+      "mode": "CASE_REASONING_LOOKUP",
+      "case_id": "2011KEHC1481(KLR)",
+      "expected_case": "2011KEHC1481(KLR)",
+      "category": "reasoning",
+      "ranks": [
+        "2020KEHC8905(KLR)",
+        "2024KEHC15763(KLR)",
+        "2014KEHC6468(KLR)"
+      ],
+      "gold_anchors": [
+        "without the required certificate"
+      ],
+      "found_primary_anchors": [],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": null,
+      "authority_status": null,
+      "origin": null,
+      "selected": [
+        "2020KEHC8905KLR_0",
+        "2020KEHC8905KLR_2",
+        "2020KEHC8905KLR_3",
+        "2024KEHC15763KLR_5"
+      ],
+      "retrieval_ms": 26049
+    },
+    {
+      "suite": "diagnostics",
+      "id": "B",
+      "query": "What was the ruling in Republic v Barisa Wayu Mataguda, 2011 KEHC 1481 (KLR)?",
+      "mode": "CASE_OUTCOME_LOOKUP",
+      "case_id": "2011KEHC1481(KLR)",
+      "expected_case": "2011KEHC1481(KLR)",
+      "category": "outcome",
+      "ranks": [
+        "2020KEHC8905(KLR)",
+        "2024KEHC15763(KLR)",
+        "2014KEHC6468(KLR)"
+      ],
+      "gold_anchors": [
+        "this CD is inadmissible"
+      ],
+      "found_primary_anchors": [],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": null,
+      "authority_status": null,
+      "origin": null,
+      "selected": [
+        "2020KEHC8905KLR_0",
+        "2020KEHC8905KLR_1",
+        "2020KEHC8905KLR_2",
+        "2024KEHC15763KLR_5",
+        "2014KEHC6468KLR_0"
+      ],
+      "retrieval_ms": 24023
+    },
+    {
+      "suite": "diagnostics",
+      "id": "C",
+      "query": "Who were PW11 and PW4 in Republic v Barisa Wayu Mataguda, and what were their roles in the production of CCTV evidence?",
+      "mode": "CASE_FACT_LOOKUP",
+      "case_id": "2011KEHC1481(KLR)",
+      "expected_case": "2011KEHC1481(KLR)",
+      "category": "fact",
+      "ranks": [
+        "2020KEHC8905(KLR)",
+        "2024KEHC15763(KLR)",
+        "2014KEHC6468(KLR)"
+      ],
+      "gold_anchors": [
+        "Michael Oduor",
+        "Lydia Kaguna Japeth"
+      ],
+      "found_primary_anchors": [],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": null,
+      "authority_status": null,
+      "origin": null,
+      "selected": [
+        "2020KEHC8905KLR_0",
+        "2020KEHC8905KLR_2",
+        "2020KEHC8905KLR_3",
+        "2024KEHC15763KLR_5"
+      ],
+      "retrieval_ms": 25306
+    },
+    {
+      "suite": "diagnostics",
+      "id": "D",
+      "query": "What happened to the original CCTV footage in Republic v Barisa Wayu Mataguda?",
+      "mode": "CASE_FACT_LOOKUP",
+      "case_id": "2011KEHC1481(KLR)",
+      "expected_case": "2011KEHC1481(KLR)",
+      "category": "fact",
+      "ranks": [
+        "2020KEHC8905(KLR)",
+        "2024KEHC15763(KLR)",
+        "2014KEHC6468(KLR)"
+      ],
+      "gold_anchors": [
+        "footage was erased"
+      ],
+      "found_primary_anchors": [],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": null,
+      "authority_status": null,
+      "origin": null,
+      "selected": [
+        "2020KEHC8905KLR_0",
+        "2020KEHC8905KLR_2",
+        "2020KEHC8905KLR_3",
+        "2024KEHC15763KLR_5"
+      ],
+      "retrieval_ms": 23839
+    },
+    {
+      "suite": "diagnostics",
+      "id": "E",
+      "query": "Did the court admit or reject the CD containing CCTV footage in Republic v Barisa Wayu Mataguda?",
+      "mode": "CASE_OUTCOME_LOOKUP",
+      "case_id": "2011KEHC1481(KLR)",
+      "expected_case": "2011KEHC1481(KLR)",
+      "category": "outcome",
+      "ranks": [
+        "2020KEHC8905(KLR)",
+        "2024KEHC15763(KLR)",
+        "2014KEHC6468(KLR)"
+      ],
+      "gold_anchors": [
+        "this CD is inadmissible"
+      ],
+      "found_primary_anchors": [],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": null,
+      "authority_status": null,
+      "origin": null,
+      "selected": [
+        "2020KEHC8905KLR_0",
+        "2020KEHC8905KLR_2",
+        "2020KEHC8905KLR_3",
+        "2024KEHC15763KLR_5"
+      ],
+      "retrieval_ms": 23173
+    },
+    {
+      "suite": "diagnostics",
+      "id": "F",
+      "query": "2011 KEHC 1481 (KLR)",
+      "mode": "DIRECT_CASE_LOOKUP",
+      "case_id": "2011KEHC1481(KLR)",
+      "expected_case": "2011KEHC1481(KLR)",
+      "category": "excluded_identity",
+      "ranks": [
+        "2026SCC235(KLR)",
+        "2024KEHC15763(KLR)",
+        "2024KEHC17038(KLR)"
+      ],
+      "gold_anchors": [],
+      "found_primary_anchors": [],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": null,
+      "authority_status": null,
+      "origin": null,
+      "selected": [
+        "2026SCC235KLR_0",
+        "2026SCC235KLR_1",
+        "2026SCC235KLR_2",
+        "2024KEHC15763KLR_0",
+        "2024KEHC15763KLR_5",
+        "2024KEHC17038KLR_0"
+      ],
+      "retrieval_ms": 28162
+    },
+    {
+      "suite": "diagnostics",
+      "id": "G",
+      "query": "What did the court decide regarding electronic evidence in Republic v Barisa Wayu Matriguda?",
+      "mode": "CASE_OUTCOME_LOOKUP",
+      "case_id": "2011KEHC1481(KLR)",
+      "expected_case": "2011KEHC1481(KLR)",
+      "category": "outcome",
+      "ranks": [
+        "2024KEHC15763(KLR)",
+        "2020KEHC8905(KLR)",
+        "2014KEHC6468(KLR)"
+      ],
+      "gold_anchors": [
+        "this CD is inadmissible"
+      ],
+      "found_primary_anchors": [],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": null,
+      "authority_status": null,
+      "origin": null,
+      "selected": [
+        "2024KEHC15763KLR_5",
+        "2024KEHC15763KLR_6",
+        "2024KEHC15763KLR_8",
+        "2020KEHC8905KLR_2"
+      ],
+      "retrieval_ms": 23186
+    },
+    {
+      "suite": "diagnostics",
+      "id": "H",
+      "query": "What are the requirements for admissibility of electronic evidence under Section 106B(4) of the Kenyan Evidence Act?",
+      "mode": "DIRECT_STATUTE_LOOKUP",
+      "case_id": null,
+      "expected_case": null,
+      "category": "statute",
+      "ranks": [],
+      "gold_anchors": [
+        "identifying the electronic record",
+        "particulars of any device",
+        "conditions mentioned in subsection (2)",
+        "person occupying a responsible position"
+      ],
+      "found_primary_anchors": [
+        "identifying the electronic record",
+        "particulars of any device",
+        "conditions mentioned in subsection (2)",
+        "person occupying a responsible position"
+      ],
+      "expected_statute": "Evidence Act",
+      "statute_matches": [
+        "106B"
+      ],
+      "graph_case": null,
+      "authority_status": null,
+      "origin": null,
+      "selected": [
+        "evidence_act__2023-12-11__s106B__0__c1"
+      ],
+      "retrieval_ms": 4082
+    },
+    {
+      "suite": "benchmark",
+      "id": "L01",
+      "query": "What amount did the court award in costs in Umoja Magharibi (K) Ltd v Lubano?",
+      "mode": "CASE_FACT_LOOKUP",
+      "case_id": "2026SCC242(KLR)",
+      "expected_case": "2026SCC242(KLR)",
+      "category": "fact",
+      "ranks": [
+        "2026SCC242(KLR)",
+        "2026SCC235(KLR)",
+        "2024KEHC15763(KLR)"
+      ],
+      "gold_anchors": [
+        "20,000"
+      ],
+      "found_primary_anchors": [
+        "20,000"
+      ],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": null,
+      "authority_status": null,
+      "origin": null,
+      "selected": [
+        "2026SCC242KLR_0",
+        "2026SCC242KLR_1",
+        "2026SCC242KLR_3",
+        "2026SCC235KLR_1",
+        "2026SCC235KLR_0"
+      ],
+      "retrieval_ms": 17963
+    },
+    {
+      "suite": "benchmark",
+      "id": "L02",
+      "query": "Why was the suit struck out in New Titanic Jacaranda General Spares v Omil & another?",
+      "mode": "CASE_REASONING_LOOKUP",
+      "case_id": "2026SCC235(KLR)",
+      "expected_case": "2026SCC235(KLR)",
+      "category": "reasoning",
+      "ranks": [
+        "2026SCC235(KLR)",
+        "2010KECA346(KLR)",
+        "2024KEHC15763(KLR)"
+      ],
+      "gold_anchors": [
+        "lacks jurisdiction",
+        "struck out"
+      ],
+      "found_primary_anchors": [
+        "lacks jurisdiction",
+        "struck out"
+      ],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": null,
+      "authority_status": null,
+      "origin": null,
+      "selected": [
+        "2026SCC235KLR_0",
+        "2026SCC235KLR_2",
+        "2026SCC235KLR_3",
+        "2010KECA346KLR_31"
+      ],
+      "retrieval_ms": 18010
+    },
+    {
+      "suite": "benchmark",
+      "id": "L03",
+      "query": "What did the court decide about the setting-aside application in [2026] SCC 241 (KLR)?",
+      "mode": "CASE_OUTCOME_LOOKUP",
+      "case_id": "2026SCC241(KLR)",
+      "expected_case": "2026SCC241(KLR)",
+      "category": "outcome",
+      "ranks": [
+        "2026SCC241(KLR)",
+        "2026SCC235(KLR)",
+        "2001KECA154(KLR)"
+      ],
+      "gold_anchors": [
+        "dismiss his application",
+        "10,000"
+      ],
+      "found_primary_anchors": [
+        "dismiss his application",
+        "10,000"
+      ],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": null,
+      "authority_status": null,
+      "origin": null,
+      "selected": [
+        "2026SCC241KLR_2",
+        "2026SCC241KLR_3",
+        "2026SCC241KLR_5",
+        "2026SCC235KLR_1"
+      ],
+      "retrieval_ms": 17546
+    },
+    {
+      "suite": "benchmark",
+      "id": "L04",
+      "query": "Why did Shah JA dismiss the appeal in Express (Kenya) Limited v Manju Patel?",
+      "mode": "CASE_REASONING_LOOKUP",
+      "case_id": "2001KECA154(KLR)",
+      "expected_case": "2001KECA154(KLR)",
+      "category": "reasoning",
+      "ranks": [
+        "2001KECA154(KLR)",
+        "2026SCC235(KLR)",
+        "2010KECA346(KLR)"
+      ],
+      "gold_anchors": [
+        "nonexplanation of the delay",
+        "no good defence"
+      ],
+      "found_primary_anchors": [
+        "nonexplanation of the delay",
+        "no good defence"
+      ],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": null,
+      "authority_status": null,
+      "origin": null,
+      "selected": [
+        "2001KECA154KLR_0",
+        "2001KECA154KLR_3",
+        "2001KECA154KLR_6",
+        "2026SCC235KLR_1",
+        "2026SCC235KLR_2",
+        "2026SCC235KLR_0"
+      ],
+      "retrieval_ms": 15679
+    },
+    {
+      "suite": "benchmark",
+      "id": "L05",
+      "query": "Did the court allow the plaintiffs to produce a certificate later in 2014KEHC6468(KLR)?",
+      "mode": "CASE_OUTCOME_LOOKUP",
+      "case_id": "2014KEHC6468(KLR)",
+      "expected_case": "2014KEHC6468(KLR)",
+      "category": "outcome",
+      "ranks": [
+        "2014KEHC6468(KLR)",
+        "2024KEHC17038(KLR)",
+        "2026SCC241(KLR)"
+      ],
+      "gold_anchors": [
+        "at liberty to produce",
+        "certificate for the admissibility"
+      ],
+      "found_primary_anchors": [
+        "at liberty to produce",
+        "certificate for the admissibility"
+      ],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": null,
+      "authority_status": null,
+      "origin": null,
+      "selected": [
+        "2014KEHC6468KLR_0",
+        "2014KEHC6468KLR_1",
+        "2014KEHC6468KLR_2",
+        "2024KEHC17038KLR_0",
+        "2024KEHC17038KLR_5"
+      ],
+      "retrieval_ms": 18436
+    },
+    {
+      "suite": "benchmark",
+      "id": "L06",
+      "query": "Who managed the phone identified by the court in Obado v Anayo, and whom did the court say should sign the certificate?",
+      "mode": "CASE_FACT_LOOKUP",
+      "case_id": "2024KEHC17038(KLR)",
+      "expected_case": "2024KEHC17038(KLR)",
+      "category": "fact",
+      "ranks": [
+        "2024KEHC17038(KLR)",
+        "2020KEHC8905(KLR)",
+        "2026SCC241(KLR)"
+      ],
+      "gold_anchors": [
+        "person who manages the device",
+        "Scarlet Susan Okoth"
+      ],
+      "found_primary_anchors": [
+        "person who manages the device",
+        "Scarlet Susan Okoth"
+      ],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": null,
+      "authority_status": null,
+      "origin": null,
+      "selected": [
+        "2024KEHC17038KLR_0",
+        "2024KEHC17038KLR_6",
+        "2024KEHC17038KLR_7",
+        "2020KEHC8905KLR_2",
+        "2020KEHC8905KLR_3",
+        "2020KEHC8905KLR_0"
+      ],
+      "retrieval_ms": 20237
+    },
+    {
+      "suite": "benchmark",
+      "id": "L07",
+      "query": "What was the court's order about costs in Ogembo v Yongo?",
+      "mode": "CASE_FACT_LOOKUP",
+      "case_id": "2024KEHC15763(KLR)",
+      "expected_case": "2024KEHC15763(KLR)",
+      "category": "outcome",
+      "ranks": [
+        "2024KEHC15763(KLR)",
+        "2010KECA346(KLR)",
+        "2026SCC235(KLR)"
+      ],
+      "gold_anchors": [
+        "each bear their own costs"
+      ],
+      "found_primary_anchors": [
+        "each bear their own costs"
+      ],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": null,
+      "authority_status": null,
+      "origin": null,
+      "selected": [
+        "2024KEHC15763KLR_0",
+        "2024KEHC15763KLR_1",
+        "2024KEHC15763KLR_9",
+        "2010KECA346KLR_10",
+        "2010KECA346KLR_6"
+      ],
+      "retrieval_ms": 19084
+    },
+    {
+      "suite": "benchmark",
+      "id": "L08",
+      "query": "Which marked exhibit was the only one whose objection the court sustained in 2020 KEHC 8905 (KLR)?",
+      "mode": "CASE_FACT_LOOKUP",
+      "case_id": "2020KEHC8905(KLR)",
+      "expected_case": "2020KEHC8905(KLR)",
+      "category": "outcome",
+      "ranks": [
+        "2020KEHC8905(KLR)",
+        "2026SCC235(KLR)",
+        "2024KEHC17038(KLR)"
+      ],
+      "gold_anchors": [
+        "objection is therefore only sustainable with regard to DMFI 7"
+      ],
+      "found_primary_anchors": [
+        "objection is therefore only sustainable with regard to DMFI 7"
+      ],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": null,
+      "authority_status": null,
+      "origin": null,
+      "selected": [
+        "2020KEHC8905KLR_0",
+        "2020KEHC8905KLR_2",
+        "2020KEHC8905KLR_4",
+        "2026SCC235KLR_1",
+        "2026SCC235KLR_2",
+        "2026SCC235KLR_0"
+      ],
+      "retrieval_ms": 18578
+    },
+    {
+      "suite": "benchmark",
+      "id": "L09",
+      "query": "For what period did the court grant interim protection in Safaricom Limited v Ocean View Beach Hotel Limited & 2 others?",
+      "mode": "CASE_FACT_LOOKUP",
+      "case_id": "2010KECA346(KLR)",
+      "expected_case": "2010KECA346(KLR)",
+      "category": "fact",
+      "ranks": [
+        "2010KECA346(KLR)",
+        "2001KECA154(KLR)",
+        "2026SCC241(KLR)"
+      ],
+      "gold_anchors": [
+        "28 days"
+      ],
+      "found_primary_anchors": [],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": null,
+      "authority_status": null,
+      "origin": null,
+      "selected": [
+        "2010KECA346KLR_0",
+        "2010KECA346KLR_5",
+        "2010KECA346KLR_11",
+        "2001KECA154KLR_3",
+        "2001KECA154KLR_5",
+        "2026SCC241KLR_2"
+      ],
+      "retrieval_ms": 13930
+    },
+    {
+      "suite": "benchmark",
+      "id": "L10",
+      "query": "What does section 78A(2) of the Evidence Act say about original form?",
+      "mode": "DIRECT_STATUTE_LOOKUP",
+      "case_id": null,
+      "expected_case": null,
+      "category": "statute",
+      "ranks": [],
+      "gold_anchors": [
+        "not in its original form"
+      ],
+      "found_primary_anchors": [
+        "not in its original form"
+      ],
+      "expected_statute": "Evidence Act",
+      "statute_matches": [
+        "78A"
+      ],
+      "graph_case": null,
+      "authority_status": null,
+      "origin": null,
+      "selected": [
+        "evidence_act__2023-12-11__s78A__0"
+      ],
+      "retrieval_ms": 559
+    },
+    {
+      "suite": "benchmark",
+      "id": "L11",
+      "query": "What does section 13(5) of the SCC Act exclude?",
+      "mode": "DIRECT_STATUTE_LOOKUP",
+      "case_id": null,
+      "expected_case": null,
+      "category": "statute",
+      "ranks": [],
+      "gold_anchors": [
+        "employment and labour relations"
+      ],
+      "found_primary_anchors": [
+        "employment and labour relations"
+      ],
+      "expected_statute": "Small Claims Court Act",
+      "statute_matches": [
+        "13"
+      ],
+      "graph_case": null,
+      "authority_status": null,
+      "origin": null,
+      "selected": [
+        "small_claims_court_act__2022-12-31__s13__0"
+      ],
+      "retrieval_ms": 515
+    },
+    {
+      "suite": "benchmark",
+      "id": "L12",
+      "query": "Under section 34(1) of the CPA, which court decides questions about execution of a decree?",
+      "mode": "DIRECT_STATUTE_LOOKUP",
+      "case_id": null,
+      "expected_case": null,
+      "category": "statute",
+      "ranks": [],
+      "gold_anchors": [
+        "court executing the decree",
+        "not by a separate suit"
+      ],
+      "found_primary_anchors": [
+        "court executing the decree",
+        "not by a separate suit"
+      ],
+      "expected_statute": "Civil Procedure Act",
+      "statute_matches": [
+        "34"
+      ],
+      "graph_case": null,
+      "authority_status": null,
+      "origin": null,
+      "selected": [
+        "civil_procedure_act__2022-12-31__s34__0"
+      ],
+      "retrieval_ms": 555
+    },
+    {
+      "suite": "benchmark",
+      "id": "L13",
+      "query": "What is the appellant’s personal telephone number in Ogembo v Yongo?",
+      "mode": "CASE_FACT_LOOKUP",
+      "case_id": "2024KEHC15763(KLR)",
+      "expected_case": "2024KEHC15763(KLR)",
+      "category": "insufficient",
+      "ranks": [
+        "2024KEHC15763(KLR)",
+        "2026SCC241(KLR)",
+        "2020KEHC8905(KLR)"
+      ],
+      "gold_anchors": [],
+      "found_primary_anchors": [],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": null,
+      "authority_status": null,
+      "origin": null,
+      "selected": [
+        "2024KEHC15763KLR_0",
+        "2024KEHC15763KLR_1",
+        "2024KEHC15763KLR_4",
+        "2026SCC241KLR_2",
+        "2026SCC241KLR_0"
+      ],
+      "retrieval_ms": 13303
+    },
+    {
+      "suite": "benchmark",
+      "id": "L14",
+      "query": "[2024] KEHC 17038 (KLR)",
+      "mode": "DIRECT_CASE_LOOKUP",
+      "case_id": "2024KEHC17038(KLR)",
+      "expected_case": "2024KEHC17038(KLR)",
+      "category": "identifier",
+      "ranks": [
+        "2024KEHC17038(KLR)",
+        "2024KEHC15763(KLR)",
+        "2026SCC235(KLR)"
+      ],
+      "gold_anchors": [],
+      "found_primary_anchors": [],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": null,
+      "authority_status": null,
+      "origin": null,
+      "selected": [
+        "2024KEHC17038KLR_0",
+        "2024KEHC17038KLR_1",
+        "2024KEHC17038KLR_5",
+        "2024KEHC15763KLR_0"
+      ],
+      "retrieval_ms": 14633
+    },
+    {
+      "suite": "benchmark",
+      "id": "L15",
+      "query": "What costs did the court award in Ogemboo v Yongo?",
+      "mode": null,
+      "case_id": null,
+      "expected_case": "2024KEHC15763(KLR)",
+      "category": "fuzzy",
+      "ranks": [
+        "2024KEHC15763(KLR)",
+        "2026SCC235(KLR)",
+        "2024KEHC17038(KLR)"
+      ],
+      "gold_anchors": [
+        "each bear their own costs"
+      ],
+      "found_primary_anchors": [],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": null,
+      "authority_status": null,
+      "origin": null,
+      "selected": [
+        "2024KEHC15763KLR_0",
+        "2024KEHC15763KLR_1",
+        "2024KEHC15763KLR_2",
+        "2026SCC235KLR_3"
+      ],
+      "retrieval_ms": 13464
+    },
+    {
+      "suite": "benchmark",
+      "id": "L16",
+      "query": "2026SCC235(KLR)",
+      "mode": "DIRECT_CASE_LOOKUP",
+      "case_id": "2026SCC235(KLR)",
+      "expected_case": "2026SCC235(KLR)",
+      "category": "identifier",
+      "ranks": [
+        "2026SCC235(KLR)",
+        "2024KEHC15763(KLR)",
+        "2024KEHC17038(KLR)"
+      ],
+      "gold_anchors": [],
+      "found_primary_anchors": [],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": null,
+      "authority_status": null,
+      "origin": null,
+      "selected": [
+        "2026SCC235KLR_1",
+        "2026SCC235KLR_2",
+        "2026SCC235KLR_3",
+        "2024KEHC15763KLR_0",
+        "2024KEHC15763KLR_5",
+        "2024KEHC17038KLR_0"
+      ],
+      "retrieval_ms": 13149
+    }
+  ],
+  "C": [
+    {
+      "suite": "diagnostics",
+      "id": "A",
+      "query": "Why was the CCTV evidence rejected in Republic v Barisa Wayu Mataguda?",
+      "mode": "CASE_REASONING_LOOKUP",
+      "case_id": "2011KEHC1481(KLR)",
+      "expected_case": "2011KEHC1481(KLR)",
+      "category": "reasoning",
+      "ranks": [
+        "2020KEHC8905(KLR)",
+        "2024KEHC15763(KLR)",
+        "2014KEHC6468(KLR)"
+      ],
+      "gold_anchors": [
+        "without the required certificate"
+      ],
+      "found_primary_anchors": [],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": null,
+      "authority_status": "excluded",
+      "origin": "hybrid_secondary",
+      "selected": [
+        "2020KEHC8905KLR_2",
+        "2020KEHC8905KLR_0",
+        "2024KEHC15763KLR_5",
+        "2024KEHC15763KLR_2",
+        "2014KEHC6468KLR_1",
+        "2014KEHC6468KLR_0"
+      ],
+      "retrieval_ms": 11335
+    },
+    {
+      "suite": "diagnostics",
+      "id": "B",
+      "query": "What was the ruling in Republic v Barisa Wayu Mataguda, 2011 KEHC 1481 (KLR)?",
+      "mode": "CASE_OUTCOME_LOOKUP",
+      "case_id": "2011KEHC1481(KLR)",
+      "expected_case": "2011KEHC1481(KLR)",
+      "category": "outcome",
+      "ranks": [
+        "2020KEHC8905(KLR)",
+        "2024KEHC15763(KLR)",
+        "2014KEHC6468(KLR)"
+      ],
+      "gold_anchors": [
+        "this CD is inadmissible"
+      ],
+      "found_primary_anchors": [],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": null,
+      "authority_status": "excluded",
+      "origin": "hybrid_secondary",
+      "selected": [
+        "2020KEHC8905KLR_2",
+        "2020KEHC8905KLR_0",
+        "2024KEHC15763KLR_5",
+        "2024KEHC15763KLR_2",
+        "2014KEHC6468KLR_1",
+        "2014KEHC6468KLR_0"
+      ],
+      "retrieval_ms": 9284
+    },
+    {
+      "suite": "diagnostics",
+      "id": "C",
+      "query": "Who were PW11 and PW4 in Republic v Barisa Wayu Mataguda, and what were their roles in the production of CCTV evidence?",
+      "mode": "CASE_FACT_LOOKUP",
+      "case_id": "2011KEHC1481(KLR)",
+      "expected_case": "2011KEHC1481(KLR)",
+      "category": "fact",
+      "ranks": [
+        "2020KEHC8905(KLR)",
+        "2024KEHC15763(KLR)",
+        "2014KEHC6468(KLR)"
+      ],
+      "gold_anchors": [
+        "Michael Oduor",
+        "Lydia Kaguna Japeth"
+      ],
+      "found_primary_anchors": [],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": null,
+      "authority_status": "excluded",
+      "origin": "hybrid_secondary",
+      "selected": [
+        "2020KEHC8905KLR_2",
+        "2020KEHC8905KLR_0",
+        "2024KEHC15763KLR_5",
+        "2024KEHC15763KLR_0",
+        "2014KEHC6468KLR_1",
+        "2014KEHC6468KLR_0"
+      ],
+      "retrieval_ms": 7563
+    },
+    {
+      "suite": "diagnostics",
+      "id": "D",
+      "query": "What happened to the original CCTV footage in Republic v Barisa Wayu Mataguda?",
+      "mode": "CASE_FACT_LOOKUP",
+      "case_id": "2011KEHC1481(KLR)",
+      "expected_case": "2011KEHC1481(KLR)",
+      "category": "fact",
+      "ranks": [
+        "2020KEHC8905(KLR)",
+        "2024KEHC15763(KLR)",
+        "2014KEHC6468(KLR)"
+      ],
+      "gold_anchors": [
+        "footage was erased"
+      ],
+      "found_primary_anchors": [],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": null,
+      "authority_status": "excluded",
+      "origin": "hybrid_secondary",
+      "selected": [
+        "2020KEHC8905KLR_2",
+        "2020KEHC8905KLR_0",
+        "2024KEHC15763KLR_5",
+        "2024KEHC15763KLR_2",
+        "2014KEHC6468KLR_1",
+        "2014KEHC6468KLR_0"
+      ],
+      "retrieval_ms": 6600
+    },
+    {
+      "suite": "diagnostics",
+      "id": "E",
+      "query": "Did the court admit or reject the CD containing CCTV footage in Republic v Barisa Wayu Mataguda?",
+      "mode": "CASE_OUTCOME_LOOKUP",
+      "case_id": "2011KEHC1481(KLR)",
+      "expected_case": "2011KEHC1481(KLR)",
+      "category": "outcome",
+      "ranks": [
+        "2020KEHC8905(KLR)",
+        "2024KEHC15763(KLR)",
+        "2014KEHC6468(KLR)"
+      ],
+      "gold_anchors": [
+        "this CD is inadmissible"
+      ],
+      "found_primary_anchors": [],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": null,
+      "authority_status": "excluded",
+      "origin": "hybrid_secondary",
+      "selected": [
+        "2020KEHC8905KLR_2",
+        "2020KEHC8905KLR_0",
+        "2024KEHC15763KLR_5",
+        "2024KEHC15763KLR_8",
+        "2014KEHC6468KLR_1",
+        "2014KEHC6468KLR_2"
+      ],
+      "retrieval_ms": 6172
+    },
+    {
+      "suite": "diagnostics",
+      "id": "F",
+      "query": "2011 KEHC 1481 (KLR)",
+      "mode": "DIRECT_CASE_LOOKUP",
+      "case_id": "2011KEHC1481(KLR)",
+      "expected_case": "2011KEHC1481(KLR)",
+      "category": "excluded_identity",
+      "ranks": [],
+      "gold_anchors": [],
+      "found_primary_anchors": [],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": null,
+      "authority_status": "excluded",
+      "origin": null,
+      "selected": [],
+      "retrieval_ms": 0
+    },
+    {
+      "suite": "diagnostics",
+      "id": "G",
+      "query": "What did the court decide regarding electronic evidence in Republic v Barisa Wayu Matriguda?",
+      "mode": "CASE_OUTCOME_LOOKUP",
+      "case_id": "2011KEHC1481(KLR)",
+      "expected_case": "2011KEHC1481(KLR)",
+      "category": "outcome",
+      "ranks": [
+        "2024KEHC15763(KLR)",
+        "2020KEHC8905(KLR)",
+        "2014KEHC6468(KLR)"
+      ],
+      "gold_anchors": [
+        "this CD is inadmissible"
+      ],
+      "found_primary_anchors": [],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": null,
+      "authority_status": "excluded",
+      "origin": "hybrid_secondary",
+      "selected": [
+        "2024KEHC15763KLR_5",
+        "2024KEHC15763KLR_8",
+        "2020KEHC8905KLR_2",
+        "2020KEHC8905KLR_0",
+        "2014KEHC6468KLR_1",
+        "2014KEHC6468KLR_2"
+      ],
+      "retrieval_ms": 6226
+    },
+    {
+      "suite": "diagnostics",
+      "id": "H",
+      "query": "What are the requirements for admissibility of electronic evidence under Section 106B(4) of the Kenyan Evidence Act?",
+      "mode": "DIRECT_STATUTE_LOOKUP",
+      "case_id": null,
+      "expected_case": null,
+      "category": "statute",
+      "ranks": [],
+      "gold_anchors": [
+        "identifying the electronic record",
+        "particulars of any device",
+        "conditions mentioned in subsection (2)",
+        "person occupying a responsible position"
+      ],
+      "found_primary_anchors": [
+        "identifying the electronic record",
+        "particulars of any device",
+        "conditions mentioned in subsection (2)",
+        "person occupying a responsible position"
+      ],
+      "expected_statute": "Evidence Act",
+      "statute_matches": [
+        "106B"
+      ],
+      "graph_case": null,
+      "authority_status": null,
+      "origin": null,
+      "selected": [
+        "evidence_act__2023-12-11__s106B__0__c1"
+      ],
+      "retrieval_ms": 100
+    },
+    {
+      "suite": "benchmark",
+      "id": "L01",
+      "query": "What amount did the court award in costs in Umoja Magharibi (K) Ltd v Lubano?",
+      "mode": "CASE_FACT_LOOKUP",
+      "case_id": "2026SCC242(KLR)",
+      "expected_case": "2026SCC242(KLR)",
+      "category": "fact",
+      "ranks": [
+        "2026SCC242(KLR)"
+      ],
+      "gold_anchors": [
+        "20,000"
+      ],
+      "found_primary_anchors": [
+        "20,000"
+      ],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": null,
+      "authority_status": "indexed",
+      "origin": null,
+      "selected": [
+        "2026SCC242KLR_0",
+        "2026SCC242KLR_3",
+        "2026SCC242KLR_1",
+        "2026SCC242KLR_2"
+      ],
+      "retrieval_ms": 801
+    },
+    {
+      "suite": "benchmark",
+      "id": "L02",
+      "query": "Why was the suit struck out in New Titanic Jacaranda General Spares v Omil & another?",
+      "mode": "CASE_REASONING_LOOKUP",
+      "case_id": "2026SCC235(KLR)",
+      "expected_case": "2026SCC235(KLR)",
+      "category": "reasoning",
+      "ranks": [
+        "2026SCC235(KLR)"
+      ],
+      "gold_anchors": [
+        "lacks jurisdiction",
+        "struck out"
+      ],
+      "found_primary_anchors": [
+        "lacks jurisdiction",
+        "struck out"
+      ],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": null,
+      "authority_status": "indexed",
+      "origin": null,
+      "selected": [
+        "2026SCC235KLR_0",
+        "2026SCC235KLR_3",
+        "2026SCC235KLR_2",
+        "2026SCC235KLR_1"
+      ],
+      "retrieval_ms": 770
+    },
+    {
+      "suite": "benchmark",
+      "id": "L03",
+      "query": "What did the court decide about the setting-aside application in [2026] SCC 241 (KLR)?",
+      "mode": "CASE_OUTCOME_LOOKUP",
+      "case_id": "2026SCC241(KLR)",
+      "expected_case": "2026SCC241(KLR)",
+      "category": "outcome",
+      "ranks": [
+        "2026SCC241(KLR)"
+      ],
+      "gold_anchors": [
+        "dismiss his application",
+        "10,000"
+      ],
+      "found_primary_anchors": [
+        "dismiss his application",
+        "10,000"
+      ],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": null,
+      "authority_status": "indexed",
+      "origin": null,
+      "selected": [
+        "2026SCC241KLR_3",
+        "2026SCC241KLR_5",
+        "2026SCC241KLR_2",
+        "2026SCC241KLR_4",
+        "2026SCC241KLR_0"
+      ],
+      "retrieval_ms": 1147
+    },
+    {
+      "suite": "benchmark",
+      "id": "L04",
+      "query": "Why did Shah JA dismiss the appeal in Express (Kenya) Limited v Manju Patel?",
+      "mode": "CASE_REASONING_LOOKUP",
+      "case_id": "2001KECA154(KLR)",
+      "expected_case": "2001KECA154(KLR)",
+      "category": "reasoning",
+      "ranks": [
+        "2001KECA154(KLR)"
+      ],
+      "gold_anchors": [
+        "nonexplanation of the delay",
+        "no good defence"
+      ],
+      "found_primary_anchors": [
+        "nonexplanation of the delay",
+        "no good defence"
+      ],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": null,
+      "authority_status": "indexed",
+      "origin": null,
+      "selected": [
+        "2001KECA154KLR_0",
+        "2001KECA154KLR_6",
+        "2001KECA154KLR_3",
+        "2001KECA154KLR_1",
+        "2001KECA154KLR_5"
+      ],
+      "retrieval_ms": 1321
+    },
+    {
+      "suite": "benchmark",
+      "id": "L05",
+      "query": "Did the court allow the plaintiffs to produce a certificate later in 2014KEHC6468(KLR)?",
+      "mode": "CASE_OUTCOME_LOOKUP",
+      "case_id": "2014KEHC6468(KLR)",
+      "expected_case": "2014KEHC6468(KLR)",
+      "category": "outcome",
+      "ranks": [
+        "2014KEHC6468(KLR)"
+      ],
+      "gold_anchors": [
+        "at liberty to produce",
+        "certificate for the admissibility"
+      ],
+      "found_primary_anchors": [
+        "at liberty to produce",
+        "certificate for the admissibility"
+      ],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": null,
+      "authority_status": "indexed",
+      "origin": null,
+      "selected": [
+        "2014KEHC6468KLR_0",
+        "2014KEHC6468KLR_1",
+        "2014KEHC6468KLR_2"
+      ],
+      "retrieval_ms": 589
+    },
+    {
+      "suite": "benchmark",
+      "id": "L06",
+      "query": "Who managed the phone identified by the court in Obado v Anayo, and whom did the court say should sign the certificate?",
+      "mode": "CASE_FACT_LOOKUP",
+      "case_id": "2024KEHC17038(KLR)",
+      "expected_case": "2024KEHC17038(KLR)",
+      "category": "fact",
+      "ranks": [
+        "2024KEHC17038(KLR)"
+      ],
+      "gold_anchors": [
+        "person who manages the device",
+        "Scarlet Susan Okoth"
+      ],
+      "found_primary_anchors": [
+        "person who manages the device",
+        "Scarlet Susan Okoth"
+      ],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": null,
+      "authority_status": "indexed",
+      "origin": null,
+      "selected": [
+        "2024KEHC17038KLR_0",
+        "2024KEHC17038KLR_7",
+        "2024KEHC17038KLR_6",
+        "2024KEHC17038KLR_2",
+        "2024KEHC17038KLR_5"
+      ],
+      "retrieval_ms": 1494
+    },
+    {
+      "suite": "benchmark",
+      "id": "L07",
+      "query": "What was the court's order about costs in Ogembo v Yongo?",
+      "mode": "CASE_OUTCOME_LOOKUP",
+      "case_id": "2024KEHC15763(KLR)",
+      "expected_case": "2024KEHC15763(KLR)",
+      "category": "outcome",
+      "ranks": [
+        "2024KEHC15763(KLR)"
+      ],
+      "gold_anchors": [
+        "each bear their own costs"
+      ],
+      "found_primary_anchors": [
+        "each bear their own costs"
+      ],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": null,
+      "authority_status": "indexed",
+      "origin": null,
+      "selected": [
+        "2024KEHC15763KLR_0",
+        "2024KEHC15763KLR_9",
+        "2024KEHC15763KLR_2",
+        "2024KEHC15763KLR_1",
+        "2024KEHC15763KLR_4",
+        "2024KEHC15763KLR_5"
+      ],
+      "retrieval_ms": 1972
+    },
+    {
+      "suite": "benchmark",
+      "id": "L08",
+      "query": "Which marked exhibit was the only one whose objection the court sustained in 2020 KEHC 8905 (KLR)?",
+      "mode": "CASE_OUTCOME_LOOKUP",
+      "case_id": "2020KEHC8905(KLR)",
+      "expected_case": "2020KEHC8905(KLR)",
+      "category": "outcome",
+      "ranks": [
+        "2020KEHC8905(KLR)"
+      ],
+      "gold_anchors": [
+        "objection is therefore only sustainable with regard to DMFI 7"
+      ],
+      "found_primary_anchors": [
+        "objection is therefore only sustainable with regard to DMFI 7"
+      ],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": null,
+      "authority_status": "indexed",
+      "origin": null,
+      "selected": [
+        "2020KEHC8905KLR_4",
+        "2020KEHC8905KLR_0",
+        "2020KEHC8905KLR_2",
+        "2020KEHC8905KLR_1",
+        "2020KEHC8905KLR_3"
+      ],
+      "retrieval_ms": 954
+    },
+    {
+      "suite": "benchmark",
+      "id": "L09",
+      "query": "For what period did the court grant interim protection in Safaricom Limited v Ocean View Beach Hotel Limited & 2 others?",
+      "mode": "CASE_FACT_LOOKUP",
+      "case_id": "2010KECA346(KLR)",
+      "expected_case": "2010KECA346(KLR)",
+      "category": "fact",
+      "ranks": [
+        "2010KECA346(KLR)"
+      ],
+      "gold_anchors": [
+        "28 days"
+      ],
+      "found_primary_anchors": [
+        "28 days"
+      ],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": null,
+      "authority_status": "indexed",
+      "origin": null,
+      "selected": [
+        "2010KECA346KLR_5",
+        "2010KECA346KLR_11",
+        "2010KECA346KLR_0",
+        "2010KECA346KLR_8",
+        "2010KECA346KLR_12",
+        "2010KECA346KLR_10"
+      ],
+      "retrieval_ms": 6662
+    },
+    {
+      "suite": "benchmark",
+      "id": "L10",
+      "query": "What does section 78A(2) of the Evidence Act say about original form?",
+      "mode": "DIRECT_STATUTE_LOOKUP",
+      "case_id": null,
+      "expected_case": null,
+      "category": "statute",
+      "ranks": [],
+      "gold_anchors": [
+        "not in its original form"
+      ],
+      "found_primary_anchors": [
+        "not in its original form"
+      ],
+      "expected_statute": "Evidence Act",
+      "statute_matches": [
+        "78A"
+      ],
+      "graph_case": null,
+      "authority_status": null,
+      "origin": null,
+      "selected": [
+        "evidence_act__2023-12-11__s78A__0"
+      ],
+      "retrieval_ms": 7
+    },
+    {
+      "suite": "benchmark",
+      "id": "L11",
+      "query": "What does section 13(5) of the SCC Act exclude?",
+      "mode": "DIRECT_STATUTE_LOOKUP",
+      "case_id": null,
+      "expected_case": null,
+      "category": "statute",
+      "ranks": [],
+      "gold_anchors": [
+        "employment and labour relations"
+      ],
+      "found_primary_anchors": [
+        "employment and labour relations"
+      ],
+      "expected_statute": "Small Claims Court Act",
+      "statute_matches": [
+        "13"
+      ],
+      "graph_case": null,
+      "authority_status": null,
+      "origin": null,
+      "selected": [
+        "small_claims_court_act__2022-12-31__s13__0"
+      ],
+      "retrieval_ms": 10
+    },
+    {
+      "suite": "benchmark",
+      "id": "L12",
+      "query": "Under section 34(1) of the CPA, which court decides questions about execution of a decree?",
+      "mode": "DIRECT_STATUTE_LOOKUP",
+      "case_id": null,
+      "expected_case": null,
+      "category": "statute",
+      "ranks": [],
+      "gold_anchors": [
+        "court executing the decree",
+        "not by a separate suit"
+      ],
+      "found_primary_anchors": [
+        "court executing the decree",
+        "not by a separate suit"
+      ],
+      "expected_statute": "Civil Procedure Act",
+      "statute_matches": [
+        "34"
+      ],
+      "graph_case": null,
+      "authority_status": null,
+      "origin": null,
+      "selected": [
+        "civil_procedure_act__2022-12-31__s34__0"
+      ],
+      "retrieval_ms": 7
+    },
+    {
+      "suite": "benchmark",
+      "id": "L13",
+      "query": "What is the appellant’s personal telephone number in Ogembo v Yongo?",
+      "mode": "CASE_FACT_LOOKUP",
+      "case_id": "2024KEHC15763(KLR)",
+      "expected_case": "2024KEHC15763(KLR)",
+      "category": "insufficient",
+      "ranks": [
+        "2024KEHC15763(KLR)"
+      ],
+      "gold_anchors": [],
+      "found_primary_anchors": [],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": null,
+      "authority_status": "indexed",
+      "origin": null,
+      "selected": [
+        "2024KEHC15763KLR_0",
+        "2024KEHC15763KLR_1",
+        "2024KEHC15763KLR_4",
+        "2024KEHC15763KLR_9",
+        "2024KEHC15763KLR_2",
+        "2024KEHC15763KLR_5"
+      ],
+      "retrieval_ms": 1970
+    },
+    {
+      "suite": "benchmark",
+      "id": "L14",
+      "query": "[2024] KEHC 17038 (KLR)",
+      "mode": "DIRECT_CASE_LOOKUP",
+      "case_id": "2024KEHC17038(KLR)",
+      "expected_case": "2024KEHC17038(KLR)",
+      "category": "identifier",
+      "ranks": [
+        "2024KEHC17038(KLR)"
+      ],
+      "gold_anchors": [],
+      "found_primary_anchors": [],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": null,
+      "authority_status": "indexed_lookup",
+      "origin": null,
+      "selected": [],
+      "retrieval_ms": 6
+    },
+    {
+      "suite": "benchmark",
+      "id": "L15",
+      "query": "What costs did the court award in Ogemboo v Yongo?",
+      "mode": "CASE_FACT_LOOKUP",
+      "case_id": "2024KEHC15763(KLR)",
+      "expected_case": "2024KEHC15763(KLR)",
+      "category": "fuzzy",
+      "ranks": [
+        "2024KEHC15763(KLR)"
+      ],
+      "gold_anchors": [
+        "each bear their own costs"
+      ],
+      "found_primary_anchors": [
+        "each bear their own costs"
+      ],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": null,
+      "authority_status": "indexed",
+      "origin": null,
+      "selected": [
+        "2024KEHC15763KLR_0",
+        "2024KEHC15763KLR_9",
+        "2024KEHC15763KLR_2",
+        "2024KEHC15763KLR_1",
+        "2024KEHC15763KLR_4",
+        "2024KEHC15763KLR_5"
+      ],
+      "retrieval_ms": 1944
+    },
+    {
+      "suite": "benchmark",
+      "id": "L16",
+      "query": "2026SCC235(KLR)",
+      "mode": "DIRECT_CASE_LOOKUP",
+      "case_id": "2026SCC235(KLR)",
+      "expected_case": "2026SCC235(KLR)",
+      "category": "identifier",
+      "ranks": [
+        "2026SCC235(KLR)"
+      ],
+      "gold_anchors": [],
+      "found_primary_anchors": [],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": null,
+      "authority_status": "indexed_lookup",
+      "origin": null,
+      "selected": [],
+      "retrieval_ms": 5
+    }
+  ],
+  "D": [
+    {
+      "suite": "diagnostics",
+      "id": "A",
+      "query": "Why was the CCTV evidence rejected in Republic v Barisa Wayu Mataguda?",
+      "mode": "CASE_REASONING_LOOKUP",
+      "case_id": "2011KEHC1481(KLR)",
+      "expected_case": "2011KEHC1481(KLR)",
+      "category": "reasoning",
+      "ranks": [
+        "2020KEHC8905(KLR)",
+        "2024KEHC15763(KLR)",
+        "2014KEHC6468(KLR)"
+      ],
+      "gold_anchors": [
+        "without the required certificate"
+      ],
+      "found_primary_anchors": [],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": "KEHC-2011-1481",
+      "authority_status": "excluded",
+      "origin": "graph_incoming_cites",
+      "selected": [
+        "2020KEHC8905KLR_2",
+        "2020KEHC8905KLR_0",
+        "2024KEHC15763KLR_5",
+        "2024KEHC15763KLR_2",
+        "2014KEHC6468KLR_1",
+        "2014KEHC6468KLR_0"
+      ],
+      "retrieval_ms": 5753,
+      "answer": "The primary judgment was unavailable for direct retrieval. The following material comes from other sources.\n\nThe CCTV evidence was rejected because it was not accompanied by a certificate as required by Section 106B(4) of the Evidence Act. [C2.1]\n\nThe certificate required to be signed by a person holding a responsible position with respect to the management of the device was missing. [C2.1]\n\nWithout the required certificate, the CD containing the CCTV footage was deemed inadmissible as evidence. [C2.1]",
+      "claims": [
+        {
+          "alias": "C2.1",
+          "answer": "The CCTV evidence was rejected because it was not accompanied by a certificate as required by Section 106B(4) of the Evidence Act.",
+          "quote": "“This provision makes it abundantly clear that for electronic evidence to be deemed admissible it must be accompanied by a certificate in terms of section 106B (4). Such certificate must in terms of S.106B (4) (d) be signed by a person holding a responsible position with respect to the management of the device.... Without the required certificate this CD is inadmissible as evidence.”"
+        },
+        {
+          "alias": "C2.1",
+          "answer": "The certificate required to be signed by a person holding a responsible position with respect to the management of the device was missing.",
+          "quote": "“This provision makes it abundantly clear that for electronic evidence to be deemed admissible it must be accompanied by a certificate in terms of section 106B (4). Such certificate must in terms of S.106B (4) (d) be signed by a person holding a responsible position with respect to the management of the device.... Without the required certificate this CD is inadmissible as evidence.”"
+        },
+        {
+          "alias": "C2.1",
+          "answer": "Without the required certificate, the CD containing the CCTV footage was deemed inadmissible as evidence.",
+          "quote": "“This provision makes it abundantly clear that for electronic evidence to be deemed admissible it must be accompanied by a certificate in terms of section 106B (4). Such certificate must in terms of S.106B (4) (d) be signed by a person holding a responsible position with respect to the management of the device.... Without the required certificate this CD is inadmissible as evidence.”"
+        }
+      ],
+      "verification": "semantic_verified",
+      "groq": {
+        "generation": {
+          "attempts_remaining": 2,
+          "usage": {
+            "prompt_tokens": 3056,
+            "completion_tokens": 180
+          },
+          "status": 200,
+          "attempts": 1,
+          "succeeded": true,
+          "retry_attempts": 0,
+          "latency_ms": 853
+        },
+        "verification": {
+          "attempts_remaining": 1,
+          "usage": {
+            "prompt_tokens": 3415,
+            "completion_tokens": 180
+          },
+          "status": 200,
+          "attempts": 1,
+          "succeeded": true,
+          "retry_attempts": 0,
+          "latency_ms": 1110
+        }
+      },
+      "generation_ms": 1971
+    },
+    {
+      "suite": "diagnostics",
+      "id": "B",
+      "query": "What was the ruling in Republic v Barisa Wayu Mataguda, 2011 KEHC 1481 (KLR)?",
+      "mode": "CASE_OUTCOME_LOOKUP",
+      "case_id": "2011KEHC1481(KLR)",
+      "expected_case": "2011KEHC1481(KLR)",
+      "category": "outcome",
+      "ranks": [
+        "2020KEHC8905(KLR)",
+        "2024KEHC15763(KLR)",
+        "2014KEHC6468(KLR)"
+      ],
+      "gold_anchors": [
+        "this CD is inadmissible"
+      ],
+      "found_primary_anchors": [],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": "KEHC-2011-1481",
+      "authority_status": "excluded",
+      "origin": "graph_incoming_cites",
+      "selected": [
+        "2020KEHC8905KLR_2",
+        "2020KEHC8905KLR_0",
+        "2024KEHC15763KLR_5",
+        "2024KEHC15763KLR_0",
+        "2014KEHC6468KLR_1",
+        "2014KEHC6468KLR_0"
+      ],
+      "retrieval_ms": 4353,
+      "answer": "The primary judgment was unavailable for direct retrieval. The following material comes from other sources.\n\nI could not verify a direct answer. The retrieved source includes this passage [C1.1]:\n\n> “ The provisions of Section 106B have been tested in a number of cases, the case classicus appears to be Republic v Barisa Wayu Matriguda [2011] eKLR where a compact disc (CD) was made from CCTV footage, and the court said:\n\nThe knowledge graph records this outcome without a verified primary passage [G1.1]: Objection upheld: CD copied from CCTV footage inadmissible without s.106B(4) certificate.",
+      "claims": [],
+      "verification": "extractive_fallback",
+      "groq": {
+        "generation": {
+          "attempts_remaining": 2,
+          "status": 429,
+          "attempts": 1,
+          "succeeded": false,
+          "retry_attempts": 0,
+          "latency_ms": 225
+        }
+      },
+      "generation_ms": 228
+    },
+    {
+      "suite": "diagnostics",
+      "id": "C",
+      "query": "Who were PW11 and PW4 in Republic v Barisa Wayu Mataguda, and what were their roles in the production of CCTV evidence?",
+      "mode": "CASE_FACT_LOOKUP",
+      "case_id": "2011KEHC1481(KLR)",
+      "expected_case": "2011KEHC1481(KLR)",
+      "category": "fact",
+      "ranks": [
+        "2020KEHC8905(KLR)",
+        "2024KEHC15763(KLR)",
+        "2014KEHC6468(KLR)"
+      ],
+      "gold_anchors": [
+        "Michael Oduor",
+        "Lydia Kaguna Japeth"
+      ],
+      "found_primary_anchors": [],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": "KEHC-2011-1481",
+      "authority_status": "excluded",
+      "origin": "graph_incoming_cites",
+      "selected": [
+        "2020KEHC8905KLR_2",
+        "2020KEHC8905KLR_0",
+        "2024KEHC15763KLR_5",
+        "2024KEHC15763KLR_0",
+        "2014KEHC6468KLR_1",
+        "2014KEHC6468KLR_0"
+      ],
+      "retrieval_ms": 4803,
+      "answer": "The primary judgment was unavailable for direct retrieval. The following material comes from other sources.\n\nI could not verify a direct answer. The retrieved source includes this passage [C1.1]:\n\n> “ The provisions of Section 106B have been tested in a number of cases, the case classicus appears to be Republic v Barisa Wayu Matriguda [2011] eKLR where a compact disc (CD) was made from CCTV footage, and the court said:",
+      "claims": [],
+      "verification": "extractive_fallback",
+      "groq": {},
+      "generation_ms": 1
+    },
+    {
+      "suite": "diagnostics",
+      "id": "D",
+      "query": "What happened to the original CCTV footage in Republic v Barisa Wayu Mataguda?",
+      "mode": "CASE_FACT_LOOKUP",
+      "case_id": "2011KEHC1481(KLR)",
+      "expected_case": "2011KEHC1481(KLR)",
+      "category": "fact",
+      "ranks": [
+        "2020KEHC8905(KLR)",
+        "2024KEHC15763(KLR)",
+        "2014KEHC6468(KLR)"
+      ],
+      "gold_anchors": [
+        "footage was erased"
+      ],
+      "found_primary_anchors": [],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": "KEHC-2011-1481",
+      "authority_status": "excluded",
+      "origin": "graph_incoming_cites",
+      "selected": [
+        "2020KEHC8905KLR_2",
+        "2020KEHC8905KLR_0",
+        "2024KEHC15763KLR_5",
+        "2024KEHC15763KLR_0",
+        "2014KEHC6468KLR_1",
+        "2014KEHC6468KLR_0"
+      ],
+      "retrieval_ms": 4269,
+      "answer": "The primary judgment was unavailable for direct retrieval. The following material comes from other sources.\n\nI could not verify a direct answer. The retrieved source includes this passage [C1.1]:\n\n> “ The provisions of Section 106B have been tested in a number of cases, the case classicus appears to be Republic v Barisa Wayu Matriguda [2011] eKLR where a compact disc (CD) was made from CCTV footage, and the court said:",
+      "claims": [],
+      "verification": "extractive_fallback",
+      "groq": {},
+      "generation_ms": 0
+    },
+    {
+      "suite": "diagnostics",
+      "id": "E",
+      "query": "Did the court admit or reject the CD containing CCTV footage in Republic v Barisa Wayu Mataguda?",
+      "mode": "CASE_OUTCOME_LOOKUP",
+      "case_id": "2011KEHC1481(KLR)",
+      "expected_case": "2011KEHC1481(KLR)",
+      "category": "outcome",
+      "ranks": [
+        "2020KEHC8905(KLR)",
+        "2024KEHC15763(KLR)",
+        "2014KEHC6468(KLR)"
+      ],
+      "gold_anchors": [
+        "this CD is inadmissible"
+      ],
+      "found_primary_anchors": [],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": "KEHC-2011-1481",
+      "authority_status": "excluded",
+      "origin": "graph_incoming_cites",
+      "selected": [
+        "2020KEHC8905KLR_2",
+        "2020KEHC8905KLR_0",
+        "2024KEHC15763KLR_5",
+        "2024KEHC15763KLR_8",
+        "2014KEHC6468KLR_1",
+        "2014KEHC6468KLR_2"
+      ],
+      "retrieval_ms": 3772,
+      "answer": "The primary judgment was unavailable for direct retrieval. The following material comes from other sources.\n\nI could not verify a direct answer. The retrieved source includes this passage [C1.1]:\n\n> “ The provisions of Section 106B have been tested in a number of cases, the case classicus appears to be Republic v Barisa Wayu Matriguda [2011] eKLR where a compact disc (CD) was made from CCTV footage, and the court said:\n\nThe knowledge graph records this outcome without a verified primary passage [G1.1]: Objection upheld: CD copied from CCTV footage inadmissible without s.106B(4) certificate.",
+      "claims": [],
+      "verification": "extractive_fallback",
+      "groq": {},
+      "generation_ms": 1
+    },
+    {
+      "suite": "diagnostics",
+      "id": "F",
+      "query": "2011 KEHC 1481 (KLR)",
+      "mode": "DIRECT_CASE_LOOKUP",
+      "case_id": "2011KEHC1481(KLR)",
+      "expected_case": "2011KEHC1481(KLR)",
+      "category": "excluded_identity",
+      "ranks": [],
+      "gold_anchors": [],
+      "found_primary_anchors": [],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": "KEHC-2011-1481",
+      "authority_status": "excluded",
+      "origin": null,
+      "selected": [],
+      "retrieval_ms": 36,
+      "answer": "Republic v Barisa Wayu Mataguda [2011] KEHC 1481 (KLR). The source judgment is outside the approved retrieval corpus.",
+      "claims": [],
+      "verification": "identity_lookup",
+      "groq": {},
+      "generation_ms": 0
+    },
+    {
+      "suite": "diagnostics",
+      "id": "G",
+      "query": "What did the court decide regarding electronic evidence in Republic v Barisa Wayu Matriguda?",
+      "mode": "CASE_OUTCOME_LOOKUP",
+      "case_id": "2011KEHC1481(KLR)",
+      "expected_case": "2011KEHC1481(KLR)",
+      "category": "outcome",
+      "ranks": [
+        "2024KEHC15763(KLR)",
+        "2020KEHC8905(KLR)",
+        "2014KEHC6468(KLR)"
+      ],
+      "gold_anchors": [
+        "this CD is inadmissible"
+      ],
+      "found_primary_anchors": [],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": "KEHC-2011-1481",
+      "authority_status": "excluded",
+      "origin": "graph_incoming_cites",
+      "selected": [
+        "2024KEHC15763KLR_5",
+        "2024KEHC15763KLR_8",
+        "2020KEHC8905KLR_2",
+        "2020KEHC8905KLR_0",
+        "2014KEHC6468KLR_1",
+        "2014KEHC6468KLR_2"
+      ],
+      "retrieval_ms": 3979,
+      "answer": "The primary judgment was unavailable for direct retrieval. The following material comes from other sources.\n\nI could not verify a direct answer. The retrieved source includes this passage [C1.1]:\n\n> 33. In the case of Republic vs Barisa Wayu Matuguda [2011] eKLR the court observed that:\n\nThe knowledge graph records this outcome without a verified primary passage [G1.1]: Objection upheld: CD copied from CCTV footage inadmissible without s.106B(4) certificate.",
+      "claims": [],
+      "verification": "extractive_fallback",
+      "groq": {},
+      "generation_ms": 1
+    },
+    {
+      "suite": "diagnostics",
+      "id": "H",
+      "query": "What are the requirements for admissibility of electronic evidence under Section 106B(4) of the Kenyan Evidence Act?",
+      "mode": "DIRECT_STATUTE_LOOKUP",
+      "case_id": null,
+      "expected_case": null,
+      "category": "statute",
+      "ranks": [],
+      "gold_anchors": [
+        "identifying the electronic record",
+        "particulars of any device",
+        "conditions mentioned in subsection (2)",
+        "person occupying a responsible position"
+      ],
+      "found_primary_anchors": [
+        "identifying the electronic record",
+        "particulars of any device",
+        "conditions mentioned in subsection (2)",
+        "person occupying a responsible position"
+      ],
+      "expected_statute": "Evidence Act",
+      "statute_matches": [
+        "106B"
+      ],
+      "graph_case": null,
+      "authority_status": null,
+      "origin": null,
+      "selected": [
+        "evidence_act__2023-12-11__s106B__0__c1"
+      ],
+      "retrieval_ms": 105,
+      "answer": "Evidence Act s. 106B [S1.1]\n\n> (4)In any proceedings where it is desired to give a statement in evidence by virtue of this section, a certificate doing any of the following—(a)identifying the electronic record containing the statement and describing the manner in which it was produced;(b)giving such particulars of any device involved in the production of that electronic record as may be appropriate for the purpose of showing that the electronic record was produced by a computer;(c)dealing with any matters to which conditions mentioned in subsection (2) relate; and(d)purporting to be signed by a person occupying a responsible position in relation to the operation of the relevant device or the management of the relevant activities (whichever is appropriate),shall be evidence of any matter stated in the certificate and for the purpose of this subsection it shall be sufficient for a matter to be stated to be the best of the knowledge of the person stating it.",
+      "claims": [
+        {
+          "alias": "S1.1",
+          "answer": "(4)In any proceedings where it is desired to give a statement in evidence by virtue of this section, a certificate doing any of the following—(a)identifying the electronic record containing the statement and describing the manner in which it was produced;(b)giving such particulars of any device involved in the production of that electronic record as may be appropriate for the purpose of showing that the electronic record was produced by a computer;(c)dealing with any matters to which conditions mentioned in subsection (2) relate; and(d)purporting to be signed by a person occupying a responsible position in relation to the operation of the relevant device or the management of the relevant activities (whichever is appropriate),shall be evidence of any matter stated in the certificate and for the purpose of this subsection it shall be sufficient for a matter to be stated to be the best of the knowledge of the person stating it.",
+          "quote": "(4)In any proceedings where it is desired to give a statement in evidence by virtue of this section, a certificate doing any of the following—(a)identifying the electronic record containing the statement and describing the manner in which it was produced;(b)giving such particulars of any device involved in the production of that electronic record as may be appropriate for the purpose of showing that the electronic record was produced by a computer;(c)dealing with any matters to which conditions mentioned in subsection (2) relate; and(d)purporting to be signed by a person occupying a responsible position in relation to the operation of the relevant device or the management of the relevant activities (whichever is appropriate),shall be evidence of any matter stated in the certificate and for the purpose of this subsection it shall be sufficient for a matter to be stated to be the best of the knowledge of the person stating it."
+        }
+      ],
+      "verification": "statutory_extract",
+      "groq": {},
+      "generation_ms": 0
+    },
+    {
+      "suite": "benchmark",
+      "id": "L01",
+      "query": "What amount did the court award in costs in Umoja Magharibi (K) Ltd v Lubano?",
+      "mode": "CASE_FACT_LOOKUP",
+      "case_id": "2026SCC242(KLR)",
+      "expected_case": "2026SCC242(KLR)",
+      "category": "fact",
+      "ranks": [
+        "2026SCC242(KLR)"
+      ],
+      "gold_anchors": [
+        "20,000"
+      ],
+      "found_primary_anchors": [
+        "20,000"
+      ],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": "SCC-2026-242",
+      "authority_status": "indexed",
+      "origin": null,
+      "selected": [
+        "2026SCC242KLR_0",
+        "2026SCC242KLR_3",
+        "2026SCC242KLR_1",
+        "2026SCC242KLR_2"
+      ],
+      "retrieval_ms": 878,
+      "answer": "I could not verify a direct answer. The retrieved source includes this passage [C1.1]:\n\n> REPUBLIC OF KENYA IN THE SMALL CLAIMS COURT AT MALABA",
+      "claims": [],
+      "verification": "extractive_fallback",
+      "groq": {
+        "generation": {
+          "attempts_remaining": 2,
+          "usage": {
+            "prompt_tokens": 3229,
+            "completion_tokens": 61
+          },
+          "status": 200,
+          "attempts": 1,
+          "succeeded": true,
+          "retry_attempts": 0,
+          "latency_ms": 666
+        }
+      },
+      "generation_ms": 669
+    },
+    {
+      "suite": "benchmark",
+      "id": "L02",
+      "query": "Why was the suit struck out in New Titanic Jacaranda General Spares v Omil & another?",
+      "mode": "CASE_REASONING_LOOKUP",
+      "case_id": "2026SCC235(KLR)",
+      "expected_case": "2026SCC235(KLR)",
+      "category": "reasoning",
+      "ranks": [
+        "2026SCC235(KLR)"
+      ],
+      "gold_anchors": [
+        "lacks jurisdiction",
+        "struck out"
+      ],
+      "found_primary_anchors": [
+        "lacks jurisdiction",
+        "struck out"
+      ],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": "SCC-2026-235",
+      "authority_status": "indexed",
+      "origin": null,
+      "selected": [
+        "2026SCC235KLR_0",
+        "2026SCC235KLR_3",
+        "2026SCC235KLR_2",
+        "2026SCC235KLR_1"
+      ],
+      "retrieval_ms": 970,
+      "answer": "I could not verify a direct answer. The retrieved source includes this passage [C1.1]:\n\n> REPUBLIC OF KENYA IN THE SMALL CLAIMS COURT AT MALABA",
+      "claims": [],
+      "verification": "extractive_fallback",
+      "groq": {},
+      "generation_ms": 0
+    },
+    {
+      "suite": "benchmark",
+      "id": "L03",
+      "query": "What did the court decide about the setting-aside application in [2026] SCC 241 (KLR)?",
+      "mode": "CASE_OUTCOME_LOOKUP",
+      "case_id": "2026SCC241(KLR)",
+      "expected_case": "2026SCC241(KLR)",
+      "category": "outcome",
+      "ranks": [
+        "2026SCC241(KLR)"
+      ],
+      "gold_anchors": [
+        "dismiss his application",
+        "10,000"
+      ],
+      "found_primary_anchors": [
+        "dismiss his application",
+        "10,000"
+      ],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": "SCC-2026-241",
+      "authority_status": "indexed",
+      "origin": null,
+      "selected": [
+        "2026SCC241KLR_3",
+        "2026SCC241KLR_5",
+        "2026SCC241KLR_2",
+        "2026SCC241KLR_4",
+        "2026SCC241KLR_0"
+      ],
+      "retrieval_ms": 1463,
+      "answer": "I could not verify a direct answer. The retrieved source includes this passage [C1.1]:\n\n> This distinction is important. An irregular judgment arising from failure of service is liable to be set aside as of right because the affected party has not been accorded an opportunity to be heard. A regular default judgment, on the other hand, is one entered after proper service but upon the defendant's failure to take the requisite steps.",
+      "claims": [],
+      "verification": "extractive_fallback",
+      "groq": {},
+      "generation_ms": 1
+    },
+    {
+      "suite": "benchmark",
+      "id": "L04",
+      "query": "Why did Shah JA dismiss the appeal in Express (Kenya) Limited v Manju Patel?",
+      "mode": "CASE_REASONING_LOOKUP",
+      "case_id": "2001KECA154(KLR)",
+      "expected_case": "2001KECA154(KLR)",
+      "category": "reasoning",
+      "ranks": [
+        "2001KECA154(KLR)"
+      ],
+      "gold_anchors": [
+        "nonexplanation of the delay",
+        "no good defence"
+      ],
+      "found_primary_anchors": [
+        "nonexplanation of the delay",
+        "no good defence"
+      ],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": "KECA-2001-154",
+      "authority_status": "indexed",
+      "origin": null,
+      "selected": [
+        "2001KECA154KLR_0",
+        "2001KECA154KLR_6",
+        "2001KECA154KLR_3",
+        "2001KECA154KLR_1",
+        "2001KECA154KLR_5"
+      ],
+      "retrieval_ms": 2380,
+      "answer": "I could not verify a direct answer. The retrieved source includes this passage [C1.1]:\n\n> IN THE COURT OF APPEAL",
+      "claims": [],
+      "verification": "extractive_fallback",
+      "groq": {},
+      "generation_ms": 1
+    },
+    {
+      "suite": "benchmark",
+      "id": "L05",
+      "query": "Did the court allow the plaintiffs to produce a certificate later in 2014KEHC6468(KLR)?",
+      "mode": "CASE_OUTCOME_LOOKUP",
+      "case_id": "2014KEHC6468(KLR)",
+      "expected_case": "2014KEHC6468(KLR)",
+      "category": "outcome",
+      "ranks": [
+        "2014KEHC6468(KLR)"
+      ],
+      "gold_anchors": [
+        "at liberty to produce",
+        "certificate for the admissibility"
+      ],
+      "found_primary_anchors": [
+        "at liberty to produce",
+        "certificate for the admissibility"
+      ],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": "KEHC-2014-6468",
+      "authority_status": "indexed",
+      "origin": null,
+      "selected": [
+        "2014KEHC6468KLR_0",
+        "2014KEHC6468KLR_1",
+        "2014KEHC6468KLR_2"
+      ],
+      "retrieval_ms": 695,
+      "answer": "I could not verify a direct answer. The retrieved source includes this passage [C1.3]:\n\n> The court went on that:",
+      "claims": [],
+      "verification": "extractive_fallback",
+      "groq": {},
+      "generation_ms": 1
+    },
+    {
+      "suite": "benchmark",
+      "id": "L06",
+      "query": "Who managed the phone identified by the court in Obado v Anayo, and whom did the court say should sign the certificate?",
+      "mode": "CASE_FACT_LOOKUP",
+      "case_id": "2024KEHC17038(KLR)",
+      "expected_case": "2024KEHC17038(KLR)",
+      "category": "fact",
+      "ranks": [
+        "2024KEHC17038(KLR)"
+      ],
+      "gold_anchors": [
+        "person who manages the device",
+        "Scarlet Susan Okoth"
+      ],
+      "found_primary_anchors": [
+        "person who manages the device",
+        "Scarlet Susan Okoth"
+      ],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": "KEHC-2024-17038",
+      "authority_status": "indexed",
+      "origin": null,
+      "selected": [
+        "2024KEHC17038KLR_0",
+        "2024KEHC17038KLR_7",
+        "2024KEHC17038KLR_6",
+        "2024KEHC17038KLR_2",
+        "2024KEHC17038KLR_5"
+      ],
+      "retrieval_ms": 2054,
+      "answer": "I could not verify a direct answer. The retrieved source includes this passage [C1.1]:\n\n> Obado v Anayo (Civil Suit E005 of 2022) [2024] KEHC 17038 (KLR) (30 May 2024) (Ruling)",
+      "claims": [],
+      "verification": "extractive_fallback",
+      "groq": {},
+      "generation_ms": 0
+    },
+    {
+      "suite": "benchmark",
+      "id": "L07",
+      "query": "What was the court's order about costs in Ogembo v Yongo?",
+      "mode": "CASE_OUTCOME_LOOKUP",
+      "case_id": "2024KEHC15763(KLR)",
+      "expected_case": "2024KEHC15763(KLR)",
+      "category": "outcome",
+      "ranks": [
+        "2024KEHC15763(KLR)"
+      ],
+      "gold_anchors": [
+        "each bear their own costs"
+      ],
+      "found_primary_anchors": [
+        "each bear their own costs"
+      ],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": "KEHC-2024-15763",
+      "authority_status": "indexed",
+      "origin": null,
+      "selected": [
+        "2024KEHC15763KLR_0",
+        "2024KEHC15763KLR_9",
+        "2024KEHC15763KLR_2",
+        "2024KEHC15763KLR_1",
+        "2024KEHC15763KLR_4",
+        "2024KEHC15763KLR_5"
+      ],
+      "retrieval_ms": 2625,
+      "answer": "I could not verify a direct answer. The retrieved source includes this passage [C1.1]:\n\n> Ogembo v Yongo (Civil Appeal E200 of 2023) [2024] KEHC 15763 (KLR) (9 December 2024) (Judgment)",
+      "claims": [],
+      "verification": "extractive_fallback",
+      "groq": {},
+      "generation_ms": 0
+    },
+    {
+      "suite": "benchmark",
+      "id": "L08",
+      "query": "Which marked exhibit was the only one whose objection the court sustained in 2020 KEHC 8905 (KLR)?",
+      "mode": "CASE_OUTCOME_LOOKUP",
+      "case_id": "2020KEHC8905(KLR)",
+      "expected_case": "2020KEHC8905(KLR)",
+      "category": "outcome",
+      "ranks": [
+        "2020KEHC8905(KLR)"
+      ],
+      "gold_anchors": [
+        "objection is therefore only sustainable with regard to DMFI 7"
+      ],
+      "found_primary_anchors": [
+        "objection is therefore only sustainable with regard to DMFI 7"
+      ],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": "KEHC-2020-8905",
+      "authority_status": "indexed",
+      "origin": null,
+      "selected": [
+        "2020KEHC8905KLR_4",
+        "2020KEHC8905KLR_0",
+        "2020KEHC8905KLR_2",
+        "2020KEHC8905KLR_1",
+        "2020KEHC8905KLR_3"
+      ],
+      "retrieval_ms": 1174,
+      "answer": "I could not verify a direct answer. The retrieved source includes this passage [C1.1]:\n\n> There is room for further proof, and in this case both the makers of these documents are present and testified to the contents of the said emails clearly therefore the objections raised regarding the emails in the circumstances of this case cannot stand.",
+      "claims": [],
+      "verification": "extractive_fallback",
+      "groq": {},
+      "generation_ms": 0
+    },
+    {
+      "suite": "benchmark",
+      "id": "L09",
+      "query": "For what period did the court grant interim protection in Safaricom Limited v Ocean View Beach Hotel Limited & 2 others?",
+      "mode": "CASE_FACT_LOOKUP",
+      "case_id": "2010KECA346(KLR)",
+      "expected_case": "2010KECA346(KLR)",
+      "category": "fact",
+      "ranks": [
+        "2010KECA346(KLR)"
+      ],
+      "gold_anchors": [
+        "28 days"
+      ],
+      "found_primary_anchors": [
+        "28 days"
+      ],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": "KECA-2010-346",
+      "authority_status": "indexed",
+      "origin": null,
+      "selected": [
+        "2010KECA346KLR_5",
+        "2010KECA346KLR_11",
+        "2010KECA346KLR_0",
+        "2010KECA346KLR_8",
+        "2010KECA346KLR_12",
+        "2010KECA346KLR_10"
+      ],
+      "retrieval_ms": 7694,
+      "answer": "I could not verify a direct answer. The retrieved source includes this passage [C1.1]:\n\n> intending appellant from pressing on with the appeal. It has been repeatedly said that an arguable appeal  does not connote an appeal that will or must succeed.",
+      "claims": [],
+      "verification": "extractive_fallback",
+      "groq": {},
+      "generation_ms": 0
+    },
+    {
+      "suite": "benchmark",
+      "id": "L10",
+      "query": "What does section 78A(2) of the Evidence Act say about original form?",
+      "mode": "DIRECT_STATUTE_LOOKUP",
+      "case_id": null,
+      "expected_case": null,
+      "category": "statute",
+      "ranks": [],
+      "gold_anchors": [
+        "not in its original form"
+      ],
+      "found_primary_anchors": [
+        "not in its original form"
+      ],
+      "expected_statute": "Evidence Act",
+      "statute_matches": [
+        "78A"
+      ],
+      "graph_case": null,
+      "authority_status": null,
+      "origin": null,
+      "selected": [
+        "evidence_act__2023-12-11__s78A__0"
+      ],
+      "retrieval_ms": 10,
+      "answer": "Evidence Act s. 78A [S1.1]\n\n> (2)The court shall not deny admissibility of evidence under subsection (1) only on the ground that it is not in its original form.",
+      "claims": [
+        {
+          "alias": "S1.1",
+          "answer": "(2)The court shall not deny admissibility of evidence under subsection (1) only on the ground that it is not in its original form.",
+          "quote": "(2)The court shall not deny admissibility of evidence under subsection (1) only on the ground that it is not in its original form."
+        }
+      ],
+      "verification": "statutory_extract",
+      "groq": {},
+      "generation_ms": 0
+    },
+    {
+      "suite": "benchmark",
+      "id": "L11",
+      "query": "What does section 13(5) of the SCC Act exclude?",
+      "mode": "DIRECT_STATUTE_LOOKUP",
+      "case_id": null,
+      "expected_case": null,
+      "category": "statute",
+      "ranks": [],
+      "gold_anchors": [
+        "employment and labour relations"
+      ],
+      "found_primary_anchors": [
+        "employment and labour relations"
+      ],
+      "expected_statute": "Small Claims Court Act",
+      "statute_matches": [
+        "13"
+      ],
+      "graph_case": null,
+      "authority_status": null,
+      "origin": null,
+      "selected": [
+        "small_claims_court_act__2022-12-31__s13__0"
+      ],
+      "retrieval_ms": 7,
+      "answer": "Small Claims Court Act s. 13 [S1.1]\n\n> (5)A claim shall not be brought before the Court if the cause of action is founded upon defamation, libel, slander, malicious prosecution or is upon a dispute over a title to or possession of land, or employment and labour relations.",
+      "claims": [
+        {
+          "alias": "S1.1",
+          "answer": "(5)A claim shall not be brought before the Court if the cause of action is founded upon defamation, libel, slander, malicious prosecution or is upon a dispute over a title to or possession of land, or employment and labour relations.",
+          "quote": "(5)A claim shall not be brought before the Court if the cause of action is founded upon defamation, libel, slander, malicious prosecution or is upon a dispute over a title to or possession of land, or employment and labour relations."
+        }
+      ],
+      "verification": "statutory_extract",
+      "groq": {},
+      "generation_ms": 0
+    },
+    {
+      "suite": "benchmark",
+      "id": "L12",
+      "query": "Under section 34(1) of the CPA, which court decides questions about execution of a decree?",
+      "mode": "DIRECT_STATUTE_LOOKUP",
+      "case_id": null,
+      "expected_case": null,
+      "category": "statute",
+      "ranks": [],
+      "gold_anchors": [
+        "court executing the decree",
+        "not by a separate suit"
+      ],
+      "found_primary_anchors": [
+        "court executing the decree",
+        "not by a separate suit"
+      ],
+      "expected_statute": "Civil Procedure Act",
+      "statute_matches": [
+        "34"
+      ],
+      "graph_case": null,
+      "authority_status": null,
+      "origin": null,
+      "selected": [
+        "civil_procedure_act__2022-12-31__s34__0"
+      ],
+      "retrieval_ms": 10,
+      "answer": "Civil Procedure Act s. 34 [S1.1]\n\n> (1)All questions arising between the parties to the suit in which the decree was passed, or their representatives, and relating to the execution, discharge or satisfaction of the decree, shall be determined by the court executing the decree and not by a separate suit.",
+      "claims": [
+        {
+          "alias": "S1.1",
+          "answer": "(1)All questions arising between the parties to the suit in which the decree was passed, or their representatives, and relating to the execution, discharge or satisfaction of the decree, shall be determined by the court executing the decree and not by a separate suit.",
+          "quote": "(1)All questions arising between the parties to the suit in which the decree was passed, or their representatives, and relating to the execution, discharge or satisfaction of the decree, shall be determined by the court executing the decree and not by a separate suit."
+        }
+      ],
+      "verification": "statutory_extract",
+      "groq": {},
+      "generation_ms": 0
+    },
+    {
+      "suite": "benchmark",
+      "id": "L13",
+      "query": "What is the appellant’s personal telephone number in Ogembo v Yongo?",
+      "mode": "CASE_FACT_LOOKUP",
+      "case_id": "2024KEHC15763(KLR)",
+      "expected_case": "2024KEHC15763(KLR)",
+      "category": "insufficient",
+      "ranks": [
+        "2024KEHC15763(KLR)"
+      ],
+      "gold_anchors": [],
+      "found_primary_anchors": [],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": "KEHC-2024-15763",
+      "authority_status": "indexed",
+      "origin": null,
+      "selected": [
+        "2024KEHC15763KLR_0",
+        "2024KEHC15763KLR_1",
+        "2024KEHC15763KLR_4",
+        "2024KEHC15763KLR_9",
+        "2024KEHC15763KLR_2",
+        "2024KEHC15763KLR_5"
+      ],
+      "retrieval_ms": 2152,
+      "answer": "I could not verify a direct answer. The retrieved source includes this passage [C1.1]:\n\n> Ogembo v Yongo (Civil Appeal E200 of 2023) [2024] KEHC 15763 (KLR) (9 December 2024) (Judgment)",
+      "claims": [],
+      "verification": "extractive_fallback",
+      "groq": {},
+      "generation_ms": 0
+    },
+    {
+      "suite": "benchmark",
+      "id": "L14",
+      "query": "[2024] KEHC 17038 (KLR)",
+      "mode": "DIRECT_CASE_LOOKUP",
+      "case_id": "2024KEHC17038(KLR)",
+      "expected_case": "2024KEHC17038(KLR)",
+      "category": "identifier",
+      "ranks": [
+        "2024KEHC17038(KLR)"
+      ],
+      "gold_anchors": [],
+      "found_primary_anchors": [],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": "KEHC-2024-17038",
+      "authority_status": "indexed_lookup",
+      "origin": null,
+      "selected": [],
+      "retrieval_ms": 42,
+      "answer": "Obado v Anayo [2024] KEHC 17038 (KLR). The primary judgment is indexed.",
+      "claims": [],
+      "verification": "identity_lookup",
+      "groq": {},
+      "generation_ms": 0
+    },
+    {
+      "suite": "benchmark",
+      "id": "L15",
+      "query": "What costs did the court award in Ogemboo v Yongo?",
+      "mode": "CASE_FACT_LOOKUP",
+      "case_id": "2024KEHC15763(KLR)",
+      "expected_case": "2024KEHC15763(KLR)",
+      "category": "fuzzy",
+      "ranks": [
+        "2024KEHC15763(KLR)"
+      ],
+      "gold_anchors": [
+        "each bear their own costs"
+      ],
+      "found_primary_anchors": [
+        "each bear their own costs"
+      ],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": "KEHC-2024-15763",
+      "authority_status": "indexed",
+      "origin": null,
+      "selected": [
+        "2024KEHC15763KLR_0",
+        "2024KEHC15763KLR_9",
+        "2024KEHC15763KLR_2",
+        "2024KEHC15763KLR_1",
+        "2024KEHC15763KLR_4",
+        "2024KEHC15763KLR_5"
+      ],
+      "retrieval_ms": 2111,
+      "answer": "I could not verify a direct answer. The retrieved source includes this passage [C1.1]:\n\n> Ogembo v Yongo (Civil Appeal E200 of 2023) [2024] KEHC 15763 (KLR) (9 December 2024) (Judgment)",
+      "claims": [],
+      "verification": "extractive_fallback",
+      "groq": {},
+      "generation_ms": 0
+    },
+    {
+      "suite": "benchmark",
+      "id": "L16",
+      "query": "2026SCC235(KLR)",
+      "mode": "DIRECT_CASE_LOOKUP",
+      "case_id": "2026SCC235(KLR)",
+      "expected_case": "2026SCC235(KLR)",
+      "category": "identifier",
+      "ranks": [
+        "2026SCC235(KLR)"
+      ],
+      "gold_anchors": [],
+      "found_primary_anchors": [],
+      "expected_statute": null,
+      "statute_matches": [],
+      "graph_case": "SCC-2026-235",
+      "authority_status": "indexed_lookup",
+      "origin": null,
+      "selected": [],
+      "retrieval_ms": 38,
+      "answer": "New Titanic Jacaranda General Spares v Omil & another [2026] SCC 235 (KLR). The primary judgment is indexed.",
+      "claims": [],
+      "verification": "identity_lookup",
+      "groq": {},
+      "generation_ms": 0
+    }
+  ]
+}

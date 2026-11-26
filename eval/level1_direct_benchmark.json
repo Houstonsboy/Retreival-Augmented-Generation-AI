@@ -1,0 +1,18 @@
+[
+  {"id":"L01","query":"What amount did the court award in costs in Umoja Magharibi (K) Ltd v Lubano?","case":"2026SCC242(KLR)","gold":["20,000"],"category":"fact"},
+  {"id":"L02","query":"Why was the suit struck out in New Titanic Jacaranda General Spares v Omil & another?","case":"2026SCC235(KLR)","gold":["lacks jurisdiction","struck out"],"category":"reasoning"},
+  {"id":"L03","query":"What did the court decide about the setting-aside application in [2026] SCC 241 (KLR)?","case":"2026SCC241(KLR)","gold":["dismiss his application","10,000"],"category":"outcome"},
+  {"id":"L04","query":"Why did Shah JA dismiss the appeal in Express (Kenya) Limited v Manju Patel?","case":"2001KECA154(KLR)","gold":["nonexplanation of the delay","no good defence"],"category":"reasoning"},
+  {"id":"L05","query":"Did the court allow the plaintiffs to produce a certificate later in 2014KEHC6468(KLR)?","case":"2014KEHC6468(KLR)","gold":["at liberty to produce","certificate for the admissibility"],"category":"outcome"},
+  {"id":"L06","query":"Who managed the phone identified by the court in Obado v Anayo, and whom did the court say should sign the certificate?","case":"2024KEHC17038(KLR)","gold":["person who manages the device","Scarlet Susan Okoth"],"category":"fact"},
+  {"id":"L07","query":"What was the court's order about costs in Ogembo v Yongo?","case":"2024KEHC15763(KLR)","gold":["each bear their own costs"],"category":"outcome"},
+  {"id":"L08","query":"Which marked exhibit was the only one whose objection the court sustained in 2020 KEHC 8905 (KLR)?","case":"2020KEHC8905(KLR)","gold":["objection is therefore only sustainable with regard to DMFI 7"],"category":"outcome"},
+  {"id":"L09","query":"For what period did the court grant interim protection in Safaricom Limited v Ocean View Beach Hotel Limited & 2 others?","case":"2010KECA346(KLR)","gold":["28 days"],"category":"fact"},
+  {"id":"L10","query":"What does section 78A(2) of the Evidence Act say about original form?","statute":"Evidence Act","section":"78A","gold":["not in its original form"],"category":"statute"},
+  {"id":"L11","query":"What does section 13(5) of the SCC Act exclude?","statute":"Small Claims Court Act","section":"13","gold":["employment and labour relations"],"category":"statute"},
+  {"id":"L12","query":"Under section 34(1) of the CPA, which court decides questions about execution of a decree?","statute":"Civil Procedure Act","section":"34","gold":["court executing the decree","not by a separate suit"],"category":"statute"},
+  {"id":"L13","query":"What is the appellant’s personal telephone number in Ogembo v Yongo?","case":"2024KEHC15763(KLR)","gold":[],"category":"insufficient"},
+  {"id":"L14","query":"[2024] KEHC 17038 (KLR)","case":"2024KEHC17038(KLR)","gold":[],"category":"identifier"},
+  {"id":"L15","query":"What costs did the court award in Ogemboo v Yongo?","case":"2024KEHC15763(KLR)","gold":["each bear their own costs"],"category":"fuzzy"},
+  {"id":"L16","query":"2026SCC235(KLR)","case":"2026SCC235(KLR)","gold":[],"category":"identifier"}
+]

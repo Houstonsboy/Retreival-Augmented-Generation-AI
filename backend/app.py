@@ -11,14 +11,19 @@ import uuid as uuid_mod
 import urllib.parse as urllib_parse
 from auth import init_firebase_admin, require_role
 from firebase_admin import firestore as fb_firestore, storage as fb_storage
-from groq_client import call_groq, GROQ_MODEL, get_groq_keys
+from groq_client import call_groq, GROQ_MODEL
+from groq_budget import firestore_finish, firestore_reserve, research_budget, turn_key
+from direct_retrieval import resolve, retrieve_resolved
+from direct_answer import assemble, respond
+from functools import wraps
+from hashlib import sha256
+import hmac
 from history_store import (
     build_sources_for_history,
     check_idempotency,
     get_or_create_conversation,
     make_fallback_title,
     save_turn,
-    submit_title_generation,
 )
 from history_routes import history_bp
 from SCCVision.router import sccvision_bp
@@ -30,7 +35,8 @@ from digester import digest_repo
 from pixe import run_rag_pipeline
 from CaseLaw.firac import run_firac, run_firac_from_file
 from CaseLaw.ingester import ingest_firac_data
-from Qclassifier import Qclassifier
+from Qclassifier import classify_legal_query, normalize_for_retriever
+from Retriever import retrieve_relevant_cases
 from RulesRetriever import retrieve_relevant_rules
 from constitutionlogic.constitutionbreaker import extract_constitution_articles, OUTPUT_DIR as CONST_OUTPUT_DIR, flatten_articles_to_embeddable_chunks, CHUNK_SIZE, CHUNK_OVERLAP
 from constitutionlogic.constitution_digester import ConstitutionDigester, EMBEDDABLE_CHUNKS_JSON
@@ -75,8 +81,58 @@ def health():
     return jsonify({'status': 'ok'})
 
 
+def _research_budget(fn):
+    @wraps(fn)
+    def wrapped(*args, **kwargs):
+        data = request.get_json(silent=True) or {}
+        if not isinstance(data, dict):
+            return jsonify({"success": False, "error": "Expected a JSON object"}), 400
+        key = turn_key(g.uid, data.get("client_turn_id"), data.get("query") or data.get("message") or "")
+        began = time.monotonic()
+        with research_budget(
+            lambda stage, tokens, timeout: firestore_reserve(fb_firestore.client(), key, stage, tokens, timeout),
+            lambda stage, cooldown: firestore_finish(fb_firestore.client(), key, stage, cooldown),
+        ) as budget:
+            try:
+                return fn(*args, **kwargs)
+            except Exception as exc:
+                app.logger.warning("Legal research request failed (%s)", type(exc).__name__)
+                return jsonify({"success": False, "error": "Legal research is temporarily unavailable"}), 503
+            finally:
+                attempts = list(budget.outcomes.values())
+                app.logger.info("%s", json.dumps({
+                    "event": "legal_query_stage", "turn": key, "endpoint": request.endpoint,
+                    "groq": budget.outcomes, "requests": sum(a.get("attempts", 0) for a in attempts),
+                    "successes": sum(a.get("succeeded", False) for a in attempts),
+                    "rate_limited": sum(a.get("status") == 429 for a in attempts),
+                    "latency_ms": round((time.monotonic() - began) * 1000),
+                }))
+    return wrapped
+
+
+def _canonical_json_numbers(value):
+    """Match JSON.parse/stringify for whole-valued numbers echoed by the browser."""
+    if isinstance(value, float) and value.is_integer():
+        return int(value)
+    if isinstance(value, dict):
+        return {key: _canonical_json_numbers(item) for key, item in value.items()}
+    if isinstance(value, (list, tuple)):
+        return [_canonical_json_numbers(item) for item in value]
+    return value
+
+
+def _retrieval_signature(query, retrieval, classification, turn_id):
+    secret = os.environ.get("LEGAL_RETRIEVAL_SIGNING_KEY") or os.environ.get("GROQ_API_KEY")
+    if not secret:
+        return ""
+    serialized = json.dumps(_canonical_json_numbers([g.uid, turn_id, query, retrieval, classification]),
+                            sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+    return hmac.new(secret.encode(), serialized.encode(), sha256).hexdigest()
+
+
 @app.route('/api/chat', methods=['POST'])
 @require_role("advocate", "admin")
+@_research_budget
 def chat():
     """
     RAG endpoint that processes queries using the pixe.py pipeline.
@@ -1281,106 +1337,58 @@ def serve_rule_pdf():
 
 @app.route('/api/qretrieve', methods=['POST'])
 @require_role("advocate", "admin")
+@_research_budget
 def QRetriever():
-        """
-        Executes the legal query classification + retrieval pipeline.
-        Supports parallel dual retrieval: case law + statutory rules.
-        """
+    data = request.get_json(silent=True) or {}
+    query = data.get("query")
+    if not isinstance(query, str) or not query.strip():
+        return jsonify({"success": False, "error": "Missing query"}), 400
+    pins = [p for p in (data.get("pinned_docs") or []) if isinstance(p, dict) and p.get("id")]
+    case_pins = [p["id"] for p in pins if p.get("type") == "case"] or None
+    statute_pins = [p["id"] for p in pins if p.get("type") == "statute"] or None
 
-        data = request.get_json(silent=True)
-
-        if not data or "query" not in data:
-            return jsonify({
-                "success": False,
-                "error": "Missing 'query' in request body"
-            }), 400
-
-        user_query = data["query"]
-
-        # Optional: probe only specific pinned documents instead of the full DB
-        raw_pinned = data.get("pinned_docs") or []
-        pinned_case_ids = [pd["id"] for pd in raw_pinned if pd.get("type") == "case"] or None
-        pinned_statute_ids = [pd["id"] for pd in raw_pinned if pd.get("type") == "statute"] or None
-        if pinned_case_ids:
-            print(f"[INFO] Probe mode: restricting case retrieval to {pinned_case_ids}")
-        if pinned_statute_ids:
-            print(f"[INFO] Probe mode: restricting statute retrieval to {pinned_statute_ids}")
-
-        # Step 1: Run Qclassifier (includes case law retrieval)
-        result = Qclassifier(user_query, pinned_case_ids=pinned_case_ids)
-        
-        if not result.get("success"):
-            status_code = 500
-            return jsonify(result), status_code
-        
-        # Step 2: Check if rules retrieval is needed (mode-aware routing)
-        classification = result.get("classification", {})
-        retrieval_mode = classification.get("retrieval_mode", "")
-        target_components = classification.get("target_components", [])
-        
-        # Determine if statutory retrieval should be triggered
-        should_fetch_statutory = (
-            retrieval_mode in ["DIRECT_STATUTORY_LOOKUP", "HYBRID_RETRIEVAL"] or
-            "RULES" in target_components or
-            "STATUTORY_TEXT" in target_components
-        )
-        
-        if should_fetch_statutory:
-            mode_label = retrieval_mode if retrieval_mode else "component-based"
-            print(f"\n[INFO] Statutory retrieval triggered (mode: {mode_label})")
-            
+    resolution = resolve(query, graph_discovery=True)
+    if resolution.get("ambiguous") or resolution.get("mode"):
+        result = retrieve_resolved(query, resolution, case_pins=case_pins, statute_pins=statute_pins)
+        classification = {"retrieval_mode": resolution.get("mode"), "entities": {},
+                          "vector_query": query, "resolution": resolution}
+    else:
+        classification = classify_legal_query(query) or {
+            "retrieval_mode": "STRATEGIC_LEGAL_ANALYSIS", "vector_query": query,
+            "target_components": ["RULES"], "entities": {}, "deterministic_fallback": True,
+        }
+        normalized = normalize_for_retriever(classification)
+        for field in ("vector_query", "vector_query_caselaw", "vector_query_statutory"):
+            if normalized.get(field) and query not in normalized[field]:
+                normalized[field] = query + "\n" + normalized[field]
+        result = retrieve_relevant_cases(normalized, verbose=False, skip_summaries=True, pinned_case_ids=case_pins)
+        mode = classification.get("retrieval_mode", "")
+        components = set(classification.get("target_components", []))
+        result["rules"] = []
+        if mode in ("DIRECT_STATUTORY_LOOKUP", "HYBRID_RETRIEVAL") or components & {"RULES", "STATUTORY_TEXT"}:
             try:
-                # Call rules retriever with classification data
-                rules_result = retrieve_relevant_rules(classification, verbose=False,
-                                                       pinned_statute_ids=pinned_statute_ids)
-                
-                # Add rules to the retrieval section
-                if "retrieval" not in result:
-                    result["retrieval"] = {}
-                
-                result["retrieval"]["rules"] = rules_result.get("results", [])
-                result["retrieval"]["rules_count"] = rules_result.get("count", 0)
-                result["retrieval"]["rules_query_summary"] = rules_result.get("query_summary", {})
-                result["retrieval"]["retrieval_mode"] = retrieval_mode  # Pass mode to frontend
-                
-                print(f"[INFO] Retrieved {result['retrieval']['rules_count']} statutory provisions")
-                
-            except Exception as e:
-                print(f"[WARNING] Failed to retrieve statutory rules: {e}")
-                import traceback
-                traceback.print_exc()
-                # Don't fail the whole request, just log the error
-                result["retrieval"]["rules"] = []
-                result["retrieval"]["rules_count"] = 0
-                result["retrieval"]["rules_error"] = str(e)
-        else:
-            print(f"[INFO] Statutory retrieval not needed (mode: {retrieval_mode or 'none'})")
-            if "retrieval" not in result:
-                result["retrieval"] = {}
-            result["retrieval"]["rules"] = []
-            result["retrieval"]["rules_count"] = 0
-
-        # ── Graph fast-path (flag-guarded, never raises) ──────────────────────
-        try:
-            from graph import config as _graph_config
-            if _graph_config.GRAPH_ENABLED:
+                result["rules"] = retrieve_relevant_rules(
+                    normalized, verbose=False, pinned_statute_ids=statute_pins,
+                )["results"]
+            except Exception:
+                app.logger.warning("Statute retrieval unavailable")
+        from graph.config import GRAPH_ENABLED
+        if GRAPH_ENABLED:
+            try:
                 from graph.queries import expand_for_answer
-                _case_ids = [
-                    c.get("case_name", "")
-                    for c in result.get("retrieval", {}).get("results", [])
-                    if c.get("case_name")
-                ]
-                result["retrieval"]["graph_authorities"] = expand_for_answer(
-                    _case_ids, user_query, cap=5
-                )
-            else:
-                result["retrieval"]["graph_authorities"] = []
-        except Exception as _ge:
-            print(f"[WARN] Graph expansion failed (non-fatal): {_ge}")
-            result["retrieval"]["graph_authorities"] = []
-
-        status_code = 200 if result.get("success") else 500
-        return jsonify(result), status_code
+                result["graph_authorities"] = expand_for_answer([c["case_name"] for c in result["results"]], query)
+            except Exception:
+                app.logger.warning("Graph expansion unavailable")
+    result.setdefault("graph_authorities", [])
+    result["rules_count"] = len(result.get("rules", []))
+    result["retrieval_mode"] = classification.get("retrieval_mode")
+    if os.environ.get("LEGAL_RETRIEVAL_TRACE") == "1":
+        app.logger.info("%s", json.dumps({"event": "legal_retrieve", "query": query,
+            "classification": classification, "resolution": resolution, "stats": result.get("retrieval_stats"),
+            "graph": result.get("graph_case"), "cases": [c["case_name"] for c in result["results"]]}))
+    signature = _retrieval_signature(query, result, classification, data.get("client_turn_id"))
+    return jsonify({"success": True, "query": query, "classification": classification,
+                    "retrieval": result, "retrieval_signature": signature})
 
 
 def _build_cached_response(
@@ -1455,6 +1463,7 @@ def _try_save_failed_turn(
 
 @app.route('/api/generate-legal-answer', methods=['POST'])
 @require_role("advocate", "admin")
+@_research_budget
 def generate_legal_answer():
     """
     Grounded synthesis: coverage check → structured JSON synthesis → citation verification.
@@ -1479,6 +1488,16 @@ def generate_legal_answer():
 
         if not user_query:
             return jsonify({"error": "No query provided"}), 400
+
+        signature = _retrieval_signature(user_query, retrieval_data, classification, client_turn_id)
+        if data.get("retrieval_signature"):
+            if not signature or not hmac.compare_digest(signature, str(data["retrieval_signature"])):
+                return jsonify({"success": False, "error": "Retrieval evidence failed validation"}), 400
+        elif retrieval_data.get("resolution"):
+            # Legacy callers can perform deterministic direct retrieval server-side.
+            resolution = resolve(user_query)
+            retrieval_data = retrieve_resolved(user_query, resolution) if resolution else {}
+        direct = bool(retrieval_data.get("resolution"))
 
         # Validate conversation ownership before spending API budget.
         # Also fetch the existing title so we can echo it back in the response.
@@ -1529,99 +1548,30 @@ def generate_legal_answer():
         # alias_map: chunk-level alias (e.g. "C1.2") → chunk_id string
         alias_map: dict = {}
 
-        for i, rule in enumerate(statutory_provisions[:5], 1):
-            sid   = f"S{i}"
-            label = rule.get("document_label", "Unknown")
-            an    = rule.get("article_number", "")
-            hdr   = rule.get("article_header", "")
-            stat_chunks = rule.get("chunks", [])
+        passages = assemble(retrieval_data)
+        for p in passages:
+            base = p.alias.split(".")[0]
+            alias_map[p.alias] = {"chunk_id": p.chunk_id, "label": p.label, "type": p.kind}
+            source_blocks.append(f"[{p.alias}] {p.label}\n{p.text}")
+            source = next((item for item in sources if item["id"] == base), None)
+            if not source:
+                source = {"id": base, "type": p.kind, "label": p.label, "data": {"chunks": []}}
+                sources.append(source)
+            source["data"]["chunks"].append({"chunk_id": p.chunk_id, "text": p.text})
+        if not direct:
+            for i, authority in enumerate(retrieval_data.get("graph_authorities", [])[:5], 1):
+                alias = f"G{i}.1"
+                label = authority.get("case_name", "Graph principle")
+                text = authority.get("principle_text", "")
+                alias_map[alias] = {"chunk_id": authority.get("principle_key", ""), "label": label, "type": "graph"}
+                source_blocks.append(f"[{alias}] {label} · graph principle without verified passage\n{text}")
+                sources.append({"id": f"G{i}", "type": "graph", "label": label,
+                                "data": {**authority, "_alias_id": f"G{i}"}})
 
-            sources.append({"id": sid, "type": "statute", "label": f"{label} s.{an}", "data": rule})
+        if os.environ.get("LEGAL_RETRIEVAL_TRACE") == "1":
+            app.logger.info("%s", json.dumps({"event": "legal_context", "query": user_query, "blocks": source_blocks}))
 
-            chunk_lines = []
-            for j, sch in enumerate(stat_chunks, 1):
-                chunk_alias = f"S{i}.{j}"
-                sec_num = sch.get("section_num") or an
-                sec_hdr = sch.get("section_heading") or hdr
-                chunk_label = f"{label} s.{sec_num}"
-                alias_map[chunk_alias] = {
-                    "chunk_id": sch.get("chunk_id", ""),
-                    "label": chunk_label,
-                    "type": "statute",
-                }
-                chunk_lines.append(f"  [{chunk_alias}] s.{sec_num} {sec_hdr}\n  {sch.get('text','')[:600]}")
-
-            # Fallback top-level alias for bare [S#] references
-            top_cid = stat_chunks[0]["chunk_id"] if stat_chunks else rule.get("chunk_id", "")
-            alias_map[sid] = {"chunk_id": top_cid, "label": f"{label} s.{an}", "type": "statute"}
-
-            block_header = f"[{sid}] {label}, s.{an} — {hdr}"
-            source_blocks.append(block_header + "\n" + "\n".join(chunk_lines))
-
-        for i, case in enumerate(case_law_results[:3], 1):
-            cid_base = f"C{i}"
-            cn   = case.get("case_name", "Unknown")
-            meta = case.get("metadata", {})
-            year = meta.get("year", "")
-            court= meta.get("court_level", "")
-            case_chunks = case.get("chunks", [])[:3]
-            chunk_lines = []
-            for j, ch in enumerate(case_chunks, 1):
-                chunk_alias = f"C{i}.{j}"
-                chunk_cid = ch.get("chunk_id", ch.get("id", ""))
-                alias_map[chunk_alias] = {
-                    "chunk_id": chunk_cid,
-                    "label": f"{cn} ({year}) chunk {j}",
-                    "type": "case",
-                }
-                chunk_lines.append(f"  [{chunk_alias}] {ch.get('text','')[:500]}")
-            sources.append({"id": cid_base, "type": "case", "label": f"{cn} ({year}, {court})", "data": case})
-            source_blocks.append(
-                f"[{cid_base}] {cn} ({year}, {court})\n" + "\n".join(chunk_lines)
-            )
-
-        # ── G-alias loop: graph authority principles (flag-guarded) ──────────
-        graph_authorities = retrieval_data.get("graph_authorities", [])
-        for gi, ga in enumerate(graph_authorities[:5], 1):
-            gid_base   = f"G{gi}"
-            ga_case    = ga.get("case_name", ga.get("case_key", "Unknown"))
-            pk         = ga.get("principle_key", "")
-            pt         = ga.get("principle_text", "")
-            kind       = ga.get("kind", "ratio")
-            is_binding = ga.get("is_binding", False)
-            chroma_id  = ga.get("chroma_case_identifier") or pk
-            rel_type   = ga.get("rel_type", "HOLDS")
-            related    = ga.get("related_principles") or []
-
-            binding_tag  = " [BINDING on this forum]" if is_binding else " [persuasive]"
-            related_line = ""
-            if related:
-                related_line = "\n  Related: " + "; ".join(
-                    f"{r['rel']} {r['key']}" for r in related[:3] if r.get("key")
-                )
-
-            block = (
-                f"[{gid_base}] {ga_case} — {kind.upper()} PRINCIPLE ({rel_type})\n"
-                f"  [{gid_base}.1] {pt}{binding_tag}{related_line}"
-            )
-            alias_map[gid_base] = {
-                "chunk_id": chroma_id,
-                "label": f"{ga_case} — {pk}",
-                "type": "graph",
-            }
-            alias_map[f"{gid_base}.1"] = {
-                "chunk_id": chroma_id,
-                "label": f"{pk} ({kind})",
-                "type": "graph",
-            }
-            sources.append({
-                "id": gid_base, "type": "graph",
-                "label": f"{ga_case} — {pk}",
-                "data": {**ga, "_alias_id": gid_base},
-            })
-            source_blocks.append(block)
-
-        if not source_blocks:
+        if not source_blocks and not direct:
             _try_save_failed_turn(
                 g.uid, conversation_id, client_turn_id, user_query,
                 coverage, "No relevant legal information retrieved",
@@ -1688,79 +1638,36 @@ def generate_legal_answer():
         )
 
         # ── 5. Groq call (temperature 0, with key rotation) ──────────────────
-        if not get_groq_keys():
-            _try_save_failed_turn(
-                g.uid, conversation_id, client_turn_id, user_query,
-                coverage, "No GROQ_API_KEY configured",
-                "llm_error", _t0,
-                overwrite_turn_index=_overwrite_turn_index,
-            )
-            return jsonify({"success": False, "error": "No GROQ_API_KEY configured"}), 500
-
         messages = [{"role": "system", "content": SYSTEM}, {"role": "user", "content": USER}]
-
-        raw = call_groq(messages)
-
-        # ── 6. Parse JSON ─────────────────────────────────────────────────────
-        def _parse_json(text: str) -> dict:
-            text = re.sub(r"^```(?:json)?\s*", "", text, flags=re.MULTILINE)
-            text = re.sub(r"\s*```\s*$", "", text, flags=re.MULTILINE)
-            start = text.find("{")
-            if start == -1:
-                raise ValueError("No JSON found")
-            depth = 0
-            for i, ch in enumerate(text[start:], start):
-                if ch == "{":
-                    depth += 1
-                elif ch == "}":
-                    depth -= 1
-                    if depth == 0:
-                        return json.loads(text[start: i + 1])
-            raise ValueError("Unmatched braces")
-
-        try:
-            parsed = _parse_json(raw)
-        except Exception as parse_err:
-            print(f"[WARN] JSON parse failed ({parse_err}); returning raw text")
-            parsed = {"short_answer": raw, "source_review": []}
-
-        # ── 7. Filter irrelevant sources ──────────────────────────────────────
-        relevant_ids = {
-            sr["id"]
-            for sr in parsed.get("source_review", [])
-            if sr.get("relevant") is True
-        }
-        # If model didn't mark anything relevant, treat all as relevant
-        if not relevant_ids:
-            relevant_ids = {s["id"] for s in sources}
-
-        relevant_source_data = [s["data"] for s in sources if s["id"] in relevant_ids]
-
-        # ── 8. Citation verification ──────────────────────────────────────────
-        analysis_fields = " ".join(filter(None, [
-            parsed.get("short_answer", ""),
-            parsed.get("applicable_law", ""),
-            parsed.get("case_law_discussion", ""),
-            parsed.get("application", ""),
-            parsed.get("jurisdiction_and_procedure", ""),
-        ]))
-
-        def _regen(unsupported_list: list) -> str:
-            regen_msgs = messages + [
-                {"role": "assistant", "content": raw},
-                {"role": "user", "content": (
-                    "The following citations are not present in the provided sources and must be "
-                    f"removed or replaced with 'not in the sources': {', '.join(unsupported_list)}. "
-                    "Output the corrected JSON object."
-                )},
-            ]
-            return call_groq(regen_msgs)
-
-        verified = verify_and_clean(analysis_fields, relevant_source_data, user_query, _regen)
-
-        removed = verified.get("unverified_claims_removed", [])
-        if removed:
-            print(f"[WARN] Removed {len(removed)} unverified claim(s): {removed}")
+        removed = []
+        verification = "extractive_fallback"
+        if direct:
+            direct_text, claims, verification = respond(user_query, retrieval_data, passages, call_groq)
+            graph_case = retrieval_data.get("graph_case", {})
+            if graph_case and "[G1.1]" in direct_text:
+                alias_map["G1.1"] = {"chunk_id": graph_case["case_key"], "type": "graph",
+                                    "label": f"{graph_case.get('citation', '')} · graph record"}
+            parsed = {"short_answer": direct_text, "source_review": [],
+                      "citations_used": [f"{a} — {alias_map[a]['label']}"
+                                         for a in dict.fromkeys(c["alias"] for c in claims)]}
+        else:
+            try:
+                raw = call_groq(messages, stage="generation")
+                parsed = json.loads(raw.strip().removeprefix("```json").removeprefix("```").removesuffix("```").strip())
+                if not isinstance(parsed, dict):
+                    raise ValueError("Invalid structured answer")
+                analysis_fields = " ".join(
+                    parsed.get(field, "") or "" for field in ("short_answer", "applicable_law",
+                    "case_law_discussion", "application", "jurisdiction_and_procedure")
+                )
+                verified = verify_and_clean(analysis_fields, [s["data"] for s in sources], user_query, None, log=False)
+                removed = verified.get("unverified_claims_removed", [])
+                if removed:
+                    parsed = {"short_answer": verified["text"], "source_review": parsed.get("source_review", [])}
+                verification = "reference_check"
+            except Exception:
+                fallback, _, verification = respond(user_query, retrieval_data, passages, lambda *a, **kw: "")
+                parsed = {"short_answer": fallback, "source_review": []}
 
         # ── 9. Build answer string ────────────────────────────────────────────
         def _build_answer(p: dict) -> str:
@@ -1790,6 +1697,9 @@ def generate_legal_answer():
             return "\n\n".join(parts)
 
         answer = _build_answer(parsed)
+        app.logger.info("%s", json.dumps({"event": "legal_verification",
+            "verification": verification, "source_count": len(alias_map),
+            "unsupported_references": len(removed), "deterministic_fast_path": direct}))
 
         # Determine which chunk aliases appear in the answer text
         _alias_pat = re.compile(r"\[([CSG]\d+(?:\.\d+)?)\]")
@@ -1878,10 +1788,7 @@ def generate_legal_answer():
             _is_new_conv    = _hist["is_new_conversation"]
             if _is_new_conv:
                 _conv_title = make_fallback_title(user_query)
-                submit_title_generation(
-                    g.uid, conversation_id,
-                    user_query, parsed.get("short_answer", ""),
-                )
+
         except Exception as _hist_err:
             print(f"[WARN] History save failed: {_hist_err}")
 
@@ -1892,6 +1799,7 @@ def generate_legal_answer():
             "source_review":      parsed.get("source_review", []),
             "premise_check":      (parsed.get("premise_check") or "").strip(),
             "unverified_claims_removed": removed,
+            "verification": verification,
             "sources":            response_sources,
             "alias_map":          {k: v["chunk_id"] for k, v in alias_map.items()},
             "sources_used": {
@@ -1911,16 +1819,14 @@ def generate_legal_answer():
             g.uid, conversation_id, client_turn_id,
             locals().get("user_query", ""),
             locals().get("coverage", {}),
-            f"LLM call failed: {e}", "llm_error",
+            "LLM call failed", "llm_error",
             locals().get("_t0", time.time()),
             overwrite_turn_index=locals().get("_overwrite_turn_index"),
         )
-        return jsonify({"success": False, "error": f"LLM call failed: {e}"}), 500
+        return jsonify({"success": False, "error": "LLM call failed"}), 500
 
     except Exception as e:
-        import traceback
-        print(f"[ERROR] generate-legal-answer: {e}")
-        traceback.print_exc()
+        app.logger.warning("Legal answer failed (%s)", type(e).__name__)
         _try_save_failed_turn(
             g.uid, conversation_id, client_turn_id,
             locals().get("user_query", ""),

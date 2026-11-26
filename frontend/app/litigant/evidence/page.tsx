@@ -357,7 +357,7 @@ export default function EvidenceHistoryPage() {
             Self-Represented · Kenya
           </p>
           <h1 className="text-2xl font-bold" style={{ color: INK, fontFamily: NR }}>
-            Evidence History
+            Evidence library
           </h1>
           <p className="text-sm mt-1" style={{ color: MUTED }}>
             All files you have saved to Firebase, grouped by case.

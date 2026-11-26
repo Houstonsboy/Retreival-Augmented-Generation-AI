@@ -153,22 +153,6 @@ class TestCertificateContent:
         text = _extract_pdf_text(b)
         assert _CERT_NUMBER in text
 
-    def test_part_a_heading_present(self):
-        text = _extract_pdf_text(render_pdf(_make_record("CERTIFICATE")))
-        assert "Part A" in text
-
-    def test_part_b_heading_present(self):
-        text = _extract_pdf_text(render_pdf(_make_record("CERTIFICATE")))
-        assert "Part B" in text
-
-    def test_part_c_heading_present(self):
-        text = _extract_pdf_text(render_pdf(_make_record("CERTIFICATE")))
-        assert "Part C" in text
-
-    def test_part_d_heading_present(self):
-        text = _extract_pdf_text(render_pdf(_make_record("CERTIFICATE")))
-        assert "Part D" in text
-
     def test_draft_watermark_present(self):
         text = _extract_pdf_text(render_pdf(_make_record("CERTIFICATE")))
         assert "DRAFT" in text
@@ -209,11 +193,17 @@ class TestDeficiencyReportContent:
 
 
 # ---------------------------------------------------------------------------
-# Privacy: phone number never in full
+# Phone display and legacy records
 # ---------------------------------------------------------------------------
 
-class TestPhonePrivacy:
-    def test_full_phone_not_in_certificate(self):
+class TestPhoneDisplay:
+    def test_full_international_phone_in_certificate(self):
+        record = _make_record("CERTIFICATE", extra_device={"phone_number": "+254712345678"})
+        text = _extract_pdf_text(render_pdf(record))
+        assert "+254712345678" in text
+        assert "******6789" not in text
+
+    def test_legacy_phone_is_masked_in_certificate(self):
         record = _make_record("CERTIFICATE", extra_device={"phone_number_last4": "9999"})
         text = _extract_pdf_text(render_pdf(record))
         # last 4 may appear, but a full 10–12 digit number must not
@@ -330,3 +320,52 @@ class TestRobustness:
         text = _extract_pdf_text(b)
         # Should mention the malfunction in the certificate body
         assert "Battery drains fast" in text
+
+
+def test_certificate_crest_and_declaration_precede_contract_appendix():
+    from pypdf import PdfReader
+
+    certificate = PdfReader(io.BytesIO(render_pdf(_make_record())))
+    first_page = certificate.pages[0]
+    assert len(first_page.images) == 1
+    text = first_page.extract_text()
+    headings = (
+        "IN THE SMALL CLAIMS COURT",
+        "CLAIMANT",
+        "RESPONDENT",
+        "CERTIFICATE UNDER SECTION 106B(4)",
+        "attached Schedule",
+        "SIGNATURE OF DECLARANT",
+    )
+    positions = [text.index(heading) for heading in headings]
+    assert positions == sorted(positions)
+    assert "Appendix" not in text
+    schedule_page = certificate.pages[1].extract_text()
+    assert "SCHEDULE" in schedule_page
+    assert "conversation.png" in schedule_page
+    assert "DRAWN & FILED BY" in schedule_page
+    assert "Contract Analysis" in certificate.pages[2].extract_text()
+
+    report = PdfReader(io.BytesIO(render_pdf(_make_record("DEFICIENCY_REPORT"))))
+    assert all(not page.images for page in report.pages)
+
+
+def test_evidence_schedule_wraps_values_and_repeats_headings():
+    from pypdf import PdfReader
+
+    record = _make_record()
+    fingerprint = "0123456789abcdef" * 4
+    filename = "long_filename_" * 12 + "final_screenshot.png"
+    record["evidence"] = [
+        dict(record["evidence"][0], file_name=filename, server_sha256=fingerprint)
+        for _ in range(20)
+    ]
+    reader = PdfReader(io.BytesIO(render_pdf(record)))
+    schedule_pages = [
+        text for page in reader.pages if "File name" in (text := page.extract_text())
+    ]
+    assert len(schedule_pages) > 1
+    for page in schedule_pages:
+        compact_text = "".join(page.split())
+        assert filename in compact_text
+        assert fingerprint in compact_text

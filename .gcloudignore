@@ -1,12 +1,8 @@
-# Root-level .gcloudignore for gcloud builds submit .
-# Build context = repo root (Dockerfile needs backend/ + data/)
-# Everything else is excluded to keep the upload small.
+# Root-level .gcloudignore — build context = repo root
+# Dockerfile (backend/Dockerfile) needs: backend/ and data/
+# Everything else excluded to keep upload small.
 
-# Include only what the build needs:
-#   backend/   — application code
-#   data/      — manifest.json and processed files for RulesRetriever
-# Everything below is excluded.
-
+# Top-level directories not needed for the Docker build
 frontend/
 e2e/
 docs/
@@ -19,29 +15,37 @@ backups/
 SCCImages/
 hosting-public/
 firestore-tests/
+venv/
 
-# Large or generated files at root
-*.pdf
-*.zip
-*.ipynb
-*.txt
-*.md
-*.json
-*.log
-*.sh
-*.py
-locations.db
-Makefile
-firebase.json
-firestore.rules
-firestore.indexes.json
-storage.rules
+# Top-level files (note leading / = root-level only, not recursive)
+/*.pdf
+/*.zip
+/*.ipynb
+/*.txt
+/*.md
+/*.log
+/*.sh
+/*.db
+/Makefile
+/firebase.json
+/firestore.rules
+/firestore.indexes.json
+/storage.rules
+/pytest.ini
+/deploy-log.md
+/cloudbuild.yaml
+/.gcloudignore
+/.gitignore
+/CRIMINAL-LAW-By-Musyoka.pdf
+/StatutesPackaged.zip
+/legalai-e2e.zip
 
-# Python / venv
+# Backend exclusions (venv, caches, secrets, large backup dirs)
 backend/venv/
 backend/__pycache__/
+backend/**/__pycache__/
 backend/*.pyc
-backend/*.pyo
+backend/**/*.pyc
 backend/.env
 backend/debug_highlights/
 backend/logs/
@@ -54,8 +58,8 @@ backend/Const_IntepretationLaws/
 backend/legalai-scc-firebase-adminsdk-fbsvc-73bde27853.json
 backend/legalai-service-account.json
 backend/*.zip
+backend/SCCases.zip
+backend/caselaw.zip
 
-# Git
+# .git
 .git/
-.gitignore
-.gcloudignore

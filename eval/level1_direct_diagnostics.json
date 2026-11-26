@@ -1,0 +1,10 @@
+[
+  {"id":"A","query":"Why was the CCTV evidence rejected in Republic v Barisa Wayu Mataguda?","case":"2011KEHC1481(KLR)","gold":["without the required certificate"],"category":"reasoning"},
+  {"id":"B","query":"What was the ruling in Republic v Barisa Wayu Mataguda, 2011 KEHC 1481 (KLR)?","case":"2011KEHC1481(KLR)","gold":["this CD is inadmissible"],"category":"outcome"},
+  {"id":"C","query":"Who were PW11 and PW4 in Republic v Barisa Wayu Mataguda, and what were their roles in the production of CCTV evidence?","case":"2011KEHC1481(KLR)","gold":["Michael Oduor","Lydia Kaguna Japeth"],"category":"fact"},
+  {"id":"D","query":"What happened to the original CCTV footage in Republic v Barisa Wayu Mataguda?","case":"2011KEHC1481(KLR)","gold":["footage was erased"],"category":"fact"},
+  {"id":"E","query":"Did the court admit or reject the CD containing CCTV footage in Republic v Barisa Wayu Mataguda?","case":"2011KEHC1481(KLR)","gold":["this CD is inadmissible"],"category":"outcome"},
+  {"id":"F","query":"2011 KEHC 1481 (KLR)","case":"2011KEHC1481(KLR)","gold":[],"category":"excluded_identity"},
+  {"id":"G","query":"What did the court decide regarding electronic evidence in Republic v Barisa Wayu Matriguda?","case":"2011KEHC1481(KLR)","gold":["this CD is inadmissible"],"category":"outcome"},
+  {"id":"H","query":"What are the requirements for admissibility of electronic evidence under Section 106B(4) of the Kenyan Evidence Act?","statute":"Evidence Act","section":"106B","gold":["identifying the electronic record","particulars of any device","conditions mentioned in subsection (2)","person occupying a responsible position"],"category":"statute"}
+]

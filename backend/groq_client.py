@@ -1,20 +1,11 @@
-"""
-Shared Groq API client with shuffled key rotation on 429/403.
-
-Keys are shuffled on every call so rate-limit pressure is spread evenly across
-all configured keys.  Pass ``preferred_key`` to try a specific key first (e.g.
-a dedicated per-service key); if that key is rate-limited the client falls
-through to the remaining keys in shuffled order — seamlessly, without the
-caller knowing.
-
-Do NOT change Qclassifier.py's Groq logic — that module manages its own key.
-"""
-
+"""Shared Groq HTTP transport with bounded attempts and provider admission."""
 import os
-import random
 import re
 import time
 import requests
+from collections import deque
+from threading import BoundedSemaphore, Lock
+from groq_budget import ACTIVE, BudgetUnavailable, provider_limits
 
 GROQ_MODEL = "qwen/qwen3.8-27b"
 GROQ_URL   = "https://api.groq.com/openai/v1/chat/completions"
@@ -23,7 +14,7 @@ _THINK_RE = re.compile(r"<think>.*?</think>", re.DOTALL)
 
 
 class GroqRateLimitError(RuntimeError):
-    """Raised when every configured Groq key is rate-limited."""
+    """Provider or local admission state prevents another attempt."""
 
 class GroqPayloadTooLargeError(RuntimeError):
     """Raised when the request body exceeds Groq's size limit (HTTP 413).
@@ -38,25 +29,25 @@ def get_groq_keys() -> list[str]:
             if k == "GROQ_API_KEY" or k.startswith("GROQ_API_KEY_")]
 
 
-def _build_key_order(preferred_key: str | None) -> list[str]:
-    """
-    Return the list of keys to try for one round.
+_rate_lock = Lock()
+_admissions = deque()
+_blocked_until = 0.0
+_rpm, _tpm, _max_concurrency = provider_limits()
+_concurrency = BoundedSemaphore(_max_concurrency)
 
-    If ``preferred_key`` is given it goes first; the remaining keys are
-    shuffled so each call distributes load differently.
-    """
-    all_keys = get_groq_keys()
-    if not all_keys:
-        raise RuntimeError("No GROQ_API_KEY configured")
 
-    if preferred_key and preferred_key in all_keys:
-        rest = [k for k in all_keys if k != preferred_key]
-        random.shuffle(rest)
-        return [preferred_key] + rest
 
-    shuffled = list(all_keys)
-    random.shuffle(shuffled)
-    return shuffled
+def _retry_after(value):
+    from email.utils import parsedate_to_datetime
+    if not value:
+        return 30.0
+    try:
+        return max(0.0, float(value))
+    except ValueError:
+        try:
+            return max(0.0, parsedate_to_datetime(value).timestamp() - time.time())
+        except (TypeError, ValueError, OverflowError):
+            return 30.0
 
 
 def call_groq(
@@ -69,79 +60,85 @@ def call_groq(
     api_key: str | None = None,
     seed: int | None = None,
     extra_body: dict | None = None,
+    stage: str | None = None,
 ) -> str:
-    """
-    POST to Groq with shuffled key rotation on 429/403.
+    """Issue at most one HTTP attempt. Suppress redirects and provider retries."""
+    global _blocked_until
+    keys = get_groq_keys()
+    key = api_key if api_key in keys else (keys[0] if keys else None)
+    if not key:
+        raise BudgetUnavailable("Groq is unavailable")
+    budget = ACTIVE.get()
+    if stage is not None and budget is None:
+        raise BudgetUnavailable("Research stage has no shared Groq budget")
 
-    On every call the key list is shuffled so load spreads across all keys.
-    ``api_key`` is tried first; if it is rate-limited the call falls through
-    to the remaining keys automatically — the caller never sees the switch.
-
-    After all keys fail in one pass, waits 30 s and retries once more.
-    Raises GroqRateLimitError if every key in both rounds fails.
-    Raises requests.HTTPError immediately for non-rate-limit errors.
-    Returns raw text with <think>…</think> blocks stripped.
-    """
-    _MAX_ROUNDS = 2
-
-    for round_num in range(_MAX_ROUNDS):
-        keys = _build_key_order(api_key)
-
-        for idx, key in enumerate(keys):
-            try:
-                body: dict = {
-                    "model": model,
-                    "messages": msgs,
-                    "temperature": temperature,
-                    "max_tokens": max_tokens,
-                }
-                if seed is not None:
-                    body["seed"] = seed
-                if extra_body:
-                    body.update(extra_body)
-                resp = requests.post(
-                    GROQ_URL,
-                    headers={"Authorization": f"Bearer {key}",
-                             "Content-Type": "application/json"},
-                    json=body,
-                    timeout=timeout,
-                )
-                if resp.status_code == 413:
-                    body_snippet = resp.text[:600]
-                    print(f"[WARN] Groq 413 key-slot {idx} (model={model}): {body_snippet}")
-                    # Groq uses 413 for two distinct problems:
-                    #   • rate_limit_exceeded (TPM budget exhausted) — rotating keys helps
-                    #   • request_too_large   (HTTP body too big)    — no key will help
-                    try:
-                        err_code = resp.json().get("error", {}).get("code", "")
-                    except Exception:
-                        err_code = ""
-                    if err_code == "rate_limit_exceeded":
-                        # Treat as 429: rotate to the next key
-                        continue
-                    # True payload-size error — stop immediately
-                    raise GroqPayloadTooLargeError(
-                        f"Request payload too large for Groq: {body_snippet}"
-                    )
-                if resp.status_code in (429, 403):
-                    print(f"[WARN] Groq {resp.status_code} key-slot {idx} "
-                          f"(model={model}): {resp.text[:200]}")
-                    continue
-                if not resp.ok:
-                    print(f"[ERROR] Groq {resp.status_code} key-slot {idx} "
-                          f"(model={model}): {resp.text[:500]}")
-                resp.raise_for_status()
-                raw = resp.json()["choices"][0]["message"]["content"]
-                return _THINK_RE.sub("", raw).strip()
-            except requests.HTTPError:
-                raise
-
-        if round_num < _MAX_ROUNDS - 1:
-            n = len(keys)
-            print(f"[WARN] All {n} Groq keys exhausted on round {round_num + 1}, "
-                  "waiting 30s before retry…")
-            time.sleep(30)
-
-    raise GroqRateLimitError(
-        "Groq API rate limit exceeded on all configured keys; wait a moment and retry"
-    )
+    estimated_tokens = sum(len(str(m.get("content", "")).encode()) for m in msgs) + max_tokens
+    body = {"model": model, "messages": msgs, "temperature": temperature, "max_tokens": max_tokens}
+    if seed is not None:
+        body["seed"] = seed
+    if extra_body:
+        body.update({k: v for k, v in extra_body.items() if k not in body})
+    if not _concurrency.acquire(blocking=False):
+        raise GroqRateLimitError("Groq concurrency limit reached")
+    started = time.monotonic()
+    attempted = False
+    status = None
+    succeeded = False
+    cooldown = 0.0
+    admission = None
+    try:
+        with _rate_lock:
+            now = time.monotonic()
+            while _admissions and now - _admissions[0][0] >= 60:
+                _admissions.popleft()
+            if now < _blocked_until or len(_admissions) >= _rpm:
+                raise GroqRateLimitError("Groq request rate limit reached")
+            if estimated_tokens + sum(tokens for _, tokens in _admissions) > _tpm:
+                raise GroqRateLimitError("Groq token limit reached")
+            admission = (now, estimated_tokens)
+            _admissions.append(admission)
+        if budget:
+            budget.take(stage, estimated_tokens, timeout)
+        attempted = True
+        resp = requests.post(
+            GROQ_URL, headers={"Authorization": f"Bearer {key}", "Content-Type": "application/json"},
+            json=body, timeout=timeout, allow_redirects=False,
+        )
+        status = resp.status_code
+        if status == 429:
+            cooldown = _retry_after(resp.headers.get("Retry-After"))
+            with _rate_lock:
+                _blocked_until = max(_blocked_until, time.monotonic() + cooldown)
+            raise GroqRateLimitError("Groq returned HTTP 429")
+        if status == 413:
+            raise GroqPayloadTooLargeError("Groq rejected the request size")
+        if not 200 <= status < 300:
+            raise requests.HTTPError(f"Groq returned HTTP {status}")
+        payload = resp.json()
+        if budget:
+            budget.outcomes[stage]["usage"] = {
+                k: payload.get("usage", {}).get(k, 0) for k in ("prompt_tokens", "completion_tokens")
+            }
+        result = _THINK_RE.sub("", payload["choices"][0]["message"]["content"]).strip()
+        succeeded = True
+        return result
+    finally:
+        _concurrency.release()
+        if not attempted and admission:
+            with _rate_lock:
+                if admission in _admissions:
+                    _admissions.remove(admission)
+        if budget and attempted:
+            if budget.finish:
+                try:
+                    budget.finish(stage, cooldown)
+                except Exception:
+                    # An unreleased lease expires and cannot free another stage.
+                    pass
+            budget.outcomes[stage].update({
+                "status": status,
+                "attempts": 1,
+                "succeeded": succeeded,
+                "retry_attempts": 0,
+                "latency_ms": round((time.monotonic() - started) * 1000),
+            })

@@ -4,25 +4,24 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
-  Scale, FileSearch, FolderOpen, ScrollText, Menu, X, ChevronLeft,
+  Scale, Menu, X, ChevronLeft,
 } from "lucide-react";
 import { UserMenu } from "@/app/components/UserMenu";
 import { useAuth } from "@/app/context/AuthContext";
 
-// ── Design tokens (match ChatView exactly) ────────────────────────────────
-const BG      = "#FAF7F0";
-const SURFACE = "#FFFDF8";
-const GOLD    = "#C9971A";
-const GOLD_DK = "#A87A0C";
+const BG      = "#F9F7F2";
+const SURFACE = "#F4F1E8";
+const GOLD    = "#A87317";
+const GOLD_DK = "#80520D";
 const BORDER  = "#ECE6D8";
 const INK     = "#151515";
 const MUTED   = "#6B6660";
 const MNR     = "var(--font-manrope), system-ui, sans-serif";
 
 const NAV_ITEMS = [
-  { href: "/litigant/analysis",     label: "Evidence Analysis",    Icon: FileSearch  },
-  { href: "/litigant/evidence",     label: "Evidence History",     Icon: FolderOpen  },
-  { href: "/litigant/certificates", label: "Certificate History",  Icon: ScrollText  },
+  { href: "/litigant/analysis",     label: "New analysis"  },
+  { href: "/litigant/evidence",     label: "Evidence library"  },
+  { href: "/litigant/certificates", label: "Certificates"  },
 ];
 
 function SidebarContent({
@@ -36,27 +35,22 @@ function SidebarContent({
 }) {
   return (
     <div className="flex flex-col flex-1 overflow-y-auto">
-      <nav className="flex flex-col py-4 flex-1" aria-label="Litigant navigation">
-        {NAV_ITEMS.map(({ href, label, Icon }) => {
+      <nav className="flex flex-col py-1 flex-1" aria-label="Litigant navigation">
+        {NAV_ITEMS.map(({ href, label }) => {
           const active = pathname.startsWith(href);
           return (
             <Link
               key={href}
               href={href}
               onClick={onNav}
-              className="flex items-center gap-3 mx-2 mb-0.5 rounded-xl px-3 py-2.5 text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-brand-gold focus:ring-offset-1"
+              className="flex items-center gap-3 mx-2 mb-0.5 rounded-lg px-3 py-2 text-sm font-medium transition-all focus:outline-none focus:ring-2 focus:ring-brand-gold focus:ring-offset-1"
               style={{
-                background: active ? "#F6E7B8" : "transparent",
+                background: active ? "#FBF0D6" : "transparent",
                 border: `1.5px solid ${active ? GOLD : "transparent"}`,
                 color: active ? GOLD_DK : MUTED,
               }}
               aria-current={active ? "page" : undefined}
             >
-              <Icon
-                className="h-4 w-4 shrink-0"
-                style={{ color: active ? GOLD : MUTED }}
-                aria-hidden="true"
-              />
               {label}
             </Link>
           );
@@ -102,7 +96,7 @@ export default function LitigantLayout({
       {/* ── Top bar ───────────────────────────────────────────────── */}
       <header
         className="shrink-0 z-20 flex items-center justify-between px-4 py-2.5"
-        style={{ background: BG, borderBottom: `1px solid ${BORDER}` }}
+        style={{ background: "#fff", borderBottom: `1px solid ${BORDER}` }}
       >
         <div className="flex items-center gap-3">
           {/* Hamburger (mobile) */}
@@ -143,7 +137,7 @@ export default function LitigantLayout({
       <div className="flex flex-1 overflow-hidden">
         {/* ── Desktop sidebar ─────────────────────────────────────── */}
         <aside
-          className="hidden lg:flex flex-col shrink-0 w-56"
+          className="hidden lg:flex flex-col shrink-0 w-48"
           style={{
             background: SURFACE,
             borderRight: `1px solid ${BORDER}`,
@@ -187,6 +181,7 @@ export default function LitigantLayout({
           }}
           aria-label="Litigant navigation drawer"
           aria-hidden={!drawerOpen}
+          inert={!drawerOpen}
         >
           <div
             className="flex items-center justify-between px-4 py-3 shrink-0"
@@ -211,7 +206,7 @@ export default function LitigantLayout({
 
         {/* ── Main content area ────────────────────────────────────── */}
         <main
-          className="flex-1 overflow-y-auto"
+          className="min-w-0 flex-1 overflow-y-auto overscroll-contain"
           id="main-content"
           tabIndex={-1}
         >

@@ -41,6 +41,22 @@ def _make_cert_number() -> str:
     return f"SCC106B-{today}-{suffix}"
 
 
+def contract_analysis_fields(snapshot: dict) -> dict:
+    """Keep the status and summary fields needed to regenerate a PDF."""
+    result = snapshot.get("result") or {}
+    statuses = {
+        letter: element.get("status")
+        for letter, element in (result.get("elements") or {}).items()
+        if isinstance(element, dict)
+    }
+    statuses.update(snapshot.get("derived_statuses") or {})
+    return {
+        "derived_statuses": statuses,
+        "confidence": snapshot.get("confidence"),
+        "verdict": snapshot.get("verdict") or result.get("overall_verdict"),
+    }
+
+
 def save_certificate(
     uid: str,
     analysis_id: str,
@@ -82,6 +98,7 @@ def save_certificate(
         "device_facts":     facts.model_dump(),
         "gate":             gate.model_dump(),
         "analysis_summary": analysis_summary,
+        **contract_analysis_fields(snapshot),
         "created_at":       fb_firestore.SERVER_TIMESTAMP,
         "schema_version":   _SCHEMA_VERSION,
     }

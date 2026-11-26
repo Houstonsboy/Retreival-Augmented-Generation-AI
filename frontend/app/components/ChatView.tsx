@@ -482,7 +482,7 @@ export function ChatView({ initialConversationId }: { initialConversationId?: st
       const pinned_docs = [...pinnedDocs.values()].map(d => ({ type: d.type, id: d.dbKey }));
       const response = await apiFetch("/api/qretrieve", {
         method: "POST",
-        body: JSON.stringify({ query, ...(pinned_docs.length > 0 ? { pinned_docs } : {}) }),
+        body: JSON.stringify({ query, client_turn_id: thisTurnId, ...(pinned_docs.length > 0 ? { pinned_docs } : {}) }),
         signal: controller.signal,
       });
       const data = await response.json();
@@ -502,6 +502,7 @@ export function ChatView({ initialConversationId }: { initialConversationId?: st
           body: JSON.stringify({
             query,
             retrieval: data.retrieval,
+            retrieval_signature: data.retrieval_signature,
             retrieval_mode: data.classification?.retrieval_mode || "",
             classification: data.classification || {},
             conversation_id: thisConvId,
@@ -546,6 +547,12 @@ export function ChatView({ initialConversationId }: { initialConversationId?: st
               setNotSavedNote(true);
             }
           }
+        } else {
+          const failure = await ansRes.json().catch(() => null);
+          aiResponse = typeof failure?.error === "string"
+            ? failure.error
+            : `Answer generation failed (HTTP ${ansRes.status}).`;
+          historyStatus = "failed";
         }
       } catch (inner) {
         if ((inner as any)?.name === "AbortError") return;

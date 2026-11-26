@@ -49,8 +49,8 @@ _COURT_ABBREVS = {
 }
 
 _CITATION_RE = re.compile(
-    r"\[(?P<year>\d{4})\]\s*(?P<court>[A-Z]{2,6})\s+(?P<number>\d+)",
-    re.IGNORECASE,
+    r"(?<!\w)\[?(?P<year>\d{4})\]?\s*(?P<court>KE[A-Z]{2,5}|SCC)"
+    r"\s*(?P<number>\d+)(?!\w)", re.IGNORECASE,
 )
 _EKLR_RE = re.compile(r"\[(?P<year>\d{4})\]\s*eKLR", re.IGNORECASE)
 

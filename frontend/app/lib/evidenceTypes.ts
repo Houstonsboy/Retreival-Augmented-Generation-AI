@@ -60,7 +60,8 @@ export type ProductionMethod =
 export interface DeviceFacts {
   device_make: string;
   device_model: string;
-  phone_number_last4: string | null;
+  phone_number?: string | null;
+  phone_number_last4?: string | null;
   production_method: ProductionMethod;
   owner_is_declarant: boolean;
   lawful_control: boolean;

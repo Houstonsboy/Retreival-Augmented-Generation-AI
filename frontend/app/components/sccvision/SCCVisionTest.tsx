@@ -2,19 +2,21 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
-  Upload, X, ScanText, Loader2, Copy, Check, AlertCircle, Download,
-  Scale, ShieldCheck, FileWarning, ChevronDown, ChevronRight, Save,
-  FolderOpen, CalendarDays, Award, Printer, ZoomIn, Sparkles,
+  Upload, X, Loader2, Copy, Check, AlertCircle, Download,
+  Scale, ShieldCheck, FileWarning, ChevronDown, ChevronRight, Award,
+  FolderOpen, CalendarDays, Printer, ZoomIn, Sparkles, ArrowLeft, ArrowRight,
 } from "lucide-react";
 import { apiFetch } from "@/app/lib/api";
 import type { CertificateRecord } from "@/app/lib/evidenceTypes";
+import { Choices, DEVICE_QUESTIONS, StepHeading, type DeviceAnswers } from "./Workshop";
+import "./workshop.css";
 import { DeviceQuestionnaire } from "./DeviceQuestionnaire";
 import { useAuth } from "@/app/context/AuthContext";
 import { uploadEvidenceFile, generateCaseTitle, listUserEvidence } from "@/app/lib/storageService";
 
 // ── Design tokens ──────────────────────────────────────────────────────────
-const GOLD    = "#C9971A";
-const GOLD_DK = "#A87A0C";
+const GOLD    = "#A87317";
+const GOLD_DK = "#945E0D";
 const BORDER  = "#ECE6D8";
 const CREAM2  = "#F5F0E4";
 const INK     = "#151515";
@@ -414,6 +416,21 @@ export function SCCVisionTest({ initialCaseId }: { initialCaseId?: string } = {}
     }
     return newCaseFile();
   });
+  const [step, setStep] = useState(0);
+  const [deviceAnswers, setDeviceAnswers] = useState<DeviceAnswers>({});
+  const loadInputRef = useRef<HTMLInputElement>(null);
+  const workshopRef = useRef<HTMLElement>(null);
+
+  const goToStep = (next: number) => {
+    setError(null);
+    setStep(next);
+    requestAnimationFrame(() => {
+      const workshop = workshopRef.current;
+      workshop?.closest("main")?.scrollTo({ top: 0 });
+      workshop?.querySelector<HTMLElement>("#sccvision-heading")?.focus({ preventScroll: true });
+    });
+  };
+
   const [consent, setConsent] = useState(false);
 
   const [ocrLoading, setOcrLoading] = useState(false);
@@ -425,7 +442,6 @@ export function SCCVisionTest({ initialCaseId }: { initialCaseId?: string } = {}
   const [runCount, setRunCount] = useState(0);
 
   const [showCertificate, setShowCertificate] = useState(false);
-  const [showQuestionnaire, setShowQuestionnaire] = useState(false);
   const [certResult, setCertResult] = useState<CertificateRecord | null>(null);
 
   const [saving, setSaving] = useState(false);
@@ -552,50 +568,66 @@ export function SCCVisionTest({ initialCaseId }: { initialCaseId?: string } = {}
 
   // ── Add evidence: OCR each file, classify/normalize, push to case file ──
   const handleAddEvidence = async () => {
-    if (!files.length || ocrLoading) return;
+    if (ocrLoading) return false;
+    if (!files.length) return true;
     setOcrLoading(true);
     setError(null);
 
     try {
-      for (const [i, f] of files.entries()) {
+      for (const [i, file] of files.entries()) {
         const fd = new FormData();
-        fd.append("file", f);
+        fd.append("file", file);
         const extractRes = await apiFetch(`/sccvision/extract?invert=${invert}&upscale=${upscale}`, {
           method: "POST", body: fd,
         });
         const ocr = await extractRes.json().catch(() => null);
-        if (!extractRes.ok) throw new Error(ocr?.error || `OCR failed (${extractRes.status})`);
+        if (!extractRes.ok) throw new Error(ocr?.error || `Could not read ${file.name} (${extractRes.status}).`);
 
-        const hash = await sha256Hex(await f.arrayBuffer());
-        // Keep original file so we can upload to Firebase Storage later
-        filesByHash.current.set(hash, { file: f, evidenceType: labels[i] || "" });
-        // Keep preview URL so the evidence list can show thumbnails after OCR
-        if (previewUrls[i]) previewsByHash.current.set(hash, previewUrls[i]);
+        const hash = await sha256Hex(await file.arrayBuffer());
         const procRes = await apiFetch("/sccvision/evidence/process", {
           method: "POST",
           body: JSON.stringify({
             ocr_result: ocr,
             classification: labels[i] || "auto",
-            file_name: f.name,
+            file_name: file.name,
             sha256: hash,
           }),
         });
         const proc = await procRes.json().catch(() => null);
-        if (!procRes.ok) throw new Error(proc?.error || `Evidence processing failed (${procRes.status})`);
+        if (!procRes.ok) throw new Error(proc?.error || `Could not process ${file.name} (${procRes.status}).`);
 
-        setCaseFile((prev) => ({ ...prev, evidence: [...prev.evidence, proc.evidence as CaseEvidence] }));
+        const previousPreview = previewsByHash.current.get(hash);
+        if (previousPreview) URL.revokeObjectURL(previousPreview);
+        filesByHash.current.set(hash, { file, evidenceType: labels[i] || "" });
+        previewsByHash.current.set(hash, previewUrls[i]);
+        setCaseFile((prev) => ({
+          ...prev,
+          evidence: [...prev.evidence.filter((item) => item.sha256 !== hash), proc.evidence as CaseEvidence],
+        }));
+        // Keep only unread files queued if a later file fails.
+        setFiles((prev) => prev.slice(1));
+        setPreviewUrls((prev) => prev.slice(1));
+        setLabels((prev) => prev.slice(1));
       }
-      setFiles([]);
-      // Only revoke URLs not kept in previewsByHash for the evidence list
-      const keptUrls = new Set(previewsByHash.current.values());
-      previewUrls.forEach((u) => { if (!keptUrls.has(u)) URL.revokeObjectURL(u); });
-      setPreviewUrls([]);
-      setLabels([]);
+      return true;
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Could not reach the backend. Is it running on port 5000?");
+      setError(e instanceof Error ? e.message : "Could not read the selected screenshots.");
+      return false;
     } finally {
       setOcrLoading(false);
     }
+  };
+
+  const continueToDeviceQuestions = async () => {
+    if (!consent) {
+      setError("Confirm that you agree to have your screenshots analysed.");
+      return;
+    }
+    if (!files.length && !caseFile.evidence.length) {
+      setError("Add at least one screenshot to continue.");
+      return;
+    }
+    if (await handleAddEvidence()) goToStep(1);
   };
 
   const removeEvidence = useCallback((id: string) => {
@@ -638,13 +670,17 @@ export function SCCVisionTest({ initialCaseId }: { initialCaseId?: string } = {}
         throw new Error(body?.error || `Analysis failed (${res.status})`);
       }
       setAnalysis(body as AnalystResponse);
+      setCertResult(null);
+      goToStep(2);
       setRunCount((n) => n + 1);
       const openRequests: CaseRequest[] = (body.result.follow_up_requests as FollowUpRequest[])
         .filter((r) => !caseFile.requests.some((x) => x.id === r.id && x.status !== "open"))
         .map((r) => ({ id: r.id, status: "open" as const, last_seen_run: runCount + 1 }));
       // Strip server-only fields before storing in caseFile to prevent the
       // accumulated analyses from bloating the payload sent on the next run.
-      const { analysis_input: _ai, verification: _v, ...slimBody } = body;
+      const slimBody = { ...body };
+      delete slimBody.analysis_input;
+      delete slimBody.verification;
       setCaseFile((prev) => ({
         ...prev,
         requests: [...prev.requests.filter((x) => x.status !== "open"), ...openRequests],
@@ -709,6 +745,7 @@ export function SCCVisionTest({ initialCaseId }: { initialCaseId?: string } = {}
         if (!procRes.ok) throw new Error(proc?.error || `Processing failed (${procRes.status})`);
 
         const ev = proc.evidence as CaseEvidence;
+        filesByHash.current.set(hash, { file: answerUploadFile, evidenceType: classification });
         setCaseFile((prev) => ({
           ...prev,
           evidence: [...prev.evidence, ev],
@@ -877,6 +914,7 @@ export function SCCVisionTest({ initialCaseId }: { initialCaseId?: string } = {}
       }
 
       setAnalysis(body as AnalystResponse);
+      setCertResult(null);
       setRunCount((n) => n + 1);
       setShowAllGuided(false);
 
@@ -886,7 +924,9 @@ export function SCCVisionTest({ initialCaseId }: { initialCaseId?: string } = {}
           ...prev.requests.filter((r) => r.id !== req.id),
           { id: req.id, status: "answered" as const, last_seen_run: runCount + 1 },
         ];
-        const { analysis_input: _ai, verification: _v, ...slimBody } = body;
+        const slimBody = { ...body };
+        delete slimBody.analysis_input;
+        delete slimBody.verification;
         return {
           ...prev,
           evidence: [...prev.evidence, ...newFiles],
@@ -971,7 +1011,7 @@ export function SCCVisionTest({ initialCaseId }: { initialCaseId?: string } = {}
   };
 
   const saveCaseFile = () => {
-    const blob = new Blob([JSON.stringify(caseFile, null, 2)], { type: "application/json" });
+    const blob = new Blob([JSON.stringify({ ...caseFile, device_answers: deviceAnswers }, null, 2)], { type: "application/json" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
@@ -985,9 +1025,18 @@ export function SCCVisionTest({ initialCaseId }: { initialCaseId?: string } = {}
   const loadCaseFile = (file: File) => {
     file.text().then((text) => {
       try {
-        const parsed = JSON.parse(text) as CaseFile;
-        if (!parsed.evidence) throw new Error("Not a case file");
+        const { device_answers, ...parsed } = JSON.parse(text) as CaseFile & { device_answers?: DeviceAnswers };
+        if (!Array.isArray(parsed.evidence) || !parsed.case_context || !Array.isArray(parsed.requests) ||
+            !Array.isArray(parsed.analyses) || !Array.isArray(parsed.user_provided_facts) ||
+            !Array.isArray(parsed.rejected_facts)) {
+          throw new Error("Not a case file");
+        }
+        setSaveResult(null);
+        setConsent(false);
         setCaseFile(parsed);
+        setDeviceAnswers(device_answers ?? {});
+        setCertResult(null);
+        goToStep(0);
         setAnalysis(null);
         setRunCount(parsed.analyses?.length ?? 0);
       } catch {
@@ -1021,313 +1070,557 @@ export function SCCVisionTest({ initialCaseId }: { initialCaseId?: string } = {}
   const effectiveVerdict = analysis?.verification.verdict_after ?? analysis?.result.overall_verdict ?? "";
   const verdict = verdictTone(effectiveVerdict);
 
-  const openFollowUps = analysis?.result.follow_up_requests ?? [];
+  const openFollowUps = (analysis?.result.follow_up_requests ?? []).filter((request) =>
+    caseFile.requests.some((item) => item.id === request.id && item.status === "open"),
+  );
+  const eligible = analysis != null && isCertEligible(analysis);
+  const elements = Object.values(analysis?.result.elements ?? {});
+  const clearElements = elements.filter((item) => item.status === "PRESENT").length;
+  const canPrepare = eligible && Boolean(analysis?.analysis_id) && !certResult;
+  const titles = [
+    "Add your evidence", "Three questions about your device", "Here’s what we found",
+    certResult ? "Download your PDF" : "Confirm your certificate",
+  ];
+  const intros = [
+    "Upload screenshots that show your agreement or payment. We’ll read them and flag anything that may be missing.",
+    "Tell us where your screenshots came from. You can review these answers when preparing a certificate.",
+    "Review what your screenshots show and see what could strengthen your evidence.",
+    certResult ? "Your document is also available in Certificates."
+      : "Check the device details and review the preview before generating your PDF.",
+  ];
 
   return (
-    <section
-      aria-labelledby="sccvision-heading"
-      className="rounded-2xl p-5 sm:p-6"
-      style={{ background: SURFACE, border: `1px solid ${BORDER}` }}
-    >
-      <div className="flex items-center gap-2 mb-1 flex-wrap">
-        <ScanText className="h-4 w-4" style={{ color: GOLD }} aria-hidden="true" />
-        <h2 id="sccvision-heading" className="text-base font-bold" style={{ color: INK }}>
-          SCCVision Contract Evidence Analyst
-        </h2>
-        <span className="ml-auto text-[11px] font-mono" style={{ color: MUTED }}>{caseFile.case_id}</span>
-      </div>
-      <p className="text-xs leading-relaxed mb-5" style={{ color: MUTED }}>
-        Build a case from WhatsApp and M-Pesa screenshots, answer the analyst&apos;s
-        questions, then run a contract-validity analysis against Kenyan contract
-        law. The analysis is automated and is not legal advice.
-      </p>
+    <section ref={workshopRef} className="scc-workshop" data-step={step} aria-labelledby="sccvision-heading">
+      <StepHeading step={step} title={titles[step]}>{intros[step]}</StepHeading>
 
-      {/* ── Role ──────────────────────────────────── */}
-      <div className="mb-4">
-        <label className="block text-xs font-semibold mb-1.5" style={{ color: MUTED }}>
-          Your role in this case
-        </label>
-        <select value={caseFile.case_context.user_role}
-          onChange={(e) => setCaseFile((p) => ({ ...p, case_context: { ...p.case_context, user_role: e.target.value } }))}
-          className="w-full rounded-xl px-3 py-2.5 text-sm focus:outline-none appearance-none"
-          style={{ background: CREAM2, border: `1px solid ${BORDER}`, color: INK }}>
-          <option value="unknown">Not sure / not stated</option>
-          <option value="claimant">Claimant (I am suing)</option>
-          <option value="respondent">Respondent (I am being sued)</option>
-        </select>
-      </div>
+      {step === 0 && (
+        <div className="space-y-3">
+          <Choices name="case-role" legend="Your role in this case" value={caseFile.case_context.user_role}
+            options={[
+              { value: "claimant", label: "I’m making a claim" },
+              { value: "respondent", label: "A claim was made against me" },
+              { value: "unknown", label: "Not sure yet" },
+            ]}
+            onChange={(user_role) => setCaseFile((prev) => ({
+              ...prev, case_context: { ...prev.case_context, user_role },
+            }))}
+          />
+          <fieldset className="scc-card" disabled={ocrLoading}>
+            <div className="flex flex-wrap justify-between gap-x-3">
+              <p className="scc-label">Screenshots</p>
+              <p className="text-xs text-stone-600">PNG, JPG or WEBP · up to 10 MB each</p>
+            </div>
+            <input ref={inputRef} type="file" multiple accept={ACCEPTED.join(",")} hidden
+              onChange={(e) => { if (e.target.files?.length) pickFiles(e.target.files); e.target.value = ""; }} />
+            <button type="button" className="scc-drop" data-dragging={isDragging}
+              onClick={() => inputRef.current?.click()}
+              onDragOver={(e) => { e.preventDefault(); if (!ocrLoading) setIsDragging(true); }}
+              onDragLeave={() => setIsDragging(false)}
+              onDrop={(e) => { e.preventDefault(); if (!ocrLoading) handleDrop(e); }}
+            >
+              <Upload size={21} aria-hidden="true" />
+              <span className="text-sm font-bold">Drop screenshots here, or browse</span>
+              <span className="text-xs text-stone-600">WhatsApp or SMS chats, M-Pesa messages, written agreements</span>
+            </button>
 
-      {/* ── Case description ──────────────────────────────────────── */}
-      <div className="mb-5">
-        <div className="flex items-baseline justify-between mb-1.5">
-          <label className="text-xs font-semibold" style={{ color: MUTED }}>
-            Your account of the matter
-          </label>
-          <span className="text-[10px]" style={{ color: `${MUTED}99` }}>
-            unverified · used only to guide the analysis
-          </span>
-        </div>
-        <textarea
-          value={caseFile.case_context.user_account}
-          onChange={(e) => {
-            const el = e.target;
-            el.style.height = "auto";
-            el.style.height = `${el.scrollHeight}px`;
-            setCaseFile((p) => ({ ...p, case_context: { ...p.case_context, user_account: e.target.value } }));
-          }}
-          rows={4}
-          placeholder={
-            "Describe what happened in your own words — when you agreed, what was paid or promised, what went wrong, and what outcome you are seeking.\n\nThe analyst will not treat this as proven fact, but uses it to understand your perspective and ask better follow-up questions."
-          }
-          className="w-full rounded-xl px-3 py-2.5 text-sm focus:outline-none leading-relaxed"
-          style={{
-            background: CREAM2,
-            border: `1px solid ${BORDER}`,
-            color: INK,
-            resize: "vertical",
-            minHeight: "5.5rem",
-            overflow: "hidden",
-          }}
-        />
-      </div>
-
-      {/* ── Drop zone ──────────────────────────────────────────────── */}
-      <div
-        role="button"
-        tabIndex={0}
-        aria-label={files.length > 0 ? "Add more screenshots — click or drag and drop" : "Upload screenshots — click or drag and drop"}
-        onClick={() => inputRef.current?.click()}
-        onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") inputRef.current?.click(); }}
-        onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
-        onDragLeave={() => setIsDragging(false)}
-        onDrop={handleDrop}
-        className="flex flex-col items-center justify-center rounded-2xl border-2 border-dashed transition-all py-8 px-6 cursor-pointer focus:outline-none focus:ring-2 focus:ring-brand-gold focus:ring-offset-2"
-        style={{ borderColor: isDragging ? GOLD : BORDER, background: isDragging ? "#F6E7B833" : CREAM2 }}
-      >
-        <input
-          ref={inputRef}
-          type="file"
-          multiple
-          accept={ACCEPTED.join(",")}
-          className="hidden"
-          onChange={(e) => { if (e.target.files?.length) pickFiles(e.target.files); e.target.value = ""; }}
-          aria-hidden="true"
-        />
-        <div className="h-10 w-10 rounded-full flex items-center justify-center mb-3" style={{ background: `${GOLD}18` }} aria-hidden="true">
-          <Upload className="h-5 w-5" style={{ color: GOLD }} />
-        </div>
-        <p className="text-sm font-semibold text-center" style={{ color: INK }}>
-          {files.length > 0 ? "Add more files" : "Drop files here or click to browse"}
-        </p>
-        <p className="text-xs mt-1 text-center" style={{ color: MUTED }}>
-          {files.length > 0
-            ? "New files are added to the list below"
-            : `PNG, JPG, WEBP · multiple allowed · max ${formatBytes(MAX_BYTES)} each`}
-        </p>
-      </div>
-
-      {error && (
-        <div className="mt-3 flex items-start gap-2 rounded-xl px-4 py-3 text-xs"
-          style={{ background: "#FEF2F2", border: "1px solid #FECACA", color: "#B91C1C" }} role="alert">
-          <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" aria-hidden="true" />
-          <span>{error}</span>
+            {(files.length > 0 || caseFile.evidence.length > 0) && (
+              <ul className="mt-3 space-y-2" aria-label="Screenshots added">
+                {caseFile.evidence.map((ev) => {
+                  const thumbnail = (ev.sha256 ? previewsByHash.current.get(ev.sha256) : undefined) ?? ev.download_url;
+                  const name = ev.file_name || ev.evidence_id;
+                  const description = ev.type === "chat_screenshot" ? "Chat conversation"
+                    : ev.type === "mpesa_screenshot" ? "M-Pesa payment" : "Other screenshot";
+                  return (
+                    <li key={ev.evidence_id} className="flex items-center gap-3 rounded-lg border border-stone-200 px-2.5 py-2">
+                      {thumbnail && (
+                        <button type="button" aria-label={`Preview ${name}`}
+                          onClick={() => setPendingPreview({ url: thumbnail, name })}
+                          className="h-9 w-9 shrink-0 overflow-hidden rounded bg-stone-100">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img src={thumbnail} alt="" className="h-full w-full object-contain" />
+                        </button>
+                      )}
+                      <div className="min-w-0 flex-1">
+                        <p className="truncate text-xs font-semibold">{name}</p>
+                        <p className="text-xs text-stone-600">{description}</p>
+                      </div>
+                      <span className="text-xs text-stone-700">
+                        {ev.parse_layout === "unsupported_layout" ? "Needs review" : ev.ocr ? "Read" : "Saved"}
+                      </span>
+                      <button type="button" className="p-2" onClick={() => removeEvidence(ev.evidence_id)} aria-label={`Remove ${name}`}>
+                        <X size={15} aria-hidden="true" />
+                      </button>
+                    </li>
+                  );
+                })}
+                {files.map((file, index) => (
+                  <PendingFileCard key={previewUrls[index]} file={file} previewUrl={previewUrls[index]}
+                    label={labels[index] ?? ""} onRemove={() => removeFile(index)}
+                    onView={() => setPendingPreview({ url: previewUrls[index], name: file.name })}
+                    onLabelChange={(value) => setLabels((prev) =>
+                      prev.map((label, i) => i === index ? value as EvidenceType | "" : label)
+                    )}
+                  />
+                ))}
+              </ul>
+            )}
+          </fieldset>
+          <details className="scc-card scc-disclosure">
+            <summary>Tell us what happened <span className="font-normal text-stone-600">(optional)</span></summary>
+            <textarea className="scc-field mt-3" rows={4} aria-label="Tell us what happened"
+              value={caseFile.case_context.user_account}
+              onChange={(e) => setCaseFile((prev) => ({
+                ...prev, case_context: { ...prev.case_context, user_account: e.target.value },
+              }))}
+              placeholder="What did you agree to, what was paid or promised, and what went wrong?" />
+          </details>
+          <div className="scc-actions scc-footer">
+            <label className="mr-auto flex items-center gap-2 text-xs text-stone-700">
+              <input type="checkbox" checked={consent} disabled={ocrLoading}
+                onChange={(e) => { setConsent(e.target.checked); setError(null); }} />
+              I agree to have these files analysed automatically.
+            </label>
+            <button type="button" className="scc-button" onClick={saveCaseFile} disabled={ocrLoading || files.length > 0}
+              title={files.length > 0 ? "Continue to read the selected screenshots before saving a draft" : undefined}>Save draft</button>
+            <button type="button" className="scc-button scc-primary" onClick={continueToDeviceQuestions} disabled={ocrLoading}>
+              {ocrLoading ? <><Loader2 size={15} className="animate-spin" aria-hidden="true" /> Reading screenshots…</> : <>Continue <ArrowRight size={15} aria-hidden="true" /></>}
+            </button>
+          </div>
+          {files.length > 0 && <p className="text-xs text-stone-600">Continue to read the selected screenshots before saving a draft.</p>}
+          <details className="scc-disclosure px-1 text-stone-600">
+            <summary>Case file and reading options</summary>
+            <div className="scc-actions mt-3 text-xs">
+              <button type="button" className="scc-button" disabled={ocrLoading || files.length > 0} onClick={() => loadInputRef.current?.click()}>Load case file</button>
+              <input ref={loadInputRef} type="file" accept="application/json" hidden
+                onChange={(e) => { const file = e.target.files?.[0]; if (file) loadCaseFile(file); e.target.value = ""; }} />
+              <label className="flex items-center gap-2"><input type="checkbox" checked={invert} onChange={(e) => setInvert(e.target.checked)} disabled={ocrLoading} /> Invert dark screenshots</label>
+              <label className="flex items-center gap-2"><input type="checkbox" checked={upscale} onChange={(e) => setUpscale(e.target.checked)} disabled={ocrLoading} /> Enlarge small screenshots</label>
+            </div>
+          </details>
         </div>
       )}
 
-      {/* ── Pending files (card list) ─────────────────────────────── */}
-      {files.length > 0 && (
-        <div className="mt-4">
-          <ul className="space-y-3" aria-label="Selected files">
-            {files.map((f, i) => (
-              <PendingFileCard
-                key={i}
-                file={f}
-                previewUrl={previewUrls[i]}
-                label={labels[i] ?? ""}
-                onRemove={() => removeFile(i)}
-                onView={() => setPendingPreview({ url: previewUrls[i], name: f.name })}
-                onLabelChange={(val) =>
-                  setLabels((prev) => {
-                    const next = [...prev];
-                    next[i] = val as EvidenceType | "";
-                    return next;
-                  })
-                }
+      {step === 1 && (
+        <form className="space-y-3" onSubmit={(e) => {
+          e.preventDefault();
+          if (DEVICE_QUESTIONS.some(({ key }) => !deviceAnswers[key])) {
+            setError("Answer each question before continuing. Choose “Not sure” if you don’t know.");
+            return;
+          }
+          void runAnalysis();
+        }}>
+          <fieldset disabled={analyzing} className="space-y-3">
+            <legend className="sr-only">Device questions</legend>
+            {DEVICE_QUESTIONS.map(({ key, label, options }, index) => (
+              <Choices key={key} name={key} legend={`${index + 1}. ${label}`} value={deviceAnswers[key]}
+                options={options.map((option) => ({ value: option, label: option }))}
+                onChange={(value) => { setDeviceAnswers((prev) => ({ ...prev, [key]: value })); setError(null); }}
               />
             ))}
-          </ul>
-          <div className="mt-2 flex items-center justify-between">
-            <button
-              type="button"
-              onClick={() => {
-                previewUrls.forEach((u) => URL.revokeObjectURL(u));
-                setFiles([]);
-                setPreviewUrls([]);
-                setLabels([]);
-              }}
-              className="text-xs font-semibold rounded-lg px-2.5 py-1 transition-colors hover:bg-red-50"
-              style={{ color: "#B91C1C", border: `1px solid #FECACA` }}
-            >
-              Clear all
-            </button>
-            <p className="text-xs" style={{ color: MUTED }}>
-              {files.length} file{files.length !== 1 ? "s" : ""} queued
-            </p>
+          </fieldset>
+          <div className="scc-card scc-note flex items-start gap-2">
+            <AlertCircle size={16} className="mt-0.5 shrink-0" aria-hidden="true" />
+            <p><strong>Why we ask.</strong> A Section 106B certificate describes the device that produced the electronic evidence and how it was used.</p>
           </div>
-          <div className="mt-4 flex flex-wrap gap-3 items-center">
-            <label className="flex items-center gap-2 text-xs font-medium cursor-pointer select-none" style={{ color: MUTED }}>
-              <input type="checkbox" checked={invert} onChange={(e) => setInvert(e.target.checked)}
-                className="rounded" style={{ accentColor: GOLD }} />
-              Invert dark mode
-            </label>
-            <label className="flex items-center gap-2 text-xs font-medium cursor-pointer select-none" style={{ color: MUTED }}>
-              <input type="checkbox" checked={upscale} onChange={(e) => setUpscale(e.target.checked)}
-                className="rounded" style={{ accentColor: GOLD }} />
-              Upscale small images
-            </label>
-            <button type="button" onClick={handleAddEvidence} disabled={ocrLoading}
-              className="ml-auto flex items-center justify-center gap-2 rounded-xl px-5 py-2.5 text-sm font-bold transition-all hover:brightness-110 disabled:opacity-40 disabled:cursor-not-allowed"
-              style={{ background: `linear-gradient(135deg, ${GOLD_DK}, ${GOLD})`, color: "white" }}>
-              {ocrLoading ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" /> : <ScanText className="h-4 w-4" aria-hidden="true" />}
-              {ocrLoading ? "Adding…" : "Add to case"}
+          <div className="scc-actions scc-footer">
+            <button type="button" className="scc-button mr-auto" onClick={() => goToStep(0)} disabled={analyzing}><ArrowLeft size={15} aria-hidden="true" /> Back</button>
+            <button type="button" className="scc-button" onClick={saveCaseFile} disabled={analyzing}>Save draft</button>
+            <button type="submit" className="scc-button scc-primary" disabled={analyzing}>
+              {analyzing ? <><Loader2 size={15} className="animate-spin" aria-hidden="true" /> Analysing evidence…</> : <>Analyse my evidence <ArrowRight size={15} aria-hidden="true" /></>}
             </button>
           </div>
+        </form>
+      )}
+
+      {error && (
+        <div className="mt-3 flex items-start gap-2 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800" role="alert">
+          <AlertCircle size={16} className="shrink-0" aria-hidden="true" />
+          {error}
         </div>
       )}
 
-      {/* ── Evidence list ─────────────────────────────────────────── */}
-      {caseFile.evidence.length > 0 && (
-        <div className="mt-5">
-          <p className="text-xs font-bold tracking-[.14em] uppercase mb-2" style={{ color: MUTED }}>
-            Evidence ({caseFile.evidence.length})
-          </p>
-          <div className="space-y-2">
-            {caseFile.evidence.map((ev) => {
-              const thumbUrl = (ev.sha256 ? previewsByHash.current.get(ev.sha256) : undefined) ?? ev.download_url;
-              return (
-              <div key={ev.evidence_id} className="flex items-center gap-3 rounded-xl px-3 py-2" style={{ background: CREAM2, border: `1px solid ${BORDER}` }}>
-                {thumbUrl ? (
-                  <button
-                    type="button"
-                    onClick={() => setPendingPreview({ url: thumbUrl, name: ev.file_name || ev.evidence_id })}
-                    className="group shrink-0 relative h-10 w-10 rounded-lg overflow-hidden focus:outline-none focus:ring-2 focus:ring-brand-gold"
-                    style={{ background: SURFACE }}
-                    aria-label={`Preview ${ev.file_name}`}
-                    title="Click to preview"
-                  >
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={thumbUrl} alt={ev.file_name} className="h-full w-full object-contain" style={{ background: CREAM2 }} />
-                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-                      style={{ background: "rgba(21,21,21,0.45)" }} aria-hidden="true">
-                      <ZoomIn className="h-3 w-3 text-white" />
-                    </div>
-                  </button>
-                ) : null}
-                <span className="text-[10px] font-bold uppercase rounded-full px-2 py-0.5"
-                  style={{ background: ev.type === "mpesa_screenshot" ? "#DCFCE7" : ev.type === "chat_screenshot" ? "#DBEAFE" : "#F1F5F9",
-                           color: ev.type === "mpesa_screenshot" ? "#166534" : ev.type === "chat_screenshot" ? "#1E40AF" : "#475569" }}>
-                  {ev.type}
-                </span>
-                <span className="text-sm font-medium truncate" style={{ color: INK }}>{ev.file_name || ev.evidence_id}</span>
-                {ev.parse_layout === "unsupported_layout" && (
-                  <span className="text-[10px] font-semibold rounded-full px-2 py-0.5" style={{ background: "#FEF2F2", color: "#B91C1C" }}>manual entry needed</span>
-                )}
-                <button type="button" onClick={() => removeEvidence(ev.evidence_id)}
-                  className="ml-auto h-6 w-6 rounded-lg flex items-center justify-center hover:bg-black/5" aria-label="Remove evidence">
-                  <X className="h-3.5 w-3.5" style={{ color: MUTED }} aria-hidden="true" />
-                </button>
-              </div>
-              );
-            })}
-          </div>
+      {step === 3 && analysis?.analysis_id && (
+        <DeviceQuestionnaire key={analysis.analysis_id} analysisId={analysis.analysis_id}
+          answers={deviceAnswers} fileNames={caseFile.evidence.map((item) => item.file_name || item.evidence_id)}
+          onClose={() => goToStep(2)} onSuccess={setCertResult} record={certResult} />
+      )}
 
-          {/* Save to Firebase Evidence Library */}
-          <div className="mt-4">
-            <button
-              type="button"
-              onClick={openSaveModal}
-              disabled={saving || !user}
-              className="w-full flex items-center justify-center gap-2 rounded-2xl py-3 text-sm font-bold transition-all hover:brightness-110 disabled:opacity-40 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-brand-gold focus:ring-offset-2"
-              style={{
-                background: saving ? CREAM2 : `linear-gradient(135deg, ${GOLD_DK}, ${GOLD})`,
-                color: saving ? MUTED : "white",
-                border: saving ? `1px solid ${BORDER}` : "none",
-              }}
-            >
-              {saving ? (
-                <><Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" /> Saving to Evidence Library…</>
-              ) : (
-                <><FolderOpen className="h-4 w-4" aria-hidden="true" /> Save to Evidence Library</>
-              )}
-            </button>
+      {step === 2 && analysis && (
+        <div className="space-y-3">
+          <div className="scc-card space-y-3">
+            <span className="inline-flex rounded-full px-2.5 py-1 text-xs font-bold"
+              style={{ background: verdict.bg, color: verdict.fg }}>{effectiveVerdict.replaceAll("_", " ")}</span>
+            <h2 className="font-serif text-xl">{eligible ? "Your evidence qualifies for certificate preparation" : "Your evidence needs more review"}</h2>
+            <p className="text-sm leading-relaxed text-stone-700">{analysis.result.plain_summary}</p>
+            <dl className="grid gap-2 sm:grid-cols-3">
+              {[
+                ["Contract elements", `${clearElements} of ${elements.length} established`],
+                ["Record integrity", analysis.result.conversation_integrity.rating.replaceAll("_", " ").toLowerCase()],
+                ["Certificate", eligible ? "Eligible" : "Needs review"],
+              ].map(([label, value]) => (
+                <div key={label} className={`rounded-md border border-stone-200 p-2.5 text-xs ${label === "Certificate" && eligible ? "bg-green-50" : "bg-stone-50"}`}>
+                  <dt className="mb-1 text-stone-600">{label}</dt><dd className="font-bold capitalize">{value}</dd>
+                </div>
+              ))}
+            </dl>
+            <div className="scc-actions">
+              {canPrepare && <button type="button" className="scc-button scc-primary" onClick={() => goToStep(3)} disabled={analyzing}>Prepare my certificate <ArrowRight size={15} aria-hidden="true" /></button>}
+              {certResult && <button type="button" className="scc-button scc-primary" onClick={() => goToStep(3)}>View generated PDF</button>}
+              <button type="button" className="scc-button" onClick={() => setShowCertificate(true)}><Printer size={15} aria-hidden="true" /> Print summary</button>
+              <button type="button" className="scc-button" onClick={openSaveModal} disabled={saving || !user || analyzing}>
+                {saving ? "Saving…" : "Save to library"}
+              </button>
+            </div>
             {saveResult && (
-              <p className="mt-2 text-xs text-center" style={{ color: MUTED }}>
-                {saveResult.saved > 0 && <span style={{ color: "#15803D" }}>{saveResult.saved} file{saveResult.saved !== 1 ? "s" : ""} saved. </span>}
-                {saveResult.deduped > 0 && <span>{saveResult.deduped} already in library (skipped). </span>}
-                {saveResult.saved === 0 && saveResult.deduped === 0 && <span>No files with originals to save.</span>}
-                {(saveResult.saved > 0 || saveResult.deduped > 0) && (
-                  <a href="/litigant/evidence" className="underline font-semibold" style={{ color: GOLD_DK }}>View Evidence History →</a>
-                )}
+              <p className="text-xs text-stone-700" role="status">
+                {saveResult.saved + saveResult.deduped > 0 ? (
+                  <>{saveResult.saved} saved, {saveResult.deduped} already in your library. <a href="/litigant/evidence" className="underline">Open evidence library</a></>
+                ) : "No original screenshots are available to save."}
               </p>
             )}
           </div>
 
-          {/* Save / Load / Consent + Run analysis */}
-          <div className="mt-4 pt-4 flex items-center gap-3 flex-wrap" style={{ borderTop: `1px solid ${BORDER}` }}>
-            <button type="button" onClick={saveCaseFile}
-              className="flex items-center gap-1.5 text-xs font-semibold rounded-lg px-3 py-1.5 hover:bg-amber-50 transition-colors"
-              style={{ color: GOLD_DK, border: `1px solid ${BORDER}`, background: SURFACE }}>
-              <Save className="h-3.5 w-3.5" aria-hidden="true" /> Save case file
-            </button>
-            <label className="flex items-center gap-1.5 text-xs font-semibold rounded-lg px-3 py-1.5 cursor-pointer hover:bg-amber-50 transition-colors"
-              style={{ color: GOLD_DK, border: `1px solid ${BORDER}`, background: SURFACE }}>
-              <FolderOpen className="h-3.5 w-3.5" aria-hidden="true" /> Load case file
-              <input type="file" accept="application/json" className="hidden"
-                onChange={(e) => { const f = e.target.files?.[0]; if (f) loadCaseFile(f); e.target.value = ""; }} />
-            </label>
-            <label className="flex items-center gap-2 text-xs font-medium cursor-pointer select-none" style={{ color: MUTED }}>
-              <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)}
-                className="rounded" style={{ accentColor: GOLD }} />
-              I consent to send this case to the automated analyst.
-            </label>
-            <button type="button" onClick={runAnalysis} disabled={analyzing}
-              className="ml-auto flex items-center justify-center gap-2 rounded-xl px-5 py-2.5 text-sm font-bold transition-all hover:brightness-110 disabled:opacity-40 disabled:cursor-not-allowed"
-              style={{ background: `linear-gradient(135deg, ${GOLD_DK}, ${GOLD})`, color: "white" }}>
-              {analyzing ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" /> : <Scale className="h-4 w-4" aria-hidden="true" />}
-              {analyzing ? "Analyzing…" : runCount > 0 ? "Re-run analysis" : "Run analysis"}
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* ── Follow-up requests ────────────────────────────────────── */}
-      {openFollowUps.length > 0 && (
-        <div className="mt-6">
-          <p className="text-xs font-bold tracking-[.14em] uppercase mb-2" style={{ color: MUTED }}>
-            The analyst asks for ({openFollowUps.length})
-          </p>
-          <div className="space-y-2">
-            {openFollowUps.map((req) => (
-              <div key={req.id} className="rounded-xl p-3" style={{ background: "#FFFBEB", border: `1px solid #FDE68A` }}>
-                <div className="flex items-start gap-2">
-                  {req.blocking && <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" style={{ color: "#92400E" }} aria-hidden="true" />}
-                  <div className="flex-1">
-                    <p className="text-sm font-semibold" style={{ color: INK }}>{req.prompt}</p>
-                    {req.why_it_matters && <p className="text-xs mt-0.5" style={{ color: MUTED }}>{req.why_it_matters}</p>}
-                  </div>
-                </div>
-                <div className="flex items-center gap-2 mt-2 flex-wrap">
-                  <button type="button" onClick={() => { setAnswerTarget(req); setAnswerDate(todayISO()); setAnswerText(""); }}
-                    className="text-xs font-semibold rounded-lg px-3 py-1.5" style={{ background: GOLD_DK, color: "white" }}>
-                    Answer
-                  </button>
-                  <button type="button" onClick={() => dismissRequest(req)}
-                    className="text-xs font-semibold rounded-lg px-3 py-1.5" style={{ color: MUTED }}>
-                    Dismiss
-                  </button>
+          {/* ── Deficiency report (shown only when certificate not eligible) ── */}
+          {!eligible && analysis.cert_eligibility?.reasons.length ? (
+            <div
+              className="rounded-2xl overflow-hidden"
+              style={{ border: `1.5px solid #FECACA` }}
+              role="region"
+              aria-label="Section 106B deficiency report"
+            >
+              {/* Header */}
+              <div
+                className="flex items-center gap-2.5 px-4 py-3"
+                style={{ background: "#FEF2F2", borderBottom: `1px solid #FECACA` }}
+              >
+                <FileWarning className="h-4 w-4 shrink-0" style={{ color: "#B91C1C" }} aria-hidden="true" />
+                <div>
+                  <p className="text-xs font-bold tracking-[.12em] uppercase" style={{ color: "#B91C1C" }}>
+                    Section 106B — Certificate not yet available
+                  </p>
+                  <p className="text-[11px] mt-0.5" style={{ color: "#6B6660" }}>
+                    Resolve the gaps below, then re-upload or retry the analysis.
+                  </p>
                 </div>
               </div>
-            ))}
+              {/* Gap list */}
+              <ul className="divide-y" style={{ background: "#FFFDF8", borderColor: "#FECACA" }}>
+                {analysis.cert_eligibility.reasons.map((reason, index) => {
+                  const explanation = explainCertReason(reason);
+                  return (
+                    <li key={index} className="flex gap-3 px-4 py-3">
+                      <span
+                        className="mt-0.5 h-5 w-5 shrink-0 rounded-full flex items-center justify-center text-[10px] font-bold"
+                        style={{ background: "#FEE2E2", color: "#B91C1C" }}
+                        aria-hidden="true"
+                      >
+                        {index + 1}
+                      </span>
+                      <div className="min-w-0">
+                        <p className="text-sm font-semibold" style={{ color: "#151515" }}>
+                          {explanation.title}
+                        </p>
+                        {explanation.detail && (
+                          <p className="text-xs mt-0.5 leading-relaxed" style={{ color: "#6B6660" }}>
+                            {explanation.detail}
+                          </p>
+                        )}
+                      </div>
+                    </li>
+                  );
+                })}
+              </ul>
+              {/* Footer */}
+              <div
+                className="px-4 py-2.5 text-[11px]"
+                style={{ background: "#FEF2F2", borderTop: `1px solid #FECACA`, color: "#6B6660" }}
+              >
+                The <strong style={{ color: "#151515" }}>Prepare my certificate</strong> button will appear here once all gaps are resolved.
+              </div>
+            </div>
+          ) : null}
+
+          {/* ── Follow-up requests ────────────────────────────────────── */}
+          {openFollowUps.length > 0 && (
+            <div className="mt-6">
+              <p className="text-xs font-bold tracking-[.14em] uppercase mb-2" style={{ color: MUTED }}>
+                The analyst asks for ({openFollowUps.length})
+              </p>
+              <div className="space-y-2">
+                {openFollowUps.map((req) => (
+                  <div key={req.id} className="rounded-xl p-3" style={{ background: "#FFFBEB", border: `1px solid #FDE68A` }}>
+                    <div className="flex items-start gap-2">
+                      {req.blocking && <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" style={{ color: "#92400E" }} aria-hidden="true" />}
+                      <div className="flex-1">
+                        <p className="text-sm font-semibold" style={{ color: INK }}>{req.prompt}</p>
+                        {req.why_it_matters && <p className="text-xs mt-0.5" style={{ color: MUTED }}>{req.why_it_matters}</p>}
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2 mt-2 flex-wrap">
+                      <button type="button" onClick={() => { setAnswerTarget(req); setAnswerDate(todayISO()); setAnswerText(""); }}
+                        className="text-xs font-semibold rounded-lg px-3 py-1.5" style={{ background: GOLD_DK, color: "white" }}>
+                        Answer
+                      </button>
+                      <button type="button" onClick={() => dismissRequest(req)}
+                        className="text-xs font-semibold rounded-lg px-3 py-1.5" style={{ color: MUTED }}>
+                        Dismiss
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Guided follow-ups — Strengthen your evidence */}
+          {(analysis.guided_follow_ups?.length ?? 0) > 0 && (() => {
+            const all = analysis.guided_follow_ups!;
+            const dismissedIds = new Set(caseFile.requests.filter((r) => r.status === "dismissed").map((r) => r.id));
+            const visible = all.filter((r) => !dismissedIds.has(r.id));
+            const shown = showAllGuided ? visible : visible.slice(0, 3);
+            if (!visible.length) return null;
+            return (
+              <div className="scc-card">
+                <div className="flex items-center gap-2 mb-3">
+                  <Sparkles className="h-4 w-4 shrink-0" style={{ color: "#92400E" }} aria-hidden="true" />
+                  <p className="text-sm font-bold" style={{ color: "#92400E" }}>Make your evidence stronger</p>
+                  <span className="ml-auto text-[10px] font-semibold rounded-full px-2 py-0.5"
+                    style={{ background: "#FDE68A", color: "#78350F" }}>
+                    {visible.length} gap{visible.length !== 1 ? "s" : ""}
+                  </span>
+                </div>
+                <div className="space-y-2">
+                  {shown.map((req) => (
+                    <div key={req.id} className="rounded-xl p-3"
+                      style={{ background: "#FFFDF8", border: `1px solid #FDE68A` }}>
+                      <div className="flex items-start gap-2">
+                        {req.blocks_certificate && (
+                          <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" style={{ color: "#B91C1C" }} aria-hidden="true" />
+                        )}
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 flex-wrap mb-0.5">
+                            <p className="text-sm font-semibold" style={{ color: INK }}>{req.title}</p>
+                            {req.blocks_certificate && (
+                              <span className="text-[9px] font-bold uppercase rounded-full px-1.5 py-0.5"
+                                style={{ background: "#FEE2E2", color: "#B91C1C" }}>Needed for certificate</span>
+                            )}
+                            {req.elements.length > 0 && (
+                              <span className="text-[9px] font-mono rounded-full px-1.5 py-0.5"
+                                style={{ background: "#F1F5F9", color: "#475569" }}>
+                                {req.elements.join(" · ")}
+                              </span>
+                            )}
+                          </div>
+                          {req.why && <p className="text-xs" style={{ color: MUTED }}>{req.why}</p>}
+                          {req.expected_effect && (
+                            <p className="text-[11px] mt-0.5 font-medium" style={{ color: "#15803D" }}>
+                              ↑ {req.expected_effect}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2 mt-2 flex-wrap">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setGuidedTarget(req);
+                            setGuidedFieldValues({});
+                            setGuidedUploadFile(null);
+                            setGuidedUploadPreview("");
+                          }}
+                          className="text-xs font-semibold rounded-lg px-3 py-1.5"
+                          style={{ background: GOLD_DK, color: "white" }}>
+                          {req.kind === "UPLOAD" ? "Upload" : req.kind === "INPUT" ? "Provide" : "Answer"}
+                        </button>
+                        <button type="button" onClick={() => dismissGuidedRequest(req)}
+                          className="text-xs font-semibold rounded-lg px-3 py-1.5" style={{ color: MUTED }}>
+                          Skip
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                {visible.length > 3 && (
+                  <button type="button" onClick={() => setShowAllGuided((v) => !v)}
+                    className="mt-2 text-xs font-semibold w-full text-center py-1 rounded-lg hover:bg-amber-100 transition-colors"
+                    style={{ color: "#92400E" }}>
+                    {showAllGuided ? "Show fewer" : `Show all ${visible.length} gaps`}
+                  </button>
+                )}
+              </div>
+            );
+          })()}
+
+          <details className="scc-card scc-disclosure">
+            <summary>Contract elements</summary>
+            <div className="mt-3 space-y-2">
+              {Object.entries(analysis.result.elements).map(([key, element]) => (
+                <ElementRow key={key} letter={key} label={ELEMENT_LABELS[key] ?? key} element={element} />
+              ))}
+            </div>
+          </details>
+          <details className="scc-card scc-disclosure">
+            <summary>Full analysis summary</summary>
+            <div className="mt-3 space-y-3">
+              {/* Record integrity */}
+              <InfoCard
+                title="Record integrity"
+                icon={<ShieldCheck className="h-4 w-4" aria-hidden="true" />}
+                badge={{ text: analysis.result.conversation_integrity.rating, ...statusTone(analysis.result.conversation_integrity.rating) }}
+              >
+                {analysis.result.conversation_integrity.issues?.length > 0 && (
+                  <ul className="list-disc pl-4 space-y-0.5 text-xs" style={{ color: MUTED }}>
+                    {analysis.result.conversation_integrity.issues.map((s, i) => <li key={i}>{s}</li>)}
+                  </ul>
+                )}
+                {analysis.verification.mpesa_cross_check && !analysis.verification.mpesa_cross_check.consistent && (
+                  <p className="text-xs mt-2" style={{ color: "#B45309" }}>
+                    M-Pesa cross-check discrepancy:{" "}
+                    {(analysis.verification.mpesa_cross_check.codes_llm_only?.length ?? 0)} code(s) cited only in analysis,{" "}
+                    {(analysis.verification.mpesa_cross_check.codes_parsed_only?.length ?? 0)} only in screenshots.{" "}
+                    {(analysis.verification.mpesa_cross_check.findings?.filter((f: {blocks_certificate: boolean}) => f.blocks_certificate).length ?? 0)} blocking finding(s).
+                  </p>
+                )}
+              </InfoCard>
+
+              {/* M-Pesa payments */}
+              {analysis.result.mpesa_payments?.length > 0 && (
+                <InfoCard title="M-Pesa payments" icon={<FileWarning className="h-4 w-4" aria-hidden="true" />}>
+                  <div className="overflow-x-auto rounded-xl" style={{ border: `1px solid ${BORDER}` }}>
+                    <table className="w-full text-xs" style={{ borderCollapse: "collapse" }}>
+                      <thead>
+                        <tr style={{ background: CREAM2 }}>
+                          <th className="text-left px-3 py-2 font-bold" style={{ color: MUTED }}>Code</th>
+                          <th className="text-left px-3 py-2 font-bold" style={{ color: MUTED }}>Amount</th>
+                          <th className="text-left px-3 py-2 font-bold" style={{ color: MUTED }}>Recipient</th>
+                          <th className="text-left px-3 py-2 font-bold" style={{ color: MUTED }}>Date/time</th>
+                          <th className="text-left px-3 py-2 font-bold" style={{ color: MUTED }}>Classification</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {analysis.result.mpesa_payments.map((p, i) => (
+                          <tr key={i} style={{ borderTop: `1px solid ${BORDER}` }}>
+                            <td className="px-3 py-2 font-mono" style={{ color: INK }}>{p.code ?? "—"}</td>
+                            <td className="px-3 py-2 font-mono" style={{ color: INK }}>{p.amount_kes != null ? `Ksh ${p.amount_kes}` : "—"}</td>
+                            <td className="px-3 py-2" style={{ color: INK }}>{p.recipient ?? "—"}</td>
+                            <td className="px-3 py-2" style={{ color: INK }}>{p.datetime ?? "—"}</td>
+                            <td className="px-3 py-2">
+                              <span className="inline-block text-[10px] font-semibold rounded-full px-2 py-0.5"
+                                style={{ background: statusTone(p.classification).bg, color: statusTone(p.classification).fg }}>
+                                {p.classification}
+                              </span>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </InfoCard>
+              )}
+
+              {/* Timeline */}
+              {analysis.result.timeline?.length > 0 && (
+                <InfoCard title="Timeline" icon={<CalendarDays className="h-4 w-4" aria-hidden="true" />}>
+                  <ol className="space-y-1 text-xs" style={{ color: INK }}>
+                    {analysis.result.timeline.map((t, i) => (
+                      <li key={i}>
+                        <span className="font-mono" style={{ color: GOLD_DK }}>#{t.msg_index ?? t.evidence_id ?? "?"}</span>{" "}
+                        {t.time && <span style={{ color: MUTED }}>{t.time}</span>}{" "}
+                        {t.event}
+                      </li>
+                    ))}
+                  </ol>
+                </InfoCard>
+              )}
+
+              {/* Unrelated messages */}
+              {analysis.result.unrelated_messages?.length > 0 && (
+                <InfoCard title="Unrelated messages" icon={<ChevronRight className="h-4 w-4" aria-hidden="true" />}>
+                  <ul className="list-disc pl-4 space-y-0.5 text-xs" style={{ color: MUTED }}>
+                    {analysis.result.unrelated_messages.map((u, i) => (
+                      <li key={i}><span className="font-mono" style={{ color: GOLD_DK }}>#{u.msg_index ?? "?"}</span> {u.text}</li>
+                    ))}
+                  </ul>
+                </InfoCard>
+              )}
+
+              {/* Red flags + missing info */}
+              <div className="grid sm:grid-cols-2 gap-4">
+                {analysis.result.red_flags?.length > 0 && (
+                  <InfoCard title="Red flags" icon={<FileWarning className="h-4 w-4" aria-hidden="true" />}>
+                    <ul className="list-disc pl-4 space-y-0.5 text-xs" style={{ color: "#B91C1C" }}>
+                      {analysis.result.red_flags.map((s, i) => <li key={i}>{s}</li>)}
+                    </ul>
+                  </InfoCard>
+                )}
+                {analysis.result.missing_information?.length > 0 && (
+                  <InfoCard title="Missing information" icon={<AlertCircle className="h-4 w-4" aria-hidden="true" />}>
+                    <ul className="list-disc pl-4 space-y-0.5 text-xs" style={{ color: MUTED }}>
+                      {analysis.result.missing_information.map((s, i) => <li key={i}>{s}</li>)}
+                    </ul>
+                  </InfoCard>
+                )}
+              </div>
+
+              {/* Questions + checklist */}
+              {analysis.result.questions_for_parties?.length > 0 && (
+                <InfoCard title="Questions for the parties" icon={<ChevronRight className="h-4 w-4" aria-hidden="true" />}>
+                  <ul className="space-y-1 text-xs" style={{ color: INK }}>
+                    {analysis.result.questions_for_parties.map((q, i) => (
+                      <li key={i}><span className="font-semibold" style={{ color: GOLD_DK }}>{q.element}:</span> {q.question}</li>
+                    ))}
+                  </ul>
+                </InfoCard>
+              )}
+              {analysis.result.strengthen_checklist?.length > 0 && (
+                <InfoCard title="How to strengthen the record" icon={<ShieldCheck className="h-4 w-4" aria-hidden="true" />}>
+                  <ul className="list-disc pl-4 space-y-0.5 text-xs" style={{ color: MUTED }}>
+                    {analysis.result.strengthen_checklist.map((s, i) => <li key={i}>{s}</li>)}
+                  </ul>
+                </InfoCard>
+              )}
+
+            </div>
+          </details>
+          <details className="scc-card scc-disclosure">
+            <summary>Technical details for advocates</summary>
+            <div className="mt-3 space-y-3">
+              {analysis.verification.verdict_downgraded && (
+                <p className="text-xs text-stone-700">Verification changed the verdict from {analysis.verification.verdict_before}. {analysis.verification.downgrade_reasons.join("; ")}</p>
+              )}
+              {/* Raw JSON */}
+              <div>
+                <div className="flex items-center justify-between gap-2 mb-1.5 flex-wrap">
+                  <p className="text-xs font-bold tracking-[.14em] uppercase" style={{ color: MUTED }}>
+                    Analysis JSON · prompt {analysis.prompt_version} · {analysis.model}
+                  </p>
+                  <div className="flex items-center gap-2">
+                    <button type="button" onClick={copyAnalysis}
+                      className="flex items-center gap-1 text-xs font-semibold rounded-lg px-2.5 py-1.5 hover:bg-amber-50" style={{ color: GOLD_DK }}>
+                      {copiedAnalysis ? <Check className="h-3.5 w-3.5" aria-hidden="true" /> : <Copy className="h-3.5 w-3.5" aria-hidden="true" />}
+                      {copiedAnalysis ? "Copied" : "Copy JSON"}
+                    </button>
+                    <button type="button" onClick={downloadAnalysis}
+                      className="flex items-center gap-1 text-xs font-semibold rounded-lg px-2.5 py-1.5 hover:bg-amber-50" style={{ color: GOLD_DK }}>
+                      <Download className="h-3.5 w-3.5" aria-hidden="true" />
+                      Download
+                    </button>
+                  </div>
+                </div>
+                <pre className="w-full rounded-xl px-3 py-2 text-xs leading-relaxed font-mono overflow-auto max-h-96"
+                  style={{ background: CREAM2, border: `1px solid ${BORDER}`, color: INK, whiteSpace: "pre" }}>
+                  {JSON.stringify(analysis, null, 2)}
+                </pre>
+              </div>
+            </div>
+          </details>
+          <p className="text-xs text-stone-600">{analysis.result.disclaimer || "This automated analysis is not legal advice."}</p>
+          <div className="scc-actions scc-footer">
+            <button type="button" className="scc-button mr-auto" onClick={() => goToStep(1)} disabled={guidedSubmitting || analyzing}><ArrowLeft size={15} aria-hidden="true" /> Back</button>
+            <button type="button" className="scc-button" onClick={runAnalysis} disabled={guidedSubmitting || analyzing}>
+              {analyzing ? "Analysing evidence…" : "Re-run analysis"}
+            </button>
+            {canPrepare && <button type="button" className="scc-button scc-primary" onClick={() => goToStep(3)} disabled={guidedSubmitting || analyzing}>Continue to certificate <ArrowRight size={15} aria-hidden="true" /></button>}
           </div>
         </div>
       )}
@@ -1581,405 +1874,6 @@ export function SCCVisionTest({ initialCaseId }: { initialCaseId?: string } = {}
           asOf={asOf}
           onClose={() => setShowCertificate(false)}
         />
-      )}
-
-      {/* ── Section 106B device questionnaire ─────────────────────── */}
-      {showQuestionnaire && analysis?.analysis_id && (
-        <DeviceQuestionnaire
-          analysisId={analysis.analysis_id}
-          onClose={() => setShowQuestionnaire(false)}
-          onSuccess={(rec) => {
-            setCertResult(rec);
-            setShowQuestionnaire(false);
-          }}
-        />
-      )}
-
-      {/* ── Analysis results ───────────────────────────────────────── */}
-      {analysis && (
-        <div className="mt-6 space-y-5">
-          {/* Verdict banner */}
-          <div className="rounded-2xl px-5 py-4" style={{ background: verdict.bg, border: `1px solid ${verdict.border}` }}>
-            <div className="flex items-center gap-2">
-              <ShieldCheck className="h-5 w-5" style={{ color: verdict.fg }} aria-hidden="true" />
-              <p className="text-base font-bold" style={{ color: verdict.fg }}>{effectiveVerdict}</p>
-              {analysis.result.confidence != null && (
-                <span className="text-xs font-semibold rounded-full px-2 py-0.5" style={{ background: verdict.fg, color: "#fff" }}>
-                  {(analysis.result.confidence * 100).toFixed(0)}% confidence
-                </span>
-              )}
-            </div>
-            {analysis.verification.verdict_downgraded && (
-              <p className="text-xs mt-1.5" style={{ color: verdict.fg }}>
-                Downgraded from {analysis.verification.verdict_before} by verification:
-                {analysis.verification.downgrade_reasons.map((r) => ` ${r}`).join(",")}.
-              </p>
-            )}
-            {analysis.result.plain_summary && (
-              <p className="text-sm mt-2 leading-relaxed" style={{ color: INK }}>{analysis.result.plain_summary}</p>
-            )}
-            {analysis.result.changes_since_previous?.length > 0 && (
-              <div className="mt-2">
-                <p className="text-[10px] font-bold uppercase tracking-wide" style={{ color: MUTED }}>What changed since last run</p>
-                <ul className="list-disc pl-4 space-y-0.5 text-xs mt-1" style={{ color: INK }}>
-                  {analysis.result.changes_since_previous.map((c, i) => <li key={i}>{c}</li>)}
-                </ul>
-              </div>
-            )}
-            {isCertEligible(analysis) && (
-              <div className="mt-3 rounded-xl px-3 py-2.5"
-                style={{ background: "#F0FDF4", border: "1px solid #BBF7D0" }}>
-                <div className="flex items-center gap-3 flex-wrap">
-                  <Award className="h-4 w-4 shrink-0" style={{ color: "#15803D" }} aria-hidden="true" />
-                  <div className="flex-1 min-w-0">
-                    <p className="text-xs font-bold" style={{ color: "#15803D" }}>
-                      Evidence is eligible for a Section 106B certificate
-                    </p>
-                    <p className="text-[11px]" style={{ color: "#166534" }}>
-                      Print a visual summary or prepare a signed Section 106B certificate for court.
-                    </p>
-                  </div>
-                  <div className="flex flex-wrap gap-2 shrink-0">
-                    <button type="button" onClick={() => setShowCertificate(true)}
-                      className="flex items-center gap-1.5 text-xs font-semibold rounded-lg px-3 py-1.5 hover:opacity-90 transition-opacity"
-                      style={{ background: "#15803D", color: "white" }}>
-                      <Printer className="h-3.5 w-3.5" aria-hidden="true" />
-                      Print Summary
-                    </button>
-                    {analysis.analysis_id && !certResult && (
-                      <button type="button" onClick={() => setShowQuestionnaire(true)}
-                        className="flex items-center gap-1.5 text-xs font-semibold rounded-lg px-3 py-1.5 hover:opacity-90 transition-opacity"
-                        style={{ background: GOLD_DK, color: "white" }}>
-                        <ShieldCheck className="h-3.5 w-3.5" aria-hidden="true" />
-                        Prepare s.106B Certificate
-                      </button>
-                    )}
-                  </div>
-                </div>
-                {certResult && (
-                  <div className="mt-3 rounded-lg px-3 py-2 flex items-center gap-2 text-xs"
-                    style={{ background: "#ECFDF5", border: "1px solid #6EE7B7", color: "#065F46" }}>
-                    <ShieldCheck className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
-                    <span>
-                      <strong>{certResult.certificate_number}</strong> created —{" "}
-                      {certResult.document_type === "CERTIFICATE"
-                        ? "certificate draft ready for signing."
-                        : "deficiency report generated."}{" "}
-                      View and download it in{" "}
-                      <a href="/litigant/certificates" className="underline font-semibold">
-                        Certificate History
-                      </a>.
-                    </span>
-                  </div>
-                )}
-              </div>
-            )}
-            {/* Ineligibility reasons (Phase 9) */}
-            {analysis.cert_eligibility && !analysis.cert_eligibility.eligible && (
-              <div className="mt-3 rounded-xl px-3 py-2.5"
-                style={{ background: "#FEF9EC", border: "1px solid #FDE68A" }}>
-                <p className="text-xs font-bold mb-2" style={{ color: "#92400E" }}>
-                  Not yet eligible for a Section 106B certificate
-                </p>
-                <div className="space-y-2">
-                  {analysis.cert_eligibility.reasons.map((r, i) => {
-                    const ex = explainCertReason(r);
-                    return (
-                      <div key={i} className="rounded-lg px-2.5 py-2"
-                        style={{ background: "#FFF7ED", border: "1px solid #FED7AA" }}>
-                        <p className="text-[11px] font-semibold" style={{ color: "#92400E" }}>
-                          {ex.title}
-                        </p>
-                        {ex.detail && (
-                          <p className="text-[11px] mt-0.5 leading-relaxed" style={{ color: "#78350F" }}>
-                            {ex.detail}
-                          </p>
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
-                {(analysis.result.confidence ?? 0) >= 0.9 && (
-                  <p className="text-[10px] mt-2.5 leading-relaxed" style={{ color: "#A16207" }}>
-                    Why is confidence {Math.round((analysis.result.confidence ?? 0) * 100)}% if the certificate is blocked?
-                    Confidence scores how well the overall contract is evidenced across all elements.
-                    The certificate additionally requires each key element (C, D, E, G) to be individually
-                    established and stable across two independent reads — a single unclear or disputed element blocks it.
-                  </p>
-                )}
-              </div>
-            )}
-            {/* Needs-human-look items (unstable fields, model disagreements) */}
-            {((analysis.unstable_fields?.length ?? 0) > 0 ||
-              Object.keys(analysis.model_disagreements ?? {}).length > 0) && (
-              <div className="mt-3 rounded-xl px-3 py-2.5"
-                style={{ background: "#F0F9FF", border: "1px solid #BAE6FD" }}>
-                <p className="text-xs font-bold mb-1" style={{ color: "#0369A1" }}>
-                  Needs a human look
-                </p>
-                {(analysis.unstable_fields?.length ?? 0) > 0 && (
-                  <p className="text-[11px]" style={{ color: "#0C4A6E" }}>
-                    Independent inspections disagreed on: {analysis.unstable_fields?.join(", ")}
-                  </p>
-                )}
-                {Object.entries(analysis.model_disagreements ?? {}).map(([el, d]) => (
-                  <p key={el} className="text-[11px]" style={{ color: "#0C4A6E" }}>
-                    Model raised a concern on {el}: "{d.model_reason}" (model: {d.model_status}, derived: {d.derived_status})
-                  </p>
-                ))}
-              </div>
-            )}
-            {/* Cache/call info */}
-            {analysis.calls_used != null && (
-              <p className="text-[10px] mt-2" style={{ color: MUTED }}>
-                {analysis.from_cache
-                  ? "Served from cache (0 Groq calls)"
-                  : `${analysis.calls_used} Groq call${analysis.calls_used !== 1 ? "s" : ""} used${
-                      analysis.trigger_fired ? ` · trigger ${analysis.trigger_fired}` : ""
-                    }`}
-              </p>
-            )}
-          </div>
-
-          {/* Guided follow-ups — Strengthen your evidence */}
-          {(analysis.guided_follow_ups?.length ?? 0) > 0 && (() => {
-            const all = analysis.guided_follow_ups!;
-            const dismissedIds = new Set(caseFile.requests.filter((r) => r.status === "dismissed").map((r) => r.id));
-            const visible = all.filter((r) => !dismissedIds.has(r.id));
-            const shown = showAllGuided ? visible : visible.slice(0, 3);
-            if (!visible.length) return null;
-            return (
-              <div className="rounded-2xl p-4" style={{ background: "#FFFBEB", border: `1px solid #FDE68A` }}>
-                <div className="flex items-center gap-2 mb-3">
-                  <Sparkles className="h-4 w-4 shrink-0" style={{ color: "#92400E" }} aria-hidden="true" />
-                  <p className="text-sm font-bold" style={{ color: "#92400E" }}>Strengthen your evidence</p>
-                  <span className="ml-auto text-[10px] font-semibold rounded-full px-2 py-0.5"
-                    style={{ background: "#FDE68A", color: "#78350F" }}>
-                    {visible.length} gap{visible.length !== 1 ? "s" : ""}
-                  </span>
-                </div>
-                <div className="space-y-2">
-                  {shown.map((req) => (
-                    <div key={req.id} className="rounded-xl p-3"
-                      style={{ background: "#FFFDF8", border: `1px solid #FDE68A` }}>
-                      <div className="flex items-start gap-2">
-                        {req.blocks_certificate && (
-                          <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" style={{ color: "#B91C1C" }} aria-hidden="true" />
-                        )}
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2 flex-wrap mb-0.5">
-                            <p className="text-sm font-semibold" style={{ color: INK }}>{req.title}</p>
-                            {req.priority === 1 && (
-                              <span className="text-[9px] font-bold uppercase rounded-full px-1.5 py-0.5"
-                                style={{ background: "#FEE2E2", color: "#B91C1C" }}>blocks cert</span>
-                            )}
-                            {req.elements.length > 0 && (
-                              <span className="text-[9px] font-mono rounded-full px-1.5 py-0.5"
-                                style={{ background: "#F1F5F9", color: "#475569" }}>
-                                {req.elements.join(" · ")}
-                              </span>
-                            )}
-                          </div>
-                          {req.why && <p className="text-xs" style={{ color: MUTED }}>{req.why}</p>}
-                          {req.expected_effect && (
-                            <p className="text-[11px] mt-0.5 font-medium" style={{ color: "#15803D" }}>
-                              ↑ {req.expected_effect}
-                            </p>
-                          )}
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-2 mt-2 flex-wrap">
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setGuidedTarget(req);
-                            setGuidedFieldValues({});
-                            setGuidedUploadFile(null);
-                            setGuidedUploadPreview("");
-                          }}
-                          className="text-xs font-semibold rounded-lg px-3 py-1.5"
-                          style={{ background: GOLD_DK, color: "white" }}>
-                          {req.kind === "UPLOAD" ? "Upload" : req.kind === "INPUT" ? "Provide" : "Answer"}
-                        </button>
-                        <button type="button" onClick={() => dismissGuidedRequest(req)}
-                          className="text-xs font-semibold rounded-lg px-3 py-1.5" style={{ color: MUTED }}>
-                          Dismiss
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                {visible.length > 3 && (
-                  <button type="button" onClick={() => setShowAllGuided((v) => !v)}
-                    className="mt-2 text-xs font-semibold w-full text-center py-1 rounded-lg hover:bg-amber-100 transition-colors"
-                    style={{ color: "#92400E" }}>
-                    {showAllGuided ? "Show fewer" : `Show all ${visible.length} gaps`}
-                  </button>
-                )}
-              </div>
-            );
-          })()}
-
-          {/* Record integrity */}
-          <InfoCard
-            title="Record integrity"
-            icon={<ShieldCheck className="h-4 w-4" aria-hidden="true" />}
-            badge={{ text: analysis.result.conversation_integrity.rating, ...statusTone(analysis.result.conversation_integrity.rating) }}
-          >
-            {analysis.result.conversation_integrity.issues?.length > 0 && (
-              <ul className="list-disc pl-4 space-y-0.5 text-xs" style={{ color: MUTED }}>
-                {analysis.result.conversation_integrity.issues.map((s, i) => <li key={i}>{s}</li>)}
-              </ul>
-            )}
-            {analysis.verification.mpesa_cross_check && !analysis.verification.mpesa_cross_check.consistent && (
-              <p className="text-xs mt-2" style={{ color: "#B45309" }}>
-                M-Pesa cross-check discrepancy:{" "}
-                {(analysis.verification.mpesa_cross_check.codes_llm_only?.length ?? 0)} code(s) cited only in analysis,{" "}
-                {(analysis.verification.mpesa_cross_check.codes_parsed_only?.length ?? 0)} only in screenshots.{" "}
-                {(analysis.verification.mpesa_cross_check.findings?.filter((f: {blocks_certificate: boolean}) => f.blocks_certificate).length ?? 0)} blocking finding(s).
-              </p>
-            )}
-          </InfoCard>
-
-          {/* Elements A-K */}
-          <div>
-            <p className="text-xs font-bold tracking-[.14em] uppercase mb-1.5" style={{ color: MUTED }}>
-              Contract elements
-            </p>
-            <div className="space-y-2">
-              {Object.entries(analysis.result.elements).map(([key, el]) => (
-                <ElementRow key={key} letter={key} label={ELEMENT_LABELS[key] ?? key} element={el} />
-              ))}
-            </div>
-          </div>
-
-          {/* M-Pesa payments */}
-          {analysis.result.mpesa_payments?.length > 0 && (
-            <InfoCard title="M-Pesa payments" icon={<FileWarning className="h-4 w-4" aria-hidden="true" />}>
-              <div className="overflow-x-auto rounded-xl" style={{ border: `1px solid ${BORDER}` }}>
-                <table className="w-full text-xs" style={{ borderCollapse: "collapse" }}>
-                  <thead>
-                    <tr style={{ background: CREAM2 }}>
-                      <th className="text-left px-3 py-2 font-bold" style={{ color: MUTED }}>Code</th>
-                      <th className="text-left px-3 py-2 font-bold" style={{ color: MUTED }}>Amount</th>
-                      <th className="text-left px-3 py-2 font-bold" style={{ color: MUTED }}>Recipient</th>
-                      <th className="text-left px-3 py-2 font-bold" style={{ color: MUTED }}>Date/time</th>
-                      <th className="text-left px-3 py-2 font-bold" style={{ color: MUTED }}>Classification</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {analysis.result.mpesa_payments.map((p, i) => (
-                      <tr key={i} style={{ borderTop: `1px solid ${BORDER}` }}>
-                        <td className="px-3 py-2 font-mono" style={{ color: INK }}>{p.code ?? "—"}</td>
-                        <td className="px-3 py-2 font-mono" style={{ color: INK }}>{p.amount_kes != null ? `Ksh ${p.amount_kes}` : "—"}</td>
-                        <td className="px-3 py-2" style={{ color: INK }}>{p.recipient ?? "—"}</td>
-                        <td className="px-3 py-2" style={{ color: INK }}>{p.datetime ?? "—"}</td>
-                        <td className="px-3 py-2">
-                          <span className="inline-block text-[10px] font-semibold rounded-full px-2 py-0.5"
-                            style={{ background: statusTone(p.classification).bg, color: statusTone(p.classification).fg }}>
-                            {p.classification}
-                          </span>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </InfoCard>
-          )}
-
-          {/* Timeline */}
-          {analysis.result.timeline?.length > 0 && (
-            <InfoCard title="Timeline" icon={<CalendarDays className="h-4 w-4" aria-hidden="true" />}>
-              <ol className="space-y-1 text-xs" style={{ color: INK }}>
-                {analysis.result.timeline.map((t, i) => (
-                  <li key={i}>
-                    <span className="font-mono" style={{ color: GOLD_DK }}>#{t.msg_index ?? t.evidence_id ?? "?"}</span>{" "}
-                    {t.time && <span style={{ color: MUTED }}>{t.time}</span>}{" "}
-                    {t.event}
-                  </li>
-                ))}
-              </ol>
-            </InfoCard>
-          )}
-
-          {/* Unrelated messages */}
-          {analysis.result.unrelated_messages?.length > 0 && (
-            <InfoCard title="Unrelated messages" icon={<ChevronRight className="h-4 w-4" aria-hidden="true" />}>
-              <ul className="list-disc pl-4 space-y-0.5 text-xs" style={{ color: MUTED }}>
-                {analysis.result.unrelated_messages.map((u, i) => (
-                  <li key={i}><span className="font-mono" style={{ color: GOLD_DK }}>#{u.msg_index ?? "?"}</span> {u.text}</li>
-                ))}
-              </ul>
-            </InfoCard>
-          )}
-
-          {/* Red flags + missing info */}
-          <div className="grid sm:grid-cols-2 gap-4">
-            {analysis.result.red_flags?.length > 0 && (
-              <InfoCard title="Red flags" icon={<FileWarning className="h-4 w-4" aria-hidden="true" />}>
-                <ul className="list-disc pl-4 space-y-0.5 text-xs" style={{ color: "#B91C1C" }}>
-                  {analysis.result.red_flags.map((s, i) => <li key={i}>{s}</li>)}
-                </ul>
-              </InfoCard>
-            )}
-            {analysis.result.missing_information?.length > 0 && (
-              <InfoCard title="Missing information" icon={<AlertCircle className="h-4 w-4" aria-hidden="true" />}>
-                <ul className="list-disc pl-4 space-y-0.5 text-xs" style={{ color: MUTED }}>
-                  {analysis.result.missing_information.map((s, i) => <li key={i}>{s}</li>)}
-                </ul>
-              </InfoCard>
-            )}
-          </div>
-
-          {/* Questions + checklist */}
-          {analysis.result.questions_for_parties?.length > 0 && (
-            <InfoCard title="Questions for the parties" icon={<ChevronRight className="h-4 w-4" aria-hidden="true" />}>
-              <ul className="space-y-1 text-xs" style={{ color: INK }}>
-                {analysis.result.questions_for_parties.map((q, i) => (
-                  <li key={i}><span className="font-semibold" style={{ color: GOLD_DK }}>{q.element}:</span> {q.question}</li>
-                ))}
-              </ul>
-            </InfoCard>
-          )}
-          {analysis.result.strengthen_checklist?.length > 0 && (
-            <InfoCard title="How to strengthen the record" icon={<ShieldCheck className="h-4 w-4" aria-hidden="true" />}>
-              <ul className="list-disc pl-4 space-y-0.5 text-xs" style={{ color: MUTED }}>
-                {analysis.result.strengthen_checklist.map((s, i) => <li key={i}>{s}</li>)}
-              </ul>
-            </InfoCard>
-          )}
-
-          {/* Disclaimer */}
-          {analysis.result.disclaimer && (
-            <p className="text-[11px] italic" style={{ color: MUTED }}>{analysis.result.disclaimer}</p>
-          )}
-
-          {/* Raw JSON */}
-          <div>
-            <div className="flex items-center justify-between gap-2 mb-1.5 flex-wrap">
-              <p className="text-xs font-bold tracking-[.14em] uppercase" style={{ color: MUTED }}>
-                Analysis JSON · prompt {analysis.prompt_version} · {analysis.model}
-              </p>
-              <div className="flex items-center gap-2">
-                <button type="button" onClick={copyAnalysis}
-                  className="flex items-center gap-1 text-xs font-semibold rounded-lg px-2.5 py-1.5 hover:bg-amber-50" style={{ color: GOLD_DK }}>
-                  {copiedAnalysis ? <Check className="h-3.5 w-3.5" aria-hidden="true" /> : <Copy className="h-3.5 w-3.5" aria-hidden="true" />}
-                  {copiedAnalysis ? "Copied" : "Copy JSON"}
-                </button>
-                <button type="button" onClick={downloadAnalysis}
-                  className="flex items-center gap-1 text-xs font-semibold rounded-lg px-2.5 py-1.5 hover:bg-amber-50" style={{ color: GOLD_DK }}>
-                  <Download className="h-3.5 w-3.5" aria-hidden="true" />
-                  Download
-                </button>
-              </div>
-            </div>
-            <pre className="w-full rounded-xl px-3 py-2 text-xs leading-relaxed font-mono overflow-auto max-h-96"
-              style={{ background: CREAM2, border: `1px solid ${BORDER}`, color: INK, whiteSpace: "pre" }}>
-              {JSON.stringify(analysis, null, 2)}
-            </pre>
-          </div>
-        </div>
       )}
 
       {/* ── Case title modal (shown before saving to Firebase) ───── */}
@@ -2379,13 +2273,13 @@ function PendingFileCard({
   onView: () => void;
 }) {
   return (
-    <li className="rounded-2xl p-4" style={{ background: SURFACE, border: `1px solid ${BORDER}` }}>
-      <div className="flex items-start gap-3">
+    <li className="rounded-lg border border-stone-200 p-2.5">
+      <div className="flex items-center gap-3">
         {/* Clickable thumbnail */}
         <button
           type="button"
           onClick={onView}
-          className="group shrink-0 relative h-14 w-14 rounded-xl overflow-hidden focus:outline-none focus:ring-2 focus:ring-brand-gold"
+          className="group shrink-0 relative h-9 w-9 rounded-lg overflow-hidden focus:outline-none focus:ring-2 focus:ring-brand-gold"
           style={{ background: CREAM2 }}
           aria-label={`Preview ${file.name}`}
           title="Click to preview"
@@ -2401,8 +2295,8 @@ function PendingFileCard({
           </div>
         </button>
         <div className="flex-1 min-w-0">
-          <p className="text-sm font-semibold truncate" style={{ color: INK }}>{file.name}</p>
-          <p className="text-xs mt-0.5" style={{ color: MUTED }}>{formatBytes(file.size)}</p>
+          <p className="text-xs font-semibold truncate" style={{ color: INK }}>{file.name}</p>
+          <p className="text-xs mt-0.5" style={{ color: MUTED }}>{formatBytes(file.size)} · Ready to read</p>
         </div>
         <button
           type="button"
@@ -2413,14 +2307,12 @@ function PendingFileCard({
           <X className="h-4 w-4" style={{ color: "#B91C1C" }} aria-hidden="true" />
         </button>
       </div>
-      <div className="mt-3">
-        <label className="block text-xs font-semibold mb-1" style={{ color: MUTED }}>
-          Evidence type <span style={{ color: "#EF4444" }}>*</span>
-        </label>
+      <label className="mt-2 flex flex-wrap items-center gap-2 text-xs text-stone-600">
+        Evidence type
         <select
           value={label}
           onChange={(e) => onLabelChange(e.target.value)}
-          className="w-full rounded-xl px-3 py-2 text-sm focus:outline-none"
+          className="rounded-md px-2 py-1 text-xs"
           style={{
             background: "white",
             border: `1px solid ${label ? GOLD : BORDER}`,
@@ -2432,7 +2324,7 @@ function PendingFileCard({
           <option value="mpesa_screenshot">M-Pesa screenshot</option>
           <option value="other">Other</option>
         </select>
-      </div>
+      </label>
     </li>
   );
 }

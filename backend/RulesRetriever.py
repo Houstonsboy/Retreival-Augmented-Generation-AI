@@ -12,10 +12,11 @@ import statistics as _stats
 import chromadb
 from pathlib import Path
 from sentence_transformers import CrossEncoder
+from direct_retrieval import normal
 from rank_bm25 import BM25Okapi
 from typing import Dict, List, Any, Optional
 import urllib.parse
-from embeddings import get_embedder
+from embeddings import get_embedder, index_revision, query_embedding as cached_query_embedding
 
 # ===== CONFIGURATION =====
 BASE_DIR = Path(__file__).resolve().parent
@@ -58,7 +59,8 @@ def _sigmoid(x: float) -> float:
 
 
 def _ensure_statutes_bm25() -> None:
-    if _STATUTES_BM25["index"] is not None:
+    revision = index_revision(CHROMA_DB_DIR)
+    if _STATUTES_BM25.get("revision") == revision:
         return
     if not CHROMA_DB_DIR.exists():
         return
@@ -66,12 +68,14 @@ def _ensure_statutes_bm25() -> None:
         _c = chromadb.PersistentClient(path=str(CHROMA_DB_DIR))
         _col = _c.get_collection(name=CHROMA_COLLECTION_NAME)
         _d = _col.get(include=["documents", "metadatas"])
-        _STATUTES_BM25["ids"] = _d["ids"]
-        _STATUTES_BM25["docs"] = _d["documents"]
-        _STATUTES_BM25["metas"] = _d["metadatas"]
-        _STATUTES_BM25["index"] = BM25Okapi([doc.split() for doc in _d["documents"]])
+        _STATUTES_BM25.update(
+            ids=_d["ids"], docs=_d["documents"], metas=_d["metadatas"],
+            index=BM25Okapi([normal(doc).split() for doc in _d["documents"]]) if _d["documents"] else None,
+            revision=revision,
+        )
     except Exception:
-        pass  # BM25 unavailable; fall back to vector-only
+        _STATUTES_BM25.update(index=None, ids=[], docs=[], metas=[])
+
 
 
 def _ensure_statutes_ce() -> CrossEncoder:
@@ -366,7 +370,7 @@ def group_by_article(results: Dict, scores: List[float]) -> Dict:
         # Create unique article key: document_type + article_number
         doc_type = metadata.get('document_type', 'unknown')
         article_num = metadata.get('article_number', 'N/A')
-        article_key = f"{doc_type}_{article_num}"
+        article_key = (metadata.get("source_document", ""), doc_type, article_num)
         
         if article_key not in articles:
             articles[article_key] = {
@@ -545,25 +549,26 @@ def retrieve_relevant_rules(classifier_output: Any, verbose: bool = True, max_re
         print("\n[5/6] Embedding query and hybrid search (BM25 + vector + cross-encoder)...")
 
     query_str = query_params['vector_query']
-    query_embedding = embedding_model.encode("query: " + query_str).tolist()
+    query_embedding = list(cached_query_embedding(EMBEDDING_MODEL_NAME, query_str))
 
     if verbose:
         print(f"  ✓ Embedding dimension: {len(query_embedding)}")
 
     # 5a. BM25 search over entire StatutesDB corpus, filtered by where_filter scope
     _ensure_statutes_bm25()
+    bm25_index = _STATUTES_BM25.copy()
     bm25_ranked_ids: list = []
-    if _STATUTES_BM25["index"] is not None:
-        bm25_raw = _STATUTES_BM25["index"].get_scores(query_str.split())
+    if bm25_index["index"] is not None:
+        bm25_raw = bm25_index["index"].get_scores(normal(query_str).split())
         if where_filter:
             eligible = [
-                i for i, m in enumerate(_STATUTES_BM25["metas"])
+                i for i, m in enumerate(bm25_index["metas"])
                 if _matches_where(m, where_filter)
             ]
         else:
-            eligible = list(range(len(_STATUTES_BM25["ids"])))
+            eligible = list(range(len(bm25_index["ids"])))
         bm25_order = sorted(eligible, key=lambda i: -bm25_raw[i])[:50]
-        bm25_ranked_ids = [_STATUTES_BM25["ids"][i] for i in bm25_order]
+        bm25_ranked_ids = [bm25_index["ids"][i] for i in bm25_order]
 
     # 5b. Vector search (top 50) — apply where_filter when present
     query_kwargs = {
@@ -608,14 +613,14 @@ def retrieve_relevant_rules(classifier_output: Any, verbose: bool = True, max_re
         if _mapped:
             _named_act_titles.add(_mapped)
 
-    if explicit_secs and _named_act_titles and _STATUTES_BM25["index"] is not None:
+    if explicit_secs and _named_act_titles and bm25_index["index"] is not None:
         fused_set = set(fused_ids)
         inject = [
-            _STATUTES_BM25["ids"][i]
-            for i, m in enumerate(_STATUTES_BM25["metas"])
+            bm25_index["ids"][i]
+            for i, m in enumerate(bm25_index["metas"])
             if str(m.get("article_number", "")) in explicit_secs
             and m.get("source_document", "") in _named_act_titles
-            and _STATUTES_BM25["ids"][i] not in fused_set
+            and bm25_index["ids"][i] not in fused_set
         ]
         fused_ids = inject + fused_ids
         fused_ids = fused_ids[:35]
@@ -629,10 +634,10 @@ def retrieve_relevant_rules(classifier_output: Any, verbose: bool = True, max_re
     id_to_data: dict = {}
     for i, cid in enumerate(vec_ranked_ids):
         id_to_data[cid] = (vec_results["documents"][0][i], vec_results["metadatas"][0][i])
-    if _STATUTES_BM25["index"] is not None:
-        for i, cid in enumerate(_STATUTES_BM25["ids"]):
+    if bm25_index["index"] is not None:
+        for i, cid in enumerate(bm25_index["ids"]):
             if cid not in id_to_data:
-                id_to_data[cid] = (_STATUTES_BM25["docs"][i], _STATUTES_BM25["metas"][i])
+                id_to_data[cid] = (bm25_index["docs"][i], bm25_index["metas"][i])
 
     # 5f. Constitution fallback: add master_rules chunks to CE candidate pool
     if query_params.get('needs_constitution'):

@@ -1,0 +1,76 @@
+.scc-workshop {
+  --scc-ink: #28221a;
+  --scc-muted: #625a4f;
+  --scc-accent: #945e0d;
+  --scc-line: #e6ded0;
+  --scc-soft: #f8f5ef;
+  color: var(--scc-ink);
+  width: min(100%, 46rem);
+  margin-inline: auto;
+  padding: 1.75rem clamp(1rem, 4vw, 2rem);
+}
+.scc-workshop[data-step="3"] { width: min(100%, 65rem); }
+.scc-workshop :is(button, a, input, select, textarea, summary):focus-visible {
+  outline: 2px solid var(--scc-accent);
+  outline-offset: 3px;
+}
+.scc-steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .55rem; }
+.scc-steps li {
+  display: flex; align-items: center; gap: .45rem; padding-top: .65rem;
+  border-top: 2px solid var(--scc-line); color: var(--scc-muted); font-size: .75rem;
+}
+.scc-steps li[aria-current] { border-color: var(--scc-ink); color: var(--scc-ink); font-weight: 700; }
+.scc-steps li[data-complete="true"] { border-color: var(--scc-accent); }
+.scc-steps li > span {
+  display: grid; place-items: center; flex-shrink: 0; width: 1.35rem; height: 1.35rem;
+  border-radius: 50%; background: #eee8dc; font-weight: 700;
+}
+.scc-steps li[aria-current] > span { background: var(--scc-ink); color: white; }
+.scc-steps li[data-complete="true"] > span { background: var(--scc-accent); color: white; }
+.scc-heading { margin-block: 1.45rem 1.1rem; }
+.scc-kicker { color: var(--scc-accent); font-size: .65rem; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; }
+.scc-heading h1 {
+  margin-block: .35rem;
+  font: 500 clamp(2rem, 4vw, 2.6rem)/1.08 var(--font-newsreader), Georgia, serif;
+}
+.scc-intro { color: var(--scc-muted); font-size: .875rem; line-height: 1.6; }
+.scc-card { border: 1px solid var(--scc-line); border-radius: .8rem; background: #fff; padding: 1rem 1.125rem; min-width: 0; }
+.scc-label { display: block; font-size: .825rem; font-weight: 750; margin-bottom: .65rem; }
+.scc-options { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 7.5rem), 1fr)); gap: .5rem; }
+.scc-options label {
+  display: flex; align-items: center; gap: .45rem; min-height: 2.45rem; cursor: pointer;
+  border: 1px solid var(--scc-line); border-radius: .45rem; background: var(--scc-soft);
+  padding: .45rem .65rem; font-size: .75rem;
+}
+.scc-options label:has(input:checked) { border-color: #bd985e; background: #fbf1dd; }
+.scc-workshop input:is([type="radio"], [type="checkbox"]) { accent-color: var(--scc-accent); flex-shrink: 0; }
+.scc-drop {
+  display: grid; justify-items: center; gap: .35rem; width: 100%; padding: 1.25rem .75rem;
+  border: 1px dashed #d8c7a8; border-radius: .55rem; background: #f9f4e8; text-align: center;
+}
+.scc-drop:hover, .scc-drop[data-dragging="true"] { background: #f5e9cd; }
+.scc-drop svg { color: var(--scc-accent); }
+.scc-actions { display: flex; flex-wrap: wrap; align-items: center; gap: .65rem; }
+.scc-footer { margin-top: 1rem; padding-top: .9rem; border-top: 1px solid var(--scc-line); }
+.scc-button {
+  display: inline-flex; align-items: center; justify-content: center; gap: .4rem; min-height: 2.5rem;
+  border: 1px solid var(--scc-line); border-radius: .5rem; padding: .55rem .85rem;
+  font-size: .8rem; font-weight: 750; background: #fff;
+}
+.scc-button:hover { filter: brightness(.96); }
+.scc-button:disabled, .scc-drop:disabled { opacity: .55; cursor: not-allowed; }
+.scc-primary { background: var(--scc-accent); border-color: var(--scc-accent); color: white; }
+.scc-disclosure > summary { cursor: pointer; font-size: .825rem; font-weight: 750; }
+.scc-note { background: #f3eddf; color: var(--scc-muted); font-size: .8rem; line-height: 1.5; }
+.scc-field {
+  width: 100%; border: 1px solid var(--scc-line); border-radius: .45rem;
+  background: var(--scc-soft); padding: .55rem .7rem; font-size: .875rem;
+}
+.scc-device-checks .scc-question { padding: .65rem .75rem; }
+.scc-device-checks .scc-label { margin-bottom: .4rem; }
+.scc-preview { font-family: Georgia, serif; font-size: .9rem; line-height: 1.55; }
+.scc-preview mark { background: #f5ead2; color: inherit; overflow-wrap: anywhere; }
+@media (max-width: 480px) {
+  .scc-steps li { flex-direction: column; align-items: start; gap: .3rem; font-size: .68rem; }
+  .scc-workshop { padding-top: 1.25rem; }
+}

@@ -11,6 +11,7 @@ Usage:
 """
 from __future__ import annotations
 
+from functools import lru_cache
 import threading
 from typing import Optional
 
@@ -28,3 +29,22 @@ def get_embedder(model_name: str = "intfloat/e5-base-v2"):
             from sentence_transformers import SentenceTransformer
             _model = SentenceTransformer(model_name)
     return _model
+
+
+@lru_cache(maxsize=256)
+def query_embedding(model_name: str, query: str) -> tuple[float, ...]:
+    """Cache only the model-derived query vector, never a legal result."""
+    return tuple(get_embedder(model_name).encode("query: " + query).tolist())
+
+
+def index_revision(directory) -> tuple:
+    """Invalidate lexical indexes when Chroma's committed storage changes."""
+    revision = []
+    for name in ("chroma.sqlite3", "chroma.sqlite3-wal"):
+        path = directory / name
+        try:
+            record = path.stat()
+        except FileNotFoundError:
+            continue
+        revision.append((record.st_ino, record.st_mtime_ns, record.st_size))
+    return tuple(revision)

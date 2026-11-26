@@ -19,7 +19,7 @@ from SCCVision.analysis_store import get_analysis_snapshot
 from .document import render_pdf
 from .gate import evaluate
 from .models import DeviceFacts
-from .store import get_certificate, list_certificates, save_certificate
+from .store import contract_analysis_fields, get_certificate, list_certificates, save_certificate
 
 logger = logging.getLogger(__name__)
 
@@ -110,6 +110,13 @@ def download_cert(cert_id: str):
     record = get_certificate(g.uid, cert_id)
     if record is None:
         return jsonify({"error": "Certificate not found"}), 404
+
+    # Older certificates did not store element statuses. Recover them from the
+    # original owner-scoped analysis when it is still available.
+    if "derived_statuses" not in record and record.get("analysis_id"):
+        snapshot = get_analysis_snapshot(g.uid, record["analysis_id"])
+        if snapshot is not None:
+            record = {**record, **contract_analysis_fields(snapshot)}
 
     try:
         pdf_bytes = render_pdf(record)

@@ -1,6 +1,5 @@
 import os
 import json
-import requests
 from pathlib import Path
 from typing import Dict, Any, Optional
 from dotenv import load_dotenv
@@ -8,23 +7,6 @@ from Retriever import retrieve_relevant_cases, display_results
 
 # Load environment variables
 load_dotenv(dotenv_path=Path(__file__).resolve().parent / ".env", override=True)
-
-def _load_api_keys() -> list:
-    keys = []
-    for var in ["GROQ_API_KEY", "GROQ_API_KEY_2", "GROQ_API_KEY_3"]:
-        k = os.getenv(var)
-        if k:
-            keys.append(k)
-    if not keys:
-        raise ValueError("No GROQ_API_KEY found in .env. Add at least GROQ_API_KEY.")
-    return keys
-
-GROQ_KEYS = _load_api_keys()
-GROQ_API_KEY = GROQ_KEYS[0]
-print(f"[INFO] Loaded {len(GROQ_KEYS)} Groq API key(s)")
-
-MODEL_NAME = "qwen/qwen3.8-27b"
-GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
 
 #System prompt to guide the classifier
 SYSTEM_PROMPT = """You are a Senior Kenyan Legal Research Specialist with dual operational modes: DIRECT STATUTORY LOOKUP and STRATEGIC LEGAL ANALYSIS. Your task is to transform natural language queries into high-precision JSON objects using an intelligent routing system.
@@ -420,220 +402,24 @@ Expected Output:
 **END OF SYSTEM PROMPT**
 """
 
-def classify_legal_query(user_query: str, max_retries: int = 3) -> Optional[Dict[str, Any]]:
-    """
-    Classifies a legal query using the Groq API.
-    
-    Args:
-        user_query: The natural language legal query from the user
-        max_retries: Maximum number of retry attempts for API calls
-        
-    Returns:
-        Dictionary containing the classified query structure, or None if failed
-    """
-    
-    active_key_index = 0
-    headers = {
-        "Authorization": f"Bearer {GROQ_KEYS[active_key_index]}",
-        "Content-Type": "application/json"
-    }
-    
-    # Wrap user query so the model does not "answer" it; we only want classification JSON
-    user_message = (
-        "Classify the following user query. Output ONLY a single JSON object (no other text, no explanation of the law). "
-        "Do not answer the user's question—only classify it for retrieval.\n\n"
-        f"User query: {user_query}"
-    )
+def classify_legal_query(user_query: str, max_retries: int = 1) -> Optional[Dict[str, Any]]:
+    """One combined classification attempt. The caller owns deterministic fallback."""
+    from groq_budget import ACTIVE
+    from groq_client import call_groq
 
-    payload = {
-        "model": MODEL_NAME,
-        "messages": [
-            {
-                "role": "system",
-                "content": SYSTEM_PROMPT
-            },
-            {
-                "role": "user",
-                "content": user_message
-            }
-        ],
-        "temperature": 0.1,  # Low temperature for consistent, deterministic output
-        "max_tokens": 1500,
-        "top_p": 1,
-        "stream": False
-    }
-    
-    api_call_count = 0
-    
-    for attempt in range(max_retries):
-        try:
-            api_call_count += 1
-            print(f"[API Call #{api_call_count}] Sending query to Groq API...")
-            
-            response = requests.post(
-                GROQ_API_URL,
-                headers=headers,
-                json=payload,
-                timeout=30,
-                proxies={"http": None, "https": None}
-            )
-            
-            # Enhanced debugging for HTTP errors
-            print(f"[DEBUG] Response Status Code: {response.status_code}")
-            
-            # Check for rate limiting (429) or other HTTP errors
-            if response.status_code == 429:
-                print(f"[ERROR] GROQ RATE LIMIT HIT on key index {active_key_index}")
-                import time
-                # Try next key first before sleeping
-                next_index = (active_key_index + 1) % len(GROQ_KEYS)
-                if next_index != active_key_index:
-                    active_key_index = next_index
-                    headers["Authorization"] = f"Bearer {GROQ_KEYS[active_key_index]}"
-                    print(f"[INFO] Rotated to key index {active_key_index} — retrying immediately")
-                    continue
-                # All keys exhausted — fall back to waiting
-                retry_after = response.headers.get("retry-after")
-                wait_time = min(int(retry_after), 60) if (retry_after and retry_after.isdigit()) else 30
-                print(f"[INFO] All keys rate-limited. Waiting {wait_time}s...")
-                time.sleep(wait_time)
-                # Reset to primary key after wait
-                active_key_index = 0
-                headers["Authorization"] = f"Bearer {GROQ_KEYS[0]}"
-                continue
-            
-            elif response.status_code == 401:
-                print(f"[ERROR] Authentication failed! Check your GROQ_API_KEY.")
-                print(f"[DEBUG] API Key (first 10 chars): {GROQ_API_KEY[:10]}...")
-                return None
-            
-            elif response.status_code == 400:
-                print(f"[ERROR] Bad request! The API rejected your request.")
-                try:
-                    error_detail = response.json()
-                    print(f"[DEBUG] Error details: {json.dumps(error_detail, indent=2)}")
-                except:
-                    print(f"[DEBUG] Raw response: {response.text}")
-                return None
-            
-            response.raise_for_status()
-            
-            # Extract the response content
-            response_data = response.json()
-            
-            # Debug: Print full response structure
-            print(f"[DEBUG] Response keys: {response_data.keys()}")
-            
-            if "choices" not in response_data or len(response_data["choices"]) == 0:
-                print(f"[ERROR] No 'choices' in API response!")
-                print(f"[DEBUG] Full response: {json.dumps(response_data, indent=2)}")
-                continue
-            
-            assistant_message = response_data["choices"][0]["message"]["content"]
-            
-            # Debug: Print raw LLM output
-            print(f"[DEBUG] Raw LLM response (first 300 chars):\n{assistant_message[:300]}\n")
-            
-            # Try to parse as JSON
-            try:
-                # Remove potential markdown code fences
-                clean_response = assistant_message.strip()
-                if clean_response.startswith("```json"):
-                    clean_response = clean_response[7:]
-                if clean_response.startswith("```"):
-                    clean_response = clean_response[3:]
-                if clean_response.endswith("```"):
-                    clean_response = clean_response[:-3]
-                
-                clean_response = clean_response.strip()
-                
-                # Debug: Show cleaned response
-                print(f"[DEBUG] Cleaned response (first 200 chars):\n{clean_response[:200]}\n")
-                
-                # Parse JSON
-                classification = json.loads(clean_response)
-                
-                # Debug: Show parsed fields
-                print(f"[DEBUG] Parsed JSON keys: {list(classification.keys())}")
-                
-                # Updated validation for new schema (intents, target_components are now arrays)
-                required_fields = ["intents", "target_components", "legal_domains", "entities", "vector_query"]
-                missing_fields = [field for field in required_fields if field not in classification]
-                
-                if missing_fields:
-                    print(f"[WARNING] Missing required fields: {missing_fields}")
-                    print(f"[DEBUG] Available fields: {list(classification.keys())}")
-                    print(f"[DEBUG] Full classification object:\n{json.dumps(classification, indent=2)}")
-                    
-                    if attempt < max_retries - 1:
-                        print(f"[INFO] Retrying with explicit field requirements...")
-                        payload["messages"].append({
-                            "role": "assistant",
-                            "content": assistant_message
-                        })
-                        payload["messages"].append({
-                            "role": "user",
-                            "content": f"Your response is missing these required fields: {missing_fields}. Please include ALL required fields: {required_fields}. Output ONLY valid JSON, no other text."
-                        })
-                    continue
-                
-                print(f"[SUCCESS] Query classified successfully! (Total API calls: {api_call_count})")
-                return classification
-                    
-            except json.JSONDecodeError as e:
-                print(f"[ERROR] SCHEMA: Failed to parse JSON response!")
-                print(f"[DEBUG] JSON Error: {str(e)}")
-                print(f"[DEBUG] Error at position: {e.pos}")
-                print(f"[DEBUG] Problematic section: ...{clean_response[max(0, e.pos-50):e.pos+50]}...")
-                print(f"[DEBUG] Full cleaned response (first 500 chars):\n{clean_response[:500]}\n")
-                
-                if attempt < max_retries - 1:
-                    print(f"[INFO] Retrying with stricter JSON-only instructions...")
-                    payload["messages"].append({
-                        "role": "assistant",
-                        "content": assistant_message
-                    })
-                    payload["messages"].append({
-                        "role": "user",
-                        "content": (
-                            "You responded with narrative or markdown. Your job is ONLY to output the classification JSON. "
-                            "Do NOT answer the user's legal question. Do NOT write 'Article X states...' or any explanation. "
-                            "Output a single JSON object starting with { and ending with }. No other text before or after. "
-                            "Example start: {\"retrieval_mode\": \"DIRECT_STATUTORY_LOOKUP\", ...}"
-                        )
-                    })
-                continue
-                
-        except requests.exceptions.Timeout:
-            print(f"[ERROR] Request timed out after 30 seconds!")
-            if attempt < max_retries - 1:
-                print(f"[INFO] Retrying...")
-            continue
-            
-        except requests.exceptions.ConnectionError as e:
-            print(f"[ERROR] Connection error: {str(e)}")
-            print(f"[DEBUG] Unable to reach {GROQ_API_URL}")
-            if attempt < max_retries - 1:
-                print(f"[INFO] Retrying in 3 seconds...")
-                import time
-                time.sleep(3)
-            continue
-            
-        except requests.exceptions.RequestException as e:
-            print(f"[ERROR] API request failed: {str(e)}")
-            print(f"[DEBUG] Exception type: {type(e).__name__}")
-            if attempt < max_retries - 1:
-                print(f"[INFO] Retrying in 2 seconds...")
-                import time
-                time.sleep(2)
-            continue
-    
-    print(f"[FAILURE] Failed to classify query after {api_call_count} API calls.")
-    print(f"[TROUBLESHOOTING TIPS]:")
-    print(f"  1. Check your API key is valid: {GROQ_API_KEY[:10]}...")
-    print(f"  2. Verify you have Groq API credits/quota remaining")
-    print(f"  3. Try a simpler query to test basic connectivity")
-    print(f"  4. Check Groq API status: https://status.groq.com/")
+    messages = [
+        {"role": "system", "content": SYSTEM_PROMPT},
+        {"role": "user", "content": f"Classify this query as JSON without answering it:\n{user_query}"},
+    ]
+    required = {"intents", "target_components", "legal_domains", "entities", "vector_query"}
+    try:
+        raw = call_groq(messages, temperature=0.1, max_tokens=800,
+                        stage="classification" if ACTIVE.get() else None)
+        parsed = json.loads(raw.strip().removeprefix("```json").removeprefix("```").removesuffix("```").strip())
+        if isinstance(parsed, dict) and required <= parsed.keys():
+            return parsed
+    except Exception:
+        return None
     return None
 
 

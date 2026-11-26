@@ -1,120 +1,167 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { MessageSquare, FolderOpen, ArrowRight, Scale, FileSearch } from "lucide-react";
+import { MessageSquare, FolderOpen, FileSearch, Scale, ArrowRight, Info } from "lucide-react";
 import { useAuth } from "@/app/context/AuthContext";
 import { UserMenu } from "@/app/components/UserMenu";
 
-export default function Dashboard() {
-  const router = useRouter();
-  const { profile } = useAuth();
+// ── Design tokens ──────────────────────────────────────────────────────────
+const BG      = "#FAF7F0";
+const SURFACE = "#FFFDF8";
+const GOLD    = "#C9971A";
+const GOLD_DK = "#A87A0C";
+const BORDER  = "#ECE6D8";
+const INK     = "#151515";
+const MUTED   = "#6B6660";
+const MNR     = "var(--font-manrope), system-ui, sans-serif";
+const NR      = "var(--font-newsreader), Georgia, 'Times New Roman', serif";
 
-  const tools = [
-    {
-      icon: MessageSquare,
-      label: "Chat",
-      description: "Ask legal questions and get analysis grounded in Kenyan case law and statutes.",
-      href: "/research",
-      cta: "Open chat",
-      accent: "from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/30",
-      border: "border-blue-100 dark:border-blue-900/50",
-      iconBg: "bg-blue-100 dark:bg-blue-900/50",
-      iconColor: "text-blue-600 dark:text-blue-400",
-      ctaColor: "text-blue-600 dark:text-blue-400 group-hover:text-blue-700 dark:group-hover:text-blue-300",
-      arrowColor: "text-blue-400 dark:text-blue-500 group-hover:text-blue-600 dark:group-hover:text-blue-300",
-    },
-    {
-      icon: FolderOpen,
-      label: "Internal Repository",
-      description: "Browse and manage uploaded case documents, statutes, and legal references.",
-      href: "/repository",
-      cta: "Browse files",
-      accent: "from-amber-50 to-orange-50 dark:from-amber-950/30 dark:to-orange-950/30",
-      border: "border-amber-100 dark:border-amber-900/50",
-      iconBg: "bg-amber-100 dark:bg-amber-900/50",
-      iconColor: "text-amber-600 dark:text-amber-400",
-      ctaColor: "text-amber-600 dark:text-amber-400 group-hover:text-amber-700 dark:group-hover:text-amber-300",
-      arrowColor: "text-amber-400 dark:text-amber-500 group-hover:text-amber-600 dark:group-hover:text-amber-300",
-    },
-    {
-      icon: FileSearch,
-      label: "Evidence Tools",
-      description: "Prepare digital evidence for Small Claims Court — M-Pesa records, messages, and agreements.",
-      href: "/litigant/analysis",
-      cta: "Open evidence tools",
-      // brand gold palette (--brand-gold #C9971A / --brand-highlight #F6E7B8 / --brand-border #ECE6D8)
-      accent: "from-[#FAF7F0] to-[#FFFDF8]",
-      border: "border-[#ECE6D8]",
-      iconBg: "bg-[#F6E7B8]",
-      iconColor: "text-[#C9971A]",
-      ctaColor: "text-[#A87A0C] group-hover:text-[#C9971A]",
-      arrowColor: "text-[#C9971A] group-hover:text-[#A87A0C]",
-    },
-  ];
+const tools = [
+  {
+    icon: MessageSquare,
+    category: "Research",
+    label: "Chat",
+    description: "Ask legal questions and get analysis grounded in Kenyan case law and statutes.",
+    href: "/research",
+    cta: "Open chat",
+  },
+  {
+    icon: FolderOpen,
+    category: "Library",
+    label: "Internal Repository",
+    description: "Browse and manage uploaded case documents, statutes, and legal references.",
+    href: "/repository",
+    cta: "Browse files",
+  },
+  {
+    icon: FileSearch,
+    category: "Evidence",
+    label: "Evidence Tools",
+    description: "Prepare digital evidence for Small Claims Court — M-Pesa records, messages, and agreements.",
+    href: "/litigant/analysis",
+    cta: "Open evidence tools",
+  },
+];
+
+export default function Dashboard() {
+  const router  = useRouter();
+  const { profile } = useAuth();
+  const name    = profile?.username ?? "Counsellor";
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex flex-col">
-      {/* Top bar */}
-      <header className="border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900">
-        <div className="max-w-5xl mx-auto px-5 py-3 flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            <div className="h-7 w-7 rounded-lg bg-blue-600 flex items-center justify-center">
-              <Scale className="h-4 w-4 text-white" />
-            </div>
-            <span className="font-semibold text-gray-900 dark:text-gray-100 tracking-tight">
-              LegalAI
-            </span>
+    <div
+      className="flex min-h-screen flex-col"
+      style={{ background: BG, fontFamily: MNR }}
+    >
+      {/* ── Top bar ──────────────────────────────────────────────────── */}
+      <header
+        className="w-full shrink-0 flex items-center justify-between px-6 py-3"
+        style={{ borderBottom: `1px solid ${BORDER}`, background: BG }}
+      >
+        <div className="flex items-center gap-2.5">
+          <div
+            className="h-8 w-8 rounded-xl flex items-center justify-center shrink-0"
+            style={{ background: `linear-gradient(135deg, #7A3A12 0%, ${GOLD} 100%)` }}
+          >
+            <Scale className="h-4 w-4 text-white" />
           </div>
-          <UserMenu />
+          <span
+            className="text-sm font-bold tracking-tight"
+            style={{ color: INK }}
+          >
+            Kenyan Legal{" "}
+            <span style={{ color: GOLD }}>RAG</span>
+          </span>
         </div>
+        <UserMenu />
       </header>
 
-      {/* Body */}
+      {/* ── Body ─────────────────────────────────────────────────────── */}
       <main className="flex-1 flex flex-col items-center justify-center px-5 py-16">
         {/* Greeting */}
         <div className="text-center mb-12">
-          <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-2">
-            Welcome back
+          <p
+            className="text-[10px] font-bold tracking-[.28em] uppercase mb-3"
+            style={{ color: GOLD }}
+          >
+            Small Claims Court · Kenya
           </p>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 tracking-tight">
-            {profile?.username ?? "Counsellor"}
+          <h1
+            className="text-3xl sm:text-4xl font-bold mb-2"
+            style={{ color: INK, fontFamily: NR, fontStyle: "italic" }}
+          >
+            Welcome back, {name}
           </h1>
-          <p className="mt-2 text-sm text-gray-500 dark:text-gray-400 max-w-xs">
+          <p className="text-sm" style={{ color: MUTED }}>
             What would you like to do today?
           </p>
         </div>
 
-        {/* Navigation cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-2xl">
+        {/* Tool cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full max-w-3xl">
           {tools.map((tool) => {
             const Icon = tool.icon;
             return (
               <button
                 key={tool.label}
                 onClick={() => router.push(tool.href)}
-                className={`group relative flex flex-col items-start text-left p-6 rounded-2xl border bg-gradient-to-br ${tool.accent} ${tool.border} transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-offset-gray-950`}
+                className="group flex flex-col items-start text-left p-5 rounded-2xl transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-offset-2"
+                style={{
+                  background: SURFACE,
+                  border: `1px solid ${BORDER}`,
+                }}
               >
-                {/* Icon */}
-                <div className={`h-10 w-10 rounded-xl ${tool.iconBg} flex items-center justify-center mb-4`}>
-                  <Icon className={`h-5 w-5 ${tool.iconColor}`} />
+                {/* Category tag + icon row */}
+                <div className="w-full flex items-center justify-between mb-4">
+                  <span
+                    className="text-[9px] font-bold tracking-[.22em] uppercase"
+                    style={{ color: MUTED }}
+                  >
+                    {tool.category}
+                  </span>
+                  <div
+                    className="h-9 w-9 rounded-xl flex items-center justify-center shrink-0"
+                    style={{ background: `${GOLD}18`, border: `1px solid ${GOLD}28` }}
+                  >
+                    <Icon className="h-4.5 w-4.5" style={{ color: GOLD }} />
+                  </div>
                 </div>
 
-                {/* Text */}
-                <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100 mb-1">
+                <h2
+                  className="text-sm font-bold mb-1.5"
+                  style={{ color: INK }}
+                >
                   {tool.label}
                 </h2>
-                <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed flex-1">
+                <p
+                  className="text-xs leading-relaxed flex-1"
+                  style={{ color: MUTED }}
+                >
                   {tool.description}
                 </p>
 
-                {/* CTA row */}
-                <div className={`mt-5 flex items-center gap-1.5 text-sm font-medium ${tool.ctaColor} transition-colors`}>
+                <div
+                  className="mt-5 flex items-center gap-1 text-xs font-semibold transition-all group-hover:gap-2"
+                  style={{ color: GOLD_DK }}
+                >
                   {tool.cta}
-                  <ArrowRight className={`h-4 w-4 transition-transform duration-200 group-hover:translate-x-1 ${tool.arrowColor}`} />
+                  <ArrowRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-1" />
                 </div>
               </button>
             );
           })}
+        </div>
+
+        {/* Disclaimer */}
+        <div
+          className="mt-10 w-full max-w-3xl rounded-xl px-4 py-3 flex items-start gap-2.5"
+          style={{ background: `${GOLD}0D`, border: `1px solid ${GOLD}28` }}
+        >
+          <Info className="h-4 w-4 mt-0.5 shrink-0" style={{ color: GOLD }} />
+          <p className="text-xs leading-relaxed" style={{ color: MUTED }}>
+            Analysis here is automated and is not legal advice. Confirm important
+            decisions with a qualified advocate before filing.
+          </p>
         </div>
       </main>
     </div>

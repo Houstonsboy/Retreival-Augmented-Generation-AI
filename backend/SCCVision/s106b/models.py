@@ -22,7 +22,8 @@ class DeviceFacts(BaseModel):
 
     device_make:            str
     device_model:           str
-    phone_number_last4:     str | None = None   # 4 digits only; never store full number
+    phone_number:           str | None = Field(default=None, pattern=r"^\+[1-9][0-9]{6,14}$")
+    phone_number_last4:     str | None = None   # Legacy certificate records
     production_method:      ProductionMethod
     owner_is_declarant:     bool
     lawful_control:         bool                # s.106B(2)(a)

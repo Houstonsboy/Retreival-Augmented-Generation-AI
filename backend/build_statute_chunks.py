@@ -51,25 +51,19 @@ def split_text(text: str, tokenizer, max_tokens: int = MAX_TOKENS, overlap: int 
     decoded sub-strings, each within max_tokens tokens.
     Consecutive windows share `overlap` tokens.
     """
-    ids = tokenizer.encode(text, add_special_tokens=False)
-    if len(ids) <= max_tokens:
-        return [text], len(ids)
+    encoded = tokenizer(text, add_special_tokens=False, return_offsets_mapping=True)
+    offsets = encoded["offset_mapping"]
+    if len(offsets) <= max_tokens:
+        return [text], len(offsets)
 
-    stride = max_tokens - overlap
     windows = []
-    i = 0
-    while i < len(ids):
-        end = min(i + max_tokens, len(ids))
-        decoded = tokenizer.decode(
-            ids[i:end],
-            skip_special_tokens=True,
-            clean_up_tokenization_spaces=True,
-        )
-        windows.append(decoded)
-        if end == len(ids):
+    for start in range(0, len(offsets), max_tokens - overlap):
+        end = min(start + max_tokens, len(offsets))
+        windows.append(text[0 if not start else offsets[start][0]:
+                            len(text) if end == len(offsets) else offsets[end][0]].rstrip())
+        if end == len(offsets):
             break
-        i += stride
-    return windows, max_tokens  # all windows are capped at max_tokens
+    return windows, max_tokens
 
 
 def safe_str(v) -> str:
@@ -174,7 +168,7 @@ def main():
         original_chunk_id = record["chunk_id"]
         original_chunk_index = record.get("chunk_index", 0)
 
-        text = (record.get("embedding_text") or record.get("text") or "").strip()
+        text = (record.get("text") or record.get("embedding_text") or "").strip()
         if not text:
             continue
 

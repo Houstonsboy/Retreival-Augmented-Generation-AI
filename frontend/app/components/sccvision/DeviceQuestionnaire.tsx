@@ -1,514 +1,263 @@
 "use client";
 
-/**
- * DeviceQuestionnaire — collects DeviceFacts for Section 106B gate.
- *
- * Shows after a successful analysis. The user fills in device details,
- * confirms the statutory declarations, then submits. On success the caller
- * receives the created CertificateRecord.
- */
-
 import { useState } from "react";
-import { X, Loader2, ShieldCheck, AlertCircle } from "lucide-react";
+import { ArrowLeft, Download, Loader2 } from "lucide-react";
 import type { DeviceFacts, ProductionMethod, CertificateRecord } from "@/app/lib/evidenceTypes";
-import { createCertificate } from "@/app/lib/evidenceApi";
+import { createCertificate, downloadCertificate } from "@/app/lib/evidenceApi";
+import { internationalPhoneNumber, phoneCountries } from "@/app/lib/phoneCountries";
+import { Choices, type DeviceAnswers } from "./Workshop";
 
-// ── Design tokens (match SCCVisionTest) ────────────────────────────────────
-const GOLD    = "#C9971A";
-const GOLD_DK = "#A87A0C";
-const BORDER  = "#ECE6D8";
-const CREAM2  = "#F5F0E4";
-const INK     = "#151515";
-const MUTED   = "#6B6660";
-const SURFACE = "#FFFDF8";
-
-const PRODUCTION_METHOD_OPTIONS: { value: ProductionMethod; label: string; hint: string }[] = [
-  {
-    value: "screenshot_on_device",
-    label: "Screenshot on this device",
-    hint: "I took a screenshot on the phone that holds the messages",
-  },
-  {
-    value: "printed_statement",
-    label: "Printed statement",
-    hint: "The phone produced a printable statement",
-  },
-  {
-    value: "forwarded_or_copied",
-    label: "Forwarded or copied",
-    hint: "The file was forwarded or copied from another phone",
-  },
-  {
-    value: "other",
-    label: "Other",
-    hint: "Some other method not listed above",
-  },
+const METHODS: { value: ProductionMethod; label: string }[] = [
+  { value: "screenshot_on_device", label: "Screenshot on this device" },
+  { value: "printed_statement", label: "Printed statement" },
+  { value: "forwarded_or_copied", label: "Forwarded or copied" },
+  { value: "other", label: "Another method" },
 ];
 
-// ── Helpers ────────────────────────────────────────────────────────────────
+const CHECKS = [
+  ["owner_is_declarant", "Are you the owner or controller of this device?"],
+  ["lawful_control", "Did you have lawful control of this device during the relevant period?"],
+  ["regular_use", "Did you regularly use this device during that period?"],
+  ["regular_feed", "Were records of this kind regularly stored on this device?"],
+  ["operating_properly", "Was the device working normally throughout the relevant period?"],
+  ["messages_on_this_device", "Were these messages or payments sent or received directly on this device?"],
+] as const;
 
-function FieldLabel({ label, hint }: { label: string; hint?: string }) {
-  return (
-    <div className="mb-1">
-      <span className="text-sm font-semibold" style={{ color: INK }}>{label}</span>
-      {hint && <span className="text-xs ml-2" style={{ color: MUTED }}>{hint}</span>}
-    </div>
-  );
+const YES_NO = [{ value: "yes", label: "Yes" }, { value: "no", label: "No" }];
+
+function answer(value: boolean | undefined) {
+  return value === undefined ? undefined : value ? "yes" : "no";
 }
 
-function TextInput({
-  value,
-  onChange,
-  placeholder,
-  error,
-}: {
-  value: string;
-  onChange: (v: string) => void;
-  placeholder?: string;
-  error?: boolean;
-}) {
-  return (
-    <input
-      type="text"
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-      placeholder={placeholder}
-      className="w-full rounded-xl px-3 py-2 text-sm focus:outline-none"
-      style={{
-        background: SURFACE,
-        border: `1.5px solid ${error ? "#EF4444" : BORDER}`,
-        color: INK,
-      }}
-    />
-  );
-}
-
-function YesNo({
-  value,
-  onChange,
-  yesLabel = "Yes",
-  noLabel = "No",
-}: {
-  value: boolean | null;
-  onChange: (v: boolean) => void;
-  yesLabel?: string;
-  noLabel?: string;
-}) {
-  return (
-    <div className="flex gap-2">
-      {[true, false].map((opt) => (
-        <button
-          key={String(opt)}
-          type="button"
-          onClick={() => onChange(opt)}
-          className="flex-1 rounded-xl py-2 text-sm font-semibold transition-all focus:outline-none focus:ring-2 focus:ring-offset-1"
-          style={{
-            background: value === opt ? GOLD : CREAM2,
-            color: value === opt ? "white" : MUTED,
-            border: `1.5px solid ${value === opt ? GOLD : BORDER}`,
-          }}
-          aria-pressed={value === opt}
-        >
-          {opt ? yesLabel : noLabel}
-        </button>
-      ))}
-    </div>
-  );
-}
-
-// ── Component ──────────────────────────────────────────────────────────────
+type CertificateDraft = Partial<DeviceFacts> & { phoneRegion: string; phoneInput: string };
 
 interface Props {
   analysisId: string;
+  answers: DeviceAnswers;
+  fileNames: string[];
+  record: CertificateRecord | null;
   onClose: () => void;
   onSuccess: (record: CertificateRecord) => void;
 }
 
-type Draft = Partial<DeviceFacts> & {
-  phone_number_last4: string; // string in draft (empty = not provided)
-};
-
-function emptyDraft(): Draft {
-  return {
-    device_make: "",
-    device_model: "",
-    phone_number_last4: "",
-    production_method: undefined,
-    owner_is_declarant: undefined,
-    lawful_control: undefined,
-    regular_use: undefined,
-    regular_feed: undefined,
-    operating_properly: undefined,
-    malfunction_details: "",
-    malfunction_affects_record: undefined,
-    messages_on_this_device: undefined,
-    declarant_name: "",
-    declarant_position: "",
-    declaration_confirmed: false,
+export function DeviceQuestionnaire({ analysisId, answers, fileNames, record, onClose, onSuccess }: Props) {
+  const storageKey = `scc-certificate-draft-${analysisId}`;
+  const [draft, setDraft] = useState<CertificateDraft>(() => {
+    const initial = {
+      phoneRegion: "KE",
+      phoneInput: "",
+      owner_is_declarant: answers.source === "My own phone" ? true : undefined,
+      operating_properly: answers.operation === "Yes" ? true : answers.operation === "No" ? false : undefined,
+    };
+    try {
+      const saved = sessionStorage.getItem(storageKey);
+      return saved ? { ...initial, ...JSON.parse(saved), declaration_confirmed: false } : initial;
+    } catch {
+      return initial;
+    }
+  });
+  const [busy, setBusy] = useState(false);
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
+  const set = <K extends keyof CertificateDraft>(key: K, value: CertificateDraft[K]) => {
+    setDraft((current) => ({ ...current, [key]: value }));
+    setMessage("");
+    setError("");
   };
-}
-
-export function DeviceQuestionnaire({ analysisId, onClose, onSuccess }: Props) {
-  const [draft, setDraft] = useState<Draft>(emptyDraft());
-  const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  const set = <K extends keyof Draft>(k: K, v: Draft[K]) =>
-    setDraft((d) => ({ ...d, [k]: v }));
 
   const malfunction = draft.operating_properly === false;
+  const documentLabel = record?.document_type === "DEFICIENCY_REPORT" ? "report" : "certificate";
+  const device = [draft.device_make?.trim(), draft.device_model?.trim()].filter(Boolean).join(" ");
 
-  function buildFacts(): DeviceFacts | null {
-    const f = draft;
-    if (
-      !f.device_make?.trim() ||
-      !f.device_model?.trim() ||
-      f.production_method == null ||
-      f.owner_is_declarant == null ||
-      f.lawful_control == null ||
-      f.regular_use == null ||
-      f.regular_feed == null ||
-      f.operating_properly == null ||
-      f.messages_on_this_device == null ||
-      !f.declarant_name?.trim() ||
-      !f.declarant_position?.trim() ||
-      !f.declaration_confirmed
-    ) {
-      return null;
-    }
-    if (malfunction && (!f.malfunction_details?.trim() || f.malfunction_affects_record == null)) {
-      return null;
-    }
-    const last4 = f.phone_number_last4?.trim() ?? "";
-    return {
-      device_make: f.device_make.trim(),
-      device_model: f.device_model.trim(),
-      phone_number_last4: last4.length === 4 && /^\d{4}$/.test(last4) ? last4 : null,
-      production_method: f.production_method,
-      owner_is_declarant: f.owner_is_declarant,
-      lawful_control: f.lawful_control,
-      regular_use: f.regular_use,
-      regular_feed: f.regular_feed,
-      operating_properly: f.operating_properly,
-      malfunction_details: malfunction ? (f.malfunction_details ?? null) : null,
-      malfunction_affects_record: malfunction ? (f.malfunction_affects_record ?? null) : null,
-      messages_on_this_device: f.messages_on_this_device,
-      declarant_name: f.declarant_name.trim(),
-      declarant_position: f.declarant_position.trim(),
-      declaration_confirmed: f.declaration_confirmed,
-    };
-  }
+  const phoneNumber = internationalPhoneNumber(draft.phoneInput, draft.phoneRegion);
 
-  async function handleSubmit() {
-    const facts = buildFacts();
-    if (!facts) {
-      setError("Please complete all required fields before submitting.");
-      return;
-    }
-    setError(null);
-    setSubmitting(true);
+  function saveDraft() {
     try {
-      const record = await createCertificate(analysisId, facts);
-      onSuccess(record);
-    } catch (e: unknown) {
-      setError(e instanceof Error ? e.message : "An unexpected error occurred.");
-    } finally {
-      setSubmitting(false);
+      sessionStorage.setItem(storageKey, JSON.stringify({ ...draft, declaration_confirmed: false }));
+      setError("");
+      setMessage("Draft saved in this browser tab.");
+    } catch {
+      setError("This browser could not save the draft.");
     }
   }
 
-  // Prevent background scroll
-  // (useEffect runs client-side only; inline style is enough here)
+  async function submit() {
+    setError("");
+    setMessage("");
+    setBusy(true);
+    try {
+      let generated = record;
+      if (!generated) {
+        const f = draft;
+        if (
+          !f.declarant_name?.trim() || !f.declarant_position?.trim() ||
+          !f.device_make?.trim() || !f.device_model?.trim() || !f.production_method ||
+          f.owner_is_declarant == null || f.lawful_control == null || f.regular_use == null ||
+          f.regular_feed == null || f.operating_properly == null || f.messages_on_this_device == null ||
+          !f.declaration_confirmed ||
+          (malfunction && (!f.malfunction_details?.trim() || f.malfunction_affects_record == null))
+        ) {
+          setError("Complete your details, answer the device checks and confirm the declaration before downloading.");
+          return;
+        }
+        if (f.phoneInput.trim() && !phoneNumber) {
+          setError("Enter the full phone number for the selected country, or leave it blank.");
+          return;
+        }
+        generated = await createCertificate(analysisId, {
+          device_make: f.device_make.trim(),
+          device_model: f.device_model.trim(),
+          phone_number: phoneNumber,
+          production_method: f.production_method,
+          owner_is_declarant: f.owner_is_declarant,
+          lawful_control: f.lawful_control,
+          regular_use: f.regular_use,
+          regular_feed: f.regular_feed,
+          operating_properly: f.operating_properly,
+          malfunction_details: malfunction ? f.malfunction_details?.trim() ?? null : null,
+          malfunction_affects_record: malfunction ? f.malfunction_affects_record ?? null : null,
+          messages_on_this_device: f.messages_on_this_device,
+          declarant_name: f.declarant_name.trim(),
+          declarant_position: f.declarant_position.trim(),
+          declaration_confirmed: f.declaration_confirmed,
+        });
+        onSuccess(generated);
+        try { sessionStorage.removeItem(storageKey); } catch { /* Browser storage can be unavailable. */ }
+      }
+      await downloadCertificate(generated.cert_id, generated.certificate_number);
+      setMessage(generated.document_type === "CERTIFICATE"
+        ? "Your certificate draft is ready. Print it and sign it by hand."
+        : "Your report explains which requirements still need attention.");
+    } catch (problem) {
+      setError(problem instanceof Error ? problem.message : "The PDF could not be prepared. Try again.");
+    } finally {
+      setBusy(false);
+    }
+  }
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto p-4 sm:p-8"
-      style={{ background: "rgba(21,21,21,0.65)" }}
-      role="dialog"
-      aria-modal="true"
-      aria-label="Section 106B device questionnaire"
-    >
-      {/* Backdrop */}
-      <div className="absolute inset-0" onClick={onClose} aria-hidden="true" />
-
-      {/* Modal card */}
-      <div
-        className="relative z-10 w-full max-w-2xl rounded-2xl shadow-2xl my-4"
-        style={{ background: SURFACE, border: `1px solid ${BORDER}` }}
-      >
-        {/* Toolbar */}
-        <div
-          className="flex items-center justify-between gap-3 px-5 py-3 rounded-t-2xl"
-          style={{ background: CREAM2, borderBottom: `1px solid ${BORDER}` }}
-        >
-          <div>
-            <p className="text-sm font-bold" style={{ color: INK }}>
-              Prepare Section 106B Certificate
-            </p>
-            <p className="text-xs" style={{ color: MUTED }}>
-              Answer the questions below about the device that produced your evidence
-            </p>
-          </div>
-          <button
-            type="button"
-            onClick={onClose}
-            className="flex items-center gap-1.5 text-xs font-semibold rounded-lg px-3 py-1.5 hover:bg-amber-50 transition-colors"
-            style={{ color: MUTED }}
-          >
-            <X className="h-3.5 w-3.5" aria-hidden="true" />
-            Close
-          </button>
+    <form onSubmit={(event) => { event.preventDefault(); void submit(); }} noValidate>
+      {record ? (
+        <div className="scc-card space-y-2">
+          <h2 className="font-serif text-xl">{record.document_type === "CERTIFICATE" ? "Your certificate draft is ready" : "Your evidence needs more information"}</h2>
+          <p className="text-sm text-stone-700">{record.certificate_number}. You can also find it under <a className="underline" href="/litigant/certificates">Certificates</a>.</p>
         </div>
-
-        {/* Body */}
-        <div className="px-6 py-6 space-y-6">
-
-          {/* Device details */}
-          <section>
-            <h2 className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: GOLD_DK }}>
-              Device details
-            </h2>
-            <div className="grid sm:grid-cols-2 gap-4">
-              <div>
-                <FieldLabel label="Phone make *" hint="e.g. Samsung, Tecno" />
-                <TextInput
-                  value={draft.device_make ?? ""}
-                  onChange={(v) => set("device_make", v)}
-                  placeholder="Samsung"
-                  error={!draft.device_make?.trim() && submitting}
-                />
-              </div>
-              <div>
-                <FieldLabel label="Phone model *" hint="e.g. Galaxy A14" />
-                <TextInput
-                  value={draft.device_model ?? ""}
-                  onChange={(v) => set("device_model", v)}
-                  placeholder="Galaxy A14"
-                />
-              </div>
-              <div>
-                <FieldLabel label="Phone number — last 4 digits only" hint="optional" />
-                <TextInput
-                  value={draft.phone_number_last4}
-                  onChange={(v) => set("phone_number_last4", v.replace(/\D/g, "").slice(0, 4))}
-                  placeholder="e.g. 6789"
-                />
-              </div>
-            </div>
-          </section>
-
-          {/* How was the evidence produced */}
-          <section>
-            <h2 className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: GOLD_DK }}>
-              How was the evidence produced? *
-            </h2>
-            <div className="grid sm:grid-cols-2 gap-2">
-              {PRODUCTION_METHOD_OPTIONS.map((opt) => (
-                <button
-                  key={opt.value}
-                  type="button"
-                  onClick={() => set("production_method", opt.value)}
-                  className="text-left rounded-xl p-3 transition-all focus:outline-none focus:ring-2 focus:ring-offset-1"
-                  style={{
-                    background: draft.production_method === opt.value ? "#FFF8E6" : CREAM2,
-                    border: `1.5px solid ${draft.production_method === opt.value ? GOLD : BORDER}`,
-                  }}
-                  aria-pressed={draft.production_method === opt.value}
-                >
-                  <p className="text-sm font-semibold" style={{ color: INK }}>{opt.label}</p>
-                  <p className="text-xs mt-0.5" style={{ color: MUTED }}>{opt.hint}</p>
-                </button>
-              ))}
-            </div>
-          </section>
-
-          {/* Statutory conditions */}
-          <section>
-            <h2 className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: GOLD_DK }}>
-              Statutory conditions (s.106B)
-            </h2>
-            <div className="space-y-4">
-
-              <div>
-                <FieldLabel
-                  label="Are you the owner / controller of this phone? *"
-                  hint="s.106B(2)(a)"
-                />
-                <YesNo
-                  value={draft.owner_is_declarant ?? null}
-                  onChange={(v) => set("owner_is_declarant", v)}
-                />
-              </div>
-
-              <div>
-                <FieldLabel
-                  label="Did you have lawful control of this phone during the relevant period? *"
-                  hint="s.106B(2)(a)"
-                />
-                <YesNo
-                  value={draft.lawful_control ?? null}
-                  onChange={(v) => set("lawful_control", v)}
-                />
-              </div>
-
-              <div>
-                <FieldLabel
-                  label="Did you regularly use this phone during the relevant period? *"
-                  hint="s.106B(2)(a)"
-                />
-                <YesNo
-                  value={draft.regular_use ?? null}
-                  onChange={(v) => set("regular_use", v)}
-                />
-              </div>
-
-              <div>
-                <FieldLabel
-                  label="Were messages / M-Pesa payments of this kind regularly stored on this phone? *"
-                  hint="s.106B(2)(b)"
-                />
-                <YesNo
-                  value={draft.regular_feed ?? null}
-                  onChange={(v) => set("regular_feed", v)}
-                />
-              </div>
-
-              <div>
-                <FieldLabel
-                  label="Was the phone operating properly throughout the relevant period? *"
-                  hint="s.106B(2)(c)"
-                />
-                <YesNo
-                  value={draft.operating_properly ?? null}
-                  onChange={(v) => set("operating_properly", v)}
-                />
-              </div>
-
-              {malfunction && (
-                <div
-                  className="rounded-xl p-4 space-y-3"
-                  style={{ background: "#FFF8E6", border: `1px solid #FDE68A` }}
-                >
-                  <p className="text-xs font-bold" style={{ color: "#92400E" }}>
-                    Describe the malfunction briefly *
-                  </p>
-                  <TextInput
-                    value={draft.malfunction_details ?? ""}
-                    onChange={(v) => set("malfunction_details", v)}
-                    placeholder="e.g. Screen cracked, some messages may be missing"
-                  />
-                  <p className="text-xs font-bold mt-2" style={{ color: "#92400E" }}>
-                    Did this malfunction affect the accuracy of the records you are relying on? *
-                  </p>
-                  <YesNo
-                    value={draft.malfunction_affects_record ?? null}
-                    onChange={(v) => set("malfunction_affects_record", v)}
-                  />
-                </div>
-              )}
-
-              <div>
-                <FieldLabel
-                  label="Were the messages / payments sent or received directly on this phone? *"
-                  hint="s.106B(2)(d)"
-                />
-                <YesNo
-                  value={draft.messages_on_this_device ?? null}
-                  onChange={(v) => set("messages_on_this_device", v)}
-                />
-              </div>
-
-            </div>
-          </section>
-
-          {/* Declaration */}
-          <section>
-            <h2 className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: GOLD_DK }}>
-              Your details (for the declaration)
-            </h2>
-            <div className="grid sm:grid-cols-2 gap-4 mb-4">
-              <div>
-                <FieldLabel label="Full name *" />
-                <TextInput
-                  value={draft.declarant_name ?? ""}
-                  onChange={(v) => set("declarant_name", v)}
-                  placeholder="Jane Muthoni"
-                />
-              </div>
-              <div>
-                <FieldLabel label="Your position / role *" hint="e.g. Owner and sole user of the phone" />
-                <TextInput
-                  value={draft.declarant_position ?? ""}
-                  onChange={(v) => set("declarant_position", v)}
-                  placeholder="Owner and sole user of the phone"
-                />
-              </div>
-            </div>
-
-            {/* Declaration checkbox */}
-            <label
-              className="flex items-start gap-3 rounded-xl p-4 cursor-pointer"
-              style={{ background: CREAM2, border: `1.5px solid ${draft.declaration_confirmed ? GOLD : BORDER}` }}
-            >
-              <input
-                type="checkbox"
-                checked={draft.declaration_confirmed}
-                onChange={(e) => set("declaration_confirmed", e.target.checked)}
-                className="mt-0.5 h-4 w-4 rounded accent-amber-500"
-              />
-              <span className="text-xs leading-relaxed" style={{ color: INK }}>
-                I confirm that the statements I have made above are <strong>true to the best of my
-                knowledge and belief</strong>. I understand that this draft must be{" "}
-                <strong>reviewed and signed by hand</strong> before it is used in court proceedings.
-              </span>
+      ) : (
+        <div className="grid items-start gap-4 md:grid-cols-[1fr_1.08fr]">
+          <fieldset disabled={busy} className="scc-card space-y-3">
+            <legend className="sr-only">Certificate details</legend>
+            <label className="block text-xs font-semibold">
+              Your full name
+              <input className="scc-field mt-1" autoComplete="name" required value={draft.declarant_name ?? ""}
+                placeholder="As it appears on your ID" onChange={(e) => set("declarant_name", e.target.value)} />
             </label>
-          </section>
-
-          {/* Error */}
-          {error && (
-            <div
-              className="flex items-start gap-2 rounded-xl px-4 py-3 text-sm"
-              style={{ background: "#FEF2F2", border: "1px solid #FECACA", color: "#B91C1C" }}
-              role="alert"
-            >
-              <AlertCircle className="h-4 w-4 mt-0.5 shrink-0" aria-hidden="true" />
-              {error}
+            <label className="block text-xs font-semibold">
+              Your role in relation to the device
+              <input className="scc-field mt-1" required value={draft.declarant_position ?? ""}
+                placeholder={answers.use === "Only me" ? "e.g. Sole user of the device" : "e.g. Regular user of the device"}
+                onChange={(e) => set("declarant_position", e.target.value)} />
+            </label>
+            <div className="grid grid-cols-2 gap-2">
+              <label className="block text-xs font-semibold">
+                Device make
+                <input className="scc-field mt-1" required value={draft.device_make ?? ""} placeholder="e.g. Samsung"
+                  onChange={(e) => set("device_make", e.target.value)} />
+              </label>
+              <label className="block text-xs font-semibold">
+                Device model
+                <input className="scc-field mt-1" required value={draft.device_model ?? ""} placeholder="e.g. Galaxy A14"
+                  onChange={(e) => set("device_model", e.target.value)} />
+              </label>
             </div>
-          )}
+            <div className="grid gap-2 sm:grid-cols-2">
+              <label className="block min-w-0 text-xs font-semibold">
+                Country code
+                <select className="scc-field mt-1" autoComplete="tel-country-code" value={draft.phoneRegion}
+                  onChange={(e) => set("phoneRegion", e.target.value)}>
+                  {phoneCountries.map(({ region, name, code }) => (
+                    <option key={region} value={region}>{name} ({code})</option>
+                  ))}
+                </select>
+              </label>
+              <label className="block min-w-0 text-xs font-semibold">
+                Phone number <span className="font-normal">(optional)</span>
+                <input className="scc-field mt-1" type="tel" autoComplete="tel-national" maxLength={32}
+                  value={draft.phoneInput} placeholder={draft.phoneRegion === "KE" ? "e.g. 0712 345 678" : undefined}
+                  onChange={(e) => set("phoneInput", e.target.value)} />
+              </label>
+            </div>
+            <label className="block text-xs font-semibold">
+              How was the evidence produced?
+              <select className="scc-field mt-1" required value={draft.production_method ?? ""}
+                onChange={(e) => set("production_method", e.target.value as ProductionMethod)}>
+                <option value="" disabled>Choose a method</option>
+                {METHODS.map(({ value, label }) => <option key={value} value={value}>{label}</option>)}
+              </select>
+            </label>
+            <details className="scc-device-checks scc-disclosure rounded-lg border border-stone-200 p-3" open>
+              <summary>Review the device checks</summary>
+              <div className="mt-3 space-y-2">
+                {CHECKS.map(([key, label]) => (
+                  <Choices key={key} name={key} legend={label} value={answer(draft[key])} options={YES_NO}
+                    onChange={(value) => set(key, value === "yes")} />
+                ))}
+                {malfunction && (
+                  <>
+                    <label className="block text-xs font-semibold">
+                      What went wrong with the device?
+                      <textarea className="scc-field mt-1" required rows={2} value={draft.malfunction_details ?? ""}
+                        onChange={(e) => set("malfunction_details", e.target.value)} />
+                    </label>
+                    <Choices name="malfunction-affects-record" legend="Did the problem affect the accuracy of the records?"
+                      value={answer(draft.malfunction_affects_record ?? undefined)} options={YES_NO}
+                      onChange={(value) => set("malfunction_affects_record", value === "yes")} />
+                  </>
+                )}
+              </div>
+            </details>
+            <label className="scc-note flex items-start gap-2 rounded-lg p-3">
+              <input type="checkbox" required className="mt-0.5" checked={draft.declaration_confirmed ?? false}
+                onChange={(e) => set("declaration_confirmed", e.target.checked)} />
+              <span>I confirm that these details are true to the best of my knowledge and belief. I understand that I must review and sign the certificate by hand before using it in court.</span>
+            </label>
+          </fieldset>
 
-          {/* Submit */}
-          <div className="flex justify-end gap-3 pt-2">
-            <button
-              type="button"
-              onClick={onClose}
-              className="text-xs font-semibold rounded-lg px-4 py-2"
-              style={{ color: MUTED }}
-            >
-              Cancel
-            </button>
-            <button
-              type="button"
-              onClick={handleSubmit}
-              disabled={submitting}
-              className="flex items-center gap-2 text-sm font-bold rounded-xl px-5 py-2.5 transition-all disabled:opacity-60 hover:brightness-105"
-              style={{ background: `linear-gradient(135deg, ${GOLD_DK}, ${GOLD})`, color: "white" }}
-            >
-              {submitting ? (
-                <>
-                  <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
-                  Generating…
-                </>
-              ) : (
-                <>
-                  <ShieldCheck className="h-4 w-4" aria-hidden="true" />
-                  Generate Certificate Draft
-                </>
-              )}
-            </button>
+          <div className="space-y-2 md:sticky md:top-4">
+            <p className="scc-kicker">Certificate preview</p>
+            <div className="scc-card scc-preview space-y-4">
+              <div className="space-y-1 text-center uppercase">
+                <p className="text-xs">Republic of Kenya</p>
+                <p className="font-bold">Certificate under Section 106B of the Evidence Act</p>
+              </div>
+              <p>I, <mark>{draft.declarant_name?.trim() || "[your full name]"}</mark>, acting as <mark>{draft.declarant_position?.trim() || "[your role]"}</mark>, provide the following details about the electronic evidence.</p>
+              <ol className="list-decimal space-y-2 pl-5">
+                <li>The records listed are {fileNames.length} screenshot{fileNames.length === 1 ? "" : "s"}.
+                  <ul className="list-disc break-all pl-5 text-xs text-stone-700">
+                    {fileNames.map((name, index) => <li key={index}>{name}</li>)}
+                  </ul>
+                </li>
+                <li>Device used: <mark>{device || "[device make and model]"}</mark>{phoneNumber && <> · phone number <mark>{phoneNumber}</mark></>}.</li>
+                <li>Production method: <mark>{METHODS.find((method) => method.value === draft.production_method)?.label ?? "[production method]"}</mark>.</li>
+                <li>Device operation: <mark>{draft.operating_properly === undefined ? "[device condition]" : draft.operating_properly ? "Working normally" : "Device problem reported"}</mark>.</li>
+              </ol>
+              <div className="grid grid-cols-2 gap-5 pt-6 text-xs">
+                <div className="border-t border-stone-400 pt-1">Signature</div>
+                <div className="border-t border-stone-400 pt-1">Date</div>
+              </div>
+            </div>
+            <p className="text-xs leading-relaxed text-stone-600">Highlighted text comes from your answers. Your answers and evidence are checked before a certificate or a report is generated.</p>
           </div>
-
         </div>
+      )}
+      {error && <p className="mt-3 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-800" role="alert">{error}</p>}
+      {message && <p className="scc-note mt-3 rounded-lg p-3" role="status">{message}</p>}
+      <div className="scc-actions scc-footer">
+        <button type="button" className="scc-button mr-auto" onClick={onClose} disabled={busy}><ArrowLeft size={15} aria-hidden="true" /> Back</button>
+        {!record && <button type="button" className="scc-button" onClick={saveDraft} disabled={busy}>Save draft</button>}
+        <button type="submit" className="scc-button scc-primary" disabled={busy}>
+          {busy ? <><Loader2 size={15} className="animate-spin" aria-hidden="true" /> Preparing PDF…</> : <><Download size={15} aria-hidden="true" /> Download {documentLabel} (PDF)</>}
+        </button>
       </div>
-    </div>
+    </form>
   );
 }
