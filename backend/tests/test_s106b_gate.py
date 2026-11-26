@@ -149,6 +149,41 @@ class TestCondition4bAlwaysMet:
         assert c4b.met is True
 
 
+class TestCondition4bFailure:
+    """
+    Condition 4b (device make/model) CAN be unmet in the gate's internal logic.
+    However, in normal API flow, blank make/model is rejected by Pydantic with
+    HTTP 422 before the gate is ever called — so 4b can never be unmet through
+    the production endpoint.  These tests verify the gate branch directly.
+    """
+
+    def test_4b_unmet_when_make_blank(self):
+        """Gate 4b logic returns met=False when device_make is blank (gate-layer test)."""
+        from types import SimpleNamespace
+        from SCCVision.s106b.gate import _check_4b
+        blank = SimpleNamespace(device_make="", device_model="Galaxy A14", phone_number_last4=None)
+        c4b = _check_4b(blank)
+        assert c4b.met is False
+        assert c4b.remedy is not None
+
+    def test_4b_unmet_when_model_blank(self):
+        """Gate 4b logic returns met=False when device_model is blank (gate-layer test)."""
+        from types import SimpleNamespace
+        from SCCVision.s106b.gate import _check_4b
+        blank = SimpleNamespace(device_make="Samsung", device_model="", phone_number_last4=None)
+        c4b = _check_4b(blank)
+        assert c4b.met is False
+        assert c4b.remedy is not None
+
+    def test_4b_unmet_when_both_blank(self):
+        """Gate 4b logic returns met=False when both make and model are blank."""
+        from types import SimpleNamespace
+        from SCCVision.s106b.gate import _check_4b
+        blank = SimpleNamespace(device_make="", device_model="", phone_number_last4=None)
+        c4b = _check_4b(blank)
+        assert c4b.met is False
+
+
 class TestCondition2aFailure:
     def test_no_lawful_control_fails_2a(self):
         result = evaluate(_good_snapshot(), _good_facts(lawful_control=False))
