@@ -88,3 +88,12 @@ backend/constitutionlogic/MasterRulesDB/**/*.bin
 # *.pdf
 # *.txt
 
+# Playwright e2e — secrets, browser session, results, and local packages
+e2e/.auth/
+e2e/test-results/
+e2e/playwright-report/
+e2e/node_modules/
+
+# Deployment log (local record, never commit)
+deploy-log.md
+

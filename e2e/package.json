@@ -1,0 +1,23 @@
+{
+  "name": "legalai-e2e",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:local": "TARGET=local playwright test",
+    "test:prod": "TARGET=prod playwright test",
+    "smoke": "playwright test --project=api",
+    "report": "playwright show-report",
+    "create-user": "node scripts/create-test-user.mjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.63.0",
+    "@types/node": "^20.0.0",
+    "dotenv": "^16.4.5",
+    "typescript": "^5.6.0"
+  },
+  "optionalDependencies": {
+    "firebase-admin": "^13.10.0"
+  }
+}

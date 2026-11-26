@@ -1142,6 +1142,7 @@ function InputArea({ inputRef, value, onChange, onKeyDown, onInput, onSubmit, is
         style={{ border: `1px solid ${BORDER}`, boxShadow: "0 1px 4px rgba(0,0,0,.05)" }}>
         <textarea ref={inputRef} value={value} onChange={(e) => onChange(e.target.value)}
           onKeyDown={onKeyDown} onInput={onInput} placeholder={placeholder}
+          data-testid="chat-input"
           rows={1} disabled={isLoading}
           className="flex-1 resize-none bg-transparent focus:outline-none text-sm"
           style={{ minHeight: "24px", maxHeight: "160px", color: INK, fontFamily: MNR }}
@@ -1151,6 +1152,8 @@ function InputArea({ inputRef, value, onChange, onKeyDown, onInput, onSubmit, is
         </div>
       </div>
       <button onClick={onSubmit} disabled={!value.trim() || isLoading}
+        data-testid="chat-submit"
+        aria-label="Send message"
         className="w-10 h-10 rounded-full flex items-center justify-center text-white shrink-0 transition-all hover:brightness-110 hover:scale-105 disabled:opacity-30 disabled:cursor-not-allowed disabled:scale-100"
         style={{ background: isLoading ? "#C4B49A" : `linear-gradient(135deg, ${GOLD_DK}, ${GOLD})` }}>
         <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1170,7 +1173,7 @@ function UserBubble({ msg }: { msg: Message }) {
   const caseNo = msg.content.match(/(?:SCC|SCCCOMM|ELC|HCCC|CIVIL|CRIMINAL)[\s.-]*(CASE\s*)?(?:NO\.?\s*)?([A-Z0-9\/]+(?:\/\d{4})?)/i)?.[0]?.toUpperCase();
   const ts = msg.timestamp.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
   return (
-    <div className="flex flex-col items-end gap-1">
+    <div className="flex flex-col items-end gap-1" data-testid="user-message">
       <div className="flex items-center gap-2 pr-1">
         {caseNo && <span className="text-[9px] font-bold tracking-[.15em] uppercase" style={{ color: GOLD }}>{caseNo}</span>}
         <span className="text-[10px]" style={{ color: MUTED }}>{ts}</span>
@@ -1191,7 +1194,8 @@ function UserBubble({ msg }: { msg: Message }) {
 // ── Loading card ────────────────────────────────────────────────────────────────
 function LoadingCard() {
   return (
-    <div className="rounded-2xl p-4" style={{ background: SURFACE, border: `1px solid ${BORDER}` }}>
+    <div className="rounded-2xl p-4" data-testid="chat-loading"
+      style={{ background: SURFACE, border: `1px solid ${BORDER}` }}>
       <div className="flex items-center gap-3 mb-4">
         <span className="relative flex h-3 w-3">
           <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style={{ background: GOLD }} />
@@ -1318,7 +1322,8 @@ function AssistantCard({ msg, isActive, onShowSources, onCitationClick, buildCit
 
   if (isFailed) {
     return (
-      <div className="rounded-2xl p-4 space-y-3" style={{ background: SURFACE, border: `1.5px solid #F0C0C0` }}>
+      <div className="rounded-2xl p-4 space-y-3" data-testid="chat-error"
+        style={{ background: SURFACE, border: `1.5px solid #F0C0C0` }}>
         <div className="flex items-center gap-2">
           <AlertCircle className="h-4 w-4 shrink-0" style={{ color: "#B91C1C" }} />
           <span className="text-sm font-semibold" style={{ color: "#B91C1C" }}>Request failed</span>
@@ -1345,7 +1350,7 @@ function AssistantCard({ msg, isActive, onShowSources, onCitationClick, buildCit
   }
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-3" data-testid="assistant-message">
       <CoverageCard coverage={msg.coverage} removed={msg.unverifiedClaims} />
       <div className="rounded-2xl overflow-hidden" style={{ background: SURFACE, border: `1px solid ${BORDER}`, boxShadow: "0 8px 30px rgba(60,45,10,0.08)" }}>
         <div className="flex items-center gap-2 px-4 py-3" style={{ borderBottom: `1px solid ${BORDER}` }}>

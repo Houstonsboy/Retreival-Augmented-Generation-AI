@@ -35,6 +35,8 @@ function friendlyError(err: unknown): string {
       return "Too many attempts — please try again later.";
     if (code === "auth/popup-closed-by-user" || code === "auth/cancelled-popup-request")
       return "";
+    if (code === "auth/unauthorized-domain")
+      return "This domain isn't authorised for sign-in. Add it in Firebase → Authentication → Authorized domains.";
   }
   return "An error occurred. Please try again.";
 }

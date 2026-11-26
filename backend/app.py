@@ -36,8 +36,24 @@ from constitutionlogic.constitutionbreaker import extract_constitution_articles,
 from constitutionlogic.constitution_digester import ConstitutionDigester, EMBEDDABLE_CHUNKS_JSON
 from config import CASELAW_DB_DIR, CASELAW_COLLECTION_NAME, SCC_CASES_DIR
 app = Flask(__name__)
-_CORS_ORIGIN = os.environ.get("CORS_ORIGIN", "http://localhost:3000")
-CORS(app, origins=_CORS_ORIGIN)
+import re as _re
+
+_CORS_ORIGINS = [
+    o.strip().rstrip("/")
+    for o in os.environ.get("CORS_ORIGIN", "http://localhost:3000").split(",")
+    if o.strip()
+]
+_preview = os.environ.get("CORS_ORIGIN_REGEX", "").strip()
+if _preview:
+    _CORS_ORIGINS.append(_re.compile(_preview))
+
+CORS(
+    app,
+    origins=_CORS_ORIGINS,
+    allow_headers=["Authorization", "Content-Type"],
+    methods=["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
+    max_age=600,
+)
 init_firebase_admin()
 app.register_blueprint(history_bp)
 app.register_blueprint(sccvision_bp)
