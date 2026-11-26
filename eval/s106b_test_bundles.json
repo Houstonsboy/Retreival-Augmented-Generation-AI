@@ -1,0 +1,453 @@
+[
+  {
+    "bundle_id": "TB-001",
+    "description": "All 8 conditions met — certificate_ready path",
+    "analysis_snapshot": {
+      "evidence": [
+        {
+          "evidence_id": "ev-001",
+          "type": "mpesa_screenshot",
+          "file_name": "mpesa_payment_01.png",
+          "server_sha256": "aabbccddaabbccddaabbccddaabbccddaabbccddaabbccddaabbccddaabbccdd",
+          "hash_match": true,
+          "added_at": "2026-11-01T10:00:00+03:00"
+        }
+      ],
+      "result": {
+        "overall_verdict": "LIKELY VALID",
+        "mpesa_payments": [{"code": "RKL3A2X8QP", "amount_kes": 50000}],
+        "conversation_integrity": {"rating": "ADEQUATE", "issues": []}
+      },
+      "verification": {
+        "quotes_grounded": true,
+        "mpesa_cross_check": {"consistent": true, "invented_fields": false, "codes_llm_only": []}
+      }
+    },
+    "device_facts": {
+      "device_make": "Samsung",
+      "device_model": "Galaxy A54",
+      "phone_number_last4": "7892",
+      "production_method": "screenshot_on_device",
+      "owner_is_declarant": true,
+      "lawful_control": true,
+      "regular_use": true,
+      "regular_feed": true,
+      "operating_properly": true,
+      "malfunction_details": null,
+      "malfunction_affects_record": null,
+      "messages_on_this_device": true,
+      "declarant_name": "John Kamau Njoroge",
+      "declarant_position": "Owner and registered subscriber",
+      "declaration_confirmed": true
+    },
+    "expected_outcome": "certificate_ready",
+    "expected_document_type": "CERTIFICATE",
+    "expected_unmet_conditions": []
+  },
+  {
+    "bundle_id": "TB-002",
+    "description": "Hash mismatch — INTEGRITY + 4a fail — weak outcome",
+    "analysis_snapshot": {
+      "evidence": [
+        {
+          "evidence_id": "ev-002",
+          "type": "mpesa_screenshot",
+          "file_name": "mpesa_modified.png",
+          "server_sha256": "aabbccddaabbccddaabbccddaabbccddaabbccddaabbccddaabbccddaabbccdd",
+          "hash_match": false,
+          "added_at": "2026-11-01T11:00:00+03:00"
+        }
+      ],
+      "result": {
+        "overall_verdict": "LIKELY VALID",
+        "mpesa_payments": [{"code": "RKL3A2X8QP", "amount_kes": 50000}],
+        "conversation_integrity": {"rating": "ADEQUATE", "issues": []}
+      },
+      "verification": {
+        "quotes_grounded": true,
+        "mpesa_cross_check": {"consistent": true, "invented_fields": false, "codes_llm_only": []}
+      }
+    },
+    "device_facts": {
+      "device_make": "Samsung",
+      "device_model": "Galaxy A54",
+      "phone_number_last4": "7892",
+      "production_method": "screenshot_on_device",
+      "owner_is_declarant": true,
+      "lawful_control": true,
+      "regular_use": true,
+      "regular_feed": true,
+      "operating_properly": true,
+      "malfunction_details": null,
+      "malfunction_affects_record": null,
+      "messages_on_this_device": true,
+      "declarant_name": "John Kamau Njoroge",
+      "declarant_position": "Owner and registered subscriber",
+      "declaration_confirmed": true
+    },
+    "expected_outcome": "weak",
+    "expected_document_type": "DEFICIENCY_REPORT",
+    "expected_unmet_conditions": ["4a"]
+  },
+  {
+    "bundle_id": "TB-003",
+    "description": "No lawful control — 2a fails — needs_strengthening",
+    "analysis_snapshot": {
+      "evidence": [
+        {
+          "evidence_id": "ev-003",
+          "type": "chat_screenshot",
+          "file_name": "whatsapp_chat.png",
+          "server_sha256": "ccddaabbccddaabbccddaabbccddaabbccddaabbccddaabbccddaabbccddaabb",
+          "hash_match": true,
+          "added_at": "2026-11-02T09:00:00+03:00"
+        }
+      ],
+      "result": {
+        "overall_verdict": "POSSIBLY VALID WITH GAPS",
+        "mpesa_payments": [],
+        "conversation_integrity": {"rating": "ADEQUATE", "issues": []}
+      },
+      "verification": {
+        "quotes_grounded": true,
+        "mpesa_cross_check": {"consistent": true, "invented_fields": false, "codes_llm_only": []}
+      }
+    },
+    "device_facts": {
+      "device_make": "iPhone",
+      "device_model": "14 Pro",
+      "phone_number_last4": null,
+      "production_method": "screenshot_on_device",
+      "owner_is_declarant": true,
+      "lawful_control": false,
+      "regular_use": true,
+      "regular_feed": true,
+      "operating_properly": true,
+      "malfunction_details": null,
+      "malfunction_affects_record": null,
+      "messages_on_this_device": true,
+      "declarant_name": "Mary Wanjiku Mwangi",
+      "declarant_position": "Company secretary",
+      "declaration_confirmed": true
+    },
+    "expected_outcome": "needs_strengthening",
+    "expected_document_type": "DEFICIENCY_REPORT",
+    "expected_unmet_conditions": ["2a"]
+  },
+  {
+    "bundle_id": "TB-004",
+    "description": "Forwarded/copied production method — 2d fails — needs_strengthening",
+    "analysis_snapshot": {
+      "evidence": [
+        {
+          "evidence_id": "ev-004",
+          "type": "mpesa_screenshot",
+          "file_name": "forwarded_mpesa.png",
+          "server_sha256": "ddeeffaabcddeeffaabcddeeffaabcddeeffaabcddeeffaabcddeeffaabcddee",
+          "hash_match": true,
+          "added_at": "2026-11-03T14:00:00+03:00"
+        }
+      ],
+      "result": {
+        "overall_verdict": "LIKELY VALID",
+        "mpesa_payments": [{"code": "QWE123ASDF", "amount_kes": 25000}],
+        "conversation_integrity": {"rating": "ADEQUATE", "issues": []}
+      },
+      "verification": {
+        "quotes_grounded": true,
+        "mpesa_cross_check": {"consistent": true, "invented_fields": false, "codes_llm_only": []}
+      }
+    },
+    "device_facts": {
+      "device_make": "Tecno",
+      "device_model": "Spark 20",
+      "phone_number_last4": "1234",
+      "production_method": "forwarded_or_copied",
+      "owner_is_declarant": true,
+      "lawful_control": true,
+      "regular_use": true,
+      "regular_feed": true,
+      "operating_properly": true,
+      "malfunction_details": null,
+      "malfunction_affects_record": null,
+      "messages_on_this_device": true,
+      "declarant_name": "Peter Odhiambo Otieno",
+      "declarant_position": "Sole proprietor",
+      "declaration_confirmed": true
+    },
+    "expected_outcome": "needs_strengthening",
+    "expected_document_type": "DEFICIENCY_REPORT",
+    "expected_unmet_conditions": ["2d"]
+  },
+  {
+    "bundle_id": "TB-005",
+    "description": "Device malfunction affecting record — 2c fails — needs_strengthening",
+    "analysis_snapshot": {
+      "evidence": [
+        {
+          "evidence_id": "ev-005",
+          "type": "chat_screenshot",
+          "file_name": "chat_malfunctioning_device.png",
+          "server_sha256": "eeff00112233eeff00112233eeff00112233eeff00112233eeff00112233eeff",
+          "hash_match": true,
+          "added_at": "2026-11-04T16:00:00+03:00"
+        }
+      ],
+      "result": {
+        "overall_verdict": "POSSIBLY VALID WITH GAPS",
+        "mpesa_payments": [],
+        "conversation_integrity": {"rating": "ADEQUATE", "issues": []}
+      },
+      "verification": {
+        "quotes_grounded": true,
+        "mpesa_cross_check": {"consistent": true, "invented_fields": false, "codes_llm_only": []}
+      }
+    },
+    "device_facts": {
+      "device_make": "Huawei",
+      "device_model": "Y9 Prime",
+      "phone_number_last4": "5678",
+      "production_method": "screenshot_on_device",
+      "owner_is_declarant": true,
+      "lawful_control": true,
+      "regular_use": true,
+      "regular_feed": true,
+      "operating_properly": false,
+      "malfunction_details": "Screen flickering caused some messages to display incorrectly",
+      "malfunction_affects_record": true,
+      "messages_on_this_device": true,
+      "declarant_name": "Grace Akinyi Ouma",
+      "declarant_position": "Director",
+      "declaration_confirmed": true
+    },
+    "expected_outcome": "needs_strengthening",
+    "expected_document_type": "DEFICIENCY_REPORT",
+    "expected_unmet_conditions": ["2c"]
+  },
+  {
+    "bundle_id": "TB-006",
+    "description": "Device malfunction NOT affecting record — 2c passes — certificate_ready",
+    "analysis_snapshot": {
+      "evidence": [
+        {
+          "evidence_id": "ev-006",
+          "type": "mpesa_screenshot",
+          "file_name": "mpesa_minor_fault.png",
+          "server_sha256": "ff00aabbff00aabbff00aabbff00aabbff00aabbff00aabbff00aabbff00aabb",
+          "hash_match": true,
+          "added_at": "2026-11-05T10:30:00+03:00"
+        }
+      ],
+      "result": {
+        "overall_verdict": "LIKELY VALID",
+        "mpesa_payments": [{"code": "ZXC987MNBV", "amount_kes": 100000}],
+        "conversation_integrity": {"rating": "ADEQUATE", "issues": []}
+      },
+      "verification": {
+        "quotes_grounded": true,
+        "mpesa_cross_check": {"consistent": true, "invented_fields": false, "codes_llm_only": []}
+      }
+    },
+    "device_facts": {
+      "device_make": "Samsung",
+      "device_model": "Galaxy S21",
+      "phone_number_last4": "9012",
+      "production_method": "screenshot_on_device",
+      "owner_is_declarant": true,
+      "lawful_control": true,
+      "regular_use": true,
+      "regular_feed": true,
+      "operating_properly": false,
+      "malfunction_details": "Volume buttons stuck but touchscreen fully functional",
+      "malfunction_affects_record": false,
+      "messages_on_this_device": true,
+      "declarant_name": "David Mbithi Mutua",
+      "declarant_position": "Managing director",
+      "declaration_confirmed": true
+    },
+    "expected_outcome": "certificate_ready",
+    "expected_document_type": "CERTIFICATE",
+    "expected_unmet_conditions": []
+  },
+  {
+    "bundle_id": "TB-007",
+    "description": "Ungrounded LLM quotes — INTEGRITY fails — weak outcome",
+    "analysis_snapshot": {
+      "evidence": [
+        {
+          "evidence_id": "ev-007",
+          "type": "chat_screenshot",
+          "file_name": "chat_suspicious_quotes.png",
+          "server_sha256": "1122334455661122334455661122334455661122334455661122334455661122",
+          "hash_match": true,
+          "added_at": "2026-11-06T08:00:00+03:00"
+        }
+      ],
+      "result": {
+        "overall_verdict": "LIKELY VALID",
+        "mpesa_payments": [],
+        "conversation_integrity": {"rating": "ADEQUATE", "issues": []}
+      },
+      "verification": {
+        "quotes_grounded": false,
+        "ungrounded_quotes": ["I will pay you Ksh 500,000 by Friday"],
+        "mpesa_cross_check": {"consistent": true, "invented_fields": false, "codes_llm_only": []}
+      }
+    },
+    "device_facts": {
+      "device_make": "iPhone",
+      "device_model": "12 mini",
+      "phone_number_last4": "3456",
+      "production_method": "screenshot_on_device",
+      "owner_is_declarant": true,
+      "lawful_control": true,
+      "regular_use": true,
+      "regular_feed": true,
+      "operating_properly": true,
+      "malfunction_details": null,
+      "malfunction_affects_record": null,
+      "messages_on_this_device": true,
+      "declarant_name": "Fatuma Hassan Ali",
+      "declarant_position": "Legal officer",
+      "declaration_confirmed": true
+    },
+    "expected_outcome": "weak",
+    "expected_document_type": "DEFICIENCY_REPORT",
+    "expected_unmet_conditions": ["INTEGRITY"]
+  },
+  {
+    "bundle_id": "TB-008",
+    "description": "WEAK conversation integrity — INTEGRITY fails — weak outcome",
+    "analysis_snapshot": {
+      "evidence": [
+        {
+          "evidence_id": "ev-008",
+          "type": "chat_screenshot",
+          "file_name": "chat_weak_integrity.png",
+          "server_sha256": "2233445566772233445566772233445566772233445566772233445566772233",
+          "hash_match": true,
+          "added_at": "2026-11-07T12:00:00+03:00"
+        }
+      ],
+      "result": {
+        "overall_verdict": "POSSIBLY VALID WITH GAPS",
+        "mpesa_payments": [],
+        "conversation_integrity": {"rating": "WEAK", "issues": ["Missing date range", "Messages appear edited"]}
+      },
+      "verification": {
+        "quotes_grounded": true,
+        "mpesa_cross_check": {"consistent": true, "invented_fields": false, "codes_llm_only": []}
+      }
+    },
+    "device_facts": {
+      "device_make": "Xiaomi",
+      "device_model": "Redmi Note 11",
+      "phone_number_last4": "7890",
+      "production_method": "screenshot_on_device",
+      "owner_is_declarant": true,
+      "lawful_control": true,
+      "regular_use": true,
+      "regular_feed": true,
+      "operating_properly": true,
+      "malfunction_details": null,
+      "malfunction_affects_record": null,
+      "messages_on_this_device": true,
+      "declarant_name": "Ahmed Mohamed Sharif",
+      "declarant_position": "Business owner",
+      "declaration_confirmed": true
+    },
+    "expected_outcome": "weak",
+    "expected_document_type": "DEFICIENCY_REPORT",
+    "expected_unmet_conditions": ["INTEGRITY"]
+  },
+  {
+    "bundle_id": "TB-009",
+    "description": "Declarant not owner + declaration not confirmed — 4d fails — needs_strengthening",
+    "analysis_snapshot": {
+      "evidence": [
+        {
+          "evidence_id": "ev-009",
+          "type": "chat_screenshot",
+          "file_name": "chat_third_party_cert.png",
+          "server_sha256": "3344556677883344556677883344556677883344556677883344556677883344",
+          "hash_match": true,
+          "added_at": "2026-11-08T09:00:00+03:00"
+        }
+      ],
+      "result": {
+        "overall_verdict": "LIKELY VALID",
+        "mpesa_payments": [],
+        "conversation_integrity": {"rating": "ADEQUATE", "issues": []}
+      },
+      "verification": {
+        "quotes_grounded": true,
+        "mpesa_cross_check": {"consistent": true, "invented_fields": false, "codes_llm_only": []}
+      }
+    },
+    "device_facts": {
+      "device_make": "Oppo",
+      "device_model": "A57",
+      "phone_number_last4": null,
+      "production_method": "screenshot_on_device",
+      "owner_is_declarant": false,
+      "lawful_control": true,
+      "regular_use": true,
+      "regular_feed": true,
+      "operating_properly": true,
+      "malfunction_details": null,
+      "malfunction_affects_record": null,
+      "messages_on_this_device": true,
+      "declarant_name": "Counsel for Claimant",
+      "declarant_position": "Advocate",
+      "declaration_confirmed": false
+    },
+    "expected_outcome": "needs_strengthening",
+    "expected_document_type": "DEFICIENCY_REPORT",
+    "expected_unmet_conditions": ["4d"]
+  },
+  {
+    "bundle_id": "TB-010",
+    "description": "M-Pesa screenshot with no parseable transaction codes — 2d fails — needs_strengthening",
+    "analysis_snapshot": {
+      "evidence": [
+        {
+          "evidence_id": "ev-010",
+          "type": "mpesa_screenshot",
+          "file_name": "mpesa_unreadable.png",
+          "server_sha256": "4455667788994455667788994455667788994455667788994455667788994455",
+          "hash_match": true,
+          "added_at": "2026-11-09T15:00:00+03:00"
+        }
+      ],
+      "result": {
+        "overall_verdict": "INSUFFICIENT EVIDENCE",
+        "mpesa_payments": [],
+        "conversation_integrity": {"rating": "ADEQUATE", "issues": []}
+      },
+      "verification": {
+        "quotes_grounded": true,
+        "mpesa_cross_check": {"consistent": true, "invented_fields": false, "codes_llm_only": []}
+      }
+    },
+    "device_facts": {
+      "device_make": "Nokia",
+      "device_model": "G21",
+      "phone_number_last4": "5555",
+      "production_method": "screenshot_on_device",
+      "owner_is_declarant": true,
+      "lawful_control": true,
+      "regular_use": true,
+      "regular_feed": true,
+      "operating_properly": true,
+      "malfunction_details": null,
+      "malfunction_affects_record": null,
+      "messages_on_this_device": true,
+      "declarant_name": "Lucy Waithera Karanja",
+      "declarant_position": "Shop owner",
+      "declaration_confirmed": true
+    },
+    "expected_outcome": "needs_strengthening",
+    "expected_document_type": "DEFICIENCY_REPORT",
+    "expected_unmet_conditions": ["2d"]
+  }
+]

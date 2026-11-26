@@ -666,7 +666,7 @@ def normalize_for_retriever(classification: Dict[str, Any]) -> Dict[str, Any]:
     return {**classification, "legal_domains": normalized_domains}
 
 
-def Qclassifier(userQuery: str):
+def Qclassifier(userQuery: str, pinned_case_ids: list = None):
     """
     Classifies a Kenyan legal query and runs retrieval.
     Prints progress for CLI debugging and returns structured output for API usage.
@@ -712,7 +712,8 @@ def Qclassifier(userQuery: str):
         retrieval_output = retrieve_relevant_cases(
             normalized,
             verbose=True,
-            skip_summaries=True  # summaries generated at synthesis stage, not retrieval
+            skip_summaries=True,  # summaries generated at synthesis stage, not retrieval
+            pinned_case_ids=pinned_case_ids,
         )
 
         print("\n✅ Retrieval completed.")

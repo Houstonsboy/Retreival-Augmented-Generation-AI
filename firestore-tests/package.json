@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "test": "jest",
-    "test:ci": "jest --forceExit"
+    "test:ci": "jest --forceExit",
+    "test:rules": "cd .. && firebase emulators:exec --only firestore --project legalai-rules-test \"cd firestore-tests && npm run test:ci\""
   },
   "dependencies": {
     "@firebase/rules-unit-testing": "^3.0.4",

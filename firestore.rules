@@ -15,23 +15,47 @@ service cloud.firestore {
     match /users/{uid} {
       allow read: if request.auth != null && request.auth.uid == uid;
 
+      // ── Create ────────────────────────────────────────────────────────────
+      // Clients may create their own profile with type "advocate" or "litigant".
+      // "admin" is never settable by the client — only via the Firebase Admin SDK.
+      //
+      // Both createUserDoc() (advocate) and createLitigantDoc() (litigant) write
+      // exactly these seven fields, so hasAll/hasOnly together enforce the schema.
+      //
+      // The existsAfter / getAfter pair ensures the write is always part of the
+      // atomic batch that also creates usernames/{username} — a solo write to
+      // users/{uid} without the matching username claim is rejected.
       allow create: if request.auth != null
         && request.auth.uid == uid
-        && request.resource.data.keys().hasAll(['username', 'email', 'type', 'authProvider', 'advocateVerified', 'createdAt', 'updatedAt'])
-        && request.resource.data.keys().hasOnly(['username', 'email', 'type', 'authProvider', 'advocateVerified', 'createdAt', 'updatedAt'])
-        && request.resource.data.type == 'advocate'
+        && request.resource.data.keys().hasAll([
+             'username', 'email', 'type', 'authProvider',
+             'advocateVerified', 'createdAt', 'updatedAt'
+           ])
+        && request.resource.data.keys().hasOnly([
+             'username', 'email', 'type', 'authProvider',
+             'advocateVerified', 'createdAt', 'updatedAt'
+           ])
+        // Only these two user-facing types are assignable from the client.
+        && request.resource.data.type in ['advocate', 'litigant']
         && request.resource.data.email == request.auth.token.email
+        // New accounts always start unverified.
         && request.resource.data.advocateVerified == false
         && request.resource.data.authProvider in ['password', 'google']
         && request.resource.data.createdAt == request.time
         && request.resource.data.updatedAt == request.time
         && isValidUsername(request.resource.data.username)
+        // Atomicity: the username claim must be written in the same batch.
         && existsAfter(usernamePath(request.resource.data.username))
         && getAfter(usernamePath(request.resource.data.username)).data.uid == uid;
 
+      // ── Update ────────────────────────────────────────────────────────────
+      // Owner-only. Only username and updatedAt may change.
+      // type and advocateVerified are permanently frozen after creation —
+      // privilege escalation is impossible from the client.
       allow update: if request.auth != null
         && request.auth.uid == uid
-        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['username', 'updatedAt'])
+        && request.resource.data.diff(resource.data).affectedKeys()
+             .hasOnly(['username', 'updatedAt'])
         && request.resource.data.updatedAt == request.time
         && isValidUsername(request.resource.data.username)
         && existsAfter(usernamePath(request.resource.data.username))
@@ -41,8 +65,12 @@ service cloud.firestore {
     }
 
     match /usernames/{username} {
-      allow read: if request.auth != null;
+      // Username availability check is called pre-auth (advocate sign-up form),
+      // so reads are open to all. Writes are locked down below.
+      allow read: if true;
 
+      // Create is only permitted as part of the atomic batch that also sets
+      // users/{uid}.username — enforced via existsAfter / getAfter.
       allow create: if request.auth != null
         && isValidUsername(username)
         && request.resource.data.keys().hasOnly(['uid'])
@@ -50,10 +78,13 @@ service cloud.firestore {
         && existsAfter(userPath(request.auth.uid))
         && getAfter(userPath(request.auth.uid)).data.username == username;
 
+      // Delete only by the claiming user, and only when they are changing to a
+      // new username (the new claim must exist in the same batch).
       allow delete: if request.auth != null
         && resource.data.uid == request.auth.uid
         && getAfter(userPath(request.auth.uid)).data.username != username;
 
+      // No standalone updates — username claims are replace-only via delete+create.
       allow update: if false;
     }
 
@@ -72,6 +103,39 @@ service cloud.firestore {
         allow read: if request.auth != null && request.auth.uid == uid;
         allow write: if false;
       }
+    }
+
+    // Analysis snapshots — written by the backend after each /sccvision/case/analyze.
+    // Clients may read their own snapshots (needed to load context for certificate creation).
+    match /users/{uid}/analyses/{analysisId} {
+      allow read: if request.auth != null && request.auth.uid == uid;
+      allow write: if false;
+    }
+
+    // Section 106B certificates — written exclusively by the backend Admin SDK.
+    // Clients may read their own certificates.
+    match /users/{uid}/certificates/{certId} {
+      allow read: if request.auth != null && request.auth.uid == uid;
+      allow write: if false;
+    }
+
+    // Evidence library — uploaded directly from the browser via Firebase Storage.
+    // Each document records the Storage path, download URL, sha256, and case metadata.
+    // - create: owner only; must include the required fields; update is denied (immutable).
+    // - delete: owner may remove their own evidence.
+    match /users/{uid}/evidence/{evidenceId} {
+      allow read, delete: if request.auth != null && request.auth.uid == uid;
+      allow create: if request.auth != null
+        && request.auth.uid == uid
+        && request.resource.data.keys().hasAll([
+             'sha256', 'fileName', 'fileSize', 'mimeType',
+             'evidenceType', 'storageRef', 'downloadUrl',
+             'caseId', 'caseTitle', 'uploadedAt'
+           ])
+        && request.resource.data.sha256 is string
+        && request.resource.data.downloadUrl is string
+        && request.resource.data.caseId is string;
+      allow update: if false;
     }
 
     match /{document=**} {

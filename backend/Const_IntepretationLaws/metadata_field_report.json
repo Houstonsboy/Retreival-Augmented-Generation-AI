@@ -1,0 +1,204 @@
+{
+  "total_entries_in_db": 4933,
+  "sample_size": 20,
+  "available_fields": [
+    "cf",
+    "definition_length",
+    "document_type",
+    "ingestion_timestamp",
+    "page",
+    "see",
+    "source",
+    "term"
+  ],
+  "cross_reference_stats": {
+    "has_see": 3,
+    "has_cf": 1,
+    "has_also_termed": 0,
+    "percentage_with_see": 15.0,
+    "percentage_with_cf": 5.0,
+    "percentage_with_also_termed": 0.0
+  },
+  "sample_entries": [
+    {
+      "term": "a",
+      "page": 18,
+      "id": "bld_p18_a_52c8b7ab",
+      "see": "",
+      "cf": "",
+      "also_termed": "",
+      "has_cross_references": false
+    },
+    {
+      "term": "AAA",
+      "page": 18,
+      "id": "bld_p18_aaa_fb853d4e",
+      "see": "",
+      "cf": "",
+      "also_termed": "",
+      "has_cross_references": false
+    },
+    {
+      "term": "A",
+      "page": 18,
+      "id": "bld_p18_a_c2172d94",
+      "see": "",
+      "cf": "",
+      "also_termed": "",
+      "has_cross_references": false
+    },
+    {
+      "term": "AALS",
+      "page": 18,
+      "id": "bld_p18_aals_0cbe0e68",
+      "see": "",
+      "cf": "",
+      "also_termed": "",
+      "has_cross_references": false
+    },
+    {
+      "term": "a aver et tener (ay ay-vor [or ah ah-var] et ten-",
+      "page": 18,
+      "id": "bld_p18_a_aver_et_tener_(ay_ay-vor_[or_ah_ah-var]_et_ten-_1d50b9e2",
+      "see": "",
+      "cf": "",
+      "also_termed": "",
+      "has_cross_references": false
+    },
+    {
+      "term": "AB",
+      "page": 18,
+      "id": "bld_p18_ab_9097c4d4",
+      "see": "",
+      "cf": "",
+      "also_termed": "",
+      "has_cross_references": false
+    },
+    {
+      "term": "ABA",
+      "page": 18,
+      "id": "bld_p18_aba_3586448b",
+      "see": "",
+      "cf": "",
+      "also_termed": "",
+      "has_cross_references": false
+    },
+    {
+      "term": "abacinate",
+      "page": 18,
+      "id": "bld_p18_abacinate_8d581218",
+      "see": "",
+      "cf": "",
+      "also_termed": "",
+      "has_cross_references": false
+    },
+    {
+      "term": "abaction",
+      "page": 18,
+      "id": "bld_p18_abaction_2ce97316",
+      "see": "ABIGEATUS",
+      "cf": "",
+      "also_termed": "",
+      "has_cross_references": true
+    },
+    {
+      "term": "ab actis",
+      "page": 18,
+      "id": "bld_p18_ab_actis_4a036048",
+      "see": "",
+      "cf": "",
+      "also_termed": "",
+      "has_cross_references": false
+    },
+    {
+      "term": "abactor",
+      "page": 18,
+      "id": "bld_p18_abactor_079f5ca9",
+      "see": "ABIGEUS",
+      "cf": "",
+      "also_termed": "",
+      "has_cross_references": true
+    },
+    {
+      "term": "ab agendo",
+      "page": 18,
+      "id": "bld_p18_ab_agendo_37916001",
+      "see": "",
+      "cf": "",
+      "also_termed": "",
+      "has_cross_references": false
+    },
+    {
+      "term": "abalienation",
+      "page": 18,
+      "id": "bld_p18_abalienation_cae3b349",
+      "see": "",
+      "cf": "",
+      "also_termed": "",
+      "has_cross_references": false
+    },
+    {
+      "term": "abamita",
+      "page": 18,
+      "id": "bld_p18_abamita_6e610586",
+      "see": "",
+      "cf": "",
+      "also_termed": "",
+      "has_cross_references": false
+    },
+    {
+      "term": "abandoned property",
+      "page": 18,
+      "id": "bld_p18_abandoned_property_486267e0",
+      "see": "PROPERTY",
+      "cf": "",
+      "also_termed": "",
+      "has_cross_references": true
+    },
+    {
+      "term": "abandonee",
+      "page": 18,
+      "id": "bld_p18_abandonee_32194e3b",
+      "see": "",
+      "cf": "",
+      "also_termed": "",
+      "has_cross_references": false
+    },
+    {
+      "term": "abandonment",
+      "page": 18,
+      "id": "bld_p18_abandonment_e0d44130",
+      "see": "",
+      "cf": "",
+      "also_termed": "",
+      "has_cross_references": false
+    },
+    {
+      "term": "nonperforming party has caused",
+      "page": 19,
+      "id": "bld_p19_nonperforming_party_has_caused_96d3b274",
+      "see": "",
+      "cf": "DESERTION",
+      "also_termed": "",
+      "has_cross_references": true
+    },
+    {
+      "term": "\u201cThe lines of distinction between abandonment and the",
+      "page": 19,
+      "id": "bld_p19_\u201cthe_lines_of_distinction_between_abandonment_and_the_e6ef865e",
+      "see": "",
+      "cf": "",
+      "also_termed": "",
+      "has_cross_references": false
+    },
+    {
+      "term": "malicious abandonment",
+      "page": 19,
+      "id": "bld_p19_malicious_abandonment_5307de29",
+      "see": "",
+      "cf": "",
+      "also_termed": "",
+      "has_cross_references": false
+    }
+  ]
+}

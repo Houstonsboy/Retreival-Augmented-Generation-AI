@@ -1,0 +1,678 @@
+{
+  "analysis_input": {
+    "case_context": {
+      "user_role": "claimant",
+      "user_account": "",
+      "analysis_date": "2026-11-15"
+    },
+    "evidence": [
+      {
+        "evidence_id": "test-0",
+        "type": "chat_screenshot",
+        "label": "WhatsApp Image 2026-11-08 at 20.11.54.jpeg"
+      },
+      {
+        "evidence_id": "test-1",
+        "type": "chat_screenshot",
+        "label": "WhatsApp Image 2026-11-08 at 20.12.06.jpeg"
+      }
+    ],
+    "contact": {
+      "name": "Neptune Shelters",
+      "presence": "online"
+    },
+    "messages": [
+      {
+        "index": 1,
+        "evidence_id": "test-0",
+        "sender": "me",
+        "sender_name": "",
+        "text": "Hi Neptune shelters Id like to have your services for catering to a wedding on November 16th",
+        "date": null,
+        "time": "20:06",
+        "edited": false,
+        "ocr_confidence": 0.992,
+        "sender_confidence": "high"
+      },
+      {
+        "index": 2,
+        "evidence_id": "test-0",
+        "sender": "me",
+        "sender_name": "",
+        "text": "What are your rates",
+        "date": null,
+        "time": "20:06",
+        "edited": false,
+        "ocr_confidence": 0.991,
+        "sender_confidence": "high"
+      },
+      {
+        "index": 3,
+        "evidence_id": "test-0",
+        "sender": "them",
+        "sender_name": "Neptune Shelters",
+        "text": "I charge 27750 for my services",
+        "date": null,
+        "time": "20:08",
+        "edited": true,
+        "ocr_confidence": 0.999,
+        "sender_confidence": "high"
+      },
+      {
+        "index": 4,
+        "evidence_id": "test-0",
+        "sender": "me",
+        "sender_name": "",
+        "text": "Okay send me your payment details I make the payment",
+        "date": null,
+        "time": "20:10",
+        "edited": false,
+        "ocr_confidence": 0.998,
+        "sender_confidence": "high"
+      },
+      {
+        "index": 5,
+        "evidence_id": "test-0",
+        "sender": "them",
+        "sender_name": "Neptune Shelters",
+        "text": "Till No. 578892, Amount 27750",
+        "date": null,
+        "time": "20:11",
+        "edited": false,
+        "ocr_confidence": 0.975,
+        "sender_confidence": "high"
+      },
+      {
+        "index": 6,
+        "evidence_id": "test-0",
+        "sender": "me",
+        "sender_name": "",
+        "text": "Okay done",
+        "date": null,
+        "time": "20:11",
+        "edited": false,
+        "ocr_confidence": 1.0,
+        "sender_confidence": "high"
+      },
+      {
+        "index": 7,
+        "evidence_id": "test-0",
+        "sender": "them",
+        "sender_name": "Neptune Shelters",
+        "text": "Should return the name Neptune Shelters",
+        "date": null,
+        "time": "20:11",
+        "edited": false,
+        "ocr_confidence": 1.0,
+        "sender_confidence": "high"
+      },
+      {
+        "index": 8,
+        "evidence_id": "test-1",
+        "sender": "them",
+        "sender_name": "AbsaBank",
+        "text": "Absa Bank Kenya PLC",
+        "date": null,
+        "time": null,
+        "edited": false,
+        "ocr_confidence": 1.0,
+        "sender_confidence": "high"
+      },
+      {
+        "index": 9,
+        "evidence_id": "test-1",
+        "sender": "them",
+        "sender_name": "AbsaBank",
+        "text": "Dear Kristein Gichuhi Mwaura, You have deposited KES18500.0 MPESA ref: UJ24P8JAPR to account XX4151 for NEPTUNE SHELTERS LIMITED through Absa Bank Kenya PLC",
+        "date": null,
+        "time": null,
+        "edited": false,
+        "ocr_confidence": 0.994,
+        "sender_confidence": "high"
+      },
+      {
+        "index": 10,
+        "evidence_id": "test-1",
+        "sender": "them",
+        "sender_name": "AbsaBank",
+        "text": "EMMANUEL MAGUNGA ORINGE has transferred KES210 to your MPESA ref: UJO4PB8294. Please await MPESA notification.",
+        "date": null,
+        "time": null,
+        "edited": false,
+        "ocr_confidence": 0.998,
+        "sender_confidence": "high"
+      },
+      {
+        "index": 11,
+        "evidence_id": "test-1",
+        "sender": "them",
+        "sender_name": "AbsaBank",
+        "text": "Dear Kristein Gichuhi Mwaura, You have deposited KES27750.0 MPESA ref: UJV4PO6ABO to account XX4151 for NEPTUNE SHELTERS LIMITED through Absa Bank Kenya PLC • Main Sender can't accept replies. Contact them directly. Learn more",
+        "date": null,
+        "time": null,
+        "edited": false,
+        "ocr_confidence": 0.989,
+        "sender_confidence": "high"
+      }
+    ],
+    "system_events": [
+      {
+        "evidence_id": "test-0",
+        "after_message_index": 6,
+        "text": "1 unread message"
+      },
+      {
+        "evidence_id": "test-1",
+        "after_message_index": 1,
+        "text": "Friday, 2 Oct • 11:57"
+      },
+      {
+        "evidence_id": "test-1",
+        "after_message_index": 2,
+        "text": "Saturday, 24 Oct • 14:36"
+      },
+      {
+        "evidence_id": "test-1",
+        "after_message_index": 3,
+        "text": "Saturday, 31 Oct • 15:23"
+      }
+    ],
+    "mpesa_extracted": [
+      {
+        "source": "chat_message",
+        "evidence_id": "test-1",
+        "code": "UJ24P8JAPR",
+        "amount_kes": 18500.0,
+        "recipient": "NEPTUNE SHELTERS LIMITED",
+        "till_or_paybill": null,
+        "datetime": null,
+        "parse_confidence": 0.75
+      },
+      {
+        "source": "chat_message",
+        "evidence_id": "test-1",
+        "code": "UJO4PB8294",
+        "amount_kes": 210.0,
+        "recipient": null,
+        "till_or_paybill": null,
+        "datetime": null,
+        "parse_confidence": 0.5
+      },
+      {
+        "source": "chat_message",
+        "evidence_id": "test-1",
+        "code": "UJV4PO6ABO",
+        "amount_kes": 27750.0,
+        "recipient": "NEPTUNE SHELTERS LIMITED",
+        "till_or_paybill": null,
+        "datetime": null,
+        "parse_confidence": 0.75
+      }
+    ],
+    "mentioned_amounts": [
+      {
+        "amount": 27750.0,
+        "raw": "charge 27750",
+        "msg_index": 3
+      },
+      {
+        "amount": 27750.0,
+        "raw": "Amount 27750",
+        "msg_index": 5
+      },
+      {
+        "amount": 18500.0,
+        "raw": "KES18500.0",
+        "msg_index": 9
+      },
+      {
+        "amount": 210.0,
+        "raw": "KES210",
+        "msg_index": 10
+      },
+      {
+        "amount": 27750.0,
+        "raw": "KES27750.0",
+        "msg_index": 11
+      }
+    ],
+    "date_checks": {
+      "analysis_date": "2026-11-15",
+      "overridden": false,
+      "timezone": "Africa/Nairobi",
+      "conversation_dates": [
+        {
+          "evidence_id": "test-0",
+          "date": "2026-11-08",
+          "source": "filename_hint",
+          "status": "proposed"
+        },
+        {
+          "evidence_id": "test-1",
+          "date": "2026-11-08",
+          "source": "filename_hint",
+          "status": "proposed"
+        }
+      ],
+      "undated_evidence_ids": [
+        "test-0",
+        "test-1"
+      ],
+      "mentioned_dates": [
+        {
+          "msg_index": 1,
+          "raw": "November 16th",
+          "resolved": null,
+          "year_assumed": false,
+          "relation": "unresolved",
+          "candidate_due_date": false
+        }
+      ],
+      "future_dated_events": [],
+      "order_violations": [],
+      "performance_due": {
+        "date": null,
+        "status": "unknown"
+      },
+      "no_dates": false
+    },
+    "integrity_flags": [
+      "edited_messages",
+      "incomplete_messages",
+      "screenshot_boundary"
+    ],
+    "user_provided_facts": [],
+    "previous_analysis": null
+  },
+  "result": {
+    "conversation_integrity": {
+      "rating": "ADEQUATE",
+      "issues": [
+        "Message index 3 is marked as edited, which may affect the reliability of the quoted price.",
+        "The conversation in evidence test-0 appears to start mid-interaction or lacks a clear beginning context.",
+        "Evidence test-1 contains system events with dates (Oct 2, Oct 24, Oct 31) that do not align with the filename date (Nov 8) or the conversation flow, suggesting potential screenshot boundary issues or mixed evidence.",
+        "No explicit dates are present in the message text itself, relying on filename hints which are not definitive evidence."
+      ]
+    },
+    "unrelated_messages": [
+      {
+        "msg_index": 10,
+        "text": ""
+      }
+    ],
+    "parties": [
+      {
+        "name": "Kristein Gichuhi Mwaura",
+        "role": "Claimant/User",
+        "notes": null
+      },
+      {
+        "name": "Neptune Shelters Limited",
+        "role": "Respondent/Service Provider",
+        "notes": null
+      }
+    ],
+    "timeline": [
+      {
+        "msg_index": 1,
+        "evidence_id": "test-0",
+        "sender": null,
+        "time": "20:06",
+        "event": "User requests catering services for a wedding on November 16th and asks for rates."
+      },
+      {
+        "msg_index": 2,
+        "evidence_id": "test-0",
+        "sender": null,
+        "time": "20:06",
+        "event": "User asks for rates."
+      },
+      {
+        "msg_index": 3,
+        "evidence_id": "test-0",
+        "sender": null,
+        "time": "20:08",
+        "event": "Neptune Shelters quotes a price of 27750."
+      },
+      {
+        "msg_index": 4,
+        "evidence_id": "test-0",
+        "sender": null,
+        "time": "20:10",
+        "event": "User requests payment details to make payment."
+      },
+      {
+        "msg_index": 5,
+        "evidence_id": "test-0",
+        "sender": null,
+        "time": "20:11",
+        "event": "Neptune Shelters provides Till No. 578892 and amount 27750."
+      },
+      {
+        "msg_index": 6,
+        "evidence_id": "test-0",
+        "sender": null,
+        "time": "20:11",
+        "event": "User states 'Okay done', implying payment was made."
+      },
+      {
+        "msg_index": 7,
+        "evidence_id": "test-0",
+        "sender": null,
+        "time": "20:11",
+        "event": "Neptune Shelters confirms the name should return as Neptune Shelters."
+      },
+      {
+        "msg_index": 9,
+        "evidence_id": "test-1",
+        "sender": null,
+        "time": null,
+        "event": "Bank notification shows deposit of KES 18500 to NEPTUNE SHELTERS LIMITED."
+      },
+      {
+        "msg_index": 10,
+        "evidence_id": "test-1",
+        "sender": null,
+        "time": null,
+        "event": "Bank notification shows transfer of KES 210 from EMMANUEL MAGUNGA ORINGE."
+      },
+      {
+        "msg_index": 11,
+        "evidence_id": "test-1",
+        "sender": null,
+        "time": null,
+        "event": "Bank notification shows deposit of KES 27750 to NEPTUNE SHELTERS LIMITED."
+      }
+    ],
+    "elements": {
+      "A": {
+        "status": "PRESENT",
+        "evidence": [
+          {
+            "msg_index": 1,
+            "sender": "me",
+            "time": "20:06",
+            "quote": "Hi Neptune shelters Id like to have your services for catering to a wedding on November 16th"
+          },
+          {
+            "msg_index": 3,
+            "sender": "them",
+            "time": "20:08",
+            "quote": "I charge 27750 for my services"
+          }
+        ],
+        "reasoning": "The parties are clearly identified as the user (Kristein Gichuhi Mwaura based on bank notifications) and Neptune Shelters (Neptune Shelters Limited based on bank notifications). The intent to contract for services is explicit.",
+        "confidence": 0.95
+      },
+      "B": {
+        "status": "NO_ISSUE_INDICATED",
+        "evidence": [],
+        "reasoning": "There is no textual evidence suggesting lack of capacity, minority, or incapacity. The parties appear to be acting in a commercial context.",
+        "confidence": 0.9
+      },
+      "C": {
+        "status": "PRESENT",
+        "evidence": [
+          {
+            "msg_index": 3,
+            "sender": "them",
+            "time": "20:08",
+            "quote": "I charge 27750 for my services"
+          },
+          {
+            "msg_index": 1,
+            "sender": "me",
+            "time": "20:06",
+            "quote": "Id like to have your services for catering to a wedding on November 16th"
+          }
+        ],
+        "reasoning": "The offer includes the subject (catering for a wedding), the date (November 16th), and the price (27750). While the quantity (number of guests) is not specified, the price is fixed, implying a standard package or that the price covers the service as requested. The offer is definite enough to be accepted.",
+        "confidence": 0.85
+      },
+      "D": {
+        "status": "PRESENT",
+        "evidence": [
+          {
+            "msg_index": 4,
+            "sender": "me",
+            "time": "20:10",
+            "quote": "Okay send me your payment details I make the payment"
+          },
+          {
+            "msg_index": 6,
+            "sender": "me",
+            "time": "20:11",
+            "quote": "Okay done"
+          }
+        ],
+        "reasoning": "The user accepted the offer by requesting payment details and subsequently stating 'Okay done' after providing the payment. This constitutes acceptance through conduct and words.",
+        "confidence": 0.9
+      },
+      "E": {
+        "status": "PRESENT",
+        "evidence": [
+          {
+            "msg_index": 11,
+            "sender": "them",
+            "time": null,
+            "quote": "Dear Kristein Gichuhi Mwaura, You have deposited KES27750.0 MPESA ref: UJV4PO6ABO to account XX4151 for NEPTUNE SHELTERS LIMITED through Absa Bank Kenya PLC"
+          }
+        ],
+        "reasoning": "Consideration is present in the form of payment of KES 27750 by the user to Neptune Shelters, and the promise to provide catering services by Neptune Shelters.",
+        "confidence": 0.95
+      },
+      "F": {
+        "status": "PRESENT",
+        "evidence": [
+          {
+            "msg_index": 1,
+            "sender": "me",
+            "time": "20:06",
+            "quote": "Id like to have your services for catering to a wedding on November 16th"
+          }
+        ],
+        "reasoning": "The context is clearly commercial (catering for a wedding for a fee), which presumes an intention to create legal relations.",
+        "confidence": 0.95
+      },
+      "G": {
+        "status": "PARTIAL",
+        "evidence": [
+          {
+            "msg_index": 1,
+            "sender": "me",
+            "time": "20:06",
+            "quote": "Id like to have your services for catering to a wedding on November 16th"
+          },
+          {
+            "msg_index": 3,
+            "sender": "them",
+            "time": "20:08",
+            "quote": "I charge 27750 for my services"
+          }
+        ],
+        "reasoning": "The essential terms of price and date are present. However, the scope of 'catering services' (e.g., number of guests, type of food, specific menu) is not explicitly defined in the text. This could lead to disputes over what was exactly promised. The fixed price suggests a standard package, but the lack of detail makes certainty partial.",
+        "confidence": 0.7
+      },
+      "H": {
+        "status": "NO_ISSUE_INDICATED",
+        "evidence": [],
+        "reasoning": "There is no textual evidence of misrepresentation, duress, undue influence, or fraud.",
+        "confidence": 0.9
+      },
+      "I": {
+        "status": "NO_ISSUE_INDICATED",
+        "evidence": [],
+        "reasoning": "Catering services are a legal business activity. There is no indication of illegality.",
+        "confidence": 0.9
+      },
+      "J": {
+        "status": "NOT_REQUIRED",
+        "evidence": [],
+        "reasoning": "Contracts for the sale of goods or services under a certain value do not typically require a written contract signed by both parties to be enforceable in Kenya, especially in small claims contexts. A chat log can serve as evidence of the agreement.",
+        "confidence": 0.9
+      },
+      "K": {
+        "status": "UNCLEAR",
+        "evidence": [],
+        "reasoning": "The record shows the agreement and payment. However, there is no evidence in the provided messages about whether the service was performed or breached. The user's account is empty, so we cannot assume non-performance. The performance date (Nov 16) is in the future relative to the analysis date (Nov 15), so performance is not yet due. Therefore, breach cannot be established from the record.",
+        "confidence": 0.8
+      }
+    },
+    "mpesa_payments": [
+      {
+        "code": "UJ24P8JAPR",
+        "amount_kes": 18500.0,
+        "sender": "Kristein Gichuhi Mwaura",
+        "recipient": "NEPTUNE SHELTERS LIMITED",
+        "datetime": null,
+        "evidence_id": "test-1",
+        "basis": [
+          "msg_index 9"
+        ],
+        "classification": "PRESENT BUT UNVERIFIED",
+        "notes": "Amount does not match the agreed price of 27750. Could be a partial payment or unrelated transaction. No timestamp provided."
+      },
+      {
+        "code": "UJO4PB8294",
+        "amount_kes": 210.0,
+        "sender": "EMMANUEL MAGUNGA ORINGE",
+        "recipient": "Unknown (User's account)",
+        "datetime": null,
+        "evidence_id": "test-1",
+        "basis": [
+          "msg_index 10"
+        ],
+        "classification": "SUSPICIOUS",
+        "notes": "Unrelated to the catering contract. Different sender and small amount. Likely noise in the evidence."
+      },
+      {
+        "code": "UJV4PO6ABO",
+        "amount_kes": 27750.0,
+        "sender": "Kristein Gichuhi Mwaura",
+        "recipient": "NEPTUNE SHELTERS LIMITED",
+        "datetime": null,
+        "evidence_id": "test-1",
+        "basis": [
+          "msg_index 11"
+        ],
+        "classification": "VERIFIED-LOOKING",
+        "notes": "Amount matches the agreed price exactly. Recipient matches the service provider. This strongly supports the claim that payment was made for the catering service."
+      }
+    ],
+    "red_flags": [
+      "Message index 3 (price quote) is marked as edited, which could raise questions about the original terms.",
+      "The system events in test-1 show dates in October, which conflicts with the filename date of November 8 and the conversation context. This suggests the screenshot may contain messages from different times or the filename is misleading.",
+      "The performance date (Nov 16) is one day after the analysis date (Nov 15), so any claim of non-performance is premature unless there is evidence of repudiation."
+    ],
+    "missing_information": [
+      "Explicit confirmation of the scope of catering services (e.g., number of guests, menu).",
+      "Clear timestamps for the bank notifications in test-1 to establish the exact time of payment.",
+      "Evidence of whether the service was actually provided on November 16th."
+    ],
+    "overall_verdict": "POSSIBLY VALID WITH GAPS",
+    "confidence": 0.85,
+    "changes_since_previous": [],
+    "plain_summary": "The chat shows a clear agreement between the user and Neptune Shelters for catering services on November 16th at a price of KES 27,750. The user accepted the offer and made a payment of KES 27,750, confirmed by a bank notification. The contract appears valid and enforceable. However, the scope of the catering service is not detailed, which could lead to disputes. Since the service date is in the future relative to the analysis date, no breach has occurred yet. The record is adequate but has some integrity issues due to edited messages and conflicting dates in system events.",
+    "strengthen_checklist": [
+      "Obtain a clear M-Pesa statement showing the payment of KES 27,750 with a timestamp.",
+      "Clarify the scope of the catering service (e.g., number of guests, menu) in writing if possible.",
+      "Preserve the original device and backups of the chat and bank notifications."
+    ],
+    "follow_up_requests": [
+      {
+        "id": "provide_date:K:performance",
+        "element": "K",
+        "type": "provide_date",
+        "prompt": "What is the exact date and time of the catering service?",
+        "why_it_matters": "To determine if the service was performed or breached.",
+        "blocking": true,
+        "target": "user",
+        "options": [],
+        "date_role": "performance_due"
+      },
+      {
+        "id": "provide_original_message:C:3",
+        "element": "C",
+        "type": "provide_original_message",
+        "prompt": "Provide the original wording of message 3.",
+        "why_it_matters": "The original wording of an edited message is unknown and may change the terms.",
+        "blocking": false,
+        "target": "3",
+        "options": [],
+        "date_role": null
+      },
+      {
+        "id": "provide_text:G:scope",
+        "element": "G",
+        "type": "provide_text",
+        "prompt": "Can you provide any additional details about the scope of the catering service (e.g., number of guests, menu)?",
+        "why_it_matters": "To clarify the terms of the contract and avoid disputes over what was promised.",
+        "blocking": false,
+        "target": "user",
+        "options": [],
+        "date_role": "contract_terms"
+      },
+      {
+        "id": "upload_chat_screenshot:G:earlier_or_later",
+        "element": "G",
+        "type": "upload_chat_screenshot",
+        "prompt": "Upload earlier or later screenshots of this conversation if you have them.",
+        "why_it_matters": "Missing parts of the conversation may hide agreed terms.",
+        "blocking": false,
+        "target": "earlier_or_later",
+        "options": [],
+        "date_role": null
+      },
+      {
+        "id": "upload_mpesa_screenshot:K:payment",
+        "element": "K",
+        "type": "upload_mpesa_screenshot",
+        "prompt": "Please upload a screenshot of your M-Pesa statement showing the payment of KES 27,750 to Neptune Shelters.",
+        "why_it_matters": "To verify the payment with a clear timestamp and reference code.",
+        "blocking": false,
+        "target": "user",
+        "options": [],
+        "date_role": "payment"
+      }
+    ],
+    "questions_for_parties": [
+      {
+        "element": "G",
+        "question": "What specific catering services were agreed upon (e.g., number of guests, type of food, menu)?"
+      },
+      {
+        "element": "K",
+        "question": "Did you provide the catering services on November 16th? If not, why?"
+      }
+    ],
+    "disclaimer": "This is an automated analysis, not legal advice. A qualified advocate should review high-value or contested matters."
+  },
+  "verification": {
+    "quotes_grounded": true,
+    "ungrounded_quotes": [],
+    "mpesa_cross_check": {
+      "llm_payment_count": 3,
+      "parsed_payment_count": 3,
+      "codes_llm_only": [],
+      "codes_parsed_only": [],
+      "reclassified": [],
+      "invented_fields": false,
+      "till_mismatches": [],
+      "amount_mismatches": [],
+      "duplicate_codes": [],
+      "consistent": true
+    },
+    "status_issues": [],
+    "timeline_unreferenced": [],
+    "premature_breach": null,
+    "verdict_before": "LIKELY VALID",
+    "verdict_after": "POSSIBLY VALID WITH GAPS",
+    "verdict_downgraded": true,
+    "downgrade_reasons": [
+      "edited_messages",
+      "elements_not_present:G"
+    ]
+  },
+  "prompt_version": "b9004433",
+  "model": "qwen/qwen3.8-27b"
+}

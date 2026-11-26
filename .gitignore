@@ -1,8 +1,11 @@
-# Neo4j runtime data and binaries (too large for GitHub)
-neo4j-community-*/data/
+# Neo4j — binary moved to ~/opt/, run via Docker (infra/graph/docker-compose.yml)
+neo4j-community-*/
 neo4j-community-*.tar.gz
 neo4j-community-*.zip
-neo4j-java/target/
+legacy/neo4j-java/target/
+
+# Graph layer secrets
+infra/graph/.env
 
 # Environment variables
 .env
@@ -67,8 +70,30 @@ Thumbs.db
 
 # Logs
 *.log
+backend/logs/*.jsonl
+
+# ChromaDB runtime files (read-only at query time; not source-controlled)
+backend/CaseLawDB/**/chroma.sqlite3
+backend/CaseLawDB/**/chroma.sqlite3-wal
+backend/CaseLawDB/**/chroma.sqlite3-shm
+backend/CaseLawDB/**/*.bin
+backend/MasterRulesDB/**/chroma.sqlite3
+backend/MasterRulesDB/**/chroma.sqlite3-wal
+backend/MasterRulesDB/**/chroma.sqlite3-shm
+backend/MasterRulesDB/**/*.bin
+backend/constitutionlogic/MasterRulesDB/**/chroma.sqlite3
+backend/constitutionlogic/MasterRulesDB/**/*.bin
 
 # Data files (optional - uncomment if you want to ignore PDFs/txt files)
 # *.pdf
 # *.txt
+
+# Playwright e2e — secrets, browser session, results, and local packages
+e2e/.auth/
+e2e/test-results/
+e2e/playwright-report/
+e2e/node_modules/
+
+# Deployment log (local record, never commit)
+deploy-log.md
 

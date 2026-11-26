@@ -617,7 +617,7 @@ def client():
 
 class TestHistoryEndpoints:
     def test_list_conversations_200(self, client):
-        with patch("history_store.list_conversations",
+        with patch("history_routes.list_conversations",
                    return_value={"conversations": [], "next_cursor": None}):
             resp = client.get("/api/conversations",
                               headers={"Authorization": "Bearer token"})
@@ -633,7 +633,7 @@ class TestHistoryEndpoints:
         assert resp.status_code in (200, 400)
 
     def test_get_conversation_not_found(self, client):
-        with patch("history_store.get_conversation",
+        with patch("history_routes.get_conversation",
                    side_effect=LookupError("not found")):
             resp = client.get("/api/conversations/bad-id",
                               headers={"Authorization": "Bearer token"})
@@ -669,13 +669,13 @@ class TestHistoryEndpoints:
     def test_delete_conversation_ok(self, client):
         with patch("history_store.get_or_create_conversation",
                    return_value=(MagicMock(), False)), \
-             patch("history_store.delete_conversation"):
+             patch("history_routes.delete_conversation"):
             resp = client.delete("/api/conversations/conv-1",
                                  headers={"Authorization": "Bearer token"})
             assert resp.status_code == 200
 
     def test_regen_title_not_found(self, client):
-        with patch("history_store.regenerate_title",
+        with patch("history_routes.regenerate_title",
                    side_effect=LookupError("not found")):
             resp = client.post("/api/conversations/bad-id/regenerate-title",
                                json={},
@@ -851,11 +851,26 @@ class TestEmulatorIntegration:
     @pytest.fixture(autouse=True)
     def setup_firebase(self):
         import firebase_admin
-        from firebase_admin import firestore as fb_firestore
-        # Use emulator credentials
+        from firebase_admin import firestore as fb_firestore, credentials as fb_creds
         os.environ["FIRESTORE_EMULATOR_HOST"] = EMULATOR
         if not firebase_admin._apps:
-            firebase_admin.initialize_app(options={"projectId": "test-project"})
+            # The emulator doesn't verify tokens; supply a static fake token
+            # that never expires so the SDK skips any HTTP refresh call.
+            class _EmulatorCred(fb_creds.Base):
+                def get_credential(self):
+                    from datetime import datetime, timezone, timedelta
+                    import google.oauth2.credentials
+                    cred = google.oauth2.credentials.Credentials(
+                        token="ya29.emulator-test-token",
+                        token_uri="http://localhost/unused",
+                    )
+                    # Mark as valid so google-auth skips refresh
+                    cred.expiry = datetime.now(timezone.utc) + timedelta(hours=1)
+                    return cred
+            firebase_admin.initialize_app(
+                credential=_EmulatorCred(),
+                options={"projectId": "test-project"},
+            )
         self.db = fb_firestore.client()
         self.uid = f"test-{uuid.uuid4().hex[:8]}"
         yield

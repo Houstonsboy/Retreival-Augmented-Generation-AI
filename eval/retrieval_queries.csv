@@ -1,0 +1,26 @@
+query_id,query,expected_statute_sections,expected_cases,verified
+Q001,What is the monetary jurisdiction limit for the Small Claims Court in Kenya?,Small Claims Courts Act s.5; Small Claims Courts Act s.12,,UNVERIFIED
+Q002,What is the limitation period for a contract claim in the Small Claims Court under Kenyan law?,Limitation of Actions Act s.4,,UNVERIFIED
+Q003,Can a party be represented by an advocate in Small Claims Court proceedings?,Small Claims Courts Act s.8,,UNVERIFIED
+Q004,What remedies are available to a claimant in a Small Claims Court breach-of-contract claim?,Small Claims Courts Act s.27,,UNVERIFIED
+Q005,Is service of process via WhatsApp message effective under Kenyan procedural law?,Civil Procedure Act; Civil Procedure Rules Order 5,,UNVERIFIED
+Q006,What are the requirements for a valid Section 106B certificate under the Evidence Act Kenya?,Evidence Act Cap 80 s.106B,,UNVERIFIED
+Q007,What must be proved to set aside an ex-parte judgment in a Small Claims Court?,Small Claims Courts Act; Civil Procedure Rules Order 10 Rule 11,,UNVERIFIED
+Q008,What constitutes a binding oral or informal contract under Kenyan contract law?,Law of Contract Act Cap 23,,UNVERIFIED
+Q009,What are the conditions for the admissibility of electronic records as evidence in Kenya?,Evidence Act Cap 80 s.106B; s.78A,,UNVERIFIED
+Q010,Can an insurance company exercise subrogation rights in a Small Claims Court claim?,Insurance Act; Law of Contract Act Cap 23,,UNVERIFIED
+Q011,What is the standard for granting a stay of execution pending an application to set aside judgment?,Civil Procedure Act s.63; Civil Procedure Rules Order 42,,UNVERIFIED
+Q012,Who bears the burden of proof in a bailment claim for lost or stolen goods?,Evidence Act Cap 80 s.112,,UNVERIFIED
+Q013,What are the rights and obligations of a bailee under Kenyan law?,Law of Contract Act Cap 23; Hire Purchase Act,,UNVERIFIED
+Q014,What constitutes a binding agreement formed over WhatsApp messages under Kenyan law?,Law of Contract Act Cap 23,,UNVERIFIED
+Q015,Can a WhatsApp chat screenshot be admitted as documentary evidence without a s.106B certificate?,Evidence Act Cap 80 s.106B; s.65A,,UNVERIFIED
+Q016,What is the procedure for filing a defence in Small Claims Court after a default judgment?,Small Claims Courts Act s.21; Small Claims Courts Rules 2022,,UNVERIFIED
+Q017,What are the elements required to establish negligence in a bailment context?,Tort law; Law of Contract Act Cap 23,,UNVERIFIED
+Q018,Is an M-Pesa transaction receipt admissible as proof of payment without a s.106B certificate?,Evidence Act Cap 80 s.106B; s.78A,,UNVERIFIED
+Q019,Can third-party independent contractors be held liable for the acts of their employees in Kenya?,Employment Act; Tort law vicarious liability,,UNVERIFIED
+Q020,What is the standard of proof required in civil proceedings in Kenyan courts?,Evidence Act Cap 80 s.107; s.108,,UNVERIFIED
+Q021,How does the Small Claims Court handle claims by corporate bodies?,Small Claims Courts Act s.6,,UNVERIFIED
+Q022,What is the procedure for appeal from a Small Claims Court decision?,Small Claims Courts Act s.38,,UNVERIFIED
+Q023,Can a default judgment be set aside where the defendant was served by an unconventional method?,Civil Procedure Rules Order 10 Rule 11; Small Claims Courts Act,,UNVERIFIED
+Q024,What constitutes documentary evidence under the Evidence Act Kenya and what is required for its admission?,Evidence Act Cap 80 s.65; s.65A; s.106B,,UNVERIFIED
+Q025,What remedies exist for fraudulent or negligent misrepresentation in a contract in Kenya?,Law of Contract Act Cap 23; Judicature Act,,UNVERIFIED

@@ -1,0 +1,22 @@
+{
+  "id": "BQ4",
+  "query": "Is the Small Claims Court bound by strict rules of evidence?",
+  "chunk_ids": [
+    "2024KEHC15763KLR_7",
+    "2024KEHC15763KLR_6",
+    "2024KEHC15763KLR_3",
+    "2026SCC242KLR_3",
+    "2026SCC242KLR_0",
+    "2026SCC242KLR_2",
+    "2026SCC235KLR_3",
+    "2026SCC235KLR_0",
+    "2026SCC235KLR_2"
+  ],
+  "case_identifiers": [
+    "2024KEHC15763(KLR)",
+    "2026SCC242(KLR)",
+    "2026SCC235(KLR)"
+  ],
+  "latency_ms": 7019,
+  "results_count": 3
+}

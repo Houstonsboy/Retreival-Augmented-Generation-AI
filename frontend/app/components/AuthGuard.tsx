@@ -3,25 +3,31 @@
 import { useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { useAuth } from "@/app/context/AuthContext";
-
-const PUBLIC_PATHS = ["/auth/sign-in", "/auth/sign-up", "/auth/complete-profile"];
-const ADMIN_ONLY_PATHS = ["/ingester", "/firacChecker", "/constitution"];
+import { canAccess, homeRoute, isPublicPath } from "@/app/lib/access";
 
 export function AuthGuard({ children }: { children: React.ReactNode }) {
-  const { user, profile, loading } = useAuth();
+  const { user, profile, loading, profilePending } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
 
   useEffect(() => {
-    if (loading) return;
+    // profilePending: createLitigantDoc() is in-flight — hold navigation.
+    if (loading || profilePending) return;
 
-    const isPublic = PUBLIC_PATHS.some((p) => pathname.startsWith(p));
+    const isPublic = isPublicPath(pathname);
 
+    // ── No user ─────────────────────────────────────────────────────────────
     if (!user) {
-      if (!isPublic) router.replace("/auth/sign-in");
+      if (!isPublic) {
+        // Litigant section → litigant sign-in; everything else → advocate sign-in.
+        router.replace(
+          pathname.startsWith("/litigant") ? "/litigant/sign-in" : "/auth/sign-in"
+        );
+      }
       return;
     }
 
+    // ── User but no Firestore profile yet ────────────────────────────────────
     if (!profile) {
       if (!pathname.startsWith("/auth/complete-profile")) {
         router.replace("/auth/complete-profile");
@@ -29,23 +35,48 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
       return;
     }
 
-    if (isPublic) {
-      router.replace("/dashboard");
+    const type = profile.type;
+
+    // ── /litigant/sign-in ────────────────────────────────────────────────────
+    // Litigants: redirect to their area — they're already signed in.
+    // Advocates/admins: stay — the page shows a "Continue to evidence tools" notice.
+    if (pathname.startsWith("/litigant/sign-in")) {
+      if (type === "litigant") router.replace("/litigant/analysis");
       return;
     }
 
-    if (
-      ADMIN_ONLY_PATHS.some((p) => pathname.startsWith(p)) &&
-      profile.type !== "admin"
-    ) {
-      router.replace("/dashboard");
+    // ── Landing page (/) ─────────────────────────────────────────────────────
+    // Litigants: redirect immediately — there is nothing on the landing page for them.
+    // Advocates/admins: stay — they can choose to go to research or evidence tools.
+    if (pathname === "/") {
+      if (type === "litigant") router.replace("/litigant/analysis");
+      return;
     }
-  }, [user, profile, loading, pathname, router]);
 
-  if (loading) {
+    // ── Other public auth pages ───────────────────────────────────────────────
+    // (sign-in, sign-up, complete-profile) — redirect all authenticated users home.
+    if (isPublic) {
+      router.replace(homeRoute(type));
+      return;
+    }
+
+    // ── Role-gated pages ─────────────────────────────────────────────────────
+    // canAccess() encodes the full access map (see app/lib/access.ts).
+    if (!canAccess(pathname, type)) {
+      router.replace(homeRoute(type));
+    }
+  }, [user, profile, loading, profilePending, pathname, router]);
+
+  if (loading || profilePending) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-white dark:bg-gray-900">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-blue-600 border-t-transparent" />
+      <div
+        className="flex min-h-screen items-center justify-center"
+        style={{ background: "#FAF7F0" }}
+      >
+        <div
+          className="h-8 w-8 animate-spin rounded-full border-4 border-t-transparent"
+          style={{ borderColor: "#C9971A", borderTopColor: "transparent" }}
+        />
       </div>
     );
   }

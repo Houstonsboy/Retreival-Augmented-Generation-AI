@@ -1,0 +1,103 @@
+
+=== ChunkDB at ChunkDB ===
+  Collection: ChunkDB, count=704, meta_keys=['file_size', 'file_name', 'chunk_id', 'embedding_model', 'start_index', 'cleaned', 'file_hash', 'file_type', 'chunk_index', 'original_size', 'ingested_at', 'source', 'total_chunks', 'loaded_at', 'chunk_size']
+
+=== LegalSummariesDB at LegalSummariesDB ===
+  Collection: legal_summaries, count=40, meta_keys=['legal_domain', 'firac_component', 'content_length', 'winning_party', 'source_file_path', 'file_name', 'parties', 'embedding_model', 'case_identifier', 'judge', 'court_level', 'ingested_at', 'document_hash', 'year']
+
+=== MasterRulesDB at constitutionlogic/MasterRulesDB ===
+  Collection: master_rules, count=619, meta_keys=['total_chunks', 'part_title', 'chapter_title', 'chunk_length', 'chapter', 'article_length', 'article_number', 'source_document', 'chunk_index', 'document_type', 'part', 'article_header', 'is_complete_article', 'ingestion_timestamp']
+
+=== StatutesDB at StatutesDB ===
+  Collection: statutes, count=1331, meta_keys=['section_num', 'act_slug', 'chapter', 'prev_chunk_id', 'part', 'section_heading', 'references', 'total_chunks', 'breadcrumb', 'chapter_heading', 'article_number', 'act_title', 'part_num', 'part_heading', 'schedule_title', 'article_header', 'status', 'is_complete_section', 'part_title', 'next_chunk_id', 'chapter_num', 'is_schedule', 'chunk_total', 'token_count', 'is_complete_article', 'act_version', 'frbr_work_id', 'chapter_title', 'source_document', 'chunk_index', 'document_type']
+
+=== CaseLawDB at CaseLawDB ===
+  Collection: case_law, count=78, meta_keys=['document_hash', 'source_file_path', 'page_end', 'parties', 'chunk_index', 'file_name', 'legal_domain', 'firac_component', 'prev_chunk_id', 'winning_party', 'judge', 'case_identifier', 'ocr', 'page_start', 'year', 'court_level', 'content_length', 'next_chunk_id', 'label', 'chunk_total']
+
+=== BlackLawDictDB at Const_IntepretationLaws/BlackLawDictionaryDB ===
+  Collection: black_law_dictionary, count=40061, meta_keys=['document_type', 'page', 'definition_length', 'ingestion_timestamp', 'source', 'term']
+
+
+=== FIRAC FIELD SAMPLING (LegalSummariesDB) ===
+
+Collection: legal_summaries, total=40
+  Doc 0: {
+    "parties": "Francis Karioko Muruatetu & another v Republic; Katiba Institute & 5 others (Amicus Curiae)",
+    "year": "2021",
+    "embedding_model": "intfloat/e5-base-v2",
+    "source_file_path": "/home/gift/Retreival-Augmented-Generation-AI/backend/Repo/Res_ipsa_loquitur/Muruatetu  another v Republic Katiba Institute  5 others (Amicus Curiae) (Petition 15  16of2015) 2021KESC31(KLR) (6July2021) (Directions).pdf",
+    "ingested_at": "2025-12-30 00:00:49",
+    "document_hash": "20a5c00bd0be6ab5025c1d6e3d5ac160f187ad622d444f72000ad9ac78e3c810",
+    "legal_domain": "Criminal Law",
+    "winning_party": "The appellants, as the court found in their favor regarding the unconstitutionality of the mandatory death sentence for murder.",
+    "case_identifier": "Muruatetu & another v Republic; Katiba Institute & 5 others (Amicus Curiae)",
+    "content_length": 1132,
+    "court_level": "Supreme Court of Kenya",
+    "judge": "MK KOOME, CJ, PM MWILU, DCJ & VP, MK IBRAHIM, SC WANJALA, I LENAOLA, N NDUNGU & W OUKO, SCJJ",
+    "firac_component": "facts",
+    "file_name": "Muruatetu & another v Republic; Katiba Institute & 5 others (Amicus Curiae)"
+}
+  Doc 1: {
+    "content_length": 1131,
+    "parties": "Francis Karioko Muruatetu & another v Republic; Katiba Institute & 5 others (Amicus Curiae)",
+    "case_identifier": "Muruatetu & another v Republic; Katiba Institute & 5 others (Amicus Curiae)",
+    "winning_party": "The appellants, as the court found in their favor regarding the unconstitutionality of the mandatory death sentence for murder.",
+    "ingested_at": "2025-12-30 00:00:49",
+    "firac_component": "issues",
+    "document_hash": "20a5c00bd0be6ab5025c1d6e3d5ac160f187ad622d444f72000ad9ac78e3c810",
+    "embedding_model": "intfloat/e5-base-v2",
+    "legal_domain": "Criminal Law",
+    "judge": "MK KOOME, CJ, PM MWILU, DCJ & VP, MK IBRAHIM, SC WANJALA, I LENAOLA, N NDUNGU & W OUKO, SCJJ",
+    "source_file_path": "/home/gift/Retreival-Augmented-Generation-AI/backend/Repo/Res_ipsa_loquitur/Muruatetu  another v Republic Katiba Institute  5 others (Amicus Curiae) (Petition 15  16of2015) 2021KESC31(KLR) (6July2021) (Directions).pdf",
+    "file_name": "Muruatetu & another v Republic; Katiba Institute & 5 others (Amicus Curiae)",
+    "year": "2021",
+    "court_level": "Supreme Court of Kenya"
+}
+  Doc 2: {
+    "file_name": "Muruatetu & another v Republic; Katiba Institute & 5 others (Amicus Curiae)",
+    "content_length": 622,
+    "winning_party": "The appellants, as the court found in their favor regarding the unconstitutionality of the mandatory death sentence for murder.",
+    "ingested_at": "2025-12-30 00:00:49",
+    "embedding_model": "intfloat/e5-base-v2",
+    "year": "2021",
+    "judge": "MK KOOME, CJ, PM MWILU, DCJ & VP, MK IBRAHIM, SC WANJALA, I LENAOLA, N NDUNGU & W OUKO, SCJJ",
+    "court_level": "Supreme Court of Kenya",
+    "parties": "Francis Karioko Muruatetu & another v Republic; Katiba Institute & 5 others (Amicus Curiae)",
+    "source_file_path": "/home/gift/Retreival-Augmented-Generation-AI/backend/Repo/Res_ipsa_loquitur/Muruatetu  another v Republic Katiba Institute  5 others (Amicus Curiae) (Petition 15  16of2015) 2021KESC31(KLR) (6July2021) (Directions).pdf",
+    "case_identifier": "Muruatetu & another v Republic; Katiba Institute & 5 others (Amicus Curiae)",
+    "legal_domain": "Criminal Law",
+    "firac_component": "rules",
+    "document_hash": "20a5c00bd0be6ab5025c1d6e3d5ac160f187ad622d444f72000ad9ac78e3c810"
+}
+  Doc 3: {
+    "judge": "MK KOOME, CJ, PM MWILU, DCJ & VP, MK IBRAHIM, SC WANJALA, I LENAOLA, N NDUNGU & W OUKO, SCJJ",
+    "ingested_at": "2025-12-30 00:00:49",
+    "firac_component": "application",
+    "winning_party": "The appellants, as the court found in their favor regarding the unconstitutionality of the mandatory death sentence for murder.",
+    "content_length": 746,
+    "source_file_path": "/home/gift/Retreival-Augmented-Generation-AI/backend/Repo/Res_ipsa_loquitur/Muruatetu  another v Republic Katiba Institute  5 others (Amicus Curiae) (Petition 15  16of2015) 2021KESC31(KLR) (6July2021) (Directions).pdf",
+    "legal_domain": "Criminal Law",
+    "parties": "Francis Karioko Muruatetu & another v Republic; Katiba Institute & 5 others (Amicus Curiae)",
+    "case_identifier": "Muruatetu & another v Republic; Katiba Institute & 5 others (Amicus Curiae)",
+    "embedding_model": "intfloat/e5-base-v2",
+    "year": "2021",
+    "file_name": "Muruatetu & another v Republic; Katiba Institute & 5 others (Amicus Curiae)",
+    "court_level": "Supreme Court of Kenya",
+    "document_hash": "20a5c00bd0be6ab5025c1d6e3d5ac160f187ad622d444f72000ad9ac78e3c810"
+}
+  Doc 4: {
+    "source_file_path": "/home/gift/Retreival-Augmented-Generation-AI/backend/Repo/Res_ipsa_loquitur/Muruatetu  another v Republic Katiba Institute  5 others (Amicus Curiae) (Petition 15  16of2015) 2021KESC31(KLR) (6July2021) (Directions).pdf",
+    "judge": "MK KOOME, CJ, PM MWILU, DCJ & VP, MK IBRAHIM, SC WANJALA, I LENAOLA, N NDUNGU & W OUKO, SCJJ",
+    "content_length": 848,
+    "ingested_at": "2025-12-30 00:00:49",
+    "winning_party": "The appellants, as the court found in their favor regarding the unconstitutionality of the mandatory death sentence for murder.",
+    "year": "2021",
+    "court_level": "Supreme Court of Kenya",
+    "firac_component": "conclusion",
+    "legal_domain": "Criminal Law",
+    "parties": "Francis Karioko Muruatetu & another v Republic; Katiba Institute & 5 others (Amicus Curiae)",
+    "file_name": "Muruatetu & another v Republic; Katiba Institute & 5 others (Amicus Curiae)",
+    "document_hash": "20a5c00bd0be6ab5025c1d6e3d5ac160f187ad622d444f72000ad9ac78e3c810",
+    "case_identifier": "Muruatetu & another v Republic; Katiba Institute & 5 others (Amicus Curiae)",
+    "embedding_model": "intfloat/e5-base-v2"
+}

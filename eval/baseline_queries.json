@@ -1,0 +1,57 @@
+[
+  {
+    "id": "BQ1",
+    "query": "Is a s.106B certificate required for WhatsApp evidence in court?",
+    "classifier": {
+      "vector_query_caselaw": "section 106B certificate WhatsApp electronic evidence admissibility",
+      "target_components": ["HOLDING", "RULE"],
+      "legal_domains": [{"domain": "evidence law", "confidence_score": 0.9}],
+      "entities": {},
+      "adverse_retrieval_signals": []
+    }
+  },
+  {
+    "id": "BQ2",
+    "query": "When will a default judgment be set aside in the Small Claims Court?",
+    "classifier": {
+      "vector_query_caselaw": "default judgment set aside Small Claims Court application grounds",
+      "target_components": ["HOLDING", "RULE"],
+      "legal_domains": [{"domain": "civil procedure", "confidence_score": 0.9}],
+      "entities": {},
+      "adverse_retrieval_signals": []
+    }
+  },
+  {
+    "id": "BQ3",
+    "query": "Can a certificate under s.106B be filed late after trial?",
+    "classifier": {
+      "vector_query_caselaw": "s.106B certificate late filing after trial admissibility",
+      "target_components": ["HOLDING", "RULE"],
+      "legal_domains": [{"domain": "evidence law", "confidence_score": 0.9}],
+      "entities": {},
+      "adverse_retrieval_signals": []
+    }
+  },
+  {
+    "id": "BQ4",
+    "query": "Is the Small Claims Court bound by strict rules of evidence?",
+    "classifier": {
+      "vector_query_caselaw": "Small Claims Court strict rules of evidence binding",
+      "target_components": ["HOLDING", "RULE"],
+      "legal_domains": [{"domain": "evidence law", "confidence_score": 0.8}],
+      "entities": {},
+      "adverse_retrieval_signals": []
+    }
+  },
+  {
+    "id": "BQ5",
+    "query": "Who is a bailee liable to when goods are stolen by their own employees?",
+    "classifier": {
+      "vector_query_caselaw": "bailee liability theft employees guards storage",
+      "target_components": ["HOLDING", "RULE"],
+      "legal_domains": [{"domain": "contract law", "confidence_score": 0.8}],
+      "entities": {},
+      "adverse_retrieval_signals": []
+    }
+  }
+]

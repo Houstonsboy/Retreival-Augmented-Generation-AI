@@ -1,0 +1,22 @@
+{
+  "id": "BQ3",
+  "query": "Can a certificate under s.106B be filed late after trial?",
+  "chunk_ids": [
+    "2020KEHC8905KLR_2",
+    "2020KEHC8905KLR_3",
+    "2020KEHC8905KLR_1",
+    "2014KEHC6468KLR_2",
+    "2014KEHC6468KLR_1",
+    "2014KEHC6468KLR_0",
+    "2024KEHC17038KLR_2",
+    "2024KEHC17038KLR_3",
+    "2024KEHC17038KLR_5"
+  ],
+  "case_identifiers": [
+    "2020KEHC8905(KLR)",
+    "2014KEHC6468(KLR)",
+    "2024KEHC17038(KLR)"
+  ],
+  "latency_ms": 9489,
+  "results_count": 3
+}

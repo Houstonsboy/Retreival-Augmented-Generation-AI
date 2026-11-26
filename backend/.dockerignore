@@ -1,0 +1,30 @@
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.git/
+*.zip
+*.bak
+
+# Backup directories — not needed in prod
+ChunkDB_backup_20261031/
+LegalSummariesDB.bak/
+constitutionlogic/MasterRulesDB.bak/
+constitutionlogic/MasterRulesDB_backup_20261031/
+
+# Experimental / not wired to prod routes yet
+Const_IntepretationLaws/
+
+# Service account keys — inject via Secret Manager at deploy time
+legalai-scc-firebase-adminsdk-fbsvc-73bde27853.json
+legalai-service-account.json
+
+# Development artifacts
+.env
+debug_highlights/
+logs/*.jsonl
+backups/
+coverage.xml
+.coverage
+tests/__pycache__/

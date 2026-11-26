@@ -1,0 +1,22 @@
+{
+  "id": "BQ2",
+  "query": "When will a default judgment be set aside in the Small Claims Court?",
+  "chunk_ids": [
+    "2026SCC241KLR_3",
+    "2026SCC241KLR_0",
+    "2026SCC241KLR_5",
+    "2001KECA154KLR_3",
+    "2001KECA154KLR_2",
+    "2001KECA154KLR_5",
+    "2026SCC242KLR_3",
+    "2026SCC242KLR_0",
+    "2026SCC242KLR_1"
+  ],
+  "case_identifiers": [
+    "2026SCC241(KLR)",
+    "2001KECA154(KLR)",
+    "2026SCC242(KLR)"
+  ],
+  "latency_ms": 9319,
+  "results_count": 3
+}

@@ -7,7 +7,8 @@ import time
 from pathlib import Path
 import chromadb
 from dotenv import load_dotenv  # Load environment variables from .env file
-from sentence_transformers import SentenceTransformer, CrossEncoder  # IMPROVEMENT: Added CrossEncoder for reranking
+from sentence_transformers import CrossEncoder  # IMPROVEMENT: Added CrossEncoder for reranking
+from embeddings import get_embedder
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.feature_extraction.text import TfidfVectorizer  # IMPROVEMENT: Added for hybrid search
 from groq import Groq  # UPDATED: Using Groq instead of HuggingFace
@@ -87,14 +88,14 @@ def load_collection_data(collection) -> Tuple[List[str], np.ndarray, List[Docume
     return documents, embeddings_array, chunk_documents
 
 
-def prepare_retrieval_resources() -> Tuple[List[str], List[Document], np.ndarray, SentenceTransformer, Any]:
+def prepare_retrieval_resources() -> Tuple[List[str], List[Document], np.ndarray, Any, Any]:
     """
     Load all retrieval resources required for answering queries from the persistent vector store.
     """
     collection = get_chroma_collection()
     chunks, embeddings, chunk_documents = load_collection_data(collection)
 
-    model = SentenceTransformer(EMBEDDING_MODEL_NAME)
+    model = get_embedder(EMBEDDING_MODEL_NAME)
     reranker = initialize_reranker() if USE_RERANKING else None
 
     return chunks, chunk_documents, embeddings, model, reranker
