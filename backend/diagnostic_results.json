@@ -1,0 +1,287 @@
+[
+  {
+    "id": "Q03",
+    "question": "Why was the CCTV evidence rejected in Republic v Barisa Wayu Mataguda?",
+    "intent": "Secondary-source retrieval and graph integration",
+    "resolution": {
+      "mode": "CASE_REASONING_LOOKUP",
+      "case_identifier": "2011KEHC1481(KLR)",
+      "case_name": "Republic v Barisa Wayu Mataguda",
+      "provision": null,
+      "jurisdiction_hint": false,
+      "ambiguous": false,
+      "authority_status": "excluded"
+    },
+    "retrieval": {
+      "cases_retrieved": 3,
+      "statutes_retrieved": 0,
+      "case_names": [
+        "2020KEHC8905(KLR)",
+        "2024KEHC15763(KLR)",
+        "2014KEHC6468(KLR)"
+      ]
+    },
+    "passages_assembled": 6,
+    "passage_detail": [
+      {
+        "alias": "C1.1",
+        "label": "Peter Ngethe Ngari t/a PNN Funeral Services v Standard Group Limited PLC & another 2020KEHC8905(KLR), p. 2",
+        "primary": false,
+        "score": 0.988,
+        "text_preview": "“ The provisions of Section 106B have been tested in a number of cases, the case classicus appears to be Republic v Barisa Wayu Matriguda [2011] eKLR where a compact disc (CD) was made from CCTV footage, and the court said:  The decision in Republic vs. Barisa Wayu Matuguda has been followed in seve"
+      },
+      {
+        "alias": "C1.2",
+        "label": "Peter Ngethe Ngari t/a PNN Funeral Services v Standard Group Limited PLC & another 2020KEHC8905(KLR), pp. 1–2",
+        "primary": false,
+        "score": 0.002,
+        "text_preview": "REPUBLIC OF KENYA  IN THE HIGH COURT OF KENYA  AT NAKURU  HIGH COURT CIVIL CASE NUMBER 28 OF 2019  PETER NGETHE NGARI T/A P.N.N. FUNERAL SERVICES......PLAINTIFF  VERSUS  THE STANDARD GROUP LIMITED PLC...........................1 ST  DEFENDANT  NJIRAINI M. MACHARIA ..................................."
+      },
+      {
+        "alias": "C2.1",
+        "label": "Ogembo v Yongo (Civil Appeal E200of2023) 2024KEHC15763(KLR) (9December2024) (Judgment), pp. 5–6",
+        "primary": false,
+        "score": 0.895,
+        "text_preview": "33. In the case of Republic vs Barisa Wayu Matuguda [2011] eKLR the court observed that:  “. . . any information stored in a computer. . . which is then printed or copied. . . shall be treated just like documentary evidence and will be admissible as evidence without the production of the original. H"
+      },
+      {
+        "alias": "C2.2",
+        "label": "Ogembo v Yongo (Civil Appeal E200of2023) 2024KEHC15763(KLR) (9December2024) (Judgment), p. 3",
+        "primary": false,
+        "score": 0.003,
+        "text_preview": "13. The respondent further submitted that the screenshots adduced by the appellant as evidence were marred with inconsistencies in that there was no clear distinction between the WhatsApp chats in the Duoka Development Group and those in The Great Abwao Community.  14. It was further submitted that "
+      },
+      {
+        "alias": "C3.1",
+        "label": "Nonny Gathoni Njenga & another v Catherine Masitsa & another 2014KEHC6468(KLR), p. 2",
+        "primary": false,
+        "score": 0.866,
+        "text_preview": "evidence was inadmissible as it was secured illegally from Bauhaus Limited and the same constituted an infringement of property rights. He further submitted that the said DVDs were taken not from one show but a series of shows over a period of time which was a contravention of the property rights of"
+      },
+      {
+        "alias": "C3.2",
+        "label": "Nonny Gathoni Njenga & another v Catherine Masitsa & another 2014KEHC6468(KLR)",
+        "primary": false,
+        "score": 0.0,
+        "text_preview": "REPUBLIC OF KENYA  IN THE HIGH COURT OF KENYA AT NAIROBI  MILIMANI COMMERCIAL &ADMIRALTY DIVISION  CIVIL CASE NO. 490 OF 2013  NONNY GATHONI NJENGA.......................................1 ST  PLAINTIFF  JANE WAMBUI ODEWALE........................................2 ND  PLAINTIFF  VERSUS  CATHERINE MAS"
+      }
+    ],
+    "answer": "The primary judgment was unavailable for direct retrieval. The following material comes from other sources.\n\nThe CCTV evidence was rejected because it was not accompanied by a certificate as required by Section 106B(4) of the Evidence Act. [Ogembo v Yongo (Civil Appeal E200of2023) 2024KEHC15763(KLR) (9December2024) (Judgment), pp. 5–6]",
+    "claims": [
+      {
+        "alias": "C2.1",
+        "answer": "The CCTV evidence was rejected because it was not accompanied by a certificate as required by Section 106B(4) of the Evidence Act.",
+        "quote": "“This provision makes it abundantly clear that for electronic evidence to be deemed admissible it must be accompanied by a certicate in terms of section 106B (4). Such certicate must in terms of S.106B (4) (d) be signed by a person holding a responsible position with respect to the management of the device.... Without the required certicate this CD is inadmissible as evidence.”"
+      }
+    ],
+    "verification": "semantic_verified",
+    "groq_attempts": 2,
+    "latency_ms": 41361
+  },
+  {
+    "id": "Q04",
+    "question": "What was the court's decision regarding DVD evidence in Nonny Gathoni Njenga v Catherine Masitsa?",
+    "intent": "Entity resolution and judicial outcomes",
+    "resolution": {
+      "mode": "CASE_OUTCOME_LOOKUP",
+      "case_identifier": "2014KEHC6468(KLR)",
+      "case_name": "Nonny Gathoni Njenga & another v Catherine Masitsa & another",
+      "provision": null,
+      "jurisdiction_hint": false,
+      "ambiguous": false,
+      "authority_status": "indexed"
+    },
+    "retrieval": {
+      "cases_retrieved": 1,
+      "statutes_retrieved": 0,
+      "case_names": [
+        "2014KEHC6468(KLR)"
+      ]
+    },
+    "passages_assembled": 3,
+    "passage_detail": [
+      {
+        "alias": "C1.1",
+        "label": "Nonny Gathoni Njenga & another v Catherine Masitsa & another 2014KEHC6468(KLR), pp. 1–2",
+        "primary": true,
+        "score": 0.992,
+        "text_preview": "REPUBLIC OF KENYA  IN THE HIGH COURT OF KENYA AT NAIROBI  MILIMANI COMMERCIAL &ADMIRALTY DIVISION  CIVIL CASE NO. 490 OF 2013  NONNY GATHONI NJENGA.......................................1 ST  PLAINTIFF  JANE WAMBUI ODEWALE........................................2 ND  PLAINTIFF  VERSUS  CATHERINE MAS"
+      },
+      {
+        "alias": "C1.2",
+        "label": "Nonny Gathoni Njenga & another v Catherine Masitsa & another 2014KEHC6468(KLR), p. 2",
+        "primary": true,
+        "score": 0.129,
+        "text_preview": "evidence was inadmissible as it was secured illegally from Bauhaus Limited and the same constituted an infringement of property rights. He further submitted that the said DVDs were taken not from one show but a series of shows over a period of time which was a contravention of the property rights of"
+      },
+      {
+        "alias": "C1.3",
+        "label": "Nonny Gathoni Njenga & another v Catherine Masitsa & another 2014KEHC6468(KLR), pp. 2–3",
+        "primary": true,
+        "score": 0.23,
+        "text_preview": "The court went on that:  “This provision makes it abundantly clear that for electronic    evidence   to be deemed admissible it must be accompanied by a certificate in terms of section 106B (4). Such certificate must in terms of S.106B (4) (d) be signed by a person holding a responsible position wit"
+      }
+    ],
+    "answer": "Nonny Gathoni Njenga & another v Catherine Masitsa & another 2014KEHC6468(KLR), pp. 2–3:\n\n> Plaintiffs are not accompanied by a Certificate as required under the evidence Act, it therefore follows that the said DVDs are inadmissible as evidence.  13.However, in the interest of justice, it is my view that the Plaintiffs are at liberty to produce such\n\n> examine  the  evidence  and  evaluate  the  probative  value  of  the  said  DVDs  as  well  as  the authenticity. The Respondent has alleged that the DVDs were obtained illegally, however that cannot be ascertained at this stage until the Certificate is filed and the Court is able to determine the source of the DVDs.   14.Costs shall be in the cause.",
+    "claims": [],
+    "verification": "source_extract",
+    "groq_attempts": 1,
+    "latency_ms": 894
+  },
+  {
+    "id": "Q02",
+    "question": "Who is qualified to sign a certificate of electronic evidence under section 106B(4) of the Evidence Act?",
+    "intent": "Statutory clause precision",
+    "resolution": {
+      "mode": "DIRECT_STATUTE_LOOKUP",
+      "case_identifier": null,
+      "case_name": null,
+      "provision": "s.106B(4)",
+      "jurisdiction_hint": false,
+      "ambiguous": false,
+      "authority_status": null
+    },
+    "retrieval": {
+      "cases_retrieved": 0,
+      "statutes_retrieved": 1,
+      "case_names": []
+    },
+    "passages_assembled": 1,
+    "passage_detail": [
+      {
+        "alias": "S1.1",
+        "label": "Evidence Act s.106B(4)",
+        "primary": true,
+        "score": 1.0,
+        "text_preview": "( 4 ) in any proceedings where it is desired to give a statement in evidence by virtue of this section, a certificate doing any of the following — ( a ) identifying the electronic record containing the statement and describing the manner in which it was produced ; ( b ) giving such particulars of an"
+      }
+    ],
+    "answer": "Evidence Act s.106B(4)(d)\n\n> ( d ) purporting to be signed by a person occupying a responsible position in relation to the operation of the relevant device or the management of the relevant activities ( whichever is appropriate ), shall be evidence of any matter stated in the certificate and for the purpose of this subsection it shall be sufficient for a matter to be stated to be the best of the knowledge of the person stating it.",
+    "claims": [
+      {
+        "alias": "S1.1",
+        "answer": "( d ) purporting to be signed by a person occupying a responsible position in relation to the operation of the relevant device or the management of the relevant activities ( whichever is appropriate ), shall be evidence of any matter stated in the certificate and for the purpose of this subsection it shall be sufficient for a matter to be stated to be the best of the knowledge of the person stating it.",
+        "quote": "( d ) purporting to be signed by a person occupying a responsible position in relation to the operation of the relevant device or the management of the relevant activities ( whichever is appropriate ), shall be evidence of any matter stated in the certificate and for the purpose of this subsection it shall be sufficient for a matter to be stated to be the best of the knowledge of the person stating it."
+      }
+    ],
+    "verification": "statutory_extract",
+    "groq_attempts": 0,
+    "latency_ms": 192
+  },
+  {
+    "id": "Q08",
+    "question": "Does the Small Claims Court have jurisdiction over employment-related disputes?",
+    "intent": "Jurisdiction and statutory retrieval",
+    "resolution": {
+      "mode": "LEGAL_PRINCIPLE_LOOKUP",
+      "case_identifier": null,
+      "case_name": null,
+      "provision": null,
+      "jurisdiction_hint": true,
+      "ambiguous": false,
+      "authority_status": null
+    },
+    "retrieval": {
+      "cases_retrieved": 3,
+      "statutes_retrieved": 2,
+      "case_names": [
+        "2026SCC235(KLR)",
+        "2026SCC241(KLR)",
+        "2010KECA346(KLR)"
+      ]
+    },
+    "passages_assembled": 4,
+    "passage_detail": [
+      {
+        "alias": "C1.1",
+        "label": "New Titanic Jacaranda General Spares v Omil & another (Commercial Case E095of2026) 2026SCC235(KLR) (31August2026) (Ruling), pp. 1–2",
+        "primary": false,
+        "score": 0.964,
+        "text_preview": "SCCOMM CASE NO. E095 OF 2026  NEW TITANIC JACARANDA GENERAL  SPARES......................................................................CLAIMANT  -VERSUS-  FRANCILE OPONDO OMIL………………………….………..…...1 ST   RESPONDENT HELLEN ATIENO MIRIMO………………………………….…….2 ND   RESPONDENT  RULING.  1. What is before me"
+      },
+      {
+        "alias": "C1.2",
+        "label": "New Titanic Jacaranda General Spares v Omil & another (Commercial Case E095of2026) 2026SCC235(KLR) (31August2026) (Ruling), pp. 2–3",
+        "primary": false,
+        "score": 0.991,
+        "text_preview": "7. The  Court of Appeal has settled  the principle  that disputes which relate  to or arise from an employment relationship  fall within the exclusive jurisdiction of the Employment and Labour Relations Court. In   Kenya Medical Research Institute v Davy Kiprotich Koech [2018]  KECA  128  (KLR) ,  t"
+      },
+      {
+        "alias": "C1.3",
+        "label": "New Titanic Jacaranda General Spares v Omil & another (Commercial Case E095of2026) 2026SCC235(KLR) (31August2026) (Ruling), pp. 3–4",
+        "primary": false,
+        "score": 0.968,
+        "text_preview": "9. In the present matter, the Claimant's own pleadings disclose that the 1st Respondent was working for the Claimant when, on 21st March 2026, he allegedly received and concealed cash proceeds amounting to  Kshs.232,295.45.  The  claim  is  therefore  not  founded  upon  an independent transaction b"
+      },
+      {
+        "alias": "C2.1",
+        "label": "Ndeti v Kaguchwa (Civil Case E075of2026) 2026SCC241(KLR) (21September2026) (Ruling)",
+        "primary": false,
+        "score": 0.137,
+        "text_preview": "Having said that, I find that even though an insurance company is under statutory management it does not cripple it or deny it its right to institute proceedings to recover its debts.  In the present case, the Applicant has not placed before this Court a specific court order staying these proceeding"
+      }
+    ],
+    "answer": "New Titanic Jacaranda General Spares v Omil & another (Commercial Case E095of2026) 2026SCC235(KLR) (31August2026) (Ruling), pp. 3–4:\n\n> 12. Accordingly,  I  find  that  the  present  claim  is  founded  upon  an employer–employee  relationship  and  falls  within  the  exclusion contemplated under section 13(5) of the Small Claims Court Act. This Court consequently lacks jurisdiction to entertain the claim.\n\n> 13. Counsel for the Respondents have asked the court to dismiss the suit with costs. This court is inclined to strike out the suit rather than dismiss it as prayed. A court that lacks jurisdiction cannot determine the merits of the claim or grant substantive relief thereon. This also leaves  the  Claimant  at  liberty,  subject  to  the  applicable  law  and limitation periods to pursue the claim before the court vested with the requisite jurisdiction.",
+    "claims": [],
+    "verification": "source_extract",
+    "groq_attempts": 0,
+    "latency_ms": 6091
+  },
+  {
+    "id": "Q37",
+    "question": "Why did Umoja Magharibi lose its claim for KES 553,000 despite proving that the money was advanced?",
+    "intent": "Judicial reasoning and FIRAC utilisation",
+    "resolution": {
+      "mode": "CASE_REASONING_LOOKUP",
+      "case_identifier": "2026SCC242(KLR)",
+      "case_name": "Umoja Magharibi (K) Ltd v Lubano",
+      "provision": null,
+      "jurisdiction_hint": false,
+      "ambiguous": false,
+      "authority_status": "indexed"
+    },
+    "retrieval": {
+      "cases_retrieved": 1,
+      "statutes_retrieved": 0,
+      "case_names": [
+        "2026SCC242(KLR)"
+      ]
+    },
+    "passages_assembled": 4,
+    "passage_detail": [
+      {
+        "alias": "C1.1",
+        "label": "Umoja Magharibi (K) Ltd v Lubano (Commercial Case E091of2026) 2026SCC242(KLR) (18September2026) (Judgment), pp. 2–3",
+        "primary": true,
+        "score": 0.973,
+        "text_preview": "6. I have considered this submission. The Respondent does not dispute that the Kshs. 553,000/= was received. Indeed, his evidence is that the money was advanced to facilitate the clearance of import duty. Thus, the fact of payment and the stated purpose of the advance are, to that extent, common gro"
+      },
+      {
+        "alias": "C1.2",
+        "label": "Umoja Magharibi (K) Ltd v Lubano (Commercial Case E091of2026) 2026SCC242(KLR) (18September2026) (Judgment), pp. 4–5",
+        "primary": true,
+        "score": 0.198,
+        "text_preview": "11. The  Claimant  submits  that  the  Respondent  has  not  filed  a counterclaim. That is correct, but the absence of a counterclaim does not by itself determine the Claimant's claim. The Respondent does not need to establish an independent entitlement to money from the Claimant in order to succee"
+      },
+      {
+        "alias": "C1.3",
+        "label": "Umoja Magharibi (K) Ltd v Lubano (Commercial Case E091of2026) 2026SCC242(KLR) (18September2026) (Judgment), pp. 1–2",
+        "primary": true,
+        "score": 0.973,
+        "text_preview": "REPUBLIC OF KENYA IN THE SMALL CLAIMS COURT AT MALABA  SCCCOMM NO. E091 OF 2026  UMOJA MAGHARIBI (K) LIMITED... ……….................................CLAIMANT  -VERSUS- JOHN MABISI LUBANO….……………….……….……. ……………….RESPONDENT  JUDGMENT Introduction  1. Vide a statement of claim dated 22 nd  July 2026 and "
+      },
+      {
+        "alias": "C1.4",
+        "label": "Umoja Magharibi (K) Ltd v Lubano (Commercial Case E091of2026) 2026SCC242(KLR) (18September2026) (Judgment), pp. 3–4",
+        "primary": true,
+        "score": 0.014,
+        "text_preview": "9. The  court  must  also  consider  the  Claimant’s  failure  to  call  its representative,  Mr.  Justus  Wanjala  who  from  the  documentary evidence was directly involved in the dealings concerning the motor vehicle. The Claimant was in an advantageous position to explain what became of the vehi"
+      }
+    ],
+    "answer": "Umoja Magharibi (K) Ltd v Lubano (Commercial Case E091of2026) 2026SCC242(KLR) (18September2026) (Judgment), pp. 4–5:\n\n> 13. On the totality of the evidence before me, I find that the Claimant has established  that  it  advanced  Kshs.  553,000/=  for  the  purpose  of clearing  the  import  duty.  However,  the  evidence  concerning  the subsequent vehicle arrangement introduces a material and plausible alternative  explanation  as  to  the  mechanism  through  which  that advance  was  to  be  recovered.  The  contemporaneous  email correspondence concerning authority to sell the vehicle materially supports  that  explanation.  The  Claimant  has  not  satisfactorily accounted  for  this  correspondence  or  placed  before  the  Court evidence  concerning  the  subsequent  sale  of  the  vehicle  and application of its proceeds.\n\n> 14. Consequently, although the Claimant has proved the advance of the money,  it  has  not,  on  the  balance  of  probabilities,  sufficiently established that the Respondent remained personally liable to repay the Kshs. 553,000/= as a loan in the manner pleaded.\n\n> 15. The Claim therefore fails and is dismissed.",
+    "claims": [],
+    "verification": "source_extract",
+    "groq_attempts": 0,
+    "latency_ms": 787
+  }
+]

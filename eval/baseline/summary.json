@@ -18,7 +18,7 @@
       "2024KEHC15763(KLR)",
       "2020KEHC8905(KLR)"
     ],
-    "latency_ms": 13232,
+    "latency_ms": 11781,
     "results_count": 3
   },
   {
@@ -40,7 +40,7 @@
       "2001KECA154(KLR)",
       "2026SCC242(KLR)"
     ],
-    "latency_ms": 9319,
+    "latency_ms": 3803,
     "results_count": 3
   },
   {
@@ -62,7 +62,7 @@
       "2014KEHC6468(KLR)",
       "2024KEHC17038(KLR)"
     ],
-    "latency_ms": 9489,
+    "latency_ms": 5550,
     "results_count": 3
   },
   {
@@ -84,7 +84,7 @@
       "2026SCC242(KLR)",
       "2026SCC235(KLR)"
     ],
-    "latency_ms": 7019,
+    "latency_ms": 4387,
     "results_count": 3
   },
   {
@@ -106,7 +106,7 @@
       "2026SCC235(KLR)",
       "2026SCC242(KLR)"
     ],
-    "latency_ms": 7616,
+    "latency_ms": 5175,
     "results_count": 3
   }
 ]

@@ -17,10 +17,26 @@ PROVISION = re.compile(
     re.I,
 )
 STRATEGIC = re.compile(r"\b(?:my case|can i|should i|my evidence|litigation strategy|compare|distinguish)\b", re.I)
+# Matches explicit cross-references to statutes embedded in case judgment text,
+# e.g. "section 13(5) of the Small Claims Court Act".
+_STATUTE_REF = re.compile(
+    r"\bsection\s+(?P<section>\d+[a-z]?)\s*(?P<sub>(?:\(\s*[a-z0-9]+\s*\))*)"
+    r"\s+of\s+(?:the\s+)?(?P<act>[A-Za-z][a-zA-Z\s]+?(?:Act|Rules|Regulations|Code|Order))\b",
+    re.I,
+)
 DIRECT_MODES = frozenset({
     "DIRECT_CASE_LOOKUP", "CASE_FACT_LOOKUP", "CASE_OUTCOME_LOOKUP",
     "CASE_REASONING_LOOKUP", "DIRECT_STATUTE_LOOKUP", "LEGAL_PRINCIPLE_LOOKUP",
 })
+
+# Tokens too generic to identify a specific case party.
+_PARTY_STOPS = frozenset(
+    "another limited company ltd llp lp plc incorporated inc group association trust foundation "
+    "republic attorney general minister secretary director commissioner board authority council "
+    "county government national local versus kenya nairobi mombasa kisumu nakuru eldoret "
+    "court appeal high magistrate tribunal services commission bank insurance agency hospital "
+    "school university institute college centre center services properties investments".split()
+)
 
 def normal(text):
     text = unicodedata.normalize("NFKC", text).casefold()
@@ -74,13 +90,21 @@ def _authority_index(revisions):
                       and normal(re.sub(r"\s*\(Cap\s+\d+\)\s*$", "", row["act"], flags=re.I)) == normal(act["act_title"])}
         if len(seed_names) == 1:
             act["graph_title"] = next(iter(seed_names))
-    return authorities, aliases, acts
+    # Build party-token index for partial case-name matching.
+    # Maps each distinctive 5-char+ party token → set of case keys it appears in.
+    party_tokens: dict[str, set[str]] = defaultdict(set)
+    for alias_str, key_set in aliases.items():
+        for part in alias_str.split(" v ", 1):
+            for token in re.findall(r"\w{5,}", part):
+                if token not in _PARTY_STOPS:
+                    party_tokens[token] |= key_set
+    return authorities, aliases, acts, dict(party_tokens)
 
 def authority_index():
     return _authority_index(tuple(_fingerprint(p) for p in (CASE_MANIFEST, STATUTE_MANIFEST, SEED)))
 
 def excluded_case_ids():
-    authorities, _, _ = authority_index()
+    authorities, _, _, _ = authority_index()
     return {entry["case_identifier"] for entry in authorities.values()
             if entry.get("case_identifier") and not entry["eligible"]}
 
@@ -89,14 +113,14 @@ def _case_intent(query, name_only):
         return "DIRECT_CASE_LOOKUP"
     if re.search(r"\b(?:why|reason(?:ing|s)?)\b", query, re.I):
         return "CASE_REASONING_LOOKUP"
-    if re.search(r"\b(?:ruling|decid\w*|outcome|reject\w*|admit\w*|allow\w*|dismiss\w*|sustain\w*|order|hold|held)\b", query, re.I):
+    if re.search(r"\b(?:ruling|decid\w*|decis\w*|outcome|reject\w*|admit\w*|allow\w*|dismiss\w*|sustain\w*|order|hold|held|found|finding|determin\w*)\b", query, re.I):
         return "CASE_OUTCOME_LOOKUP"
     if re.search(r"\b(?:principle|doctrine|legal test)\b", query, re.I):
         return "LEGAL_PRINCIPLE_LOOKUP"
     return "CASE_FACT_LOOKUP"
 
 def resolve(query, *, graph_discovery=False):
-    authorities, aliases, acts = authority_index()
+    authorities, aliases, acts, party_tokens = authority_index()
     text = normal(query)
     neutral = list(_CITATION_RE.finditer(query))
     keys = {case_key(m.group()) for m in neutral}
@@ -112,7 +136,24 @@ def resolve(query, *, graph_discovery=False):
         if keys and named - keys:
             return {"ambiguous": True, "case_keys": sorted(keys | named)}
         keys |= named
-    elif not keys and (" v " in text) and not STRATEGIC.search(query):
+    # Partial party-name token matching: handles single-party references ("Nonny")
+    # and partial company names ("Umoja Magharibi") that don't appear as a full alias.
+    elif not keys and not STRATEGIC.search(query):
+        token_hits: dict[str, set[str]] = {}
+        for token in set(re.findall(r"\w{5,}", text)):
+            if token in _PARTY_STOPS:
+                continue
+            for matched_key in party_tokens.get(token, set()):
+                token_hits.setdefault(matched_key, set()).add(token)
+        if token_hits:
+            best_key = max(token_hits, key=lambda k: len(token_hits[k]))
+            best_count = len(token_hits[best_key])
+            # Only resolve when no other case matches the same number of tokens.
+            competing = [k for k, v in token_hits.items() if len(v) == best_count and k != best_key]
+            if not competing:
+                keys = {best_key}
+
+    if not keys and (" v " in text) and not STRATEGIC.search(query):
         from rapidfuzz.distance import Levenshtein
         query_words = text.split()
         matches = []
@@ -176,6 +217,13 @@ def resolve(query, *, graph_discovery=False):
         }}
     if not STRATEGIC.search(query) and not keys and re.search(r"\b(?:what (?:is|are)|explain|define)\b", query, re.I) and re.search(r"\b(?:principle|doctrine|legal test)\b", query, re.I):
         return {"mode": "LEGAL_PRINCIPLE_LOOKUP"}
+    # Implicit jurisdiction question: no case or statute resolved but query asks
+    # whether a court can hear a matter (e.g. Q08: "Can the Small Claims Court
+    # hear employment disputes?" — no explicit s.13 reference).
+    if not STRATEGIC.search(query) and not keys and not matches:
+        if re.search(r"\b(?:jurisdiction|jurisdict\w*)\b", query, re.I) or \
+           re.search(r"\bcan\b.{0,40}\bcourt\b.{0,30}\bhear\b", query, re.I):
+            return {"mode": "LEGAL_PRINCIPLE_LOOKUP", "jurisdiction_hint": True}
     return {}
 
 def _case_index_status(case):
@@ -231,6 +279,44 @@ def direct_statute(provision):
     params = {"vector_query": "", "entities": {}}
     return format_rules_output(grouped, params, {})["results"]
 
+def _match_act_title(text_title, acts):
+    """Return the manifest act entry whose title or alias matches text_title."""
+    target = normal(re.sub(r"\s*\(Cap\s+\d+\)\s*$", "", text_title, flags=re.I))
+    for act in acts:
+        for alias in [act["act_title"], *act.get("aliases", [])]:
+            if normal(re.sub(r"\s*\(Cap\s+\d+\)\s*$", "", alias, flags=re.I)) == target:
+                return act
+    return None
+
+
+def _discover_statutes_from_passages(results, acts):
+    """Scan retrieved case chunks for statute references and fetch them deterministically."""
+    seen = set()
+    discovered = []
+    for row in results[:3]:
+        for chunk in row.get("chunks", []):
+            for m in _STATUTE_REF.finditer(chunk.get("text", "")):
+                act = _match_act_title(m.group("act").strip(), acts)
+                if not act:
+                    continue
+                section = m.group("section").strip()
+                pid = f"{act['act_slug']}-s{section}"
+                if pid in seen:
+                    continue
+                seen.add(pid)
+                rules = direct_statute({
+                    "act_slug": act["act_slug"],
+                    "title": act["act_title"],
+                    "section": section,
+                    "subsections": [],
+                    "label": f"s.{section}",
+                    "provision_key": f"{act.get('graph_title', act['act_title'])} s.{section}",
+                })
+                if rules:
+                    discovered.extend(rules)
+    return discovered
+
+
 def _prioritize_verified_graph_passages(results, graph, mode):
     if not results or not graph.get("paragraphs"):
         return
@@ -280,7 +366,7 @@ def retrieve_resolved(query, resolution, *, graph_enabled=None, case_pins=None, 
         else:
             result["authority_status"] = "outside_pinned_scope"
         if not result["results"] and resolution["mode"] != "DIRECT_CASE_LOOKUP" and primary_allowed:
-            catalog, _, _ = authority_index()
+            catalog, _, _, _ = authority_index()
             related = []
             for row in graph.get("incoming_citations", []):
                 known = catalog.get(row["citing_case"], {})
@@ -316,4 +402,11 @@ def retrieve_resolved(query, resolution, *, graph_enabled=None, case_pins=None, 
         result.update(retrieve_relevant_cases(
             {"vector_query": query, "target_components": []}, verbose=False, skip_summaries=True,
         ))
+        # For jurisdiction questions, scan retrieved passages for explicit statute references
+        # and fetch the relevant provisions deterministically (no Groq call required).
+        if resolution.get("jurisdiction_hint") and not result.get("rules"):
+            _, _, acts, _ = authority_index()
+            discovered = _discover_statutes_from_passages(result.get("results", []), acts)
+            if discovered:
+                result["rules"] = discovered
     return result

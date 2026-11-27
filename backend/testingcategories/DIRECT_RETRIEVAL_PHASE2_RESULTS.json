@@ -1,0 +1,138 @@
+{
+  "phase": 2,
+  "run_date": "2026-11-27",
+  "summary": {
+    "questions_tested": 5,
+    "questions_improved": 5,
+    "groq_budget_violations": 0,
+    "max_groq_calls_per_query": 2
+  },
+  "interventions": {
+    "task_1_quoted_extract_penalty": {
+      "description": "_QUOTED_EXTRACT regex (-5.0 penalty for paragraphs opening with a quotation mark in OUTCOME modes)",
+      "files": ["backend/direct_answer.py"],
+      "target_question": "Q04",
+      "result": "Demoted Mataguda quotation embedded in Nonny judgment; court's own ruling now selected"
+    },
+    "task_1b_allegation_signal_extension": {
+      "description": "Extended _ALLEGATION_SIGNAL to catch 'He/she further submitted' patterns",
+      "files": ["backend/direct_answer.py"],
+      "target_question": "Q04",
+      "result": "Demoted defendant-submission paragraphs that contain incidental disposition language"
+    },
+    "task_2_multi_paragraph_bundle": {
+      "description": "_fallback_passage() replaced with _fallback_bundle() returning consecutive paragraphs from same chunk",
+      "files": ["backend/direct_answer.py"],
+      "target_question": "Q37",
+      "result": "Returns para13+para14+para15 bundle showing finding, conclusion and disposal"
+    },
+    "task_3_statute_discovery": {
+      "description": "_STATUTE_REF regex + _discover_statutes_from_passages() in retrieve_resolved() for jurisdiction_hint queries",
+      "files": ["backend/direct_retrieval.py"],
+      "target_question": "Q08",
+      "result": "s.13 of Small Claims Court Act discovered from Titanic case text; statutes_retrieved=2"
+    },
+    "task_5_fallback_rendering": {
+      "description": "Level A fallback: source_extract with '<citation>:\\n\\n> <text>' (no qualificatory prefix)",
+      "files": ["backend/direct_answer.py"],
+      "target_question": "Q04, Q08, Q37",
+      "result": "Answers attributed directly to source; verification status 'source_extract'"
+    },
+    "task_7_alias_resolution": {
+      "description": "_resolve_aliases() replaces [C1.3] etc. with passage.label in answer text",
+      "files": ["backend/direct_answer.py"],
+      "target_question": "Q03",
+      "result": "Full case citation now appears in user-visible answer text"
+    },
+    "task_8_deduplication": {
+      "description": "_deduplicate_claims() removes claims sharing normalised quote prefix",
+      "files": ["backend/direct_answer.py"],
+      "target_question": "Q03",
+      "result": "Three near-identical claims reduced to one"
+    },
+    "task_statutory_citation": {
+      "description": "Statutory extract citation label updated to show sub-clause (s.106B(4)(d)); internal alias removed from display",
+      "files": ["backend/direct_answer.py"],
+      "target_question": "Q02",
+      "result": "Answer now shows 'Evidence Act s.106B(4)(d)' without [S1.1] token"
+    }
+  },
+  "results": [
+    {
+      "id": "Q03",
+      "question": "Why was the CCTV evidence rejected in Republic v Barisa Wayu Mataguda?",
+      "intent": "Secondary-source retrieval and graph integration",
+      "phase1_issues": ["3 near-identical claims with internal alias [C2.1]"],
+      "phase2_outcome": {
+        "verification": "semantic_verified",
+        "groq_attempts": 2,
+        "latency_ms": 41361,
+        "claims_returned": 1,
+        "answer_summary": "1 deduplicated claim, full citation label resolved: Ogembo v Yongo (...), pp. 5-6"
+      },
+      "interventions_applied": ["task_7_alias_resolution", "task_8_deduplication"],
+      "status": "IMPROVED"
+    },
+    {
+      "id": "Q04",
+      "question": "What was the court's decision regarding DVD evidence in Nonny Gathoni Njenga v Catherine Masitsa?",
+      "intent": "Entity resolution and judicial outcomes",
+      "phase1_issues": ["Returned Mataguda quotation from C1.3 instead of Nonny court's own ruling"],
+      "phase2_outcome": {
+        "verification": "source_extract",
+        "groq_attempts": 1,
+        "latency_ms": 894,
+        "claims_returned": 0,
+        "answer_summary": "Nonny primary judgment (pp. 2-3): court's own ruling that DVDs inadmissible for missing certificate"
+      },
+      "interventions_applied": ["task_1_quoted_extract_penalty", "task_1b_allegation_signal_extension", "task_5_fallback_rendering"],
+      "status": "IMPROVED"
+    },
+    {
+      "id": "Q02",
+      "question": "Who is qualified to sign a certificate of electronic evidence under section 106B(4) of the Evidence Act?",
+      "intent": "Statutory clause precision",
+      "phase1_issues": ["Answer displayed internal alias [S1.1] instead of proper provision label"],
+      "phase2_outcome": {
+        "verification": "statutory_extract",
+        "groq_attempts": 0,
+        "latency_ms": 192,
+        "claims_returned": 1,
+        "answer_summary": "Evidence Act s.106B(4)(d) — person occupying a responsible position"
+      },
+      "interventions_applied": ["task_statutory_citation"],
+      "status": "IMPROVED"
+    },
+    {
+      "id": "Q08",
+      "question": "Does the Small Claims Court have jurisdiction over employment-related disputes?",
+      "intent": "Jurisdiction and statutory retrieval",
+      "phase1_issues": ["Only returned the 'lacks jurisdiction' phrase; did not surface s.13(5) of Small Claims Court Act"],
+      "phase2_outcome": {
+        "verification": "source_extract",
+        "groq_attempts": 0,
+        "latency_ms": 6091,
+        "claims_returned": 0,
+        "statutes_retrieved": 2,
+        "answer_summary": "Full ruling from Titanic case citing s.13(5) exclusion; court strikes out claim for lack of jurisdiction"
+      },
+      "interventions_applied": ["task_3_statute_discovery", "task_5_fallback_rendering"],
+      "status": "IMPROVED"
+    },
+    {
+      "id": "Q37",
+      "question": "Why did Umoja Magharibi lose its claim for KES 553,000 despite proving that the money was advanced?",
+      "intent": "Judicial reasoning and FIRAC utilisation",
+      "phase1_issues": ["Returned only para13 (finding); missing para14 (conclusion on personal liability) and para15 (disposal)"],
+      "phase2_outcome": {
+        "verification": "source_extract",
+        "groq_attempts": 0,
+        "latency_ms": 787,
+        "claims_returned": 0,
+        "answer_summary": "Full 3-paragraph bundle: para13 (finding) + para14 (personal liability conclusion) + para15 ('The Claim therefore fails and is dismissed')"
+      },
+      "interventions_applied": ["task_2_multi_paragraph_bundle", "task_5_fallback_rendering"],
+      "status": "IMPROVED"
+    }
+  ]
+}

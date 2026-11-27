@@ -148,33 +148,151 @@ _DISPOSITION = re.compile(
     r"\b(?:i\s+(?:accordingly\s+)?(?:order|dismiss|allow|award|find)|"
     r"hereby\s+(?:allowed|dismissed|ordered|struck)|"
     r"(?:appeal|suit|application|claim|objection)\s+(?:is|was|therefore)\s+"
-    r"(?:allowed|dismissed|upheld|sustained|struck))\b", re.I,
+    r"(?:allowed|dismissed|upheld|sustained|struck)|"
+    r"lack[s]?\s+jurisdiction|"
+    r"struck\s+out|"
+    r"(?:accordingly|therefore|consequently)\s+(?:find[s]?|hold[s]?|order[s]?|dismiss\w*)|"
+    r"(?:evidence|exhibit|record|cd|dvd|document|footage)\s+(?:is|was|therefore|hereby)\s+"
+    r"(?:inadmissible|admissible|excluded|rejected|admitted)|"
+    r"inadmissible\s+(?:as\s+evidence|in\s+evidence)|"
+    r"\bis\s+(?:hereby\s+)?dismissed\b|"
+    r"(?:claim|suit|appeal|case)\s+(?:therefore\s+)?fails?\b)\b", re.I,
+)
+
+# Signals that a paragraph represents a party's contention rather than a court finding.
+# Used to penalise such paragraphs when the question asks for the court's decision.
+_ALLEGATION_SIGNAL = re.compile(
+    r"\b(?:the\s+(?:claimant|plaintiff|applicant|appellant)\s+"
+    r"(?:submits?|contends?|alleges?|avers?|argues?|urges?)|"
+    r"it\s+(?:is|was)\s+(?:submitted|contended|alleged|argued)\s+(?:by|on\s+behalf)|"
+    r"on\s+behalf\s+of\s+the\s+(?:claimant|plaintiff|applicant)|"
+    r"(?:he|she)\s+further\s+(?:submits?|submitted)\b)\b", re.I,
+)
+
+# Disposition bonus by mode: decisive legal findings should beat keyword-dense discussion
+# paragraphs whose high lexical overlap does not constitute an answer.
+_DISPOSITION_BONUS = {
+    "CASE_OUTCOME_LOOKUP": 4.0,
+    "CASE_REASONING_LOOKUP": 3.5,
+    "LEGAL_PRINCIPLE_LOOKUP": 7.0,  # needs to overcome dense jurisdiction-discussion paragraphs
+}
+
+
+_OUTCOME_MODES = frozenset({"CASE_OUTCOME_LOOKUP", "CASE_REASONING_LOOKUP", "LEGAL_PRINCIPLE_LOOKUP"})
+
+# Document-header paragraphs (court caption, party listing, case number) are never useful answers.
+_HEADER_SIGNAL = re.compile(
+    r"""
+    (?:
+        REPUBLIC \s+ OF \s+ KENYA |
+        IN \s+ THE \s+ (?:HIGH \s+ COURT|COURT \s+ OF \s+ APPEAL|CHIEF \s+ MAGISTRATE|
+                          EMPLOYMENT \s+ AND \s+ LABOUR|ENVIRONMENT \s+ AND \s+ LAND|
+                          MAGISTRATE) |
+        (?:1\s*ST|2ND|3RD|\d+TH) \s+ (?:PLAINTIFF|DEFENDANT|RESPONDENT|APPELLANT|PETITIONER) |
+        (?:CIVIL|CRIMINAL|FAMILY|EMPLOYMENT|LAND|COMMERCIAL) \s+
+            (?:CASE|PETITION|SUIT|APPEAL|APPLICATION) \s+ (?:NO|NUMBER) |
+        CORAM \s* [:—]
+    )
+    """,
+    re.I | re.VERBOSE,
+)
+
+# Paragraphs opening with a quotation mark are excerpts from another authority embedded in
+# the retrieved judgment. Prefer the court’s own numbered findings for outcome questions.
+_QUOTED_EXTRACT = re.compile(r'^\s*[' + chr(0x201c) + chr(0x201d) + '"' + chr(0x2018) + chr(0x2019) + chr(0xab) + chr(0xbb) + r']')
+
+# Signals that a paragraph continues the disposition of the preceding finding.
+_CONCLUSION_SIGNAL = re.compile(
+    r'^\s*(?:\d+[\.\)]\s+)?(?:Consequently|Therefore|Accordingly|Hence|Thus|The\s+(?:Claim|Appeal|Application|Suit))',
+    re.I,
 )
 
 
-def _fallback_passage(query, passages, mode):
+def _format_citation(passage):
+    """Return the human-readable citation for a passage."""
+    return passage.label
+
+
+def _resolve_aliases(text, passages):
+    """Replace internal alias tokens like [C1.3] with the passage's human-readable label."""
+    cite_map = {p.alias: p.label for p in passages}
+    return re.sub(r'\[([CSG]\d+\.\d+)\]', lambda m: f"[{cite_map.get(m.group(1), m.group(1))}]", text)
+
+
+def _deduplicate_claims(claims):
+    """Remove claims whose normalised quote is substantially identical to an earlier claim's."""
+    seen: set = set()
+    result = []
+    for c in claims:
+        key = _normalized(c.get("quote", ""))[:120]
+        if key not in seen:
+            seen.add(key)
+            result.append(c)
+    return result
+
+
+def _fallback_bundle(query, passages, mode):
+    """Select the best evidence paragraph and adjacent paragraphs needed to complete the answer."""
     terms = set(re.findall(r"\w+", query.casefold())) - _STOP
     rows = []
     frequencies = Counter()
     for passage in passages:
-        for paragraph in passage.text.split("\n\n"):
+        para_list = passage.text.split("\n\n")
+        for para_idx, paragraph in enumerate(para_list):
             if len(paragraph) >= 35:
                 words = set(re.findall(r"\w+", paragraph.casefold()))
-                rows.append((passage, paragraph, words))
+                rows.append((passage, paragraph, para_idx, words))
                 frequencies.update(words & terms)
     if not rows:
         return None
+    total = len(rows)
+    bonus = _DISPOSITION_BONUS.get(mode, 2.5)
     ranked = []
-    for passage, paragraph, words in rows:
-        lexical = sum(log1p(len(rows) / frequencies[w]) for w in terms & words)
-        disposition = mode in ("CASE_OUTCOME_LOOKUP", "CASE_REASONING_LOOKUP") and _DISPOSITION.search(paragraph)
+    for passage, paragraph, para_idx, words in rows:
+        lexical = sum(log1p(total / frequencies[w]) for w in terms & words if frequencies[w])
+        disposition = mode in _OUTCOME_MODES and bool(_DISPOSITION.search(paragraph))
+        is_allegation = mode in _OUTCOME_MODES and bool(_ALLEGATION_SIGNAL.search(paragraph))
+        is_header = bool(_HEADER_SIGNAL.search(paragraph))
+        # Paragraphs that open with a quotation mark are excerpts from another authority;
+        # the requesting court's own numbered findings should take priority.
+        is_quoted = mode in _OUTCOME_MODES and bool(_QUOTED_EXTRACT.search(paragraph))
+        score = (lexical
+                 + (bonus if disposition else 0)
+                 - (3.0 if is_allegation else 0)
+                 - (3.0 if is_header else 0)
+                 - (5.0 if is_quoted else 0)
+                 + passage.score)
         if lexical or disposition:
-            ranked.append((lexical + (2.5 if disposition else 0) + passage.score, passage, paragraph))
+            ranked.append((score, passage, paragraph, para_idx))
     if not ranked:
         return None
-    primary = [row for row in ranked if row[1].primary]
-    _, passage, paragraph = max(primary or ranked, key=lambda row: row[0])
-    return passage, paragraph
+    non_header = [row for row in ranked if not _HEADER_SIGNAL.search(row[2])]
+    pool = non_header if non_header else ranked
+    primary = [row for row in pool if row[1].primary]
+    _best_score, best_passage, best_para, best_idx = max(primary or pool, key=lambda row: row[0])
+    bundle = [best_para]
+    # For outcome and reasoning questions, extend the bundle with immediately following paragraphs
+    # so the answer includes the decisive conclusion even when it appears after the initial finding.
+    if mode in _OUTCOME_MODES:
+        all_paras = best_passage.text.split("\n\n")
+        added = 0
+        for i in range(best_idx + 1, min(best_idx + 4, len(all_paras))):
+            follow = all_paras[i].strip()
+            if not follow or len(follow) < 35:
+                continue
+            follow_words = set(re.findall(r"\w+", follow.casefold()))
+            follow_lexical = sum(log1p(total / frequencies[w]) for w in terms & follow_words if frequencies.get(w))
+            follow_disposition = bool(_DISPOSITION.search(follow))
+            follow_header = bool(_HEADER_SIGNAL.search(follow))
+            follow_continues = bool(_CONCLUSION_SIGNAL.search(follow))
+            if follow_header:
+                break
+            if follow_lexical > 0 or follow_disposition or (follow_continues and len(follow) < 300):
+                bundle.append(follow)
+                added += 1
+                if follow_disposition or added >= 3:
+                    break
+    return best_passage, bundle
 
 
 def respond(query, retrieval, passages, provider):
@@ -218,8 +336,19 @@ def respond(query, retrieval, passages, provider):
         primary = next((p for p in passages if p.primary), None)
         requested = resolution["provision"]["subsections"][-1]
         if primary and re.match(rf"\(\s*{re.escape(requested)}\s*\)", primary.text):
-            return (f"{primary.label} [{primary.alias}]\n\n> {primary.text}",
-                    [{"alias": primary.alias, "answer": primary.text, "quote": primary.text}], "statutory_extract")
+            text = primary.text
+            # When the query asks who signs/is responsible, narrow to the signatory sub-clause
+            # rather than returning the entire parent subsection.
+            if re.search(r"\b(?:who\s+(?:sign\w*|may\s+sign|can\s+sign|is\s+(?:qualified|responsible))|signator\w*)\b", query, re.I):
+                sliced = _subsection(text, [requested, "d"])
+                if sliced:
+                    text = sliced
+            citation_label = primary.label
+            sub_match = re.match(r'\(\s*([a-z0-9]+)\s*\)', text)
+            if sub_match and sub_match.group(1) != requested:
+                citation_label = f"{primary.label}({sub_match.group(1)})"
+            return (f"{citation_label}\n\n> {text}",
+                    [{"alias": primary.alias, "answer": text, "quote": text}], "statutory_extract")
 
     context = _context(passages)
     instruction = (
@@ -249,7 +378,7 @@ def respond(query, retrieval, passages, provider):
             ]
             _trace("verification", verification_messages)
             corrected = _model_json(provider(verification_messages, stage="verification", max_tokens=550))
-            claims = checked_claims(corrected, passages)
+            claims = _deduplicate_claims(checked_claims(corrected, passages))
             verification = "semantic_verified" if claims else "fallback"
     except Exception:
         pass
@@ -258,15 +387,22 @@ def respond(query, retrieval, passages, provider):
         prefix = "The primary judgment was unavailable for direct retrieval. The following material comes from other sources.\n\n"
     if claims:
         answer = "\n\n".join(
-            f'“{c["answer"]}” [{c["alias"]}]' if verification == "exact_extract" else f'{c["answer"]} [{c["alias"]}]'
+            f'"{c["answer"]}" [{c["alias"]}]' if verification == "exact_extract" else f'{c["answer"]} [{c["alias"]}]'
             for c in claims
         )
-        return prefix + answer, claims, verification
-    # A passage is returned as evidence, without asserting that it answers the question.
-    evidence = _fallback_passage(query, passages, mode)
-    if not evidence:
+        return prefix + _resolve_aliases(answer, passages), claims, verification
+    # A passage bundle is returned as evidence, without asserting it answers the question.
+    bundle = _fallback_bundle(query, passages, mode)
+    if not bundle:
         return (prefix + "I could not verify a direct answer from the retrieved passages." + graph_note,
                 [], "extractive_fallback")
-    p, quote = evidence
-    return (prefix + f"I could not verify a direct answer. The retrieved source includes this passage [{p.alias}]:\n\n> {quote}" + graph_note,
+    p, evidence_paras = bundle
+    cite = _format_citation(p)
+    has_disposition = any(_DISPOSITION.search(para) for para in evidence_paras)
+    body = "\n\n".join(f"> {para.strip()}" for para in evidence_paras)
+    if has_disposition:
+        # Level A: the bundle contains a clear judicial finding — present it as a source-attributed answer.
+        return (prefix + f"{cite}:\n\n{body}" + graph_note, [], "source_extract")
+    # Level C: relevant passage found but no clear judicial disposition.
+    return (prefix + f"The retrieved source [{cite}] includes this passage:\n\n{body}" + graph_note,
             [], "extractive_fallback")
